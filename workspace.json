@@ -1,8 +1,10 @@
 {
 	"version": 2,
 	"projects": {
-		"core": "apps/core",
+		"api": "apps/api",
 		"dashboard": "apps/dashboard",
-		"dashboard-e2e": "apps/dashboard-e2e"
+		"dashboard-e2e": "apps/dashboard-e2e",
+		"interfaces": "libs/interfaces",
+		"sdk": "libs/sdk"
 	}
 }
