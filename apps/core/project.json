@@ -1,0 +1,52 @@
+{
+  "root": "apps/core",
+  "sourceRoot": "apps/core/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/core",
+        "main": "apps/core/src/main.ts",
+        "tsConfig": "apps/core/tsconfig.app.json",
+        "assets": ["apps/core/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/core/src/environments/environment.ts",
+              "with": "apps/core/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "core:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/core/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/core"],
+      "options": {
+        "jestConfig": "apps/core/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["scope:shared", "type:app"]
+}

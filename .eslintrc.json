@@ -1,0 +1,114 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "**/*"
+  ],
+  "plugins": [
+    "@nrwl/nx"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts",
+        "*.tsx",
+        "*.js",
+        "*.jsx"
+      ],
+      "rules": {
+        "@nrwl/nx/enforce-module-boundaries": [
+          "error",
+          {
+            "enforceBuildableLibDependency": true,
+            "allowCircularSelfDependency": true,
+            "allow": [ ],
+            "depConstraints": [
+              {
+                "sourceTag": "scope:shared",
+                "onlyDependOnLibsWithTags": [
+                  "scope:shared"
+                ]
+              },
+              {
+                "sourceTag": "scope:testapp",
+                "onlyDependOnLibsWithTags": [
+                  "*"
+                ]
+              },
+              {
+                "sourceTag": "type:app",
+                "onlyDependOnLibsWithTags": [
+                  "type:ui",
+                  "type:data",
+                  "type:shared",
+                  "type:test"
+                ]
+              },
+              {
+                "sourceTag": "type:ui",
+                "onlyDependOnLibsWithTags": [
+                  "type:ui",
+                  "type:data",
+                  "type:shared",
+                  "type:test"
+                ]
+              },
+              {
+                "sourceTag": "type:data",
+                "onlyDependOnLibsWithTags": [
+                  "type:data",
+                  "type:shared",
+                  "type:test"
+                ]
+              },
+              {
+                "sourceTag": "type:shared",
+                "onlyDependOnLibsWithTags": [
+                  "type:shared",
+                  "type:test"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
+      "extends": [
+        "plugin:@nrwl/nx/typescript"
+      ],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "off",
+        "react-hooks/exhaustive-deps": "off",
+        "@typescript-eslint/no-empty-interface": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "jsx-a11y/anchor-is-valid": "off",
+        "no-case-declarations": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "import/no-anonymous-default-export": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "no-mixed-spaces-and-tabs": "off",
+        "@typescript-eslint/quotes": [
+          "error",
+          "single",
+          {
+            "allowTemplateLiterals": true
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "*.js",
+        "*.jsx"
+      ],
+      "extends": [
+        "plugin:@nrwl/nx/javascript"
+      ],
+      "rules": {}
+    }
+  ]
+}
