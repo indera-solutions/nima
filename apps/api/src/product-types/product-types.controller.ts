@@ -1,11 +1,14 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { ProductTypesService } from './product-types.service';
 import { CreateProductTypeDto } from './dto/create-product-type.dto';
 import { UpdateProductTypeDto } from './dto/update-product-type.dto';
 
 @Controller('product-types')
+@ApiTags('Product Types')
 export class ProductTypesController {
-	constructor(private readonly productTypesService: ProductTypesService) {}
+	constructor(private readonly productTypesService: ProductTypesService) {
+	}
 
 	@Post()
 	create(@Body() createProductTypeDto: CreateProductTypeDto) {

@@ -1,8 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AttributesService } from './attributes.service';
 import { AttributeEntity } from './models/attribute.entity';
 
 @Controller('attributes')
+@ApiTags('Attributes')
 export class AttributesController {
 	constructor(private service: AttributesService) {
 	}

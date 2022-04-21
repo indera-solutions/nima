@@ -1,16 +1,16 @@
-import { LoomText } from '@loom/core-shared';
+import { Translatable } from '../core';
 import { Attribute } from './Attribute';
 
 export interface AttributeValue {
 	id: number;
-	name: LoomText;
+	name: Translatable;
 	attribute: Attribute;
 	slug?: string;
 	sortOrder?: number;
 	value?: string;
 	// content_type: ContentType;
 	fileUrl?: string;
-	richText?: LoomText;
+	richText?: Translatable;
 	boolean?: boolean;
 	dateTime?: string;
 }

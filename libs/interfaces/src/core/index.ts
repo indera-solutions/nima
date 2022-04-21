@@ -1,6 +1,6 @@
 export * from './Translatable';
 export * from './Metadata';
-export * from './Options';
+export * from './Settings';
 export * from './Media';
 export * from './PaginatedResults';
 export * from './Address';

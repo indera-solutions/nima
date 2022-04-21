@@ -2,7 +2,7 @@ import { Translatable } from '@nima/interfaces';
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { AttributeEntity } from './attribute.entity';
 
-@Entity()
+@Entity('attribute_attribute_values')
 export class AttributeValueEntity extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: number;

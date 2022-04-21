@@ -4,9 +4,13 @@ import { AppController } from './app/app.controller';
 import { AttributesModule } from './attributes/attributes.module';
 import { AttributeEntity } from './attributes/models/attribute.entity';
 import { AttributeValueEntity } from './attributes/models/attributeValue.entity';
+import { AddressEntity } from './core/entities/address.entity';
+import { MediaEntity } from './core/entities/media.entity';
+import { SettingsEntity } from './core/entities/settings.entity';
 import { ProductsModule } from './products/products.module';
 import { ProductTypesModule } from './product-types/product-types.module';
 import { CategoriesModule } from './categories/categories.module';
+import { CoreModule } from './core/core.module';
 
 @Module({
 	imports: [
@@ -19,7 +23,7 @@ import { CategoriesModule } from './categories/categories.module';
 			username: process.env['DB_USERNAME'] || 'nima',
 			password: 'nima',
 			database: 'nima',
-			entities: [AttributeEntity, AttributeValueEntity],
+			entities: [AttributeEntity, AttributeValueEntity, AddressEntity, MediaEntity, SettingsEntity],
 			logging: 'all',
 			// logging: isDev ? ['error', 'query'] : ['error'],
 			synchronize: true,
@@ -27,8 +31,10 @@ import { CategoriesModule } from './categories/categories.module';
 		ProductsModule,
 		ProductTypesModule,
 		CategoriesModule,
+		CoreModule,
 	],
 	controllers: [AppController],
 	providers: [],
 })
-export class AppModule {}
+export class AppModule {
+}
