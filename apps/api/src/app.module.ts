@@ -11,6 +11,9 @@ import { ProductsModule } from './products/products.module';
 import { ProductTypesModule } from './product-types/product-types.module';
 import { CategoriesModule } from './categories/categories.module';
 import { CoreModule } from './core/core.module';
+import { UserEntity } from './users/entities/user.entity';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
 	imports: [
@@ -23,7 +26,7 @@ import { CoreModule } from './core/core.module';
 			username: process.env['DB_USERNAME'] || 'nima',
 			password: 'nima',
 			database: 'nima',
-			entities: [AttributeEntity, AttributeValueEntity, AddressEntity, MediaEntity, SettingsEntity],
+			entities: [AttributeEntity, AttributeValueEntity, AddressEntity, MediaEntity, SettingsEntity, UserEntity],
 			logging: 'all',
 			// logging: isDev ? ['error', 'query'] : ['error'],
 			synchronize: true,
@@ -32,9 +35,10 @@ import { CoreModule } from './core/core.module';
 		ProductTypesModule,
 		CategoriesModule,
 		CoreModule,
+		UsersModule,
+		AuthModule,
 	],
 	controllers: [AppController],
 	providers: [],
 })
-export class AppModule {
-}
+export class AppModule {}
