@@ -10,13 +10,13 @@
 		"importHelpers": true,
 		"target": "es2015",
 		"module": "esnext",
-		"lib": [ "es2017", "dom" ],
+		"lib": ["es2017", "dom"],
 		"skipLibCheck": true,
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
-			"@nima/interfaces": [ "libs/interfaces/src/index.ts" ],
-			"@nima/sdk": [ "libs/sdk/src/index.ts" ]
+			"@nima/interfaces": ["libs/interfaces/src/index.ts"],
+			"@nima/sdk": ["libs/sdk/src/index.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

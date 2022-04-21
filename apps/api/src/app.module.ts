@@ -4,6 +4,9 @@ import { AppController } from './app/app.controller';
 import { AttributesModule } from './attributes/attributes.module';
 import { AttributeEntity } from './attributes/models/attribute.entity';
 import { AttributeValueEntity } from './attributes/models/attributeValue.entity';
+import { ProductsModule } from './products/products.module';
+import { ProductTypesModule } from './product-types/product-types.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
 	imports: [
@@ -21,9 +24,11 @@ import { AttributeValueEntity } from './attributes/models/attributeValue.entity'
 			// logging: isDev ? ['error', 'query'] : ['error'],
 			synchronize: true,
 		}),
+		ProductsModule,
+		ProductTypesModule,
+		CategoriesModule,
 	],
 	controllers: [AppController],
 	providers: [],
 })
-export class AppModule {
-}
+export class AppModule {}

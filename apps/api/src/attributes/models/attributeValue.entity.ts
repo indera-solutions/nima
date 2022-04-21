@@ -1,3 +1,4 @@
+import { Translatable } from '@nima/interfaces';
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { AttributeEntity } from './attribute.entity';
 
@@ -7,7 +8,7 @@ export class AttributeValueEntity extends BaseEntity {
 	id: number;
 
 	@Column({ type: 'jsonb', default: {} })
-	name: Record<string, string>;
+	name: Translatable;
 
 	@Column()
 	slug: string;

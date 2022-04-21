@@ -1,3 +1,4 @@
+import { Metadata, Translatable } from '@nima/interfaces';
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { AttributeValueEntity } from './attributeValue.entity';
 
@@ -53,16 +54,16 @@ export class AttributeEntity extends BaseEntity {
 	id: number;
 
 	@Column({ type: 'jsonb', default: {} })
-	name: Record<string, string>;
+	name: Translatable;
 
 	@Column()
 	slug: string;
 
 	@Column({ type: 'jsonb', default: {} })
-	metadata: Record<string, string>;
+	metadata: Metadata;
 
 	@Column({ type: 'jsonb', default: {} })
-	privateMetadata: Record<string, string>;
+	privateMetadata: Metadata;
 
 	@Column({ default: true })
 	availableInGrid: boolean;
