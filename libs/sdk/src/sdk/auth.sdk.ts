@@ -6,4 +6,8 @@ export class AuthSdk {
 		const res = await axios.post('http://localhost:3333/api/v1/auth/login', data);
 		return res.data;
 	}
+
+	async getProfile() {
+		return axios.get('http://localhost:3333/auth/profile');
+	}
 }
