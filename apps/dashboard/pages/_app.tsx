@@ -1,21 +1,23 @@
-import { SessionProvider } from 'next-auth/react';
+import { registerAxiosAuthHeaderInterceptor, SessionProvider } from '@nima/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import './styles.css';
+
+registerAxiosAuthHeaderInterceptor();
+
 
 function CustomApp({ Component, pageProps }: AppProps) {
 
 	return (
 		<>
-			<SessionProvider session={ pageProps.session }>
-
-				<Head>
-					<title>Welcome to dashboard!</title>
-				</Head>
-				<main className="app">
+			<Head>
+				<title>Welcome to dashboard!</title>
+			</Head>
+			<main className="app">
+				<SessionProvider>
 					<Component { ...pageProps } />
-				</main>
-			</SessionProvider>
+				</SessionProvider>
+			</main>
 		</>
 	);
 }

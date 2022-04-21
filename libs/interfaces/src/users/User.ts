@@ -22,6 +22,8 @@ export interface User {
 }
 
 export interface UserSession extends Pick<User, 'id' | 'email' | 'isActive' | 'isAdmin' | 'isStaff' | 'lastLogin' | 'metadata'> {
+	iat?: number;
+	exp?: number;
 }
 
 export interface RegisterUserDto extends Pick<User, 'email' | 'firstName' | 'lastName'> {

@@ -1,7 +1,11 @@
 {
-	"root": "libs/interfaces",
-	"sourceRoot": "libs/interfaces/src",
+	"root": "libs/react",
+	"sourceRoot": "libs/react/src",
 	"projectType": "library",
+	"tags": [
+		"type:ui",
+		"score:shared"
+	],
 	"targets": {
 		"lint": {
 			"executor": "@nrwl/linter:eslint",
@@ -10,23 +14,19 @@
 			],
 			"options": {
 				"lintFilePatterns": [
-					"libs/interfaces/**/*.ts"
+					"libs/react/**/*.{ts,tsx,js,jsx}"
 				]
 			}
 		},
 		"test": {
 			"executor": "@nrwl/jest:jest",
 			"outputs": [
-				"coverage/libs/interfaces"
+				"coverage/libs/react"
 			],
 			"options": {
-				"jestConfig": "libs/interfaces/jest.config.js",
+				"jestConfig": "libs/react/jest.config.js",
 				"passWithNoTests": true
 			}
 		}
-	},
-	"tags": [
-		"scope:shared",
-		"type:shared"
-	]
+	}
 }
