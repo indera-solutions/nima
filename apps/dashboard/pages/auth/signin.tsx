@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { login } from '../../lib/auth';
 
 interface IndexProps {
 	csrfToken;
