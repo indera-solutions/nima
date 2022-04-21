@@ -14,7 +14,7 @@ async function bootstrap() {
 	const globalPrefix = 'api';
 	app.setGlobalPrefix(globalPrefix);
 
-	app.enableVersioning({ type: VersioningType.URI, defaultVersion: '2' });
+	app.enableVersioning({ type: VersioningType.URI, defaultVersion: '1' });
 
 	const port = process.env.PORT || 3333;
 
