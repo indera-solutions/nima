@@ -13,3 +13,5 @@ import { SettingsEntity } from './entities/settings.entity';
 })
 export class CoreModule {
 }
+
+export const CoreModuleEntities = [AddressEntity, MediaEntity, SettingsEntity]
