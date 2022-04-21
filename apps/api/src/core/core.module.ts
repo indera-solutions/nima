@@ -15,3 +15,5 @@ import { SettingsService } from './settings/settings.service';
 })
 export class CoreModule {
 }
+
+export const CoreModuleEntities = [AddressEntity, MediaEntity, SettingsEntity]

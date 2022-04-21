@@ -11,4 +11,12 @@ export class AttributeRepository extends Repository<AttributeEntity> {
 			relations: ['values'],
 		});
 	}
+
+	findById(id: number): Promise<AttributeEntity> {
+		return this.findOne(id);
+	}
+
+	async deleteById(id: number) {
+		return this.delete(id);
+	}
 }

@@ -16,7 +16,7 @@ export interface Attribute {
 	unit?: Unit;
 }
 
-export interface CreateAttributeDto extends Omit<Attribute, 'id'> {
+export interface ICreateAttributeDto extends Omit<Attribute, 'id'> {
 }
 
 
