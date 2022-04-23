@@ -1,9 +1,22 @@
 import { registerAxiosAuthHeaderInterceptor, SessionProvider } from '@nima/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { AdminLayout } from '../components';
+import { adminRoutes } from '../lib/sidemenuItem';
 import './styles.css';
 
 registerAxiosAuthHeaderInterceptor();
+
+
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			staleTime: 30000,
+			refetchOnWindowFocus: false,
+		},
+	},
+});
 
 
 function CustomApp({ Component, pageProps }: AppProps) {
@@ -14,9 +27,13 @@ function CustomApp({ Component, pageProps }: AppProps) {
 				<title>Welcome to dashboard!</title>
 			</Head>
 			<main className="app">
-				<SessionProvider>
-					<Component { ...pageProps } />
-				</SessionProvider>
+				<QueryClientProvider client={ queryClient }>
+					<SessionProvider>
+						<AdminLayout links={ adminRoutes }>
+							<Component { ...pageProps } />
+						</AdminLayout>
+					</SessionProvider>
+				</QueryClientProvider>
 			</main>
 		</>
 	);
