@@ -51,12 +51,11 @@ export function SessionProvider(props: SessionProviderProps): React.ReactElement
 
 	function refreshSession() {
 		if ( !window ) return;
-		const access_token = sessionStorage.getItem(ACCESS_TOKEN);
+		const access_token = localStorage.getItem(ACCESS_TOKEN);
 		if ( access_token ) {
 			const temp = jwtDecode<UserSession>(access_token);
 
 			if ( !temp.exp || (temp.exp * 1000) < (new Date().getTime()) ) {
-				console.log(temp.exp, (new Date().getTime()));
 				logout();
 				return;
 			}
@@ -70,12 +69,12 @@ export function SessionProvider(props: SessionProviderProps): React.ReactElement
 	async function login(email: string, password: string) {
 		setState('loading');
 		const res = await authSdk.login({ email, password });
-		sessionStorage.setItem(ACCESS_TOKEN, res.access_token);
+		localStorage.setItem(ACCESS_TOKEN, res.access_token);
 		refreshSession();
 	}
 
 	async function logout() {
-		sessionStorage.removeItem(ACCESS_TOKEN);
+		localStorage.removeItem(ACCESS_TOKEN);
 		refreshSession();
 	}
 

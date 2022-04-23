@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { ILoginUserDto, RegisterUserDto, UserSession } from '@nima/interfaces';
+import { RegisterUserDto } from '@nima/interfaces';
 import { UserRepository } from '../users/entities/user.repository';
 import { UsersService } from '../users/users.service';
 
@@ -14,7 +14,6 @@ export class AuthService {
 	}
 
 	async validateUser(username: string, pass: string): Promise<any> {
-		console.log('HELLO FRIENDS');
 		const user = await this.userRepository.findByEmail(username);
 		if ( user && user.password === pass ) {
 			return {
@@ -31,7 +30,6 @@ export class AuthService {
 	}
 
 	async login(user: any) {
-		console.log(user);
 		return {
 			access_token: this.jwtService.sign(user),
 		};
