@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { AdminAttributeDto, CreateAttributeDto, PublicAttributeDto } from './dto/attribute.dto';
+import { AttributeDto, CreateAttributeDto } from './dto/attribute.dto';
 import { AttributeEntity } from './entities/attribute.entity';
 import { AttributeRepository } from './entities/attribute.repository';
 
@@ -12,34 +12,34 @@ export class AttributesService {
 		return this.attributeEntityRepository.findBySlug(slug);
 	}
 
-	save(params: { dto: CreateAttributeDto }): Promise<AdminAttributeDto>
-	save(params: { dto: CreateAttributeDto, id: number }): Promise<AdminAttributeDto>
-	async save(params: { dto: CreateAttributeDto, id?: number }): Promise<AdminAttributeDto> {
+	save(params: { dto: CreateAttributeDto }): Promise<AttributeDto>
+	save(params: { dto: CreateAttributeDto, id: number }): Promise<AttributeDto>
+	async save(params: { dto: CreateAttributeDto, id?: number }): Promise<AttributeDto> {
 		const { dto, id } = params;
 		const attribute = await this.attributeEntityRepository.save({ ...dto, id: id });
 		return AttributesService.prepareAdminAttribute(attribute);
 	}
 
-	async getById(params: { id: number }): Promise<PublicAttributeDto> {
+	async getById(params: { id: number }): Promise<AttributeDto> {
 		const { id } = params;
 		const attribute = await this.attributeEntityRepository.findById(id);
 		if ( !attribute ) throw new NotFoundException('ATTRIBUTE_NOT_FOUND');
 		return AttributesService.preparePublicAttribute(attribute);
 	}
 
-	async findAll(): Promise<PublicAttributeDto[]> {
+	async findAll(): Promise<AttributeDto[]> {
 		const attributes = await this.attributeEntityRepository.find();
 		return attributes.map(attribute => AttributesService.preparePublicAttribute(attribute));
 	}
 
-	async deleteById(params: { id: number }): Promise<PublicAttributeDto> {
+	async deleteById(params: { id: number }): Promise<AttributeDto> {
 		const { id } = params;
 		const attr = await this.getById({ id });
 		await this.attributeEntityRepository.deleteById(id);
 		return attr;
 	}
 
-	private static preparePublicAttribute(attribute: AttributeEntity): PublicAttributeDto {
+	private static preparePublicAttribute(attribute: AttributeEntity): AttributeDto {
 		return {
 			id: attribute.id,
 			filterableInDashboard: attribute.filterableInDashboard,
@@ -51,12 +51,13 @@ export class AttributesService {
 			availableInGrid: attribute.availableInGrid,
 			name: attribute.name,
 			metadata: attribute.metadata,
+			privateMetadata: {},
 			slug: attribute.slug,
 			unit: attribute.unit,
 		};
 	}
 
-	private static prepareAdminAttribute(attribute: AttributeEntity): AdminAttributeDto {
+	private static prepareAdminAttribute(attribute: AttributeEntity): AttributeDto {
 		return {
 			id: attribute.id,
 			filterableInDashboard: attribute.filterableInDashboard,

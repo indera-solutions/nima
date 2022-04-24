@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AttributesService } from './attributes.service';
-import { AdminAttributeDto, CreateAttributeDto, PublicAttributeDto } from './dto/attribute.dto';
+import { AttributeDto, CreateAttributeDto } from './dto/attribute.dto';
 
 @Controller('attributes')
 @ApiTags('Attributes')
@@ -10,15 +10,15 @@ export class AttributesController {
 	}
 
 	@Get()
-	@ApiResponse({ type: [PublicAttributeDto] })
-	findAll(): Promise<PublicAttributeDto[]> {
+	@ApiResponse({ type: [AttributeDto] })
+	findAll(): Promise<AttributeDto[]> {
 		return this.service.findAll();
 	}
 
 	@Post()
-	@ApiResponse({ type: AdminAttributeDto })
+	@ApiResponse({ type: AttributeDto })
 	@ApiBody({ type: CreateAttributeDto })
-	save(@Body() createAttributeDto: CreateAttributeDto): Promise<AdminAttributeDto> {
+	save(@Body() createAttributeDto: CreateAttributeDto): Promise<AttributeDto> {
 		return this.service.save({ dto: createAttributeDto });
 	}
 }
