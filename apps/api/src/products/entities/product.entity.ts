@@ -8,12 +8,13 @@ import {
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
+import { Product } from '@nima/interfaces';
 import { CategoryEntity } from '../../categories/entities/category.entity';
-import { ProductTypeEntity } from '../../product-types/entities/product-type.entity';
+import { ProductTypeEntity } from '../../product-types/entities';
 import { ProductVariantEntity } from './productVariant.entity';
 
 @Entity()
-export class ProductEntity {
+export class ProductEntity implements Product{
 	@PrimaryGeneratedColumn()
 	id: number;
 
@@ -29,7 +30,7 @@ export class ProductEntity {
 	@ManyToOne(() => ProductTypeEntity, /*object => object.products*/)
 	productType: ProductTypeEntity;
 
-	@ManyToOne(() => ProductTypeEntity, /*object => object.products*/)
+	@ManyToOne(() => CategoryEntity, /*object => object.products*/)
 	category: CategoryEntity;
 
 	@Column({ type: String })
