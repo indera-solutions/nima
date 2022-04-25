@@ -1,2 +1,2 @@
 export * from './ProductType';
-export * from './ProductTypeAttributes';
+export * from './ProductTypeAttribute';

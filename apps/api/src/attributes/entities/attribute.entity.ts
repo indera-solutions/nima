@@ -3,7 +3,7 @@ import { Attribute, InputType, Metadata, Translatable, Unit } from '@nima/interf
 import { IsBoolean, IsEnum, IsInt, IsNotEmptyObject, IsObject, IsOptional, IsString } from 'class-validator';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
-import { AttributeValueEntity } from './attributeValue.entity';
+import { AttributeValueEntity } from './attribute-value.entity';
 
 @Entity('attribute_attributes')
 export class AttributeEntity implements Attribute {

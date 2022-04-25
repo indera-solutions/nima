@@ -4,7 +4,7 @@ import { AttributesController } from './attributes.controller';
 import { AttributesService } from './attributes.service';
 import { AttributeEntity } from './entities/attribute.entity';
 import { AttributeRepository } from './entities/attribute.repository';
-import { AttributeValueEntity } from './entities/attributeValue.entity';
+import { AttributeValueEntity } from './entities/attribute-value.entity';
 
 @Module({
 	imports: [TypeOrmModule.forFeature([AttributeRepository, AttributeValueEntity])],

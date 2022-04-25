@@ -1,2 +1,2 @@
 export * from './Attribute';
-export * from './AttributeValues';
+export * from './AttributeValue';
