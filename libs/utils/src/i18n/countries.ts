@@ -1,4 +1,4 @@
-import { LoomText } from '@loom/core-shared';
+import { Translatable } from '@nima/interfaces';
 
 export interface ICountry {
 	name: string,
@@ -12,7 +12,7 @@ export interface ICountry {
 	regionCode: string,
 	subRegionCode: string,
 	intermediateRegionCode: string,
-	locale?: LoomText
+	locale?: Translatable
 }
 
 export const countries = {

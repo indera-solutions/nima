@@ -1,9 +1,9 @@
-import { LoomText } from '@loom/core-shared';
+import { Translatable } from '@nima/interfaces';
 
 export interface IState {
 	name: string;
 	stateCode: string;
-	locale?: LoomText;
+	locale?: Translatable;
 }
 
 export const states: { [countryCode: string]: { [stateCode: string]: IState } } = {

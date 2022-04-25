@@ -11,7 +11,7 @@ export class SettingsService {
 
 	private static checkSettingsIntegrity(settings: SettingsEntity[]): void {
 		if ( settings.length === 0 ) {
-			throw new BadRequestException('SETTINGS_NOT_INITIALIZED', 'Settings object is not initialized. Call create settings first');
+			throw new BadRequestException('SETTINGS_NOT_INITIALIZED', 'Settings object is not initialized. Call update settings first');
 		}
 		if ( settings.length > 1 ) {
 			throw new ConflictException('MULTIPLE_SETTINGS', 'More that one settings instances detected. Please delete the invalid ones.');

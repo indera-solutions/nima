@@ -1,4 +1,5 @@
-import { countries, ICountry, IState, states } from '@loom/utils';
+import { countries, ICountry } from './countries';
+import { IState, states } from './states';
 
 export function getCountriesArray(): ICountry[] {
 	return Object.values(countries);
