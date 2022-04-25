@@ -23,6 +23,9 @@
 			],
 			"@nima/sdk": [
 				"libs/sdk/src/index.ts"
+			],
+			"@nima/utils": [
+				"libs/utils/src/index.ts"
 			]
 		}
 	},

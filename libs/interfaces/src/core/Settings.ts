@@ -23,7 +23,3 @@ export interface Settings {
 	senderEmail: string;
 	senderName: string;
 }
-
-export interface CreateOptionDto extends Omit<Settings, 'id'> {
-	id?: number;
-}

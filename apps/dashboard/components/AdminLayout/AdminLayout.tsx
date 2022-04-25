@@ -1,6 +1,9 @@
 import { useSession } from '@nima/react';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 import { useQueryClient } from 'react-query';
+import { useSettings } from '../../lib/reactQuery/settings.queries';
+import { NIMA_ROUTES } from '../../lib/routes';
 import { LoginForm } from '../authentication';
 import styles from './AdminLayout.module.scss';
 import { NavigationItem } from './NavigationMenu/NavigationItem';
@@ -14,7 +17,16 @@ interface LayoutProps {
 export function AdminLayout(props: LayoutProps) {
 
 	const { session, state } = useSession();
+	const router = useRouter();
+	const { data: settings, isSuccess: isSettingsSuccess } = useSettings();
 
+
+	useEffect(() => {
+		// force redirect to settings if not initialized
+		if ( isSettingsSuccess && !settings && router.route !== NIMA_ROUTES.settings.index ) {
+			router.replace(NIMA_ROUTES.settings.index);
+		}
+	}, [isSettingsSuccess, settings, router.route]);
 
 	const queryClient = useQueryClient();
 
