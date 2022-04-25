@@ -35,13 +35,6 @@ export class SettingsService {
 		};
 	}
 
-	async createSettings(createSettingsDto: SettingsDto): Promise<SettingsDto> {
-		const existingSettings = await this.settingsRepository.find();
-		if ( existingSettings.length > 0 ) throw new ConflictException('SETTINGS_INITIALIZED', 'Settings already initialized. Use update instead');
-		const res = await this.settingsRepository.save(createSettingsDto);
-		return SettingsService.prepareSettings(res);
-	}
-
 	async getSettings(): Promise<SettingsDto> {
 		const existingSettings = await this.settingsRepository.find();
 		SettingsService.checkSettingsIntegrity(existingSettings);
@@ -50,11 +43,16 @@ export class SettingsService {
 
 	async updateSettings(createSettingsDto: SettingsDto): Promise<SettingsDto> {
 		const existingSettings = await this.settingsRepository.find();
-		SettingsService.checkSettingsIntegrity(existingSettings);
-		const res = await this.settingsRepository.save({
-			...createSettingsDto,
-			id: existingSettings[0].id,
-		});
-		return SettingsService.prepareSettings(res);
+		if ( existingSettings.length === 0 ) {
+			const res = await this.settingsRepository.save(createSettingsDto);
+			return SettingsService.prepareSettings(res);
+		} else {
+			SettingsService.checkSettingsIntegrity(existingSettings);
+			const res = await this.settingsRepository.save({
+				...createSettingsDto,
+				id: existingSettings[0].id,
+			});
+			return SettingsService.prepareSettings(res);
+		}
 	}
 }
