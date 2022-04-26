@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Attribute, InputType, Metadata, Translatable, Unit } from '@nima/interfaces';
-import { IsBoolean, IsEnum, IsInt, IsNotEmptyObject, IsObject, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsInt, IsObject, IsOptional, IsString } from 'class-validator';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { AttributeValueEntity } from './attribute-value.entity';
@@ -14,11 +14,6 @@ export class AttributeEntity implements Attribute {
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: TranslatableDto, example: { en: 'Attribute Name' } })
-	// @IsObject()
-	@IsNotEmptyObject({}, { message: 'Attributes must be named', context: {
-			errorCode: 1003,
-			developerNote: 'Also you are fat',
-		} })
 	name: Translatable;
 
 	@Column()
