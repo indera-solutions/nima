@@ -31,7 +31,7 @@ export class AttributeValueEntity implements AttributeValue {
 	@ApiProperty({ type: String, required: false })
 	fileUrl?: string;
 
-	@Column({ nullable: true })
+	@Column({ type: 'jsonb', nullable: true })
 	@ApiProperty({ type: TranslatableDto, example: { en: 'Green' }, required: false })
 	richText?: Translatable;
 

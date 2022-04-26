@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Metadata, Order, OrderEvent, OrderEventsEnum, User } from '@nima/interfaces';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserDto } from '../../users/dto/user.dto';
+import { UserEntity } from '../../users/entities/user.entity';
 import { OrderDto } from '../dto/order.dto';
 import { OrderEntity } from './order.entity';
 
@@ -15,7 +16,7 @@ export class OrderEventEntity implements OrderEvent {
 	@ApiProperty({ type: String, example: '' })
 	date: string;
 
-	@Column({ enum: OrderEventsEnum })
+	@Column({ type: 'enum', enum: OrderEventsEnum })
 	@ApiProperty({ enum: OrderEventsEnum })
 	eventType: OrderEventsEnum;
 
@@ -23,7 +24,7 @@ export class OrderEventEntity implements OrderEvent {
 	@ApiProperty({ type: OrderDto })
 	order: Order;
 
-	@ManyToOne(() => UserDto)
+	@ManyToOne(() => UserEntity)
 	@ApiProperty({ type: UserDto })
 	user: User;
 

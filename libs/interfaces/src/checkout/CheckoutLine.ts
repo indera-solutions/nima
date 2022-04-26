@@ -1,5 +1,5 @@
 import { ProductVariant } from '@nima/interfaces';
-import { Checkout } from './checkout';
+import { Checkout } from './Checkout';
 
 export interface CheckoutLine {
 	id: number;

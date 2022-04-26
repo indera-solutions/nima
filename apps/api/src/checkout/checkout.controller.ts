@@ -1,8 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CheckoutService } from './checkout.service';
 import { CreateCheckoutDto, UpdateCheckoutDto } from './dto/checkout.dto';
 
 @Controller('checkout')
+@ApiTags('Checkout')
 export class CheckoutController {
 	constructor(private readonly checkoutService: CheckoutService) {
 	}

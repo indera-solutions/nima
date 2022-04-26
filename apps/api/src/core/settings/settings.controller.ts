@@ -4,7 +4,7 @@ import { SettingsDto } from '../dto/settings.dto';
 import { SettingsService } from './settings.service';
 
 @Controller('core/settings')
-@ApiTags('core')
+@ApiTags('Core')
 export class SettingsController {
 	constructor(private readonly settingsService: SettingsService) {
 	}

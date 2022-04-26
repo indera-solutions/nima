@@ -6,7 +6,7 @@ import { ProductVariantEntity } from '../../products/entities/product-variant.en
 import { CheckoutDto } from '../dto/checkout.dto';
 import { CheckoutEntity } from './checkout.entity';
 
-@Entity('checkout_checkout')
+@Entity('checkout_checkout_lines')
 export class CheckoutLineEntity implements CheckoutLine {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
