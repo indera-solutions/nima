@@ -16,3 +16,8 @@ export class LoginUserDto extends PickType(UserDto, ['email']) {
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
 }
+
+export class SuccessLoginResponse {
+	@ApiProperty({ type: String })
+	access_token: string;
+}

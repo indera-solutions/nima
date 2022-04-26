@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterUserDto } from '@nima/interfaces';
+import { SuccessLoginResponse } from '../users/dto/user.dto';
 import { UserRepository } from '../users/entities/user.repository';
 import { UsersService } from '../users/users.service';
 
@@ -29,7 +30,7 @@ export class AuthService {
 		return null;
 	}
 
-	async login(user: any) {
+	async login(user: any): Promise<SuccessLoginResponse> {
 		return {
 			access_token: this.jwtService.sign(user),
 		};

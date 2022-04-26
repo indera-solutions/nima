@@ -1,12 +1,10 @@
-import { registerAxiosAuthHeaderInterceptor, SessionProvider } from '@nima/react';
+import { SessionProvider } from '@nima/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { AdminLayout } from '../components';
 import { adminRoutes } from '../lib/sidemenuItem';
 import './styles.css';
-
-registerAxiosAuthHeaderInterceptor();
 
 
 const queryClient = new QueryClient({

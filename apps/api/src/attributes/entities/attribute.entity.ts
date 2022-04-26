@@ -62,12 +62,12 @@ export class AttributeEntity implements Attribute {
 	storefrontSearchPosition: number;
 
 	@Column({ type: 'enum', enum: InputType })
-	@ApiProperty({ enum: InputType, example: InputType.DROPDOWN })
+	@ApiProperty({ enum: InputType, example: InputType.DROPDOWN, enumName: 'InputType' })
 	@IsEnum(InputType)
 	inputType: InputType;
 
 	@Column({ type: 'enum', enum: Unit })
-	@ApiProperty({ enum: Unit, required: false })
+	@ApiProperty({ enum: Unit, required: false, enumName: 'Unit' })
 	@IsEnum(Unit)
 	@IsOptional()
 	unit?: Unit;

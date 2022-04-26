@@ -5,7 +5,8 @@
 	"scripts": {
 		"start": "nx serve",
 		"build": "nx build",
-		"test": "nx test"
+		"test": "nx test",
+		"ts-axios-sdk": "openapi-generator-cli generate -i http://localhost:3333/docs-json -g typescript-axios -o ./libs/sdk/src --additional-properties=stringEnums=true,enumPropertyNaming=original,useSingleRequestParameter=true"
 	},
 	"private": true,
 	"dependencies": {
@@ -17,6 +18,7 @@
 		"@nestjs/swagger": "^5.2.1",
 		"@nestjs/typeorm": "^8.0.3",
 		"@nrwl/next": "13.10.3",
+		"@openapitools/openapi-generator-cli": "^2.4.26",
 		"autoprefixer": "^10.4.4",
 		"axios": "^0.26.1",
 		"class-transformer": "^0.5.1",

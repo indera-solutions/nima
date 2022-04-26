@@ -1,11 +1,11 @@
 import { UserSession } from '@nima/interfaces';
-import { AuthSdk } from '@nima/sdk';
+import { AuthenticationApi } from '@nima/sdk';
 import jwtDecode from 'jwt-decode';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { defaultConfiguration } from '../reactQueryCommons';
 
 
-const authSdk = new AuthSdk();
-
+const authSdk = new AuthenticationApi(defaultConfiguration);
 
 type SessionState = 'authenticated' | 'unauthenticated' | 'loading';
 
@@ -51,7 +51,7 @@ export function SessionProvider(props: SessionProviderProps): React.ReactElement
 
 	function refreshSession() {
 		if ( !window ) return;
-		const access_token = localStorage.getItem(ACCESS_TOKEN);
+		const access_token = getAccessToken();
 		if ( access_token ) {
 			const temp = jwtDecode<UserSession>(access_token);
 
@@ -68,13 +68,19 @@ export function SessionProvider(props: SessionProviderProps): React.ReactElement
 
 	async function login(email: string, password: string) {
 		setState('loading');
-		const res = await authSdk.login({ email, password });
-		localStorage.setItem(ACCESS_TOKEN, res.access_token);
-		refreshSession();
+		try {
+			const res = await authSdk.authLogin({ loginUserDto: { email, password } });
+			setAccessToken(res.data.access_token);
+			refreshSession();
+		} catch ( e ) {
+			console.log(e);
+			alert('Wrong Credentials');
+			setState('unauthenticated');
+		}
 	}
 
 	async function logout() {
-		localStorage.removeItem(ACCESS_TOKEN);
+		deleteAccessToken();
 		refreshSession();
 	}
 
@@ -111,4 +117,14 @@ export function useAuth(): Pick<SessionContextStructure, 'refreshSession' | 'log
 	};
 }
 
+export function getAccessToken(): string | null {
+	return localStorage.getItem(ACCESS_TOKEN);
+}
 
+function deleteAccessToken(): void {
+	localStorage.removeItem(ACCESS_TOKEN);
+}
+
+function setAccessToken(value: string): void {
+	localStorage.setItem(ACCESS_TOKEN, value);
+}

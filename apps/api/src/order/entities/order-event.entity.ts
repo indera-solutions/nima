@@ -17,7 +17,7 @@ export class OrderEventEntity implements OrderEvent {
 	date: string;
 
 	@Column({ type: 'enum', enum: OrderEventsEnum })
-	@ApiProperty({ enum: OrderEventsEnum })
+	@ApiProperty({ enum: OrderEventsEnum, enumName: 'OrderEventsEnum' })
 	eventType: OrderEventsEnum;
 
 	@ManyToOne(() => OrderEntity)

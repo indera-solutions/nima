@@ -1,16 +1,16 @@
-import { Settings } from '@nima/interfaces';
-import { useSession } from '@nima/react';
-import { SettingsSdk } from '@nima/sdk';
+import { defaultConfiguration, useSession } from '@nima/react';
+import { CoreApi, SettingsDto } from '@nima/sdk';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { NimaQueryCacheKeys } from './queryKeys';
 
-const settingsSDK = new SettingsSdk();
+const coreApi = new CoreApi(defaultConfiguration);
 
 export function useSettings() {
 	const { state } = useSession();
-	return useQuery(NimaQueryCacheKeys.settings, async () => {
+	return useQuery<SettingsDto>(NimaQueryCacheKeys.settings, async () => {
 		try {
-			return await settingsSDK.getSettings();
+			const res = await coreApi.settingsGetSettings();
+			return res.data;
 		} catch ( e: any ) {
 			if ( e.response.data.message === 'SETTINGS_NOT_INITIALIZED' ) {
 				return undefined;
@@ -25,9 +25,12 @@ export function useSettings() {
 
 export function useUpdateSettings() {
 	const client = useQueryClient();
-	return useMutation<Settings, never, { settings: Settings }>(
+	return useMutation<SettingsDto, never, { settings: SettingsDto }>(
 		async ({ settings }) => {
-			return settingsSDK.updateSettings(settings);
+			const res = await coreApi.settingsUpdateSettings({
+				settingsDto: settings,
+			});
+			return res.data;
 		},
 		{
 			onSuccess: () => {

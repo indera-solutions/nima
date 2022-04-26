@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { AttributeValue, Translatable } from '@nima/interfaces';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
-import { AttributeDto } from '../dto/attribute.dto';
 import { AttributeEntity } from './attribute.entity';
 
 @Entity('attribute_attribute_values')
@@ -44,6 +43,5 @@ export class AttributeValueEntity implements AttributeValue {
 	dateTime?: string;
 
 	@ManyToOne(() => AttributeEntity, (attribute) => attribute.values)
-	@ApiProperty({ type: AttributeDto })
 	attribute: AttributeEntity;
 }
