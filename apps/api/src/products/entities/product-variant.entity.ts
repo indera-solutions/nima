@@ -5,7 +5,7 @@ import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { ProductDto } from '../dto/product.dto';
 import { ProductEntity } from './product.entity';
 
-@Entity()
+@Entity('products_product_variants')
 export class ProductVariantEntity implements ProductVariant {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })

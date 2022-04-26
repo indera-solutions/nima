@@ -6,7 +6,7 @@ import { AttributeEntity } from '../../attributes/entities/attribute.entity';
 import { ProductTypeDto } from '../dto/product-type.dto';
 import { ProductTypeEntity } from './product-type.entity';
 
-@Entity()
+@Entity('product_type_product_type_attributes')
 export class ProductTypeAttributeEntity implements ProductTypeAttribute {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })

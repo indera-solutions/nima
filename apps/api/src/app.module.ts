@@ -5,14 +5,26 @@ import { AppController } from './app/app.controller';
 import { AttributesModule, AttributesModuleEntities } from './attributes/attributes.module';
 import { AdminGuard, LoggedInGuard, StaffGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
-import { CategoriesModule } from './categories/categories.module';
+import { CategoriesModule, CategoriesModuleEntities } from './categories/categories.module';
+import { CheckoutModule, CheckoutModuleEntities } from './checkout/checkout.module';
 import { CoreModule, CoreModuleEntities } from './core/core.module';
+import { DiscountsModule } from './discounts/discounts.module';
+import { OrderModule, OrderModuleEntities } from './order/order.module';
 import { ProductTypesModule, ProductTypesModuleEntities } from './product-types/product-types.module';
-import { ProductsModule } from './products/products.module';
+import { ProductsModule, ProductsModuleEntities } from './products/products.module';
 import { UserEntity } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 
-const ALL_ENTITIES = [...AttributesModuleEntities, UserEntity, ...CoreModuleEntities, ...ProductTypesModuleEntities];
+const ALL_ENTITIES = [
+	...AttributesModuleEntities,
+	UserEntity,
+	...CoreModuleEntities,
+	...ProductTypesModuleEntities,
+	...CategoriesModuleEntities,
+	...ProductsModuleEntities,
+	...OrderModuleEntities,
+	...CheckoutModuleEntities,
+];
 
 @Module({
 	imports: [
@@ -36,6 +48,9 @@ const ALL_ENTITIES = [...AttributesModuleEntities, UserEntity, ...CoreModuleEnti
 		CoreModule,
 		UsersModule,
 		AuthModule,
+		OrderModule,
+		CheckoutModule,
+		DiscountsModule,
 	],
 	controllers: [AppController],
 	providers: [

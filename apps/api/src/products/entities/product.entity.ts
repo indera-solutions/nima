@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Metadata, Translatable } from '@nima/interfaces';
+import { Metadata, Product, Translatable } from '@nima/interfaces';
 import {
 	Column,
 	CreateDateColumn,
@@ -9,7 +9,6 @@ import {
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
-import { Product } from '@nima/interfaces';
 import { CategoryDto } from '../../categories/dto/category.dto';
 import { CategoryEntity } from '../../categories/entities/category.entity';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
@@ -17,7 +16,7 @@ import { ProductTypeDto } from '../../product-types/dto/product-type.dto';
 import { ProductTypeEntity } from '../../product-types/entities';
 import { ProductVariantEntity } from './product-variant.entity';
 
-@Entity()
+@Entity('products_products')
 export class ProductEntity implements Product {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })

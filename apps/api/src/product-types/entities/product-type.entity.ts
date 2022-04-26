@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Metadata, ProductType } from '@nima/interfaces';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity('product_type_product_types')
 export class ProductTypeEntity implements ProductType {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ example: 1 })

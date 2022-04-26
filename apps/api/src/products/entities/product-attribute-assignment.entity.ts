@@ -10,7 +10,7 @@ import {
 	ProductTypeVariantAttribute,
 	ProductVariant,
 } from '@nima/interfaces';
-import { Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { AttributeValueDto } from '../../attributes/dto/attribute-value.dto';
 import { AttributeValueEntity } from '../../attributes/entities/attribute-value.entity';
 import { ProductTypeAttributeDto } from '../../product-types/dto/product-type-attribute.dto';
@@ -24,6 +24,7 @@ import { ProductDto } from '../dto/product.dto';
 import { ProductVariantEntity } from './product-variant.entity';
 import { ProductEntity } from './product.entity';
 
+@Entity('products_assigned_product_attributes')
 export class AssignedProductAttributeEntity implements AssignedProductAttribute {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
@@ -38,6 +39,7 @@ export class AssignedProductAttributeEntity implements AssignedProductAttribute 
 	productTypeAttribute: ProductTypeAttribute;
 }
 
+@Entity('products_assigned_product_attribute_values')
 export class AssignedProductAttributeValueEntity implements AssignedProductAttributeValue {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
@@ -56,6 +58,7 @@ export class AssignedProductAttributeValueEntity implements AssignedProductAttri
 	value: AttributeValue;
 }
 
+@Entity('products_assigned_product_variant_attributes')
 export class AssignedProductVariantAttributeEntity implements AssignedProductVariantAttribute {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
@@ -70,6 +73,7 @@ export class AssignedProductVariantAttributeEntity implements AssignedProductVar
 	productTypeVariantAttribute: ProductTypeVariantAttribute;
 }
 
+@Entity('products_assigned_product_variant_attribute_values')
 export class AssignedProductVariantAttributeValueEntity implements AssignedProductVariantAttributeValue {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
