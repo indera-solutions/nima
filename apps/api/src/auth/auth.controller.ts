@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
 import { RegisterUserDto } from '@nima/interfaces';
-import { LoginUserDto } from '../users/dto/create-user.dto';
+import { LoginUserDto } from '../users/dto/user.dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { LocalAuthGuard } from './local-auth.guard';

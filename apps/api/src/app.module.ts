@@ -1,19 +1,30 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app/app.controller';
-import { AttributesModule } from './attributes/attributes.module';
-import { AttributeEntity } from './attributes/models/attribute.entity';
-import { AttributeValueEntity } from './attributes/models/attributeValue.entity';
-import { AddressEntity } from './core/entities/address.entity';
-import { MediaEntity } from './core/entities/media.entity';
-import { SettingsEntity } from './core/entities/settings.entity';
-import { ProductsModule } from './products/products.module';
-import { ProductTypesModule } from './product-types/product-types.module';
-import { CategoriesModule } from './categories/categories.module';
-import { CoreModule } from './core/core.module';
+import { AttributesModule, AttributesModuleEntities } from './attributes/attributes.module';
+import { AdminGuard, LoggedInGuard, StaffGuard } from './auth/auth.guard';
+import { AuthModule } from './auth/auth.module';
+import { CategoriesModule, CategoriesModuleEntities } from './categories/categories.module';
+import { CheckoutModule, CheckoutModuleEntities } from './checkout/checkout.module';
+import { CoreModule, CoreModuleEntities } from './core/core.module';
+import { DiscountsModule } from './discounts/discounts.module';
+import { OrderModule, OrderModuleEntities } from './order/order.module';
+import { ProductTypesModule, ProductTypesModuleEntities } from './product-types/product-types.module';
+import { ProductsModule, ProductsModuleEntities } from './products/products.module';
 import { UserEntity } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
+
+const ALL_ENTITIES = [
+	...AttributesModuleEntities,
+	UserEntity,
+	...CoreModuleEntities,
+	...ProductTypesModuleEntities,
+	...CategoriesModuleEntities,
+	...ProductsModuleEntities,
+	...OrderModuleEntities,
+	...CheckoutModuleEntities,
+];
 
 @Module({
 	imports: [
@@ -26,7 +37,7 @@ import { AuthModule } from './auth/auth.module';
 			username: process.env['DB_USERNAME'] || 'nima',
 			password: 'nima',
 			database: 'nima',
-			entities: [AttributeEntity, AttributeValueEntity, AddressEntity, MediaEntity, SettingsEntity, UserEntity],
+			entities: ALL_ENTITIES,
 			logging: 'all',
 			// logging: isDev ? ['error', 'query'] : ['error'],
 			synchronize: true,
@@ -37,8 +48,25 @@ import { AuthModule } from './auth/auth.module';
 		CoreModule,
 		UsersModule,
 		AuthModule,
+		OrderModule,
+		CheckoutModule,
+		DiscountsModule,
 	],
 	controllers: [AppController],
-	providers: [],
+	providers: [
+		{
+			provide: APP_GUARD,
+			useClass: LoggedInGuard,
+		},
+		{
+			provide: APP_GUARD,
+			useClass: StaffGuard,
+		},
+		{
+			provide: APP_GUARD,
+			useClass: AdminGuard,
+		},
+	],
 })
-export class AppModule {}
+export class AppModule {
+}

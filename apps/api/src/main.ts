@@ -1,4 +1,4 @@
-import { Logger, VersioningType } from '@nestjs/common';
+import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -31,8 +31,12 @@ async function bootstrap() {
 			persistAuthorization: true,
 		},
 	});
+
+	app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
+
 	await app.listen(port);
 	Logger.log(`🚀 Application is running on: http://localhost:${ port }/${ globalPrefix }`);
+	Logger.log(`🚀 Swagger is running on: http://localhost:${ port }/docs`);
 }
 
 bootstrap();

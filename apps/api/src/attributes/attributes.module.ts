@@ -2,8 +2,9 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AttributesController } from './attributes.controller';
 import { AttributesService } from './attributes.service';
-import { AttributeRepository } from './models/attribute.repository';
-import { AttributeValueEntity } from './models/attributeValue.entity';
+import { AttributeEntity } from './entities/attribute.entity';
+import { AttributeRepository } from './entities/attribute.repository';
+import { AttributeValueEntity } from './entities/attribute-value.entity';
 
 @Module({
 	imports: [TypeOrmModule.forFeature([AttributeRepository, AttributeValueEntity])],
@@ -12,3 +13,5 @@ import { AttributeValueEntity } from './models/attributeValue.entity';
 })
 export class AttributesModule {
 }
+
+export const AttributesModuleEntities = [AttributeValueEntity, AttributeEntity];

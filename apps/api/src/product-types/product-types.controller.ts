@@ -1,8 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { CreateProductTypeDto, UpdateProductTypeDto } from './dto/product-type.dto';
 import { ProductTypesService } from './product-types.service';
-import { CreateProductTypeDto } from './dto/create-product-type.dto';
-import { UpdateProductTypeDto } from './dto/update-product-type.dto';
 
 @Controller('product-types')
 @ApiTags('Product Types')
