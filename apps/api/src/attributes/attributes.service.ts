@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { AttributeDto, CreateAttributeDto } from './dto/attribute.dto';
+import { AttributeDto, CreateAttributeDto, UpdateAttributeDto } from './dto/attribute.dto';
 import { AttributeEntity } from './entities/attribute.entity';
 import { AttributeRepository } from './entities/attribute.repository';
 
@@ -73,5 +73,14 @@ export class AttributesService {
 			unit: attribute.unit,
 			slug: attribute.slug,
 		};
+	}
+
+	async update(params: { id: number; dto: UpdateAttributeDto }) {
+		const { id, dto } = params;
+		const attr = await this.getById({ id: id });
+		for ( const dtoKey in dto ) {
+			attr[dtoKey] = dto[dtoKey];
+		}
+		return await this.save({ dto: attr, id: id });
 	}
 }

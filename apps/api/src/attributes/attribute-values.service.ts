@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { EmptyObject, getSlug } from '@nima/utils';
-import { AttributeValueDto, CreateAttributeValueDto } from './dto/attribute-value.dto';
+import { AttributeValueDto, CreateAttributeValueDto, UpdateAttributeValueDto } from './dto/attribute-value.dto';
 import { AttributeValueEntity } from './entities/attribute-value.entity';
 import { AttributeValuesRepository } from './entities/attribute-values.repository';
 import { AttributeRepository } from './entities/attribute.repository';
@@ -28,18 +28,18 @@ export class AttributeValuesService {
 		};
 	}
 
-	save(params: { dto: CreateAttributeValueDto }): Promise<AttributeValueDto>
-	save(params: { dto: CreateAttributeValueDto, id: number }): Promise<AttributeValueDto>
-	async save(params: { dto: CreateAttributeValueDto, id?: number }): Promise<AttributeValueDto> {
-		const { dto, id } = params;
-		const attribute = await this.attributeRepository.findById(dto.attributeId);
+	save(params: { attributeId: number, dto: CreateAttributeValueDto }): Promise<AttributeValueDto>
+	save(params: { attributeId: number, dto: CreateAttributeValueDto, valueId: number }): Promise<AttributeValueDto>
+	async save(params: { attributeId: number, dto: CreateAttributeValueDto, valueId?: number }): Promise<AttributeValueDto> {
+		const { dto, valueId, attributeId } = params;
+		const attribute = await this.attributeRepository.findById(attributeId);
 		if ( !dto.slug ) {
 			const temp = dto.name['en'] || dto.name['el'];
 			if ( !temp ) throw new Error('no name for slug');
 			console.log(temp);
 			dto.slug = getSlug(temp);
 		}
-		const res = await this.attributeValueRepository.save({ ...dto, id: id, attribute: attribute });
+		const res = await this.attributeValueRepository.save({ ...dto, id: valueId, attribute: attribute });
 		return AttributeValuesService.prepareAttributeValue(res);
 	}
 
@@ -58,6 +58,15 @@ export class AttributeValuesService {
 	async getOfAttribute(params: { attributeId: number }): Promise<AttributeValueDto[]> {
 		const { attributeId } = params;
 		return await this.attributeValueRepository.getOfAttribute(attributeId);
+	}
+
+	async update(params: { attributeId: number, dto: UpdateAttributeValueDto, valueId: number }): Promise<AttributeValueDto> {
+		const { valueId, dto, attributeId } = params;
+		const value = await this.getById({ id: valueId });
+		for ( const dtoKey in dto ) {
+			value[dtoKey] = dto[dtoKey];
+		}
+		return await this.save({ dto: value, valueId: valueId, attributeId: attributeId });
 	}
 
 	async deleteById(params: { id: number }): Promise<AttributeValueDto> {
