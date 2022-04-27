@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
+import { SwaggerDarkModeCss } from './swagger-dark-mode.css';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -34,6 +35,7 @@ async function bootstrap() {
 			operationsSorter: 'method',
 			persistAuthorization: true,
 		},
+		customCss: SwaggerDarkModeCss,
 	});
 
 	app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));

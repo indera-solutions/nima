@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsInt } from 'class-validator';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { AttributeDto } from '../../attributes/dto/attribute.dto';
 import { AttributeEntity } from '../../attributes/entities/attribute.entity';
@@ -9,6 +10,7 @@ import { ProductTypeEntity } from './product-type.entity';
 export class ProductTypeAttributeEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
+	@IsInt()
 	id: number;
 
 	@ManyToOne(() => AttributeEntity)
@@ -21,5 +23,6 @@ export class ProductTypeAttributeEntity {
 
 	@Column()
 	@ApiProperty({ type: Number, example: 1 })
+	@IsInt()
 	sortOrder: number;
 }

@@ -8,4 +8,5 @@ export class ProductTypeDto extends ProductTypeEntity {
 export class CreateProductTypeDto extends OmitType(ProductTypeDto, ['id']) {
 }
 
-export class UpdateProductTypeDto extends PartialType(CreateProductTypeDto) {}
+export class UpdateProductTypeDto extends PartialType(CreateProductTypeDto) {
+}

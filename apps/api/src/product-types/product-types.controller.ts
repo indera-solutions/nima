@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { CreateProductTypeDto, UpdateProductTypeDto } from './dto/product-type.dto';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { ApiBody, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateProductTypeDto, ProductTypeDto, UpdateProductTypeDto } from './dto/product-type.dto';
 import { ProductTypesService } from './product-types.service';
 
 @Controller('product-types')
@@ -10,27 +10,34 @@ export class ProductTypesController {
 	}
 
 	@Post()
-	create(@Body() createProductTypeDto: CreateProductTypeDto) {
-		return this.productTypesService.create(createProductTypeDto);
+	@ApiResponse({ type: ProductTypeDto })
+	@ApiBody({ type: CreateProductTypeDto })
+	create(@Body() createProductTypeDto: CreateProductTypeDto): Promise<ProductTypeDto> {
+		return this.productTypesService.save({ dto: createProductTypeDto });
 	}
 
 	@Get()
-	findAll() {
-		return this.productTypesService.findAll();
+	@ApiResponse({ type: [ProductTypeDto] })
+	findAll(): Promise<ProductTypeDto[]> {
+		return this.productTypesService.list();
 	}
 
-	@Get(':id')
-	findOne(@Param('id') id: string) {
-		return this.productTypesService.findOne(+id);
+	@Get(':productTypeId')
+	@ApiResponse({ type: ProductTypeDto })
+	@ApiParam({ type: Number, name: 'productTypeId' })
+	findOne(@Param('productTypeId', ParseIntPipe) id: number): Promise<ProductTypeDto> {
+		return this.productTypesService.getById({ id });
 	}
 
-	@Patch(':id')
-	update(@Param('id') id: string, @Body() updateProductTypeDto: UpdateProductTypeDto) {
-		return this.productTypesService.update(+id, updateProductTypeDto);
+	@Patch(':productTypeId')
+	@ApiResponse({ type: ProductTypeDto })
+	@ApiParam({ type: Number, name: 'productTypeId' })
+	update(@Param('productTypeId', ParseIntPipe) productTypeId: number, @Body() updateProductTypeDto: UpdateProductTypeDto) {
+		return this.productTypesService.patchProductType({ productTypeId: productTypeId, dto: updateProductTypeDto });
 	}
 
-	@Delete(':id')
-	remove(@Param('id') id: string) {
-		return this.productTypesService.remove(+id);
+	@Delete(':productTypeId')
+	remove(@Param('productTypeId', ParseIntPipe) productTypeId: number) {
+		return this.productTypesService.deleteById({ id: productTypeId });
 	}
 }
