@@ -47,3 +47,7 @@ export function parseQueryString(str: string | string[]): string {
 	}
 	return str;
 }
+
+export function getSlug(input: string): string {
+	return encodeURIComponent(input.replace(' ', '-')).toLowerCase();
+}

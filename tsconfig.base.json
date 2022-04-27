@@ -15,18 +15,10 @@
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
-			"@nima/interfaces": [
-				"libs/interfaces/src/index.ts"
-			],
-			"@nima/react": [
-				"libs/react/src/index.ts"
-			],
-			"@nima/sdk": [
-				"libs/sdk/src/index.ts"
-			],
-			"@nima/utils": [
-				"libs/utils/src/index.ts"
-			]
+			"@nima/interfaces": [ "libs/interfaces/src/index.ts" ],
+			"@nima/react": [ "libs/react/src/index.ts" ],
+			"@nima/sdk": [ "libs/sdk/src/index.ts" ],
+			"@nima/utils": [ "libs/utils/src/index.ts" ]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

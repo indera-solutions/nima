@@ -105,7 +105,6 @@ export interface AddressDto {
 	 */
 	'address2'?: string;
 }
-
 /**
  *
  * @export
@@ -179,7 +178,6 @@ export interface AddressEntity {
 	 */
 	'address2'?: string;
 }
-
 /**
  *
  * @export
@@ -269,6 +267,68 @@ export interface AttributeDto {
 /**
  *
  * @export
+ * @interface AttributeValueDto
+ */
+export interface AttributeValueDto {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AttributeValueDto
+	 */
+	'id': number;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof AttributeValueDto
+	 */
+	'name': TranslatableDto;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof AttributeValueDto
+	 */
+	'slug'?: string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AttributeValueDto
+	 */
+	'sortOrder'?: number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof AttributeValueDto
+	 */
+	'value'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof AttributeValueDto
+	 */
+	'fileUrl'?: string;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof AttributeValueDto
+	 */
+	'richText'?: TranslatableDto;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof AttributeValueDto
+	 */
+	'boolean'?: boolean;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof AttributeValueDto
+	 */
+	'dateTime'?: string;
+}
+
+/**
+ *
+ * @export
  * @interface CategoryDto
  */
 export interface CategoryDto {
@@ -327,7 +387,6 @@ export interface CategoryDto {
 	 */
 	'parent': object;
 }
-
 /**
  *
  * @export
@@ -411,6 +470,62 @@ export interface CreateAttributeDto {
 /**
  *
  * @export
+ * @interface CreateAttributeValueDto
+ */
+export interface CreateAttributeValueDto {
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof CreateAttributeValueDto
+	 */
+	'name': TranslatableDto;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateAttributeValueDto
+	 */
+	'slug'?: string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateAttributeValueDto
+	 */
+	'sortOrder'?: number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateAttributeValueDto
+	 */
+	'value'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateAttributeValueDto
+	 */
+	'fileUrl'?: string;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof CreateAttributeValueDto
+	 */
+	'richText'?: TranslatableDto;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof CreateAttributeValueDto
+	 */
+	'boolean'?: boolean;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateAttributeValueDto
+	 */
+	'dateTime'?: string;
+}
+
+/**
+ *
+ * @export
  * @interface CreateCategoryDto
  */
 export interface CreateCategoryDto {
@@ -463,7 +578,6 @@ export interface CreateCategoryDto {
 	 */
 	'parentId': number;
 }
-
 /**
  *
  * @export
@@ -573,7 +687,6 @@ export interface CreateCheckoutDto {
 	 */
 	'languageCode': LanguageCode;
 }
-
 /**
  *
  * @export
@@ -617,7 +730,6 @@ export interface CreateDiscountSaleDto {
 	 */
 	'privateMetadata': object;
 }
-
 /**
  *
  * @export
@@ -799,7 +911,6 @@ export interface CreateOrderDto {
 	 */
 	'searchDocument': string;
 }
-
 /**
  *
  * @export
@@ -939,7 +1050,6 @@ export interface CreateProductDto {
 	 */
 	'minPrice': number;
 }
-
 /**
  *
  * @export
@@ -1064,7 +1174,6 @@ export interface LoginUserDto {
 	 */
 	'password': string;
 }
-
 /**
  *
  * @export
@@ -1102,7 +1211,6 @@ export interface MediaDto {
 	 */
 	'url': string;
 }
-
 /**
  *
  * @export
@@ -1220,7 +1328,6 @@ export interface ProductTypeDto {
 	 */
 	'slug': string;
 }
-
 /**
  *
  * @export
@@ -1300,7 +1407,6 @@ export interface SettingsDto {
 	 */
 	'siteLogo'?: MediaEntity;
 }
-
 /**
  *
  * @export
@@ -1314,7 +1420,6 @@ export interface SuccessLoginResponse {
 	 */
 	'access_token': string;
 }
-
 /**
  *
  * @export
@@ -1402,6 +1507,142 @@ export enum Unit {
 /**
  *
  * @export
+ * @interface UpdateAttributeDto
+ */
+export interface UpdateAttributeDto {
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof UpdateAttributeDto
+	 */
+	'name'?: TranslatableDto;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof UpdateAttributeDto
+	 */
+	'slug'?: string;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof UpdateAttributeDto
+	 */
+	'metadata'?: object;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof UpdateAttributeDto
+	 */
+	'privateMetadata'?: object;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof UpdateAttributeDto
+	 */
+	'availableInGrid'?: boolean;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof UpdateAttributeDto
+	 */
+	'visibleInStorefront'?: boolean;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof UpdateAttributeDto
+	 */
+	'filterableInDashboard'?: boolean;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof UpdateAttributeDto
+	 */
+	'filterableInStorefront'?: boolean;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof UpdateAttributeDto
+	 */
+	'valueRequired'?: boolean;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateAttributeDto
+	 */
+	'storefrontSearchPosition'?: number;
+	/**
+	 *
+	 * @type {InputType}
+	 * @memberof UpdateAttributeDto
+	 */
+	'inputType'?: InputType;
+	/**
+	 *
+	 * @type {Unit}
+	 * @memberof UpdateAttributeDto
+	 */
+	'unit'?: Unit;
+}
+
+/**
+ *
+ * @export
+ * @interface UpdateAttributeValueDto
+ */
+export interface UpdateAttributeValueDto {
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof UpdateAttributeValueDto
+	 */
+	'name'?: TranslatableDto;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof UpdateAttributeValueDto
+	 */
+	'slug'?: string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateAttributeValueDto
+	 */
+	'sortOrder'?: number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof UpdateAttributeValueDto
+	 */
+	'value'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof UpdateAttributeValueDto
+	 */
+	'fileUrl'?: string;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof UpdateAttributeValueDto
+	 */
+	'richText'?: TranslatableDto;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof UpdateAttributeValueDto
+	 */
+	'boolean'?: boolean;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof UpdateAttributeValueDto
+	 */
+	'dateTime'?: string;
+}
+
+/**
+ *
+ * @export
  * @interface UpdateCategoryDto
  */
 export interface UpdateCategoryDto {
@@ -1454,7 +1695,6 @@ export interface UpdateCategoryDto {
 	 */
 	'parentId'?: number;
 }
-
 /**
  *
  * @export
@@ -1564,7 +1804,6 @@ export interface UpdateCheckoutDto {
 	 */
 	'languageCode'?: LanguageCode;
 }
-
 /**
  *
  * @export
@@ -1608,7 +1847,6 @@ export interface UpdateDiscountDto {
 	 */
 	'privateMetadata'?: object;
 }
-
 /**
  *
  * @export
@@ -1790,7 +2028,6 @@ export interface UpdateOrderDto {
 	 */
 	'searchDocument'?: string;
 }
-
 /**
  *
  * @export
@@ -1936,7 +2173,6 @@ export interface UpdateProductDto {
 	 */
 	'minPrice'?: number;
 }
-
 /**
  *
  * @export
@@ -1992,7 +2228,6 @@ export interface UpdateProductTypeDto {
 	 */
 	'slug'?: string;
 }
-
 /**
  *
  * @export
@@ -2116,11 +2351,640 @@ export interface UserDto {
 }
 
 /**
+ * AttributeValuesApi - axios parameter creator
+ * @export
+ */
+export const AttributeValuesApiAxiosParamCreator = function (configuration?: Configuration) {
+	return {
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {number} valueId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributeValuesDeleteValueByID: async (attributeId: number, valueId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'attributeId' is not null or undefined
+			assertParamExists('attributeValuesDeleteValueByID', 'attributeId', attributeId);
+			// verify required parameter 'valueId' is not null or undefined
+			assertParamExists('attributeValuesDeleteValueByID', 'valueId', valueId);
+			const localVarPath = `/api/v1/attributes/{attributeId}/values/{valueId}`
+				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)))
+				.replace(`{${ 'valueId' }}`, encodeURIComponent(String(valueId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {number} valueId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributeValuesGetValueById: async (attributeId: number, valueId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'attributeId' is not null or undefined
+			assertParamExists('attributeValuesGetValueById', 'attributeId', attributeId);
+			// verify required parameter 'valueId' is not null or undefined
+			assertParamExists('attributeValuesGetValueById', 'valueId', valueId);
+			const localVarPath = `/api/v1/attributes/{attributeId}/values/{valueId}`
+				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)))
+				.replace(`{${ 'valueId' }}`, encodeURIComponent(String(valueId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributeValuesGetValuesOfAttributeById: async (attributeId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'attributeId' is not null or undefined
+			assertParamExists('attributeValuesGetValuesOfAttributeById', 'attributeId', attributeId);
+			const localVarPath = `/api/v1/attributes/{attributeId}/values`
+				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {number} valueId
+		 * @param {UpdateAttributeValueDto} updateAttributeValueDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributeValuesPatchValue: async (attributeId: number, valueId: number, updateAttributeValueDto: UpdateAttributeValueDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'attributeId' is not null or undefined
+			assertParamExists('attributeValuesPatchValue', 'attributeId', attributeId);
+			// verify required parameter 'valueId' is not null or undefined
+			assertParamExists('attributeValuesPatchValue', 'valueId', valueId);
+			// verify required parameter 'updateAttributeValueDto' is not null or undefined
+			assertParamExists('attributeValuesPatchValue', 'updateAttributeValueDto', updateAttributeValueDto);
+			const localVarPath = `/api/v1/attributes/{attributeId}/values/{valueId}`
+				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)))
+				.replace(`{${ 'valueId' }}`, encodeURIComponent(String(valueId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(updateAttributeValueDto, localVarRequestOptions, configuration);
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {CreateAttributeValueDto} createAttributeValueDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributeValuesSave: async (attributeId: number, createAttributeValueDto: CreateAttributeValueDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'attributeId' is not null or undefined
+			assertParamExists('attributeValuesSave', 'attributeId', attributeId);
+			// verify required parameter 'createAttributeValueDto' is not null or undefined
+			assertParamExists('attributeValuesSave', 'createAttributeValueDto', createAttributeValueDto);
+			const localVarPath = `/api/v1/attributes/{attributeId}/values`
+				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(createAttributeValueDto, localVarRequestOptions, configuration);
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {number} valueId
+		 * @param {CreateAttributeValueDto} createAttributeValueDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributeValuesUpdateValue: async (attributeId: number, valueId: number, createAttributeValueDto: CreateAttributeValueDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'attributeId' is not null or undefined
+			assertParamExists('attributeValuesUpdateValue', 'attributeId', attributeId);
+			// verify required parameter 'valueId' is not null or undefined
+			assertParamExists('attributeValuesUpdateValue', 'valueId', valueId);
+			// verify required parameter 'createAttributeValueDto' is not null or undefined
+			assertParamExists('attributeValuesUpdateValue', 'createAttributeValueDto', createAttributeValueDto);
+			const localVarPath = `/api/v1/attributes/{attributeId}/values/{valueId}`
+				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)))
+				.replace(`{${ 'valueId' }}`, encodeURIComponent(String(valueId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(createAttributeValueDto, localVarRequestOptions, configuration);
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+	};
+};
+
+/**
+ * AttributeValuesApi - functional programming interface
+ * @export
+ */
+export const AttributeValuesApiFp = function (configuration?: Configuration) {
+	const localVarAxiosParamCreator = AttributeValuesApiAxiosParamCreator(configuration);
+	return {
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {number} valueId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async attributeValuesDeleteValueByID(attributeId: number, valueId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AttributeValueDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.attributeValuesDeleteValueByID(attributeId, valueId, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {number} valueId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async attributeValuesGetValueById(attributeId: number, valueId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AttributeValueDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.attributeValuesGetValueById(attributeId, valueId, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async attributeValuesGetValuesOfAttributeById(attributeId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<AttributeValueDto>>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.attributeValuesGetValuesOfAttributeById(attributeId, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {number} valueId
+		 * @param {UpdateAttributeValueDto} updateAttributeValueDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async attributeValuesPatchValue(attributeId: number, valueId: number, updateAttributeValueDto: UpdateAttributeValueDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AttributeValueDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.attributeValuesPatchValue(attributeId, valueId, updateAttributeValueDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {CreateAttributeValueDto} createAttributeValueDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async attributeValuesSave(attributeId: number, createAttributeValueDto: CreateAttributeValueDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AttributeValueDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.attributeValuesSave(attributeId, createAttributeValueDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {number} valueId
+		 * @param {CreateAttributeValueDto} createAttributeValueDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async attributeValuesUpdateValue(attributeId: number, valueId: number, createAttributeValueDto: CreateAttributeValueDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AttributeValueDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.attributeValuesUpdateValue(attributeId, valueId, createAttributeValueDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+	};
+};
+
+/**
+ * AttributeValuesApi - factory interface
+ * @export
+ */
+export const AttributeValuesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+	const localVarFp = AttributeValuesApiFp(configuration);
+	return {
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {number} valueId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributeValuesDeleteValueByID(attributeId: number, valueId: number, options?: any): AxiosPromise<AttributeValueDto> {
+			return localVarFp.attributeValuesDeleteValueByID(attributeId, valueId, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {number} valueId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributeValuesGetValueById(attributeId: number, valueId: number, options?: any): AxiosPromise<AttributeValueDto> {
+			return localVarFp.attributeValuesGetValueById(attributeId, valueId, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributeValuesGetValuesOfAttributeById(attributeId: number, options?: any): AxiosPromise<Array<AttributeValueDto>> {
+			return localVarFp.attributeValuesGetValuesOfAttributeById(attributeId, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {number} valueId
+		 * @param {UpdateAttributeValueDto} updateAttributeValueDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributeValuesPatchValue(attributeId: number, valueId: number, updateAttributeValueDto: UpdateAttributeValueDto, options?: any): AxiosPromise<AttributeValueDto> {
+			return localVarFp.attributeValuesPatchValue(attributeId, valueId, updateAttributeValueDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {CreateAttributeValueDto} createAttributeValueDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributeValuesSave(attributeId: number, createAttributeValueDto: CreateAttributeValueDto, options?: any): AxiosPromise<AttributeValueDto> {
+			return localVarFp.attributeValuesSave(attributeId, createAttributeValueDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {number} valueId
+		 * @param {CreateAttributeValueDto} createAttributeValueDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributeValuesUpdateValue(attributeId: number, valueId: number, createAttributeValueDto: CreateAttributeValueDto, options?: any): AxiosPromise<AttributeValueDto> {
+			return localVarFp.attributeValuesUpdateValue(attributeId, valueId, createAttributeValueDto, options).then((request) => request(axios, basePath));
+		},
+	};
+};
+
+/**
+ * Request parameters for attributeValuesDeleteValueByID operation in AttributeValuesApi.
+ * @export
+ * @interface AttributeValuesApiAttributeValuesDeleteValueByIDRequest
+ */
+export interface AttributeValuesApiAttributeValuesDeleteValueByIDRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AttributeValuesApiAttributeValuesDeleteValueByID
+	 */
+	readonly attributeId: number;
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AttributeValuesApiAttributeValuesDeleteValueByID
+	 */
+	readonly valueId: number;
+}
+
+/**
+ * Request parameters for attributeValuesGetValueById operation in AttributeValuesApi.
+ * @export
+ * @interface AttributeValuesApiAttributeValuesGetValueByIdRequest
+ */
+export interface AttributeValuesApiAttributeValuesGetValueByIdRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AttributeValuesApiAttributeValuesGetValueById
+	 */
+	readonly attributeId: number;
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AttributeValuesApiAttributeValuesGetValueById
+	 */
+	readonly valueId: number;
+}
+
+/**
+ * Request parameters for attributeValuesGetValuesOfAttributeById operation in AttributeValuesApi.
+ * @export
+ * @interface AttributeValuesApiAttributeValuesGetValuesOfAttributeByIdRequest
+ */
+export interface AttributeValuesApiAttributeValuesGetValuesOfAttributeByIdRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AttributeValuesApiAttributeValuesGetValuesOfAttributeById
+	 */
+	readonly attributeId: number;
+}
+
+/**
+ * Request parameters for attributeValuesPatchValue operation in AttributeValuesApi.
+ * @export
+ * @interface AttributeValuesApiAttributeValuesPatchValueRequest
+ */
+export interface AttributeValuesApiAttributeValuesPatchValueRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AttributeValuesApiAttributeValuesPatchValue
+	 */
+	readonly attributeId: number;
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AttributeValuesApiAttributeValuesPatchValue
+	 */
+	readonly valueId: number;
+
+	/**
+	 *
+	 * @type {UpdateAttributeValueDto}
+	 * @memberof AttributeValuesApiAttributeValuesPatchValue
+	 */
+	readonly updateAttributeValueDto: UpdateAttributeValueDto;
+}
+
+/**
+ * Request parameters for attributeValuesSave operation in AttributeValuesApi.
+ * @export
+ * @interface AttributeValuesApiAttributeValuesSaveRequest
+ */
+export interface AttributeValuesApiAttributeValuesSaveRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AttributeValuesApiAttributeValuesSave
+	 */
+	readonly attributeId: number;
+
+	/**
+	 *
+	 * @type {CreateAttributeValueDto}
+	 * @memberof AttributeValuesApiAttributeValuesSave
+	 */
+	readonly createAttributeValueDto: CreateAttributeValueDto;
+}
+
+/**
+ * Request parameters for attributeValuesUpdateValue operation in AttributeValuesApi.
+ * @export
+ * @interface AttributeValuesApiAttributeValuesUpdateValueRequest
+ */
+export interface AttributeValuesApiAttributeValuesUpdateValueRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AttributeValuesApiAttributeValuesUpdateValue
+	 */
+	readonly attributeId: number;
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AttributeValuesApiAttributeValuesUpdateValue
+	 */
+	readonly valueId: number;
+
+	/**
+	 *
+	 * @type {CreateAttributeValueDto}
+	 * @memberof AttributeValuesApiAttributeValuesUpdateValue
+	 */
+	readonly createAttributeValueDto: CreateAttributeValueDto;
+}
+
+/**
+ * AttributeValuesApi - object-oriented interface
+ * @export
+ * @class AttributeValuesApi
+ * @extends {BaseAPI}
+ */
+export class AttributeValuesApi extends BaseAPI {
+	/**
+	 *
+	 * @param {AttributeValuesApiAttributeValuesDeleteValueByIDRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof AttributeValuesApi
+	 */
+	public attributeValuesDeleteValueByID(requestParameters: AttributeValuesApiAttributeValuesDeleteValueByIDRequest, options?: AxiosRequestConfig) {
+		return AttributeValuesApiFp(this.configuration).attributeValuesDeleteValueByID(requestParameters.attributeId, requestParameters.valueId, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {AttributeValuesApiAttributeValuesGetValueByIdRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof AttributeValuesApi
+	 */
+	public attributeValuesGetValueById(requestParameters: AttributeValuesApiAttributeValuesGetValueByIdRequest, options?: AxiosRequestConfig) {
+		return AttributeValuesApiFp(this.configuration).attributeValuesGetValueById(requestParameters.attributeId, requestParameters.valueId, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {AttributeValuesApiAttributeValuesGetValuesOfAttributeByIdRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof AttributeValuesApi
+	 */
+	public attributeValuesGetValuesOfAttributeById(requestParameters: AttributeValuesApiAttributeValuesGetValuesOfAttributeByIdRequest, options?: AxiosRequestConfig) {
+		return AttributeValuesApiFp(this.configuration).attributeValuesGetValuesOfAttributeById(requestParameters.attributeId, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {AttributeValuesApiAttributeValuesPatchValueRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof AttributeValuesApi
+	 */
+	public attributeValuesPatchValue(requestParameters: AttributeValuesApiAttributeValuesPatchValueRequest, options?: AxiosRequestConfig) {
+		return AttributeValuesApiFp(this.configuration).attributeValuesPatchValue(requestParameters.attributeId, requestParameters.valueId, requestParameters.updateAttributeValueDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {AttributeValuesApiAttributeValuesSaveRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof AttributeValuesApi
+	 */
+	public attributeValuesSave(requestParameters: AttributeValuesApiAttributeValuesSaveRequest, options?: AxiosRequestConfig) {
+		return AttributeValuesApiFp(this.configuration).attributeValuesSave(requestParameters.attributeId, requestParameters.createAttributeValueDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {AttributeValuesApiAttributeValuesUpdateValueRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof AttributeValuesApi
+	 */
+	public attributeValuesUpdateValue(requestParameters: AttributeValuesApiAttributeValuesUpdateValueRequest, options?: AxiosRequestConfig) {
+		return AttributeValuesApiFp(this.configuration).attributeValuesUpdateValue(requestParameters.attributeId, requestParameters.valueId, requestParameters.createAttributeValueDto, options).then((request) => request(this.axios, this.basePath));
+	}
+}
+
+
+/**
  * AttributesApi - axios parameter creator
  * @export
  */
 export const AttributesApiAxiosParamCreator = function (configuration?: Configuration) {
 	return {
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {UpdateAttributeDto} updateAttributeDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributesDeleteAttribute: async (attributeId: number, updateAttributeDto: UpdateAttributeDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'attributeId' is not null or undefined
+			assertParamExists('attributesDeleteAttribute', 'attributeId', attributeId);
+			// verify required parameter 'updateAttributeDto' is not null or undefined
+			assertParamExists('attributesDeleteAttribute', 'updateAttributeDto', updateAttributeDto);
+			const localVarPath = `/api/v1/attributes/{attributeId}`
+				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(updateAttributeDto, localVarRequestOptions, configuration);
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
 		/**
 		 *
 		 * @param {*} [options] Override http request option.
@@ -2143,6 +3007,76 @@ export const AttributesApiAxiosParamCreator = function (configuration?: Configur
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributesGetById: async (attributeId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'attributeId' is not null or undefined
+			assertParamExists('attributesGetById', 'attributeId', attributeId);
+			const localVarPath = `/api/v1/attributes/{attributeId}`
+				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {UpdateAttributeDto} updateAttributeDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributesPatchAttribute: async (attributeId: number, updateAttributeDto: UpdateAttributeDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'attributeId' is not null or undefined
+			assertParamExists('attributesPatchAttribute', 'attributeId', attributeId);
+			// verify required parameter 'updateAttributeDto' is not null or undefined
+			assertParamExists('attributesPatchAttribute', 'updateAttributeDto', updateAttributeDto);
+			const localVarPath = `/api/v1/attributes/{attributeId}`
+				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(updateAttributeDto, localVarRequestOptions, configuration);
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -2183,7 +3117,45 @@ export const AttributesApiAxiosParamCreator = function (configuration?: Configur
 				options: localVarRequestOptions,
 			};
 		},
-	};
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {CreateAttributeDto} createAttributeDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributesUpdateAttribute: async (attributeId: number, createAttributeDto: CreateAttributeDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'attributeId' is not null or undefined
+			assertParamExists('attributesUpdateAttribute', 'attributeId', attributeId);
+			// verify required parameter 'createAttributeDto' is not null or undefined
+			assertParamExists('attributesUpdateAttribute', 'createAttributeDto', createAttributeDto);
+			const localVarPath = `/api/v1/attributes/{attributeId}`
+				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(createAttributeDto, localVarRequestOptions, configuration);
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+	}
 };
 
 /**
@@ -2195,11 +3167,43 @@ export const AttributesApiFp = function (configuration?: Configuration) {
 	return {
 		/**
 		 *
+		 * @param {number} attributeId
+		 * @param {UpdateAttributeDto} updateAttributeDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async attributesDeleteAttribute(attributeId: number, updateAttributeDto: UpdateAttributeDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AttributeDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.attributesDeleteAttribute(attributeId, updateAttributeDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
 		async attributesFindAll(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<AttributeDto>>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.attributesFindAll(options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async attributesGetById(attributeId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AttributeDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.attributesGetById(attributeId, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {UpdateAttributeDto} updateAttributeDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async attributesPatchAttribute(attributeId: number, updateAttributeDto: UpdateAttributeDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AttributeDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.attributesPatchAttribute(attributeId, updateAttributeDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
@@ -2210,6 +3214,17 @@ export const AttributesApiFp = function (configuration?: Configuration) {
 		 */
 		async attributesSave(createAttributeDto: CreateAttributeDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AttributeDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.attributesSave(createAttributeDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {CreateAttributeDto} createAttributeDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async attributesUpdateAttribute(attributeId: number, createAttributeDto: CreateAttributeDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AttributeDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.attributesUpdateAttribute(attributeId, createAttributeDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 	};
@@ -2224,11 +3239,40 @@ export const AttributesApiFactory = function (configuration?: Configuration, bas
 	return {
 		/**
 		 *
+		 * @param {number} attributeId
+		 * @param {UpdateAttributeDto} updateAttributeDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributesDeleteAttribute(attributeId: number, updateAttributeDto: UpdateAttributeDto, options?: any): AxiosPromise<AttributeDto> {
+			return localVarFp.attributesDeleteAttribute(attributeId, updateAttributeDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
 		attributesFindAll(options?: any): AxiosPromise<Array<AttributeDto>> {
 			return localVarFp.attributesFindAll(options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributesGetById(attributeId: number, options?: any): AxiosPromise<AttributeDto> {
+			return localVarFp.attributesGetById(attributeId, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {UpdateAttributeDto} updateAttributeDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributesPatchAttribute(attributeId: number, updateAttributeDto: UpdateAttributeDto, options?: any): AxiosPromise<AttributeDto> {
+			return localVarFp.attributesPatchAttribute(attributeId, updateAttributeDto, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -2239,8 +3283,74 @@ export const AttributesApiFactory = function (configuration?: Configuration, bas
 		attributesSave(createAttributeDto: CreateAttributeDto, options?: any): AxiosPromise<AttributeDto> {
 			return localVarFp.attributesSave(createAttributeDto, options).then((request) => request(axios, basePath));
 		},
+		/**
+		 *
+		 * @param {number} attributeId
+		 * @param {CreateAttributeDto} createAttributeDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		attributesUpdateAttribute(attributeId: number, createAttributeDto: CreateAttributeDto, options?: any): AxiosPromise<AttributeDto> {
+			return localVarFp.attributesUpdateAttribute(attributeId, createAttributeDto, options).then((request) => request(axios, basePath));
+		},
 	};
 };
+
+/**
+ * Request parameters for attributesDeleteAttribute operation in AttributesApi.
+ * @export
+ * @interface AttributesApiAttributesDeleteAttributeRequest
+ */
+export interface AttributesApiAttributesDeleteAttributeRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AttributesApiAttributesDeleteAttribute
+	 */
+	readonly attributeId: number;
+
+	/**
+	 *
+	 * @type {UpdateAttributeDto}
+	 * @memberof AttributesApiAttributesDeleteAttribute
+	 */
+	readonly updateAttributeDto: UpdateAttributeDto;
+}
+
+/**
+ * Request parameters for attributesGetById operation in AttributesApi.
+ * @export
+ * @interface AttributesApiAttributesGetByIdRequest
+ */
+export interface AttributesApiAttributesGetByIdRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AttributesApiAttributesGetById
+	 */
+	readonly attributeId: number;
+}
+
+/**
+ * Request parameters for attributesPatchAttribute operation in AttributesApi.
+ * @export
+ * @interface AttributesApiAttributesPatchAttributeRequest
+ */
+export interface AttributesApiAttributesPatchAttributeRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AttributesApiAttributesPatchAttribute
+	 */
+	readonly attributeId: number;
+
+	/**
+	 *
+	 * @type {UpdateAttributeDto}
+	 * @memberof AttributesApiAttributesPatchAttribute
+	 */
+	readonly updateAttributeDto: UpdateAttributeDto;
+}
 
 /**
  * Request parameters for attributesSave operation in AttributesApi.
@@ -2257,12 +3367,44 @@ export interface AttributesApiAttributesSaveRequest {
 }
 
 /**
+ * Request parameters for attributesUpdateAttribute operation in AttributesApi.
+ * @export
+ * @interface AttributesApiAttributesUpdateAttributeRequest
+ */
+export interface AttributesApiAttributesUpdateAttributeRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AttributesApiAttributesUpdateAttribute
+	 */
+	readonly attributeId: number;
+
+	/**
+	 *
+	 * @type {CreateAttributeDto}
+	 * @memberof AttributesApiAttributesUpdateAttribute
+	 */
+	readonly createAttributeDto: CreateAttributeDto;
+}
+
+/**
  * AttributesApi - object-oriented interface
  * @export
  * @class AttributesApi
  * @extends {BaseAPI}
  */
 export class AttributesApi extends BaseAPI {
+	/**
+	 *
+	 * @param {AttributesApiAttributesDeleteAttributeRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof AttributesApi
+	 */
+	public attributesDeleteAttribute(requestParameters: AttributesApiAttributesDeleteAttributeRequest, options?: AxiosRequestConfig) {
+		return AttributesApiFp(this.configuration).attributesDeleteAttribute(requestParameters.attributeId, requestParameters.updateAttributeDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
 	/**
 	 *
 	 * @param {*} [options] Override http request option.
@@ -2275,6 +3417,28 @@ export class AttributesApi extends BaseAPI {
 
 	/**
 	 *
+	 * @param {AttributesApiAttributesGetByIdRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof AttributesApi
+	 */
+	public attributesGetById(requestParameters: AttributesApiAttributesGetByIdRequest, options?: AxiosRequestConfig) {
+		return AttributesApiFp(this.configuration).attributesGetById(requestParameters.attributeId, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {AttributesApiAttributesPatchAttributeRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof AttributesApi
+	 */
+	public attributesPatchAttribute(requestParameters: AttributesApiAttributesPatchAttributeRequest, options?: AxiosRequestConfig) {
+		return AttributesApiFp(this.configuration).attributesPatchAttribute(requestParameters.attributeId, requestParameters.updateAttributeDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
 	 * @param {AttributesApiAttributesSaveRequest} requestParameters Request parameters.
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}
@@ -2282,6 +3446,17 @@ export class AttributesApi extends BaseAPI {
 	 */
 	public attributesSave(requestParameters: AttributesApiAttributesSaveRequest, options?: AxiosRequestConfig) {
 		return AttributesApiFp(this.configuration).attributesSave(requestParameters.createAttributeDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {AttributesApiAttributesUpdateAttributeRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof AttributesApi
+	 */
+	public attributesUpdateAttribute(requestParameters: AttributesApiAttributesUpdateAttributeRequest, options?: AxiosRequestConfig) {
+		return AttributesApiFp(this.configuration).attributesUpdateAttribute(requestParameters.attributeId, requestParameters.createAttributeDto, options).then((request) => request(this.axios, this.basePath));
 	}
 }
 
@@ -2382,7 +3557,7 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 				options: localVarRequestOptions,
 			};
 		},
-	};
+	}
 };
 
 /**
@@ -2682,7 +3857,7 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 				options: localVarRequestOptions,
 			};
 		},
-	};
+	}
 };
 
 /**
@@ -3096,7 +4271,7 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 				options: localVarRequestOptions,
 			};
 		},
-	};
+	}
 };
 
 /**
@@ -3416,7 +4591,7 @@ export const CoreApiAxiosParamCreator = function (configuration?: Configuration)
 				options: localVarRequestOptions,
 			};
 		},
-	};
+	}
 };
 
 /**
@@ -3553,7 +4728,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 				options: localVarRequestOptions,
 			};
 		},
-	};
+	}
 };
 
 /**
@@ -3782,7 +4957,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 				options: localVarRequestOptions,
 			};
 		},
-	};
+	}
 };
 
 /**
@@ -4196,7 +5371,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 				options: localVarRequestOptions,
 			};
 		},
-	};
+	}
 };
 
 /**
@@ -4610,7 +5785,7 @@ export const ProductTypesApiAxiosParamCreator = function (configuration?: Config
 				options: localVarRequestOptions,
 			};
 		},
-	};
+	}
 };
 
 /**
@@ -5024,7 +6199,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 				options: localVarRequestOptions,
 			};
 		},
-	};
+	}
 };
 
 /**
@@ -5438,7 +6613,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 				options: localVarRequestOptions,
 			};
 		},
-	};
+	}
 };
 
 /**

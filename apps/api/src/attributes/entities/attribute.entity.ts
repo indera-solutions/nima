@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Attribute, InputType, Metadata, Translatable, Unit } from '@nima/interfaces';
-import { IsBoolean, IsEnum, IsInt, IsObject, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsInt, IsNotEmptyObject, IsObject, IsOptional, IsString } from 'class-validator';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { AttributeValueEntity } from './attribute-value.entity';
@@ -9,11 +9,13 @@ import { AttributeValueEntity } from './attribute-value.entity';
 export class AttributeEntity implements Attribute {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number })
-	@IsInt({ context: {} })
+	@IsInt()
 	id: number;
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: TranslatableDto, example: { en: 'Attribute Name' } })
+	@IsObject()
+	@IsNotEmptyObject()
 	name: Translatable;
 
 	@Column()
@@ -66,7 +68,7 @@ export class AttributeEntity implements Attribute {
 	@IsEnum(InputType)
 	inputType: InputType;
 
-	@Column({ type: 'enum', enum: Unit })
+	@Column({ type: 'enum', enum: Unit, nullable: true })
 	@ApiProperty({ enum: Unit, required: false, enumName: 'Unit' })
 	@IsEnum(Unit)
 	@IsOptional()
