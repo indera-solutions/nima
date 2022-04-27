@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { EmptyObject } from '@nima/utils';
+import { EmptyObject, getSlug } from '@nima/utils';
 import { CreateProductTypeDto, ProductTypeDto, UpdateProductTypeDto } from './dto/product-type.dto';
 import { ProductTypeEntity } from './entities';
 import { ProductTypeRepository } from './repositories';

@@ -10,7 +10,7 @@ import { ProductTypesService } from './product-types.service';
 import { ProductTypeAttributeRepository } from './repositories';
 
 @Injectable()
-export class ProductTypeAttributeService {
+export class ProductTypeAttributesService {
 	constructor(
 		private productTypeAttributeRepository: ProductTypeAttributeRepository,
 		private productTypesService: ProductTypesService,
@@ -39,19 +39,19 @@ export class ProductTypeAttributeService {
 			if ( isNaN(_productTypeAttributeId) ) throw new BadRequestException('PRODUCT_TYPE_ID_IS_NaN');
 		}
 		const res = await this.productTypeAttributeRepository.save({ ...dto, id: _productTypeAttributeId, attribute: attribute, productType: productType });
-		return ProductTypeAttributeService.prepareProductTypeAttribute(res);
+		return ProductTypeAttributesService.prepareProductTypeAttribute(res);
 	}
 
 	async listOfProductType(params: { productTypeId: number }): Promise<ProductTypeAttributeDto[]> {
 		const { productTypeId } = params;
 		const res = await this.productTypeAttributeRepository.listOfProductType(productTypeId);
-		return res.map(pta => ProductTypeAttributeService.prepareProductTypeAttribute(pta));
+		return res.map(pta => ProductTypeAttributesService.prepareProductTypeAttribute(pta));
 	}
 
 	async getById(params: { productTypeAttributeId: number }): Promise<ProductTypeAttributeDto> {
 		const { productTypeAttributeId } = params;
 		const res = await this.productTypeAttributeRepository.getById(productTypeAttributeId);
-		return ProductTypeAttributeService.prepareProductTypeAttribute(res);
+		return ProductTypeAttributesService.prepareProductTypeAttribute(res);
 	}
 
 	async patch(params: { productTypeId: number, productTypeAttributeId: number, dto: UpdateProductTypeAttributeDto }): Promise<ProductTypeAttributeDto> {
@@ -69,6 +69,6 @@ export class ProductTypeAttributeService {
 		const { productTypeAttributeId } = params;
 		const attr = await this.getById({ productTypeAttributeId });
 		await this.productTypeAttributeRepository.deleteById(productTypeAttributeId);
-		return ProductTypeAttributeService.prepareProductTypeAttribute(attr);
+		return ProductTypeAttributesService.prepareProductTypeAttribute(attr);
 	}
 }

@@ -5,7 +5,7 @@ import { ProductTypeAttributeEntity } from '../entities';
 export class ProductTypeAttributeRepository extends Repository<ProductTypeAttributeEntity> {
 
 	async getById(attributeId: number) {
-		return this.findOne(attributeId);
+		return this.findOne(attributeId, { relations: ['attribute'] });
 	}
 
 	async listOfProductType(productTypeId: number) {
@@ -15,6 +15,7 @@ export class ProductTypeAttributeRepository extends Repository<ProductTypeAttrib
 					id: productTypeId,
 				},
 			},
+			relations: ['attribute'],
 		});
 	}
 

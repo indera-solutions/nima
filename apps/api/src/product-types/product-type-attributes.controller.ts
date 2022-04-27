@@ -1,20 +1,20 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put } from '@nestjs/common';
-import { ApiBody, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import {
 	CreateProductTypeAttributeDto,
 	ProductTypeAttributeDto,
 	UpdateProductTypeAttributeDto,
 } from './dto/product-type-attribute.dto';
-import { ProductTypeAttributeService } from './product-type-attribute.service';
+import { ProductTypeAttributesService } from './product-type-attributes.service';
 
-@Controller('product-types/:productTypeId')
-@ApiTags('Product Types')
-export class ProductTypesController {
-	constructor(private readonly service: ProductTypeAttributeService) {
+@Controller('product-types/:productTypeId/attributes/simple')
+@ApiTags('Product Type Simple Attributes')
+export class ProductTypeAttributesController {
+	constructor(private readonly service: ProductTypeAttributesService) {
 	}
 
 	@Post()
-	@ApiResponse({ type: ProductTypeAttributeDto })
+	@ApiOkResponse({ type: ProductTypeAttributeDto })
 	@ApiParam({ type: Number, name: 'productTypeId' })
 	@ApiBody({ type: CreateProductTypeAttributeDto })
 	create(@Param('productTypeId', ParseIntPipe) productTypeId: number, @Body() createProductTypeDto: CreateProductTypeAttributeDto): Promise<ProductTypeAttributeDto> {
@@ -22,14 +22,14 @@ export class ProductTypesController {
 	}
 
 	@Get()
-	@ApiResponse({ type: [ProductTypeAttributeDto] })
+	@ApiOkResponse({ type: [ProductTypeAttributeDto] })
 	@ApiParam({ type: Number, name: 'productTypeId' })
 	findAll(@Param('productTypeId', ParseIntPipe) productTypeId: number): Promise<ProductTypeAttributeDto[]> {
 		return this.service.listOfProductType({ productTypeId: productTypeId });
 	}
 
 	@Get(':productTypeAttributeId')
-	@ApiResponse({ type: ProductTypeAttributeDto })
+	@ApiOkResponse({ type: ProductTypeAttributeDto })
 	@ApiParam({ type: Number, name: 'productTypeId' })
 	@ApiParam({ type: Number, name: 'productTypeAttributeId' })
 	getOne(@Param('productTypeId', ParseIntPipe) productTypeId: number, @Param('productTypeAttributeId', ParseIntPipe) productTypeAttributeId: number) {
@@ -37,7 +37,7 @@ export class ProductTypesController {
 	}
 
 	@Patch(':productTypeAttributeId')
-	@ApiResponse({ type: ProductTypeAttributeDto })
+	@ApiOkResponse({ type: ProductTypeAttributeDto })
 	@ApiParam({ type: Number, name: 'productTypeId' })
 	@ApiParam({ type: Number, name: 'productTypeAttributeId' })
 	@ApiBody({ type: UpdateProductTypeAttributeDto })
@@ -46,7 +46,7 @@ export class ProductTypesController {
 	}
 
 	@Put(':productTypeAttributeId')
-	@ApiResponse({ type: ProductTypeAttributeDto })
+	@ApiOkResponse({ type: ProductTypeAttributeDto })
 	@ApiParam({ type: Number, name: 'productTypeId' })
 	@ApiParam({ type: Number, name: 'productTypeAttributeId' })
 	@ApiBody({ type: CreateProductTypeAttributeDto })
@@ -55,7 +55,7 @@ export class ProductTypesController {
 	}
 
 	@Delete(':productTypeAttributeId')
-	@ApiResponse({ type: ProductTypeAttributeDto })
+	@ApiOkResponse({ type: ProductTypeAttributeDto })
 	@ApiParam({ type: Number, name: 'productTypeId' })
 	@ApiParam({ type: Number, name: 'productTypeAttributeId' })
 	remove(@Param('productTypeId', ParseIntPipe) productTypeId: number, @Param('productTypeAttributeId', ParseIntPipe) productTypeAttributeId: number) {

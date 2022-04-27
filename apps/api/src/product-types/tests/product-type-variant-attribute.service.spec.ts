@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ProductTypeVariantAttributeService } from '../product-type-variant-attribute.service';
+import { ProductTypeVariantAttributesService } from '../product-type-variant-attributes.service';
 
 describe('ProductTypeVariantAttributeService', () => {
-	let service: ProductTypeVariantAttributeService;
+	let service: ProductTypeVariantAttributesService;
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
-			providers: [ProductTypeVariantAttributeService],
+			providers: [ProductTypeVariantAttributesService],
 		}).compile();
 
-		service = module.get<ProductTypeVariantAttributeService>(ProductTypeVariantAttributeService);
+		service = module.get<ProductTypeVariantAttributesService>(ProductTypeVariantAttributesService);
 	});
 
 	it('should be defined', () => {
