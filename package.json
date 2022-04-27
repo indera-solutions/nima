@@ -6,7 +6,8 @@
 		"start": "nx serve",
 		"build": "nx build",
 		"test": "nx test",
-		"ts-axios-sdk": "openapi-generator-cli generate -i http://localhost:3333/docs-json -g typescript-axios -o ./libs/sdk/src --additional-properties=stringEnums=true,enumPropertyNaming=original,useSingleRequestParameter=true"
+		"ts-axios-sdk": "openapi-generator-cli generate -i http://localhost:3333/docs-json -g typescript-axios -o ./libs/sdk/src --additional-properties=stringEnums=true,enumPropertyNaming=original,useSingleRequestParameter=true",
+		"grab-openapi-spec": "curl http://localhost:3333/docs-json | npx json > ./openapi.json"
 	},
 	"private": true,
 	"dependencies": {
