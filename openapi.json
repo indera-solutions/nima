@@ -13,28 +13,6 @@
 			}
 		},
 		"/api/v1/attributes": {
-			"get": {
-				"operationId": "Attributes_findAll",
-				"parameters": [ ],
-				"responses": {
-					"default": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/AttributeDto"
-									}
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Attributes"
-				]
-			},
 			"post": {
 				"operationId": "Attributes_save",
 				"parameters": [ ],
@@ -62,6 +40,421 @@
 				},
 				"tags": [
 					"Attributes"
+				]
+			},
+			"get": {
+				"operationId": "Attributes_findAll",
+				"parameters": [ ],
+				"responses": {
+					"default": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AttributeDto"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Attributes"
+				]
+			}
+		},
+		"/api/v1/attributes/{attributeId}": {
+			"get": {
+				"operationId": "Attributes_getById",
+				"parameters": [
+					{
+						"name": "attributeId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"404": {
+						"description": "ATTRIBUTE_NOT_FOUND"
+					},
+					"default": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AttributeDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Attributes"
+				]
+			},
+			"patch": {
+				"operationId": "Attributes_patchAttribute",
+				"parameters": [
+					{
+						"name": "attributeId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateAttributeDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"default": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AttributeDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Attributes"
+				]
+			},
+			"put": {
+				"operationId": "Attributes_updateAttribute",
+				"parameters": [
+					{
+						"name": "attributeId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateAttributeDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"default": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AttributeDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Attributes"
+				]
+			},
+			"delete": {
+				"operationId": "Attributes_deleteAttribute",
+				"parameters": [
+					{
+						"name": "attributeId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateAttributeDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"default": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AttributeDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Attributes"
+				]
+			}
+		},
+		"/api/v1/attributes/{attributeId}/values": {
+			"post": {
+				"operationId": "AttributeValues_save",
+				"parameters": [
+					{
+						"name": "attributeId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateAttributeValueDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"default": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AttributeValueDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Attribute Values"
+				]
+			},
+			"get": {
+				"operationId": "AttributeValues_getValuesOfAttributeById",
+				"parameters": [
+					{
+						"name": "attributeId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"default": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AttributeValueDto"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Attribute Values"
+				]
+			}
+		},
+		"/api/v1/attributes/{attributeId}/values/{valueId}": {
+			"get": {
+				"operationId": "AttributeValues_getValueById",
+				"parameters": [
+					{
+						"name": "attributeId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "valueId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"404": {
+						"description": "ATTRIBUTE_VALUE_NOT_FOUND"
+					},
+					"default": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AttributeValueDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Attribute Values"
+				]
+			},
+			"patch": {
+				"operationId": "AttributeValues_patchValue",
+				"parameters": [
+					{
+						"name": "attributeId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "valueId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateAttributeValueDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"404": {
+						"description": "ATTRIBUTE_VALUE_NOT_FOUND"
+					},
+					"default": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AttributeValueDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Attribute Values"
+				]
+			},
+			"put": {
+				"operationId": "AttributeValues_updateValue",
+				"parameters": [
+					{
+						"name": "attributeId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "valueId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateAttributeValueDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"404": {
+						"description": "ATTRIBUTE_VALUE_NOT_FOUND"
+					},
+					"default": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AttributeValueDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Attribute Values"
+				]
+			},
+			"delete": {
+				"operationId": "AttributeValues_deleteValueByID",
+				"parameters": [
+					{
+						"name": "attributeId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "valueId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"default": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AttributeValueDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Attribute Values"
 				]
 			}
 		},
@@ -1062,6 +1455,76 @@
 					"TONNE"
 				]
 			},
+			"CreateAttributeDto": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"example": {
+							"en": "Attribute Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"slug": {
+						"type": "string"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"availableInGrid": {
+						"type": "boolean",
+						"example": true
+					},
+					"visibleInStorefront": {
+						"type": "boolean",
+						"example": true
+					},
+					"filterableInDashboard": {
+						"type": "boolean",
+						"example": true
+					},
+					"filterableInStorefront": {
+						"type": "boolean",
+						"example": true
+					},
+					"valueRequired": {
+						"type": "boolean",
+						"example": true
+					},
+					"storefrontSearchPosition": {
+						"type": "number",
+						"example": 0
+					},
+					"inputType": {
+						"example": "DROPDOWN",
+						"$ref": "#/components/schemas/InputType"
+					},
+					"unit": {
+						"$ref": "#/components/schemas/Unit"
+					}
+				},
+				"required": [
+					"name",
+					"slug",
+					"metadata",
+					"privateMetadata",
+					"availableInGrid",
+					"visibleInStorefront",
+					"filterableInDashboard",
+					"filterableInStorefront",
+					"valueRequired",
+					"storefrontSearchPosition",
+					"inputType"
+				]
+			},
 			"AttributeDto": {
 				"type": "object",
 				"properties": {
@@ -1136,7 +1599,7 @@
 					"inputType"
 				]
 			},
-			"CreateAttributeDto": {
+			"UpdateAttributeDto": {
 				"type": "object",
 				"properties": {
 					"name": {
@@ -1191,20 +1654,156 @@
 					"unit": {
 						"$ref": "#/components/schemas/Unit"
 					}
+				}
+			},
+			"CreateAttributeValueDto": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"example": {
+							"en": "Green"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"slug": {
+						"type": "string",
+						"example": "green"
+					},
+					"sortOrder": {
+						"type": "number",
+						"example": 1
+					},
+					"value": {
+						"type": "string",
+						"example": "Green"
+					},
+					"fileUrl": {
+						"type": "string"
+					},
+					"richText": {
+						"example": {
+							"en": "Green"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"boolean": {
+						"type": "boolean"
+					},
+					"dateTime": {
+						"type": "string"
+					}
 				},
 				"required": [
-					"name",
-					"slug",
-					"metadata",
-					"privateMetadata",
-					"availableInGrid",
-					"visibleInStorefront",
-					"filterableInDashboard",
-					"filterableInStorefront",
-					"valueRequired",
-					"storefrontSearchPosition",
-					"inputType"
+					"name"
 				]
+			},
+			"AttributeValueDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"example": 1
+					},
+					"name": {
+						"example": {
+							"en": "Green"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"slug": {
+						"type": "string",
+						"example": "green"
+					},
+					"sortOrder": {
+						"type": "number",
+						"example": 1
+					},
+					"value": {
+						"type": "string",
+						"example": "Green"
+					},
+					"fileUrl": {
+						"type": "string"
+					},
+					"richText": {
+						"example": {
+							"en": "Green"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"boolean": {
+						"type": "boolean"
+					},
+					"dateTime": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name"
+				]
+			},
+			"UpdateAttributeValueDto": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"example": {
+							"en": "Green"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"slug": {
+						"type": "string",
+						"example": "green"
+					},
+					"sortOrder": {
+						"type": "number",
+						"example": 1
+					},
+					"value": {
+						"type": "string",
+						"example": "Green"
+					},
+					"fileUrl": {
+						"type": "string"
+					},
+					"richText": {
+						"example": {
+							"en": "Green"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"boolean": {
+						"type": "boolean"
+					},
+					"dateTime": {
+						"type": "string"
+					}
+				}
 			},
 			"ProductTypeDto": {
 				"type": "object",
