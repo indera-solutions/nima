@@ -1,25 +1,3 @@
-import { Metadata, Translatable } from '../core';
-
-export interface Attribute {
-	id: number;
-	slug: string;
-	name: Translatable;
-	metadata: Metadata;
-	privateMetadata: Metadata;
-	availableInGrid: boolean;
-	visibleInStorefront: boolean;
-	filterableInDashboard: boolean;
-	filterableInStorefront: boolean;
-	valueRequired: boolean;
-	storefrontSearchPosition: number;
-	inputType: InputType;
-	unit?: Unit;
-}
-
-export interface ICreateAttributeDto extends Omit<Attribute, 'id'> {
-}
-
-
 export enum InputType {
 	DROPDOWN = 'DROPDOWN',
 	MULTISELECT = 'MULTISELECT',

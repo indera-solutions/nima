@@ -1,12 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-	AssignedProductAttribute,
-	AssignedProductVariantAttribute,
-	Product,
-	ProductTypeAttribute,
-	ProductTypeVariantAttribute,
-	ProductVariant,
-} from '@nima/interfaces';
 import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import {
 	ProductTypeAttributeDto,
@@ -19,31 +11,31 @@ import { ProductVariantEntity } from './product-variant.entity';
 import { ProductEntity } from './product.entity';
 
 @Entity('products_assigned_product_attributes')
-export class AssignedProductAttributeEntity implements AssignedProductAttribute {
+export class AssignedProductAttributeEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
 
 	@ManyToOne(() => ProductEntity)
 	@ApiProperty({ type: ProductDto })
-	product: Product;
+	product: ProductDto;
 
 	@ManyToOne(() => ProductTypeAttributeEntity)
 	@ApiProperty({ type: ProductTypeAttributeDto })
-	productTypeAttribute: ProductTypeAttribute;
+	productTypeAttribute: ProductTypeAttributeDto;
 }
 
 @Entity('products_assigned_product_variant_attributes')
-export class AssignedProductVariantAttributeEntity implements AssignedProductVariantAttribute {
+export class AssignedProductVariantAttributeEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
 
 	@ManyToOne(() => ProductVariantEntity)
 	@ApiProperty({ type: ProductVariantDto })
-	variant: ProductVariant;
+	variant: ProductVariantDto;
 
 	@ManyToOne(() => ProductTypeVariantAttributeEntity)
 	@ApiProperty({ type: ProductTypeVariantAttributeDto })
-	productTypeVariantAttribute: ProductTypeVariantAttribute;
+	productTypeVariantAttribute: ProductTypeVariantAttributeDto;
 }

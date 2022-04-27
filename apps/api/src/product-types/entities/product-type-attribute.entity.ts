@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Attribute, ProductType, ProductTypeAttribute } from '@nima/interfaces';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { AttributeDto } from '../../attributes/dto/attribute.dto';
 import { AttributeEntity } from '../../attributes/entities/attribute.entity';
@@ -7,18 +6,18 @@ import { ProductTypeDto } from '../dto/product-type.dto';
 import { ProductTypeEntity } from './product-type.entity';
 
 @Entity('product_type_product_type_attributes')
-export class ProductTypeAttributeEntity implements ProductTypeAttribute {
+export class ProductTypeAttributeEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
 
 	@ManyToOne(() => AttributeEntity)
 	@ApiProperty({ type: AttributeDto })
-	attribute: Attribute;
+	attribute: AttributeDto;
 
 	@ManyToOne(() => ProductTypeEntity)
 	@ApiProperty({ type: ProductTypeDto })
-	productType: ProductType;
+	productType: ProductTypeDto;
 
 	@Column()
 	@ApiProperty({ type: Number, example: 1 })

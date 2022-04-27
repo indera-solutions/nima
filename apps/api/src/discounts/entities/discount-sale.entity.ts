@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Category, DiscountSale, DiscountType, Metadata, Product, Translatable } from '@nima/interfaces';
+import { Metadata, Translatable } from '@nima/utils';
 import {
 	Column,
 	CreateDateColumn,
@@ -14,9 +14,10 @@ import { CategoryEntity } from '../../categories/entities/category.entity';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { ProductDto } from '../../products/dto/product.dto';
 import { ProductEntity } from '../../products/entities/product.entity';
+import { DiscountType } from '../dto/discount.enum';
 
 @Entity('discounts_discount_sale')
-export class DiscountSaleEntity implements DiscountSale {
+export class DiscountSaleEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
@@ -56,11 +57,11 @@ export class DiscountSaleEntity implements DiscountSale {
 	@ManyToMany(() => CategoryEntity)
 	@JoinTable({ name: 'discounts_discount_sale_categories' })
 	@ApiProperty({ type: [CategoryDto] })
-	categories: Category[];
+	categories: CategoryDto[];
 
 	@ManyToMany(() => ProductEntity)
 	@JoinTable({ name: 'discounts_discount_sale_products' })
 	@ApiProperty({ type: [ProductDto] })
-	products: Product[];
+	products: ProductDto[];
 
 }

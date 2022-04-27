@@ -1,12 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Attribute, InputType, Metadata, Translatable, Unit } from '@nima/interfaces';
+import { Metadata, Translatable } from '@nima/utils';
 import { IsBoolean, IsEnum, IsInt, IsNotEmptyObject, IsObject, IsOptional, IsString } from 'class-validator';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
+import { InputType, Unit } from '../dto/attribute.enum';
 import { AttributeValueEntity } from './attribute-value.entity';
 
 @Entity('attribute_attributes')
-export class AttributeEntity implements Attribute {
+export class AttributeEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number })
 	@IsInt()

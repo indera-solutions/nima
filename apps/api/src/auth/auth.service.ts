@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { RegisterUserDto } from '@nima/interfaces';
-import { SuccessLoginResponse } from '../users/dto/user.dto';
+import { RegisterUserDto, SuccessLoginResponse } from '../users/dto/user.dto';
 import { UserRepository } from '../users/entities/user.repository';
 import { UsersService } from '../users/users.service';
 

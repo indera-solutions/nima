@@ -1,5 +1,5 @@
-import { UserSession } from '@nima/interfaces';
 import { AuthenticationApi } from '@nima/sdk';
+import { UserSession } from '@nima/utils';
 import jwtDecode from 'jwt-decode';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { defaultConfiguration } from '../reactQueryCommons';

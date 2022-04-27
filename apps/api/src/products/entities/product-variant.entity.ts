@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Metadata, Product, ProductVariant, Translatable } from '@nima/interfaces';
+import { Metadata, Translatable } from '@nima/utils';
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { ProductDto } from '../dto/product.dto';
 import { ProductEntity } from './product.entity';
 
 @Entity('products_product_variants')
-export class ProductVariantEntity implements ProductVariant {
+export class ProductVariantEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
@@ -21,7 +21,7 @@ export class ProductVariantEntity implements ProductVariant {
 
 	@ManyToOne(() => ProductEntity)
 	@ApiProperty({ type: ProductDto })
-	product: Product;
+	product: ProductDto;
 
 	@Column({ nullable: true })
 	@ApiProperty({ type: Number, example: 1, required: false })

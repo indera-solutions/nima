@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Address, LanguageCode, Media, Metadata, User } from '@nima/interfaces';
+import { LanguageCode, Metadata } from '@nima/utils';
 import {
 	Column,
 	CreateDateColumn,
@@ -17,7 +17,7 @@ import { AddressEntity } from '../../core/entities/address.entity';
 import { MediaEntity } from '../../core/entities/media.entity';
 
 @Entity('core_users')
-export class UserEntity implements User {
+export class UserEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
@@ -52,11 +52,11 @@ export class UserEntity implements User {
 
 	@OneToOne(() => AddressEntity)
 	@ApiProperty({ type: AddressDto, required: false })
-	defaultBillingAddress?: Address;
+	defaultBillingAddress?: AddressDto;
 
 	@OneToOne(() => AddressEntity)
 	@ApiProperty({ type: AddressDto, required: false })
-	defaultShippingAddress?: Address;
+	defaultShippingAddress?: AddressDto;
 
 	@Column({ nullable: true })
 	@ApiProperty({ type: String, required: false })
@@ -72,7 +72,7 @@ export class UserEntity implements User {
 
 	@ManyToOne(() => MediaEntity, { nullable: true })
 	@ApiProperty({ type: MediaDto, required: false })
-	avatar?: Media;
+	avatar?: MediaDto;
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: Object, example: {} })
@@ -89,7 +89,7 @@ export class UserEntity implements User {
 	@ManyToMany(() => AddressEntity)
 	@JoinTable({ name: 'user_user_addresses' })
 	@ApiProperty({ type: [AddressDto] })
-	addresses: Address[];
+	addresses: AddressDto[];
 
 	@Column()
 	@ApiProperty({ type: String })

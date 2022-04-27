@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Checkout, CheckoutLine, ProductVariant } from '@nima/interfaces';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ProductVariantDto } from '../../products/dto/product-variant.dto';
 import { ProductVariantEntity } from '../../products/entities/product-variant.entity';
@@ -7,7 +6,7 @@ import { CheckoutDto } from '../dto/checkout.dto';
 import { CheckoutEntity } from './checkout.entity';
 
 @Entity('checkout_checkout_lines')
-export class CheckoutLineEntity implements CheckoutLine {
+export class CheckoutLineEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
@@ -18,9 +17,9 @@ export class CheckoutLineEntity implements CheckoutLine {
 
 	@ManyToOne(() => CheckoutEntity)
 	@ApiProperty({ type: CheckoutDto })
-	checkout: Checkout;
+	checkout: CheckoutDto;
 
 	@ManyToOne(() => ProductVariantEntity)
 	@ApiProperty({ type: ProductVariantDto })
-	variant: ProductVariant;
+	variant: ProductVariantDto;
 }

@@ -1,4 +1,5 @@
-import { LanguageCode, languages, Settings } from '@nima/interfaces';
+import { SettingsDto } from '@nima/sdk';
+import { LanguageCode, languages } from '@nima/utils';
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { AdminColumn, AdminFooter, AdminPage, AdminSection, NimaTitle } from '../components';
@@ -15,7 +16,7 @@ export default function SettingsPage(props: SettingsProps) {
 	const { data: existingSettings, isSuccess } = useSettings();
 	const updateSettingsMutation = useUpdateSettings();
 
-	const [settings, setSettings] = useState<Settings>({
+	const [settings, setSettings] = useState<SettingsDto>({
 		siteName: '',
 		siteLogo: undefined,
 		adminLanguage: LanguageCode.en,
@@ -36,7 +37,7 @@ export default function SettingsPage(props: SettingsProps) {
 		}
 	}, [existingSettings, isSuccess]);
 
-	function onEditValue(name: keyof Settings, value) {
+	function onEditValue(name: keyof SettingsDto, value) {
 		setSettings(state => ({ ...state, [name]: value }));
 	}
 

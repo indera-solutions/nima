@@ -1,5 +1,3 @@
-import { Metadata, Order, User } from '@nima/interfaces';
-
 export enum OrderEventsEnum {
 	DRAFT_CREATED = 'DRAFT_CREATED',
 	DRAFT_CREATED_FROM_REPLACE = 'DRAFT_CREATED_FROM_REPLACE',
@@ -45,11 +43,13 @@ export enum OrderEventsEnum {
 	OTHER = 'OTHER',
 }
 
-export interface OrderEvent {
-	id: number;
-	date: string;
-	eventType: OrderEventsEnum;
-	order: Order;
-	user: User;
-	parameters: Metadata;
+export enum OrderStatus {
+	DRAFT = 'DRAFT',
+	UNCONFIRMED = 'UNCONFIRMED',
+	UNFULFILLED = 'UNFULFILLED',
+	PARTIALLY_FULFILLED = 'PARTIALLY_FULFILLED',
+	PARTIALLY_RETURNED = 'PARTIALLY_RETURNED',
+	RETURNED = 'RETURNED',
+	FULFILLED = 'FULFILLED',
+	CANCELED = 'CANCELED',
 }
