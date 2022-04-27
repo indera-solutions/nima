@@ -50,7 +50,7 @@ export class OrderEntity implements Order {
 	voucher_id?: number;
 
 	@Column({ type: 'enum', enum: LanguageCode })
-	@ApiProperty({ enum: LanguageCode, example: LanguageCode.en })
+	@ApiProperty({ enum: LanguageCode, example: LanguageCode.en, enumName: 'LanguageCode' })
 	languageCode: LanguageCode;
 
 	@Column({ type: 'float' })
@@ -66,7 +66,7 @@ export class OrderEntity implements Order {
 	shippingPriceNetAmount: number;
 
 	@Column({ type: 'enum', enum: OrderStatus })
-	@ApiProperty({ enum: OrderStatus, example: OrderStatus.DRAFT })
+	@ApiProperty({ enum: OrderStatus, example: OrderStatus.DRAFT, enumName: 'OrderStatus' })
 	status: OrderStatus;
 
 	@Column({ type: String, nullable: true })

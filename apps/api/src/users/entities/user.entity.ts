@@ -83,7 +83,7 @@ export class UserEntity implements User {
 	privateMetadata: Metadata;
 
 	@Column({ type: 'enum', enum: LanguageCode })
-	@ApiProperty({ enum: LanguageCode, example: LanguageCode.en })
+	@ApiProperty({ enum: LanguageCode, example: LanguageCode.en, enumName: 'LanguageCode' })
 	languageCode: LanguageCode;
 
 	@ManyToMany(() => AddressEntity)

@@ -26,7 +26,7 @@ export class DiscountSaleEntity implements DiscountSale {
 	name: Translatable;
 
 	@Column({ type: 'enum', enum: DiscountType })
-	@ApiProperty({ enum: DiscountType })
+	@ApiProperty({ enum: DiscountType, enumName: 'DiscountType' })
 	discountType: DiscountType;
 
 	@Column({ type: String, nullable: true })

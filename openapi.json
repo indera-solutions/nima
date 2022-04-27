@@ -1,0 +1,2677 @@
+{
+	"openapi": "3.0.0",
+	"paths": {
+		"/api/v1/app": {
+			"get": {
+				"operationId": "App_getData",
+				"parameters": [ ],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				}
+			}
+		},
+		"/api/v1/attributes": {
+			"get": {
+				"operationId": "Attributes_findAll",
+				"parameters": [ ],
+				"responses": {
+					"default": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/AttributeDto"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Attributes"
+				]
+			},
+			"post": {
+				"operationId": "Attributes_save",
+				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateAttributeDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"default": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AttributeDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Attributes"
+				]
+			}
+		},
+		"/api/v1/products": {
+			"post": {
+				"operationId": "Products_create",
+				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateProductDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Products"
+				]
+			},
+			"get": {
+				"operationId": "Products_findAll",
+				"parameters": [ ],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Products"
+				]
+			}
+		},
+		"/api/v1/products/{id}": {
+			"get": {
+				"operationId": "Products_findOne",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Products"
+				]
+			},
+			"patch": {
+				"operationId": "Products_update",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateProductDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Products"
+				]
+			},
+			"delete": {
+				"operationId": "Products_remove",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Products"
+				]
+			}
+		},
+		"/api/v1/product-types": {
+			"post": {
+				"operationId": "ProductTypes_create",
+				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateProductTypeDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Product Types"
+				]
+			},
+			"get": {
+				"operationId": "ProductTypes_findAll",
+				"parameters": [ ],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Product Types"
+				]
+			}
+		},
+		"/api/v1/product-types/{id}": {
+			"get": {
+				"operationId": "ProductTypes_findOne",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Product Types"
+				]
+			},
+			"patch": {
+				"operationId": "ProductTypes_update",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateProductTypeDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Product Types"
+				]
+			},
+			"delete": {
+				"operationId": "ProductTypes_remove",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Product Types"
+				]
+			}
+		},
+		"/api/v1/categories": {
+			"post": {
+				"operationId": "Categories_create",
+				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCategoryDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Categories"
+				]
+			},
+			"get": {
+				"operationId": "Categories_findAll",
+				"parameters": [ ],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Categories"
+				]
+			}
+		},
+		"/api/v1/categories/{id}": {
+			"get": {
+				"operationId": "Categories_findOne",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Categories"
+				]
+			},
+			"patch": {
+				"operationId": "Categories_update",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateCategoryDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Categories"
+				]
+			},
+			"delete": {
+				"operationId": "Categories_remove",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Categories"
+				]
+			}
+		},
+		"/api/v1/core/settings": {
+			"get": {
+				"operationId": "Settings_getSettings",
+				"parameters": [ ],
+				"responses": {
+					"200": {
+						"description": "asdas",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SettingsDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Core"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			},
+			"put": {
+				"operationId": "Settings_updateSettings",
+				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SettingsDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"default": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SettingsDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Core"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/users": {
+			"post": {
+				"operationId": "Users_create",
+				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateUserDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Users"
+				]
+			},
+			"get": {
+				"operationId": "Users_findAll",
+				"parameters": [ ],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Users"
+				]
+			}
+		},
+		"/api/v1/users/{id}": {
+			"get": {
+				"operationId": "Users_findOne",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Users"
+				]
+			},
+			"patch": {
+				"operationId": "Users_update",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateUserDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Users"
+				]
+			},
+			"delete": {
+				"operationId": "Users_remove",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Users"
+				]
+			}
+		},
+		"/api/v1/auth/register": {
+			"post": {
+				"operationId": "Auth_register",
+				"parameters": [ ],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Authentication"
+				]
+			}
+		},
+		"/api/v1/auth/login": {
+			"post": {
+				"operationId": "Auth_login",
+				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LoginUserDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SuccessLoginResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				]
+			}
+		},
+		"/api/v1/auth/profile": {
+			"get": {
+				"operationId": "Auth_getHello",
+				"parameters": [ ],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Authentication"
+				]
+			}
+		},
+		"/api/v1/order": {
+			"post": {
+				"operationId": "Order_create",
+				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOrderDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Orders"
+				]
+			},
+			"get": {
+				"operationId": "Order_findAll",
+				"parameters": [ ],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Orders"
+				]
+			}
+		},
+		"/api/v1/order/{id}": {
+			"get": {
+				"operationId": "Order_findOne",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Orders"
+				]
+			},
+			"patch": {
+				"operationId": "Order_update",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateOrderDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Orders"
+				]
+			},
+			"delete": {
+				"operationId": "Order_remove",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Orders"
+				]
+			}
+		},
+		"/api/v1/checkout": {
+			"post": {
+				"operationId": "Checkout_create",
+				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCheckoutDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Checkout"
+				]
+			},
+			"get": {
+				"operationId": "Checkout_findAll",
+				"parameters": [ ],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Checkout"
+				]
+			}
+		},
+		"/api/v1/checkout/{id}": {
+			"get": {
+				"operationId": "Checkout_findOne",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Checkout"
+				]
+			},
+			"patch": {
+				"operationId": "Checkout_update",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateCheckoutDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Checkout"
+				]
+			},
+			"delete": {
+				"operationId": "Checkout_remove",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Checkout"
+				]
+			}
+		},
+		"/api/v1/discounts": {
+			"post": {
+				"operationId": "DiscountSales_create",
+				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateDiscountSaleDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			},
+			"get": {
+				"operationId": "DiscountSales_findAll",
+				"parameters": [ ],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			}
+		},
+		"/api/v1/discounts/{id}": {
+			"get": {
+				"operationId": "DiscountSales_findOne",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			},
+			"patch": {
+				"operationId": "DiscountSales_update",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateDiscountDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			},
+			"delete": {
+				"operationId": "DiscountSales_remove",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			}
+		}
+	},
+	"info": {
+		"title": "Nima CMS",
+		"description": "The core api for the Nima CMS backend.",
+		"version": "0.0.1-alpha",
+		"contact": {}
+	},
+	"tags": [
+		{
+			"name": "Nima CMS",
+			"description": ""
+		}
+	],
+	"servers": [
+		{
+			"url": "http://localhost:3333",
+			"description": "Localhost"
+		}
+	],
+	"components": {
+		"securitySchemes": {
+			"bearer": {
+				"scheme": "bearer",
+				"bearerFormat": "JWT",
+				"type": "http"
+			}
+		},
+		"schemas": {
+			"TranslatableDto": {
+				"type": "object",
+				"properties": {
+					"de": {
+						"type": "string"
+					},
+					"it": {
+						"type": "string"
+					},
+					"fr": {
+						"type": "string"
+					},
+					"es": {
+						"type": "string"
+					},
+					"el": {
+						"type": "string"
+					},
+					"en": {
+						"type": "string"
+					}
+				}
+			},
+			"InputType": {
+				"type": "string",
+				"enum": [
+					"DROPDOWN",
+					"MULTISELECT",
+					"FILE",
+					"REFERENCE",
+					"NUMERIC",
+					"RICH_TEXT",
+					"SWATCH",
+					"BOOLEAN",
+					"DATE",
+					"DATE_TIME"
+				]
+			},
+			"Unit": {
+				"type": "string",
+				"enum": [
+					"CM",
+					"M",
+					"KM",
+					"FT",
+					"YD",
+					"INCH",
+					"SQ_CM",
+					"SQ_M",
+					"SQ_KM",
+					"SQ_FT",
+					"SQ_YD",
+					"SQ_INCH",
+					"CUBIC_MILLIMETER",
+					"CUBIC_CENTIMETER",
+					"CUBIC_DECIMETER",
+					"CUBIC_METER",
+					"LITER",
+					"CUBIC_FOOT",
+					"CUBIC_INCH",
+					"CUBIC_YARD",
+					"QT",
+					"PINT",
+					"FL_OZ",
+					"ACRE_IN",
+					"ACRE_FT",
+					"G",
+					"LB",
+					"OZ",
+					"KG",
+					"TONNE"
+				]
+			},
+			"AttributeDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"name": {
+						"example": {
+							"en": "Attribute Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"slug": {
+						"type": "string"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"availableInGrid": {
+						"type": "boolean",
+						"example": true
+					},
+					"visibleInStorefront": {
+						"type": "boolean",
+						"example": true
+					},
+					"filterableInDashboard": {
+						"type": "boolean",
+						"example": true
+					},
+					"filterableInStorefront": {
+						"type": "boolean",
+						"example": true
+					},
+					"valueRequired": {
+						"type": "boolean",
+						"example": true
+					},
+					"storefrontSearchPosition": {
+						"type": "number",
+						"example": 0
+					},
+					"inputType": {
+						"example": "DROPDOWN",
+						"$ref": "#/components/schemas/InputType"
+					},
+					"unit": {
+						"$ref": "#/components/schemas/Unit"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"slug",
+					"metadata",
+					"privateMetadata",
+					"availableInGrid",
+					"visibleInStorefront",
+					"filterableInDashboard",
+					"filterableInStorefront",
+					"valueRequired",
+					"storefrontSearchPosition",
+					"inputType"
+				]
+			},
+			"CreateAttributeDto": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"example": {
+							"en": "Attribute Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"slug": {
+						"type": "string"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"availableInGrid": {
+						"type": "boolean",
+						"example": true
+					},
+					"visibleInStorefront": {
+						"type": "boolean",
+						"example": true
+					},
+					"filterableInDashboard": {
+						"type": "boolean",
+						"example": true
+					},
+					"filterableInStorefront": {
+						"type": "boolean",
+						"example": true
+					},
+					"valueRequired": {
+						"type": "boolean",
+						"example": true
+					},
+					"storefrontSearchPosition": {
+						"type": "number",
+						"example": 0
+					},
+					"inputType": {
+						"example": "DROPDOWN",
+						"$ref": "#/components/schemas/InputType"
+					},
+					"unit": {
+						"$ref": "#/components/schemas/Unit"
+					}
+				},
+				"required": [
+					"name",
+					"slug",
+					"metadata",
+					"privateMetadata",
+					"availableInGrid",
+					"visibleInStorefront",
+					"filterableInDashboard",
+					"filterableInStorefront",
+					"valueRequired",
+					"storefrontSearchPosition",
+					"inputType"
+				]
+			},
+			"ProductTypeDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"example": 1
+					},
+					"name": {
+						"type": "string",
+						"example": "Product Type"
+					},
+					"hasVariants": {
+						"type": "boolean",
+						"example": false
+					},
+					"isShippingRequired": {
+						"type": "boolean",
+						"example": false
+					},
+					"weight": {
+						"type": "number",
+						"example": 22.1
+					},
+					"isDigital": {
+						"type": "boolean",
+						"example": false
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"slug": {
+						"type": "string",
+						"example": "product-type"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"hasVariants",
+					"isShippingRequired",
+					"weight",
+					"isDigital",
+					"metadata",
+					"privateMetadata",
+					"slug"
+				]
+			},
+			"CategoryDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"example": 1
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"seoTitle": {
+						"example": {
+							"en": "Category Seo Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"seoDescription": {
+						"example": {
+							"en": "Category Seo Description"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"name": {
+						"example": {
+							"en": "Category Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"description": {
+						"example": {
+							"en": "Category Description"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"slug": {
+						"type": "string",
+						"example": "category-name"
+					},
+					"parent": {
+						"type": "object"
+					}
+				},
+				"required": [
+					"id",
+					"privateMetadata",
+					"metadata",
+					"seoTitle",
+					"seoDescription",
+					"name",
+					"description",
+					"slug",
+					"parent"
+				]
+			},
+			"CreateProductDto": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"example": {
+							"en": "Product Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"description": {
+						"example": {
+							"en": "Product Description"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"updatedAt": {
+						"type": "string",
+						"example": ""
+					},
+					"productType": {
+						"$ref": "#/components/schemas/ProductTypeDto"
+					},
+					"category": {
+						"$ref": "#/components/schemas/CategoryDto"
+					},
+					"seoDescription": {
+						"type": "string",
+						"example": "SEO Description"
+					},
+					"seoTitle": {
+						"type": "string",
+						"example": "SEO Title"
+					},
+					"chargeTaxes": {
+						"type": "boolean",
+						"example": true
+					},
+					"weight": {
+						"type": "number",
+						"example": 12.3
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"slug": {
+						"type": "string",
+						"example": "product-name"
+					},
+					"defaultVariant": {
+						"type": "number",
+						"example": 1
+					},
+					"descriptionPlaintext": {
+						"type": "string",
+						"example": "Product Description"
+					},
+					"rating": {
+						"type": "number",
+						"example": 10
+					},
+					"searchDocument": {
+						"type": "string",
+						"example": "Product Name"
+					},
+					"created": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"isPublished": {
+						"type": "boolean",
+						"example": true
+					},
+					"isVisibleInListings": {
+						"type": "boolean",
+						"example": true
+					},
+					"isAvailableForPurchase": {
+						"type": "boolean",
+						"example": true
+					},
+					"currency": {
+						"type": "string",
+						"example": "EUR"
+					},
+					"minPrice": {
+						"type": "number",
+						"example": 12.3
+					}
+				},
+				"required": [
+					"name",
+					"description",
+					"updatedAt",
+					"productType",
+					"category",
+					"seoDescription",
+					"seoTitle",
+					"chargeTaxes",
+					"weight",
+					"metadata",
+					"privateMetadata",
+					"slug",
+					"defaultVariant",
+					"descriptionPlaintext",
+					"rating",
+					"searchDocument",
+					"created",
+					"isPublished",
+					"isVisibleInListings",
+					"isAvailableForPurchase",
+					"currency",
+					"minPrice"
+				]
+			},
+			"UpdateProductDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"example": 1
+					},
+					"name": {
+						"example": {
+							"en": "Product Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"description": {
+						"example": {
+							"en": "Product Description"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"updatedAt": {
+						"type": "string",
+						"example": ""
+					},
+					"productType": {
+						"$ref": "#/components/schemas/ProductTypeDto"
+					},
+					"category": {
+						"$ref": "#/components/schemas/CategoryDto"
+					},
+					"seoDescription": {
+						"type": "string",
+						"example": "SEO Description"
+					},
+					"seoTitle": {
+						"type": "string",
+						"example": "SEO Title"
+					},
+					"chargeTaxes": {
+						"type": "boolean",
+						"example": true
+					},
+					"weight": {
+						"type": "number",
+						"example": 12.3
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"slug": {
+						"type": "string",
+						"example": "product-name"
+					},
+					"defaultVariant": {
+						"type": "number",
+						"example": 1
+					},
+					"descriptionPlaintext": {
+						"type": "string",
+						"example": "Product Description"
+					},
+					"rating": {
+						"type": "number",
+						"example": 10
+					},
+					"searchDocument": {
+						"type": "string",
+						"example": "Product Name"
+					},
+					"created": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"isPublished": {
+						"type": "boolean",
+						"example": true
+					},
+					"isVisibleInListings": {
+						"type": "boolean",
+						"example": true
+					},
+					"isAvailableForPurchase": {
+						"type": "boolean",
+						"example": true
+					},
+					"currency": {
+						"type": "string",
+						"example": "EUR"
+					},
+					"minPrice": {
+						"type": "number",
+						"example": 12.3
+					}
+				}
+			},
+			"CreateProductTypeDto": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"example": "Product Type"
+					},
+					"hasVariants": {
+						"type": "boolean",
+						"example": false
+					},
+					"isShippingRequired": {
+						"type": "boolean",
+						"example": false
+					},
+					"weight": {
+						"type": "number",
+						"example": 22.1
+					},
+					"isDigital": {
+						"type": "boolean",
+						"example": false
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"slug": {
+						"type": "string",
+						"example": "product-type"
+					}
+				},
+				"required": [
+					"name",
+					"hasVariants",
+					"isShippingRequired",
+					"weight",
+					"isDigital",
+					"metadata",
+					"privateMetadata",
+					"slug"
+				]
+			},
+			"UpdateProductTypeDto": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"example": "Product Type"
+					},
+					"hasVariants": {
+						"type": "boolean",
+						"example": false
+					},
+					"isShippingRequired": {
+						"type": "boolean",
+						"example": false
+					},
+					"weight": {
+						"type": "number",
+						"example": 22.1
+					},
+					"isDigital": {
+						"type": "boolean",
+						"example": false
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"slug": {
+						"type": "string",
+						"example": "product-type"
+					}
+				}
+			},
+			"CreateCategoryDto": {
+				"type": "object",
+				"properties": {
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"seoTitle": {
+						"example": {
+							"en": "Category Seo Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"seoDescription": {
+						"example": {
+							"en": "Category Seo Description"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"name": {
+						"example": {
+							"en": "Category Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"description": {
+						"example": {
+							"en": "Category Description"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"slug": {
+						"type": "string",
+						"example": "category-name"
+					},
+					"parentId": {
+						"type": "number",
+						"example": 1
+					}
+				},
+				"required": [
+					"privateMetadata",
+					"metadata",
+					"seoTitle",
+					"seoDescription",
+					"name",
+					"description",
+					"slug",
+					"parentId"
+				]
+			},
+			"UpdateCategoryDto": {
+				"type": "object",
+				"properties": {
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"seoTitle": {
+						"example": {
+							"en": "Category Seo Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"seoDescription": {
+						"example": {
+							"en": "Category Seo Description"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"name": {
+						"example": {
+							"en": "Category Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"description": {
+						"example": {
+							"en": "Category Description"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"slug": {
+						"type": "string",
+						"example": "category-name"
+					},
+					"parentId": {
+						"type": "number",
+						"example": 1
+					}
+				}
+			},
+			"LanguageCode": {
+				"type": "string",
+				"enum": [
+					"en",
+					"el",
+					"fr",
+					"es",
+					"it",
+					"de",
+					"ru"
+				]
+			},
+			"AddressEntity": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"example": 1
+					},
+					"firstName": {
+						"type": "string",
+						"example": "John"
+					},
+					"lastName": {
+						"type": "string",
+						"example": "Doe"
+					},
+					"companyName": {
+						"type": "string",
+						"example": "Indera Inc."
+					},
+					"phone": {
+						"type": "string",
+						"example": "+1 1234 567 890"
+					},
+					"country": {
+						"type": "string",
+						"example": "Greece"
+					},
+					"state": {
+						"type": "string",
+						"example": "Attica"
+					},
+					"city": {
+						"type": "string",
+						"example": "Athens"
+					},
+					"zip": {
+						"type": "string",
+						"example": "12345"
+					},
+					"address": {
+						"type": "string",
+						"example": "Example 123"
+					},
+					"address2": {
+						"type": "string",
+						"example": "Example 123"
+					}
+				},
+				"required": [
+					"id",
+					"country",
+					"state",
+					"city",
+					"zip",
+					"address"
+				]
+			},
+			"MediaEntity": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"example": 1
+					},
+					"mimeType": {
+						"type": "string",
+						"example": "image/png"
+					},
+					"name": {
+						"type": "string",
+						"example": "Media Name"
+					},
+					"slug": {
+						"type": "string",
+						"example": "media-name"
+					},
+					"url": {
+						"type": "string",
+						"example": ""
+					}
+				},
+				"required": [
+					"id",
+					"mimeType",
+					"name",
+					"slug",
+					"url"
+				]
+			},
+			"SettingsDto": {
+				"type": "object",
+				"properties": {
+					"siteName": {
+						"type": "string",
+						"example": "Example Shop"
+					},
+					"adminLanguage": {
+						"example": "en",
+						"$ref": "#/components/schemas/LanguageCode"
+					},
+					"availableLanguages": {
+						"type": "array",
+						"example": [
+							"en",
+							"el"
+						],
+						"items": {
+							"$ref": "#/components/schemas/LanguageCode"
+						}
+					},
+					"baseUrl": {
+						"type": "string",
+						"example": "https://example.com"
+					},
+					"canRegister": {
+						"type": "boolean",
+						"example": true
+					},
+					"defaultLanguage": {
+						"example": "en",
+						"$ref": "#/components/schemas/LanguageCode"
+					},
+					"senderEmail": {
+						"type": "string",
+						"example": "sender@example.com"
+					},
+					"senderName": {
+						"type": "string",
+						"example": "Sender"
+					},
+					"seoTitle": {
+						"type": "string",
+						"example": "Awesome Eshop"
+					},
+					"seoDescription": {
+						"type": "string",
+						"example": "What a great shop!"
+					},
+					"shopAddress": {
+						"$ref": "#/components/schemas/AddressEntity"
+					},
+					"siteLogo": {
+						"$ref": "#/components/schemas/MediaEntity"
+					}
+				},
+				"required": [
+					"siteName",
+					"adminLanguage",
+					"availableLanguages",
+					"baseUrl",
+					"canRegister",
+					"defaultLanguage",
+					"senderEmail",
+					"senderName",
+					"seoTitle",
+					"seoDescription"
+				]
+			},
+			"CreateUserDto": {
+				"type": "object",
+				"properties": {}
+			},
+			"UpdateUserDto": {
+				"type": "object",
+				"properties": {}
+			},
+			"LoginUserDto": {
+				"type": "object",
+				"properties": {
+					"email": {
+						"type": "string",
+						"example": "test@example.com"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"password"
+				]
+			},
+			"SuccessLoginResponse": {
+				"type": "object",
+				"properties": {
+					"access_token": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"access_token"
+				]
+			},
+			"AddressDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"example": 1
+					},
+					"firstName": {
+						"type": "string",
+						"example": "John"
+					},
+					"lastName": {
+						"type": "string",
+						"example": "Doe"
+					},
+					"companyName": {
+						"type": "string",
+						"example": "Indera Inc."
+					},
+					"phone": {
+						"type": "string",
+						"example": "+1 1234 567 890"
+					},
+					"country": {
+						"type": "string",
+						"example": "Greece"
+					},
+					"state": {
+						"type": "string",
+						"example": "Attica"
+					},
+					"city": {
+						"type": "string",
+						"example": "Athens"
+					},
+					"zip": {
+						"type": "string",
+						"example": "12345"
+					},
+					"address": {
+						"type": "string",
+						"example": "Example 123"
+					},
+					"address2": {
+						"type": "string",
+						"example": "Example 123"
+					}
+				},
+				"required": [
+					"id",
+					"country",
+					"state",
+					"city",
+					"zip",
+					"address"
+				]
+			},
+			"MediaDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"example": 1
+					},
+					"mimeType": {
+						"type": "string",
+						"example": "image/png"
+					},
+					"name": {
+						"type": "string",
+						"example": "Media Name"
+					},
+					"slug": {
+						"type": "string",
+						"example": "media-name"
+					},
+					"url": {
+						"type": "string",
+						"example": ""
+					}
+				},
+				"required": [
+					"id",
+					"mimeType",
+					"name",
+					"slug",
+					"url"
+				]
+			},
+			"UserDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"example": 1
+					},
+					"email": {
+						"type": "string",
+						"example": "test@example.com"
+					},
+					"isAdmin": {
+						"type": "boolean",
+						"example": false
+					},
+					"isStaff": {
+						"type": "boolean",
+						"example": false
+					},
+					"isActive": {
+						"type": "boolean",
+						"example": false
+					},
+					"createdAt": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"updatedAt": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"lastLogin": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"defaultBillingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"defaultShippingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"notes": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"avatar": {
+						"$ref": "#/components/schemas/MediaDto"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"languageCode": {
+						"example": "en",
+						"$ref": "#/components/schemas/LanguageCode"
+					},
+					"addresses": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/AddressDto"
+						}
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"email",
+					"isAdmin",
+					"isStaff",
+					"isActive",
+					"createdAt",
+					"updatedAt",
+					"metadata",
+					"privateMetadata",
+					"languageCode",
+					"addresses",
+					"password"
+				]
+			},
+			"OrderStatus": {
+				"type": "string",
+				"enum": [
+					"DRAFT",
+					"UNCONFIRMED",
+					"UNFULFILLED",
+					"PARTIALLY_FULFILLED",
+					"PARTIALLY_RETURNED",
+					"RETURNED",
+					"FULFILLED",
+					"CANCELED"
+				]
+			},
+			"CreateOrderDto": {
+				"type": "object",
+				"properties": {
+					"trackingClientId": {
+						"type": "string",
+						"example": "123ABC456",
+						"description": "shipping tracking id"
+					},
+					"userEmail": {
+						"type": "string",
+						"example": "test@example.com"
+					},
+					"billingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"shippingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"user": {
+						"$ref": "#/components/schemas/UserDto"
+					},
+					"totalNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"voucher_id": {
+						"type": "number",
+						"example": 1
+					},
+					"languageCode": {
+						"example": "en",
+						"$ref": "#/components/schemas/LanguageCode"
+					},
+					"shippingPriceGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"totalGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"shippingPriceNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"status": {
+						"example": "DRAFT",
+						"$ref": "#/components/schemas/OrderStatus"
+					},
+					"shippingMethodName": {
+						"type": "string",
+						"example": "Same Day Delivery"
+					},
+					"shippingMethodId": {
+						"type": "number",
+						"example": "Same Day Delivery"
+					},
+					"displayGrossPrices": {
+						"type": "boolean",
+						"example": true
+					},
+					"customerNote": {
+						"type": "string",
+						"example": ""
+					},
+					"weight": {
+						"type": "number",
+						"example": 12.3
+					},
+					"checkoutToken": {
+						"type": "string",
+						"example": ""
+					},
+					"currency": {
+						"type": "string",
+						"example": "EUR"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"redirectUrl": {
+						"type": "string",
+						"example": ""
+					},
+					"shippingTaxRate": {
+						"type": "number",
+						"example": 12.3
+					},
+					"undiscountedTotalGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"undiscountedTotalNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"totalPaidAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"origin": {
+						"type": "string",
+						"example": ""
+					},
+					"original": {
+						"type": "object"
+					},
+					"searchDocument": {
+						"type": "string",
+						"example": ""
+					}
+				},
+				"required": [
+					"trackingClientId",
+					"userEmail",
+					"totalNetAmount",
+					"voucher_id",
+					"languageCode",
+					"shippingPriceGrossAmount",
+					"totalGrossAmount",
+					"shippingPriceNetAmount",
+					"status",
+					"displayGrossPrices",
+					"customerNote",
+					"weight",
+					"checkoutToken",
+					"currency",
+					"metadata",
+					"privateMetadata",
+					"shippingTaxRate",
+					"undiscountedTotalGrossAmount",
+					"undiscountedTotalNetAmount",
+					"totalPaidAmount",
+					"origin",
+					"searchDocument"
+				]
+			},
+			"UpdateOrderDto": {
+				"type": "object",
+				"properties": {
+					"trackingClientId": {
+						"type": "string",
+						"example": "123ABC456",
+						"description": "shipping tracking id"
+					},
+					"userEmail": {
+						"type": "string",
+						"example": "test@example.com"
+					},
+					"billingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"shippingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"user": {
+						"$ref": "#/components/schemas/UserDto"
+					},
+					"totalNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"voucher_id": {
+						"type": "number",
+						"example": 1
+					},
+					"languageCode": {
+						"example": "en",
+						"$ref": "#/components/schemas/LanguageCode"
+					},
+					"shippingPriceGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"totalGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"shippingPriceNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"status": {
+						"example": "DRAFT",
+						"$ref": "#/components/schemas/OrderStatus"
+					},
+					"shippingMethodName": {
+						"type": "string",
+						"example": "Same Day Delivery"
+					},
+					"shippingMethodId": {
+						"type": "number",
+						"example": "Same Day Delivery"
+					},
+					"displayGrossPrices": {
+						"type": "boolean",
+						"example": true
+					},
+					"customerNote": {
+						"type": "string",
+						"example": ""
+					},
+					"weight": {
+						"type": "number",
+						"example": 12.3
+					},
+					"checkoutToken": {
+						"type": "string",
+						"example": ""
+					},
+					"currency": {
+						"type": "string",
+						"example": "EUR"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"redirectUrl": {
+						"type": "string",
+						"example": ""
+					},
+					"shippingTaxRate": {
+						"type": "number",
+						"example": 12.3
+					},
+					"undiscountedTotalGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"undiscountedTotalNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"totalPaidAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"origin": {
+						"type": "string",
+						"example": ""
+					},
+					"original": {
+						"type": "object"
+					},
+					"searchDocument": {
+						"type": "string",
+						"example": ""
+					}
+				}
+			},
+			"CreateCheckoutDto": {
+				"type": "object",
+				"properties": {
+					"email": {
+						"type": "string",
+						"example": "test@example.com"
+					},
+					"user": {
+						"$ref": "#/components/schemas/UserDto"
+					},
+					"billingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"discountAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"discountName": {
+						"type": "string",
+						"example": "discount-name"
+					},
+					"note": {
+						"type": "string",
+						"example": "checkout-note"
+					},
+					"shippingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"shipping_method_id": {
+						"type": "number",
+						"example": 1
+					},
+					"voucherCode": {
+						"type": "string",
+						"example": "ASDF123"
+					},
+					"translatedDiscountName": {
+						"type": "string",
+						"example": "discount-name"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"currency": {
+						"type": "string",
+						"example": "EUR"
+					},
+					"country": {
+						"type": "string",
+						"example": "Greece"
+					},
+					"redirectUrl": {
+						"type": "string",
+						"example": "http://www.example.com/redirect"
+					},
+					"trackingCode": {
+						"type": "string",
+						"example": "ASDF123"
+					},
+					"languageCode": {
+						"$ref": "#/components/schemas/LanguageCode"
+					}
+				},
+				"required": [
+					"user",
+					"billingAddress",
+					"discountAmount",
+					"note",
+					"shippingAddress",
+					"shipping_method_id",
+					"metadata",
+					"privateMetadata",
+					"currency",
+					"country",
+					"languageCode"
+				]
+			},
+			"UpdateCheckoutDto": {
+				"type": "object",
+				"properties": {
+					"email": {
+						"type": "string",
+						"example": "test@example.com"
+					},
+					"user": {
+						"$ref": "#/components/schemas/UserDto"
+					},
+					"billingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"discountAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"discountName": {
+						"type": "string",
+						"example": "discount-name"
+					},
+					"note": {
+						"type": "string",
+						"example": "checkout-note"
+					},
+					"shippingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"shipping_method_id": {
+						"type": "number",
+						"example": 1
+					},
+					"voucherCode": {
+						"type": "string",
+						"example": "ASDF123"
+					},
+					"translatedDiscountName": {
+						"type": "string",
+						"example": "discount-name"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"currency": {
+						"type": "string",
+						"example": "EUR"
+					},
+					"country": {
+						"type": "string",
+						"example": "Greece"
+					},
+					"redirectUrl": {
+						"type": "string",
+						"example": "http://www.example.com/redirect"
+					},
+					"trackingCode": {
+						"type": "string",
+						"example": "ASDF123"
+					},
+					"languageCode": {
+						"$ref": "#/components/schemas/LanguageCode"
+					}
+				}
+			},
+			"DiscountType": {
+				"type": "string",
+				"enum": [
+					"PERCENTAGE",
+					"FLAT"
+				]
+			},
+			"CreateDiscountSaleDto": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"example": {
+							"en": "Discount Sale Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"discountType": {
+						"$ref": "#/components/schemas/DiscountType"
+					},
+					"endDate": {
+						"type": "string",
+						"example": "2022-12-31"
+					},
+					"startDate": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					}
+				},
+				"required": [
+					"name",
+					"discountType",
+					"metadata",
+					"privateMetadata"
+				]
+			},
+			"UpdateDiscountDto": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"example": {
+							"en": "Discount Sale Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"discountType": {
+						"$ref": "#/components/schemas/DiscountType"
+					},
+					"endDate": {
+						"type": "string",
+						"example": "2022-12-31"
+					},
+					"startDate": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					}
+				}
+			}
+		}
+	}
+}

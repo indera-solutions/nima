@@ -14,11 +14,11 @@ export class SettingsEntity implements Settings {
 	siteName: string;
 
 	@Column({ type: 'enum', enum: LanguageCode })
-	@ApiProperty({ enum: LanguageCode, example: LanguageCode.en })
+	@ApiProperty({ enum: LanguageCode, example: LanguageCode.en, enumName: 'LanguageCode' })
 	adminLanguage: LanguageCode;
 
 	@Column({ type: 'enum', array: true, enum: LanguageCode })
-	@ApiProperty({ enum: LanguageCode, example: [LanguageCode.en, LanguageCode.el], isArray: true })
+	@ApiProperty({ enum: LanguageCode, example: [LanguageCode.en, LanguageCode.el], isArray: true, enumName: 'LanguageCode' })
 	availableLanguages: LanguageCode[];
 
 	@Column()
@@ -30,7 +30,7 @@ export class SettingsEntity implements Settings {
 	canRegister: boolean;
 
 	@Column({ type: 'enum', enum: LanguageCode })
-	@ApiProperty({ enum: LanguageCode, example: LanguageCode.en })
+	@ApiProperty({ enum: LanguageCode, example: LanguageCode.en, enumName: 'LanguageCode' })
 	defaultLanguage: LanguageCode;
 
 	@Column()

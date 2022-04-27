@@ -85,6 +85,6 @@ export class CheckoutEntity implements Checkout {
 	trackingCode?: string;
 
 	@Column({ enum: LanguageCode, type: 'enum' })
-	@ApiProperty({ enum: LanguageCode })
+	@ApiProperty({ enum: LanguageCode, enumName: 'LanguageCode' })
 	languageCode: LanguageCode;
 }
