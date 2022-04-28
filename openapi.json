@@ -966,6 +966,16 @@
 			"post": {
 				"operationId": "Auth_register",
 				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RegisterUserDto"
+							}
+						}
+					}
+				},
 				"responses": {
 					"201": {
 						"description": ""
@@ -2394,199 +2404,6 @@
 					"ru"
 				]
 			},
-			"AddressEntity": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "number",
-						"example": 1
-					},
-					"firstName": {
-						"type": "string",
-						"example": "John"
-					},
-					"lastName": {
-						"type": "string",
-						"example": "Doe"
-					},
-					"companyName": {
-						"type": "string",
-						"example": "Indera Inc."
-					},
-					"phone": {
-						"type": "string",
-						"example": "+1 1234 567 890"
-					},
-					"country": {
-						"type": "string",
-						"example": "Greece"
-					},
-					"state": {
-						"type": "string",
-						"example": "Attica"
-					},
-					"city": {
-						"type": "string",
-						"example": "Athens"
-					},
-					"zip": {
-						"type": "string",
-						"example": "12345"
-					},
-					"address": {
-						"type": "string",
-						"example": "Example 123"
-					},
-					"address2": {
-						"type": "string",
-						"example": "Example 123"
-					}
-				},
-				"required": [
-					"id",
-					"country",
-					"state",
-					"city",
-					"zip",
-					"address"
-				]
-			},
-			"MediaEntity": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "number",
-						"example": 1
-					},
-					"mimeType": {
-						"type": "string",
-						"example": "image/png"
-					},
-					"name": {
-						"type": "string",
-						"example": "Media Name"
-					},
-					"slug": {
-						"type": "string",
-						"example": "media-name"
-					},
-					"url": {
-						"type": "string",
-						"example": ""
-					}
-				},
-				"required": [
-					"id",
-					"mimeType",
-					"name",
-					"slug",
-					"url"
-				]
-			},
-			"SettingsDto": {
-				"type": "object",
-				"properties": {
-					"siteName": {
-						"type": "string",
-						"example": "Example Shop"
-					},
-					"adminLanguage": {
-						"example": "en",
-						"$ref": "#/components/schemas/LanguageCode"
-					},
-					"availableLanguages": {
-						"type": "array",
-						"example": [
-							"en",
-							"el"
-						],
-						"items": {
-							"$ref": "#/components/schemas/LanguageCode"
-						}
-					},
-					"baseUrl": {
-						"type": "string",
-						"example": "https://example.com"
-					},
-					"canRegister": {
-						"type": "boolean",
-						"example": true
-					},
-					"defaultLanguage": {
-						"example": "en",
-						"$ref": "#/components/schemas/LanguageCode"
-					},
-					"senderEmail": {
-						"type": "string",
-						"example": "sender@example.com"
-					},
-					"senderName": {
-						"type": "string",
-						"example": "Sender"
-					},
-					"seoTitle": {
-						"type": "string",
-						"example": "Awesome Eshop"
-					},
-					"seoDescription": {
-						"type": "string",
-						"example": "What a great shop!"
-					},
-					"shopAddress": {
-						"$ref": "#/components/schemas/AddressEntity"
-					},
-					"siteLogo": {
-						"$ref": "#/components/schemas/MediaEntity"
-					}
-				},
-				"required": [
-					"siteName",
-					"adminLanguage",
-					"availableLanguages",
-					"baseUrl",
-					"canRegister",
-					"defaultLanguage",
-					"senderEmail",
-					"senderName",
-					"seoTitle",
-					"seoDescription"
-				]
-			},
-			"CreateUserDto": {
-				"type": "object",
-				"properties": {}
-			},
-			"UpdateUserDto": {
-				"type": "object",
-				"properties": {}
-			},
-			"LoginUserDto": {
-				"type": "object",
-				"properties": {
-					"email": {
-						"type": "string",
-						"example": "test@example.com"
-					},
-					"password": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"email",
-					"password"
-				]
-			},
-			"SuccessLoginResponse": {
-				"type": "object",
-				"properties": {
-					"access_token": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"access_token"
-				]
-			},
 			"AddressDto": {
 				"type": "object",
 				"properties": {
@@ -2674,6 +2491,132 @@
 					"name",
 					"slug",
 					"url"
+				]
+			},
+			"SettingsDto": {
+				"type": "object",
+				"properties": {
+					"siteName": {
+						"type": "string",
+						"example": "Example Shop"
+					},
+					"adminLanguage": {
+						"example": "en",
+						"$ref": "#/components/schemas/LanguageCode"
+					},
+					"availableLanguages": {
+						"type": "array",
+						"example": [
+							"en",
+							"el"
+						],
+						"items": {
+							"$ref": "#/components/schemas/LanguageCode"
+						}
+					},
+					"baseUrl": {
+						"type": "string",
+						"example": "https://example.com"
+					},
+					"canRegister": {
+						"type": "boolean",
+						"example": true
+					},
+					"defaultLanguage": {
+						"example": "en",
+						"$ref": "#/components/schemas/LanguageCode"
+					},
+					"senderEmail": {
+						"type": "string",
+						"example": "sender@example.com"
+					},
+					"senderName": {
+						"type": "string",
+						"example": "Sender"
+					},
+					"seoTitle": {
+						"type": "string",
+						"example": "Awesome Eshop"
+					},
+					"seoDescription": {
+						"type": "string",
+						"example": "What a great shop!"
+					},
+					"shopAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"siteLogo": {
+						"$ref": "#/components/schemas/MediaDto"
+					}
+				},
+				"required": [
+					"siteName",
+					"adminLanguage",
+					"availableLanguages",
+					"baseUrl",
+					"canRegister",
+					"defaultLanguage",
+					"senderEmail",
+					"senderName",
+					"seoTitle",
+					"seoDescription"
+				]
+			},
+			"CreateUserDto": {
+				"type": "object",
+				"properties": {}
+			},
+			"UpdateUserDto": {
+				"type": "object",
+				"properties": {}
+			},
+			"RegisterUserDto": {
+				"type": "object",
+				"properties": {
+					"email": {
+						"type": "string",
+						"example": "test@example.com"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"password"
+				]
+			},
+			"LoginUserDto": {
+				"type": "object",
+				"properties": {
+					"email": {
+						"type": "string",
+						"example": "test@example.com"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"password"
+				]
+			},
+			"SuccessLoginResponse": {
+				"type": "object",
+				"properties": {
+					"access_token": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"access_token"
 				]
 			},
 			"UserDto": {
