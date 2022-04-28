@@ -1,12 +1,20 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { EmptyObject, getSlug } from '@nima/utils';
 import { CreateProductTypeDto, ProductTypeDto, UpdateProductTypeDto } from './dto/product-type.dto';
 import { ProductTypeEntity } from './entities';
+import { ProductTypeAttributesService } from './product-type-attributes.service';
+import { ProductTypeVariantAttributesService } from './product-type-variant-attributes.service';
 import { ProductTypeRepository } from './repositories';
 
 @Injectable()
 export class ProductTypesService {
-	constructor(private productTypeRepository: ProductTypeRepository) {
+	constructor(
+		private productTypeRepository: ProductTypeRepository,
+		@Inject(forwardRef(() => ProductTypeAttributesService))
+		private readonly simpleAttributeService: ProductTypeAttributesService,
+		@Inject(forwardRef(() => ProductTypeVariantAttributesService))
+		private readonly variantAttributeService: ProductTypeVariantAttributesService,
+	) {
 	}
 
 	private static prepareProductType(pt: ProductTypeEntity, isAdmin?: boolean): ProductTypeDto {
@@ -20,8 +28,8 @@ export class ProductTypesService {
 			metadata: pt.metadata,
 			privateMetadata: isAdmin ? pt.privateMetadata : {},
 			weight: pt.weight,
-			attributes: [],
-			variantAttributes: [],
+			attributes: pt.attributes.map(pta => ProductTypeAttributesService.prepareProductTypeAttribute(pta)),
+			variantAttributes: pt.variantAttributes.map(ptva => ProductTypeVariantAttributesService.prepareProductTypeVariantAttribute(ptva)),
 		};
 	}
 
@@ -37,7 +45,15 @@ export class ProductTypesService {
 		if ( !dto.slug ) {
 			dto.slug = getSlug(dto.name);
 		}
+
+		//TODO: Mutually exclusive Product and Variant Attributes in Product Types
+
 		const pt = await this.productTypeRepository.save({ ...dto, id: productTypeId });
+		pt.attributes = [];
+		for ( const attribute of dto.attributes ) {
+			const res = await this.simpleAttributeService.save({ productTypeId: pt.id, dto: attribute });
+			pt.attributes.push(res);
+		}
 		return ProductTypesService.prepareProductType(pt, true);
 	}
 
@@ -67,6 +83,6 @@ export class ProductTypesService {
 		if ( !id ) throw new BadRequestException('INVALID_PRODUCT_TYPE_ID');
 		const pt = await this.getById({ id });
 		await this.productTypeRepository.deleteById(id);
-		return ProductTypesService.prepareProductType(pt);
+		return pt;
 	}
 }

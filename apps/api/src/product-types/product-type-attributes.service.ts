@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { AttributesService } from '../attributes/attributes.service';
 import {
 	CreateProductTypeAttributeDto,
@@ -13,12 +13,13 @@ import { ProductTypeAttributeRepository } from './repositories';
 export class ProductTypeAttributesService {
 	constructor(
 		private productTypeAttributeRepository: ProductTypeAttributeRepository,
+		@Inject(forwardRef(() => ProductTypesService))
 		private productTypesService: ProductTypesService,
 		private attributesService: AttributesService,
 	) {
 	}
 
-	private static prepareProductTypeAttribute(pta: ProductTypeAttributeEntity): ProductTypeAttributeDto {
+	static prepareProductTypeAttribute(pta: ProductTypeAttributeEntity): ProductTypeAttributeDto {
 		return {
 			attributeId: pta.attribute.id,
 			sortOrder: pta.sortOrder,
@@ -36,8 +37,7 @@ export class ProductTypeAttributesService {
 			_productTypeAttributeId = Number(productTypeAttributeId);
 			if ( isNaN(_productTypeAttributeId) ) throw new BadRequestException('PRODUCT_TYPE_ID_IS_NaN');
 		}
-		const res = await this.productTypeAttributeRepository.save({ ...dto, id: _productTypeAttributeId, attribute: attribute, productType: productType });
-		return ProductTypeAttributesService.prepareProductTypeAttribute(res);
+		return await this.productTypeAttributeRepository.save({ ...dto, id: _productTypeAttributeId, attribute: attribute, productType: productType });
 	}
 
 	async listOfProductType(params: { productTypeId: number }): Promise<ProductTypeAttributeDto[]> {

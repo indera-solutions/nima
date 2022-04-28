@@ -1,7 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Metadata } from '@nima/utils';
 import { IsBoolean, IsInt, IsNumber, IsObject, IsString } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ProductTypeAttributeEntity } from './product-type-attribute.entity';
+import { ProductTypeVariantAttributeEntity } from './product-type-variant-attribute.entity';
 
 @Entity('product_type_product_types')
 export class ProductTypeEntity {
@@ -49,4 +51,10 @@ export class ProductTypeEntity {
 	@ApiProperty({ example: 'product-type' })
 	@IsString()
 	slug: string;
+
+	@OneToMany(() => ProductTypeAttributeEntity, pta => pta.productType, { eager: true })
+	attributes: ProductTypeAttributeEntity[];
+
+	@OneToMany(() => ProductTypeVariantAttributeEntity, pta => pta.productType, { eager: true })
+	variantAttributes: ProductTypeVariantAttributeEntity[];
 }

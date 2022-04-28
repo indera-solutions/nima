@@ -11,7 +11,7 @@ export class ProductTypeVariantAttributeEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@ManyToOne(() => AttributeEntity)
+	@ManyToOne(() => AttributeEntity, { eager: true })
 	attribute: AttributeDto;
 
 	@ManyToOne(() => ProductTypeEntity)
