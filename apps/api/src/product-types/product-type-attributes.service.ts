@@ -21,7 +21,6 @@ export class ProductTypeAttributesService {
 	private static prepareProductTypeAttribute(pta: ProductTypeAttributeEntity): ProductTypeAttributeDto {
 		return {
 			attribute: pta.attribute,
-			productType: pta.productType,
 			id: pta.id,
 			sortOrder: pta.sortOrder,
 		};
@@ -69,6 +68,6 @@ export class ProductTypeAttributesService {
 		const { productTypeAttributeId } = params;
 		const attr = await this.getById({ productTypeAttributeId });
 		await this.productTypeAttributeRepository.deleteById(productTypeAttributeId);
-		return ProductTypeAttributesService.prepareProductTypeAttribute(attr);
+		return attr;
 	}
 }

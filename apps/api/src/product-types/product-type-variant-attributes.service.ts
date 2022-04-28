@@ -21,7 +21,6 @@ export class ProductTypeVariantAttributesService {
 	private static prepareProductTypeVariantAttribute(pta: ProductTypeVariantAttributeEntity): ProductTypeVariantAttributeDto {
 		return {
 			attribute: pta.attribute,
-			productType: pta.productType,
 			id: pta.id,
 			sortOrder: pta.sortOrder,
 			variantSelection: pta.variantSelection,
@@ -70,6 +69,6 @@ export class ProductTypeVariantAttributesService {
 		const { productTypeAttributeId } = params;
 		const attr = await this.getById({ productTypeAttributeId });
 		await this.productTypeVariantAttributeRepository.deleteById(productTypeAttributeId);
-		return ProductTypeVariantAttributesService.prepareProductTypeVariantAttribute(attr);
+		return attr;
 	}
 }
