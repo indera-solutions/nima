@@ -1,8 +1,9 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository } from 'typeorm';
+import { BaseRepository } from 'typeorm-transactional-cls-hooked';
 import { ProductTypeEntity } from '../entities';
 
 @EntityRepository(ProductTypeEntity)
-export class ProductTypeRepository extends Repository<ProductTypeEntity> {
+export class ProductTypeRepository extends BaseRepository<ProductTypeEntity> {
 
 	async getById(id: number) {
 		return this.findOne(id);

@@ -1,6 +1,7 @@
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { initializeTransactionalContext } from 'typeorm-transactional-cls-hooked';
 
 import { AppModule } from './app.module';
 import { SwaggerDarkModeCss } from './swagger-dark-mode.css';
@@ -44,5 +45,7 @@ async function bootstrap() {
 	Logger.log(`🚀 Application is running on: http://localhost:${ port }/${ globalPrefix }`);
 	Logger.log(`🚀 Swagger is running on: http://localhost:${ port }/docs`);
 }
+
+initializeTransactionalContext();
 
 bootstrap();

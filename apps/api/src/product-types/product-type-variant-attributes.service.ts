@@ -38,8 +38,7 @@ export class ProductTypeVariantAttributesService {
 			_productTypeAttributeId = Number(productTypeAttributeId);
 			if ( isNaN(_productTypeAttributeId) ) throw new BadRequestException('PRODUCT_TYPE_ID_IS_NaN');
 		}
-		const res = await this.productTypeVariantAttributeRepository.save({ ...dto, id: _productTypeAttributeId, attribute: attribute, productType: productType });
-		return ProductTypeVariantAttributesService.prepareProductTypeVariantAttribute(res);
+		return await this.productTypeVariantAttributeRepository.save({ ...dto, id: _productTypeAttributeId, attribute: attribute, productType: productType });
 	}
 
 	async listOfProductType(params: { productTypeId: number }): Promise<ProductTypeVariantAttributeDto[]> {
@@ -71,6 +70,13 @@ export class ProductTypeVariantAttributesService {
 		const { productTypeAttributeId } = params;
 		const attr = await this.getById({ productTypeAttributeId });
 		await this.productTypeVariantAttributeRepository.deleteById(productTypeAttributeId);
+		return attr;
+	}
+
+	async deleteProductTypeAttribute(params: { attributeId: number; productTypeId: number }) {
+		const { productTypeId, attributeId } = params;
+		const attr = await this.productTypeVariantAttributeRepository.getByAttributeAndProductType(productTypeId, attributeId);
+		await this.productTypeVariantAttributeRepository.deleteByAttributeAndProductType(productTypeId, attributeId);
 		return attr;
 	}
 }

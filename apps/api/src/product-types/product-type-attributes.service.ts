@@ -1,4 +1,5 @@
 import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { AttributesService } from '../attributes/attributes.service';
 import {
 	CreateProductTypeAttributeDto,
@@ -28,6 +29,7 @@ export class ProductTypeAttributesService {
 
 	save(params: { productTypeId: number, dto: CreateProductTypeAttributeDto }): Promise<ProductTypeAttributeDto>
 	save(params: { productTypeId: number, dto: CreateProductTypeAttributeDto, productTypeAttributeId: number }): Promise<ProductTypeAttributeDto>
+	@Transactional()
 	async save(params: { productTypeId: number, dto: CreateProductTypeAttributeDto, productTypeAttributeId?: number }): Promise<ProductTypeAttributeDto> {
 		const { productTypeAttributeId, dto, productTypeId } = params;
 		let _productTypeAttributeId = undefined;
@@ -70,6 +72,13 @@ export class ProductTypeAttributesService {
 		const { productTypeAttributeId } = params;
 		const attr = await this.getById({ productTypeAttributeId });
 		await this.productTypeAttributeRepository.deleteById(productTypeAttributeId);
+		return attr;
+	}
+
+	async deleteProductTypeAttribute(params: { productTypeId: number, attributeId: number }): Promise<ProductTypeAttributeEntity> {
+		const { productTypeId, attributeId } = params;
+		const attr = await this.productTypeAttributeRepository.getByAttributeAndProductTypeId(productTypeId, attributeId);
+		await this.productTypeAttributeRepository.deleteByAttributeAndProductTypeId(productTypeId, attributeId);
 		return attr;
 	}
 }
