@@ -20,6 +20,8 @@ export class ProductTypesService {
 			metadata: pt.metadata,
 			privateMetadata: isAdmin ? pt.privateMetadata : {},
 			weight: pt.weight,
+			attributes: [],
+			variantAttributes: [],
 		};
 	}
 

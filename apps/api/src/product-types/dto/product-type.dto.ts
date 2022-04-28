@@ -4,6 +4,11 @@ import { ProductTypeAttributeDto, ProductTypeVariantAttributeDto } from './produ
 
 // export class ProductTypeDto extends OmitType(ProductTypeEntity, []) {
 export class ProductTypeDto extends ProductTypeEntity {
+	@ApiProperty({ type: [ProductTypeAttributeDto] })
+	attributes: ProductTypeAttributeDto[];
+
+	@ApiProperty({ type: [ProductTypeVariantAttributeDto] })
+	variantAttributes: ProductTypeVariantAttributeDto[];
 }
 
 export class CreateProductTypeDto extends OmitType(ProductTypeDto, ['id']) {

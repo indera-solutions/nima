@@ -9,16 +9,12 @@ import { ProductTypeEntity } from './product-type.entity';
 @Entity('product_type_product_type_attributes')
 export class ProductTypeAttributeEntity {
 	@PrimaryGeneratedColumn()
-	@ApiProperty({ type: Number, example: 1 })
-	@IsInt()
 	id: number;
 
 	@ManyToOne(() => AttributeEntity)
-	@ApiProperty({ type: AttributeDto })
 	attribute: AttributeDto;
 
 	@ManyToOne(() => ProductTypeEntity)
-	@ApiProperty({ type: ProductTypeDto })
 	productType: ProductTypeDto;
 
 	@Column()

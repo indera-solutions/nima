@@ -20,8 +20,7 @@ export class ProductTypeAttributesService {
 
 	private static prepareProductTypeAttribute(pta: ProductTypeAttributeEntity): ProductTypeAttributeDto {
 		return {
-			attribute: pta.attribute,
-			id: pta.id,
+			attributeId: pta.attribute.id,
 			sortOrder: pta.sortOrder,
 		};
 	}
@@ -54,14 +53,17 @@ export class ProductTypeAttributesService {
 	}
 
 	async patch(params: { productTypeId: number, productTypeAttributeId: number, dto: UpdateProductTypeAttributeDto }): Promise<ProductTypeAttributeDto> {
-		const { productTypeId, productTypeAttributeId, dto } = params;
-		const pta = await this.getById({ productTypeAttributeId: productTypeAttributeId });
-		const tempPta = new CreateProductTypeAttributeDto();
-		for ( const dtoKey in dto ) {
-			tempPta[dtoKey] = dto[dtoKey] || pta[dtoKey];
-		}
-		tempPta.attributeId = dto.attributeId || pta.attribute.id;
-		return this.save({ dto: tempPta, productTypeId: productTypeId, productTypeAttributeId: productTypeAttributeId });
+		// const { productTypeId, productTypeAttributeId, dto } = params;
+		// const pta = await this.getById({ productTypeAttributeId: productTypeAttributeId });
+		// const tempPta = new CreateProductTypeAttributeDto();
+		// for ( const dtoKey in dto ) {
+		// 	tempPta[dtoKey] = dto[dtoKey] || pta[dtoKey];
+		// }
+		// tempPta.attributeId = dto.attributeId || pta.attribute.id;
+		// return this.save({ dto: tempPta, productTypeId: productTypeId, productTypeAttributeId:
+		// productTypeAttributeId });
+		throw new Error('');
+
 	}
 
 	async deleteById(params: { productTypeAttributeId: number }): Promise<ProductTypeAttributeDto> {

@@ -3,7 +3,7 @@ import { AttributesService } from '../attributes/attributes.service';
 import {
 	CreateProductTypeVariantAttributeDto,
 	ProductTypeVariantAttributeDto,
-	UpdateProductTypeAttributeDto,
+	UpdateProductTypeVariantAttributeDto,
 } from './dto/product-type-attribute.dto';
 import { ProductTypeVariantAttributeEntity } from './entities';
 import { ProductTypesService } from './product-types.service';
@@ -20,8 +20,7 @@ export class ProductTypeVariantAttributesService {
 
 	private static prepareProductTypeVariantAttribute(pta: ProductTypeVariantAttributeEntity): ProductTypeVariantAttributeDto {
 		return {
-			attribute: pta.attribute,
-			id: pta.id,
+			attributeId: null,
 			sortOrder: pta.sortOrder,
 			variantSelection: pta.variantSelection,
 		};
@@ -54,15 +53,17 @@ export class ProductTypeVariantAttributesService {
 		return ProductTypeVariantAttributesService.prepareProductTypeVariantAttribute(res);
 	}
 
-	async patch(params: { productTypeId: number, productTypeAttributeId: number, dto: UpdateProductTypeAttributeDto }): Promise<ProductTypeVariantAttributeDto> {
-		const { productTypeId, productTypeAttributeId, dto } = params;
-		const pta = await this.getById({ productTypeAttributeId: productTypeAttributeId });
-		const tempPta = new CreateProductTypeVariantAttributeDto();
-		for ( const dtoKey in dto ) {
-			tempPta[dtoKey] = dto[dtoKey] || pta[dtoKey];
-		}
-		tempPta.attributeId = dto.attributeId || pta.attribute.id;
-		return this.save({ dto: tempPta, productTypeId: productTypeId, productTypeAttributeId: productTypeAttributeId });
+	async patch(params: { productTypeId: number, productTypeAttributeId: number, dto: UpdateProductTypeVariantAttributeDto }): Promise<ProductTypeVariantAttributeDto> {
+		// const { productTypeId, productTypeAttributeId, dto } = params;
+		// const pta = await this.getById({ productTypeAttributeId: productTypeAttributeId });
+		// const tempPta = new CreateProductTypeVariantAttributeDto();
+		// for ( const dtoKey in dto ) {
+		// 	tempPta[dtoKey] = dto[dtoKey] || pta[dtoKey];
+		// }
+		// tempPta.attributeId = dto.attributeId || pta.attribute.id;
+		// return this.save({ dto: tempPta, productTypeId: productTypeId, productTypeAttributeId:
+		// productTypeAttributeId });
+		throw new Error('');
 	}
 
 	async deleteById(params: { productTypeAttributeId: number }): Promise<ProductTypeVariantAttributeDto> {

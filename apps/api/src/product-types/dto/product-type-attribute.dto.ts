@@ -1,27 +1,27 @@
-import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
+import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { IsInt } from 'class-validator';
 import { ProductTypeAttributeEntity, ProductTypeVariantAttributeEntity } from '../entities';
 
-export class ProductTypeAttributeDto extends OmitType(ProductTypeAttributeEntity, ['productType']) {
-}
-
-export class CreateProductTypeAttributeDto extends OmitType(ProductTypeAttributeDto, ['id', 'attribute']) {
+export class ProductTypeAttributeDto extends OmitType(ProductTypeAttributeEntity, ['productType', 'attribute', 'id']) {
 	@ApiProperty()
 	@IsInt()
 	attributeId: number;
 }
 
-export class UpdateProductTypeAttributeDto extends PartialType(CreateProductTypeAttributeDto) {
+export class CreateProductTypeAttributeDto extends ProductTypeAttributeDto {
 }
 
-export class ProductTypeVariantAttributeDto extends OmitType(ProductTypeVariantAttributeEntity, ['productType']) {
+export class UpdateProductTypeAttributeDto extends CreateProductTypeAttributeDto {
 }
 
-export class CreateProductTypeVariantAttributeDto extends OmitType(ProductTypeVariantAttributeDto, ['id', 'attribute']) {
+export class ProductTypeVariantAttributeDto extends OmitType(ProductTypeVariantAttributeEntity, ['productType', 'attribute', 'id']) {
 	@ApiProperty()
 	@IsInt()
 	attributeId: number;
 }
 
-export class UpdateProductTypeVariantAttributeDto extends PartialType(CreateProductTypeVariantAttributeDto) {
+export class CreateProductTypeVariantAttributeDto extends ProductTypeVariantAttributeDto {
+}
+
+export class UpdateProductTypeVariantAttributeDto extends CreateProductTypeVariantAttributeDto {
 }

@@ -1,11 +1,6 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
-import {
-	AttributesOfProductTypeDto,
-	CreateProductTypeDto,
-	ProductTypeDto,
-	UpdateProductTypeDto,
-} from './dto/product-type.dto';
+import { CreateProductTypeDto, ProductTypeDto } from './dto/product-type.dto';
 import { ProductTypeAttributesService } from './product-type-attributes.service';
 import { ProductTypeVariantAttributesService } from './product-type-variant-attributes.service';
 import { ProductTypesService } from './product-types.service';
@@ -38,26 +33,6 @@ export class ProductTypesController {
 	@ApiParam({ type: Number, name: 'productTypeId' })
 	findOne(@Param('productTypeId', ParseIntPipe) id: number): Promise<ProductTypeDto> {
 		return this.productTypesService.getById({ id });
-	}
-
-	@Get(':productTypeId/attributes')
-	@ApiOkResponse({ type: AttributesOfProductTypeDto })
-	@ApiParam({ type: Number, name: 'productTypeId' })
-	async findAttributesOfProductType(@Param('productTypeId', ParseIntPipe) id: number): Promise<AttributesOfProductTypeDto> {
-		const simple = await this.productTypeAttributesService.listOfProductType({ productTypeId: id });
-		const variant = await this.productTypeVariantAttributesService.listOfProductType({ productTypeId: id });
-		return {
-			attributes: simple,
-			variantAttributes: variant,
-		};
-	}
-
-	@Patch(':productTypeId')
-	@ApiOkResponse({ type: ProductTypeDto })
-	@ApiParam({ type: Number, name: 'productTypeId' })
-	@ApiBody({ type: UpdateProductTypeDto })
-	patch(@Param('productTypeId', ParseIntPipe) productTypeId: number, @Body() updateProductTypeDto: UpdateProductTypeDto) {
-		return this.productTypesService.patchProductType({ productTypeId: productTypeId, dto: updateProductTypeDto });
 	}
 
 	@Put(':productTypeId')
