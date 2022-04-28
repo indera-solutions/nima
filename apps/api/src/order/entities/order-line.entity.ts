@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Order, OrderLine, ProductVariant, Translatable } from '@nima/interfaces';
+import { Translatable } from '@nima/utils';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { ProductVariantDto } from '../../products/dto/product-variant.dto';
@@ -8,7 +8,7 @@ import { OrderDto } from '../dto/order.dto';
 import { OrderEntity } from './order.entity';
 
 @Entity('orders_order_lines')
-export class OrderLineEntity implements OrderLine {
+export class OrderLineEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
@@ -39,7 +39,7 @@ export class OrderLineEntity implements OrderLine {
 
 	@ManyToOne(() => OrderEntity)
 	@ApiProperty({ type: OrderDto })
-	order: Order;
+	order: OrderDto;
 
 	@Column({ type: Number })
 	@ApiProperty({ type: Number, example: 1 })
@@ -47,7 +47,7 @@ export class OrderLineEntity implements OrderLine {
 
 	@ManyToOne(() => ProductVariantEntity)
 	@ApiProperty({ type: ProductVariantDto })
-	variant: ProductVariant;
+	variant: ProductVariantDto;
 
 	@Column({ type: 'float' })
 	@ApiProperty({ type: Number, example: 12.3 })

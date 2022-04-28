@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Category, Metadata, Translatable } from '@nima/interfaces';
+import { Metadata, Translatable } from '@nima/utils';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { CategoryDto } from '../dto/category.dto';
 
 @Entity('categories_categories')
-export class CategoryEntity implements Category {
+export class CategoryEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
@@ -40,5 +40,5 @@ export class CategoryEntity implements Category {
 
 	@ManyToOne(() => CategoryEntity)
 	@ApiProperty({ type: CategoryDto })
-	parent: Category;
+	parent: CategoryDto;
 }

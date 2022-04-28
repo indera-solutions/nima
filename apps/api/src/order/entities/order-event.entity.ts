@@ -1,13 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Metadata, Order, OrderEvent, OrderEventsEnum, User } from '@nima/interfaces';
+import { Metadata } from '@nima/utils';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserDto } from '../../users/dto/user.dto';
 import { UserEntity } from '../../users/entities/user.entity';
 import { OrderDto } from '../dto/order.dto';
+import { OrderEventsEnum } from '../dto/order.enum';
 import { OrderEntity } from './order.entity';
 
 @Entity('orders_order_events')
-export class OrderEventEntity implements OrderEvent {
+export class OrderEventEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
@@ -22,11 +23,11 @@ export class OrderEventEntity implements OrderEvent {
 
 	@ManyToOne(() => OrderEntity)
 	@ApiProperty({ type: OrderDto })
-	order: Order;
+	order: OrderDto;
 
 	@ManyToOne(() => UserEntity)
 	@ApiProperty({ type: UserDto })
-	user: User;
+	user: UserDto;
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: Object, example: {} })

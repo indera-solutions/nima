@@ -1,11 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-	AssignedProductAttribute,
-	AssignedProductAttributeValue,
-	AssignedProductVariantAttribute,
-	AssignedProductVariantAttributeValue,
-	AttributeValue,
-} from '@nima/interfaces';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { AttributeValueDto } from '../../attributes/dto/attribute-value.dto';
 import { AttributeValueEntity } from '../../attributes/entities/attribute-value.entity';
@@ -18,9 +11,8 @@ import {
 	AssignedProductVariantAttributeEntity,
 } from './product-attribute-assignment.entity';
 
-
 @Entity('products_assigned_product_attribute_values')
-export class AssignedProductAttributeValueEntity implements AssignedProductAttributeValue {
+export class AssignedProductAttributeValueEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
@@ -31,15 +23,15 @@ export class AssignedProductAttributeValueEntity implements AssignedProductAttri
 
 	@ManyToOne(() => AssignedProductAttributeEntity)
 	@ApiProperty({ type: AssignedProductAttributeDto })
-	assignedProductAttribute: AssignedProductAttribute;
+	assignedProductAttribute: AssignedProductAttributeDto;
 
 	@ManyToOne(() => AttributeValueEntity)
 	@ApiProperty({ type: AttributeValueDto })
-	value: AttributeValue;
+	value: AttributeValueDto;
 }
 
 @Entity('products_assigned_product_variant_attribute_values')
-export class AssignedProductVariantAttributeValueEntity implements AssignedProductVariantAttributeValue {
+export class AssignedProductVariantAttributeValueEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
@@ -50,9 +42,9 @@ export class AssignedProductVariantAttributeValueEntity implements AssignedProdu
 
 	@ManyToOne(() => AssignedProductVariantAttributeEntity)
 	@ApiProperty({ type: AssignedProductVariantAttributeDto })
-	assignedProductVariantAttribute: AssignedProductVariantAttribute;
+	assignedProductVariantAttribute: AssignedProductVariantAttributeDto;
 
 	@ManyToOne(() => AttributeValueEntity)
 	@ApiProperty({ type: AttributeValueDto })
-	value: AttributeValue;
+	value: AttributeValueDto;
 }

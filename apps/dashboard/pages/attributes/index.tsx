@@ -1,4 +1,4 @@
-import { Attribute } from '@nima/interfaces';
+import { AttributeDto } from '@nima/sdk';
 import Link from 'next/link';
 import React from 'react';
 import { AdminColumn, AdminPage, AdminSection, NimaTitle } from '../../components';
@@ -9,7 +9,7 @@ interface AttributeListProps {
 }
 
 export default function AttributeList(props: AttributeListProps) {
-	const attributes: Attribute[] = [];
+	const attributes: AttributeDto[] = [];
 
 	return <>
 		<NimaTitle title={ 'Attributes' }/>

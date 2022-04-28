@@ -1,14 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Address, LanguageCode, Metadata, Order, OrderStatus, User } from '@nima/interfaces';
+import { LanguageCode, Metadata } from '@nima/utils';
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { AddressDto } from '../../core/dto/address.dto';
 import { AddressEntity } from '../../core/entities/address.entity';
 import { UserDto } from '../../users/dto/user.dto';
 import { UserEntity } from '../../users/entities/user.entity';
 import { OrderDto } from '../dto/order.dto';
+import { OrderStatus } from '../dto/order.enum';
 
 @Entity('orders_orders')
-export class OrderEntity implements Order {
+export class OrderEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
@@ -31,15 +32,15 @@ export class OrderEntity implements Order {
 
 	@ManyToOne(() => AddressEntity, { nullable: true })
 	@ApiProperty({ type: AddressDto, required: false })
-	billingAddress?: Address;
+	billingAddress?: AddressDto;
 
 	@ManyToOne(() => AddressEntity, { nullable: true })
 	@ApiProperty({ type: AddressDto, required: false })
-	shippingAddress?: Address;
+	shippingAddress?: AddressDto;
 
 	@ManyToOne(() => UserEntity, { nullable: true })
 	@ApiProperty({ type: UserDto, required: false })
-	user?: User;
+	user?: UserDto;
 
 	@Column({ type: 'float' })
 	@ApiProperty({ type: Number, example: 12.3 })
@@ -132,7 +133,7 @@ export class OrderEntity implements Order {
 
 	@ManyToOne(() => OrderEntity, { nullable: true })
 	@ApiProperty({ type: OrderDto, required: false })
-	original?: Order;
+	original?: OrderDto;
 
 	@Column({ type: String })
 	@ApiProperty({ type: String, example: '' })

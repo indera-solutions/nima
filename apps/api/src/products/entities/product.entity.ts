@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Metadata, Product, Translatable } from '@nima/interfaces';
+import { Metadata, Translatable } from '@nima/utils';
 import {
 	Column,
 	CreateDateColumn,
@@ -17,7 +17,7 @@ import { ProductTypeEntity } from '../../product-types/entities';
 import { ProductVariantEntity } from './product-variant.entity';
 
 @Entity('products_products')
-export class ProductEntity implements Product {
+export class ProductEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;

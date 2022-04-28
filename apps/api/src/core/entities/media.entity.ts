@@ -1,9 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Media } from '@nima/interfaces';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('core_media')
-export class MediaEntity implements Media {
+export class MediaEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;

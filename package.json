@@ -6,6 +6,8 @@
 		"start": "nx serve",
 		"build": "nx build",
 		"test": "nx test",
+		"lint": "nx workspace-lint && nx lint",
+		"lint:all": "nx run-many --target=lint --all",
 		"ts-axios-sdk": "openapi-generator-cli generate -i http://localhost:3333/docs-json -g typescript-axios -o ./libs/sdk/src --additional-properties=stringEnums=true,enumPropertyNaming=original,useSingleRequestParameter=true",
 		"grab-openapi-spec": "curl http://localhost:3333/docs-json | npx json > ./openapi.json"
 	},

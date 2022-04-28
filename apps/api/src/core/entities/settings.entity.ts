@@ -1,11 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Address, LanguageCode, Media, Settings } from '@nima/interfaces';
+import { LanguageCode } from '@nima/utils';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { AddressDto } from '../dto/address.dto';
+import { MediaDto } from '../dto/media.dto';
 import { AddressEntity } from './address.entity';
 import { MediaEntity } from './media.entity';
 
 @Entity('core_settings')
-export class SettingsEntity implements Settings {
+export class SettingsEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 
@@ -50,12 +52,10 @@ export class SettingsEntity implements Settings {
 	seoDescription: string;
 
 	@ManyToOne(() => AddressEntity)
-	@ApiProperty({ type: AddressEntity, required: false })
-	shopAddress: Address;
+	@ApiProperty({ type: AddressDto, required: false })
+	shopAddress: AddressDto;
 
 	@ManyToOne(() => MediaEntity)
-	@ApiProperty({ type: MediaEntity, required: false })
-	siteLogo: Media;
-
-
+	@ApiProperty({ type: MediaDto, required: false })
+	siteLogo: MediaDto;
 }

@@ -1,9 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Address } from '@nima/interfaces';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('core_addresses')
-export class AddressEntity implements Address {
+export class AddressEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;

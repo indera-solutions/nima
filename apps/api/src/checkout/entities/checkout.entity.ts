@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Address, Checkout, LanguageCode, Metadata, User } from '@nima/interfaces';
+import { LanguageCode, Metadata } from '@nima/utils';
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { AddressDto } from '../../core/dto/address.dto';
 import { AddressEntity } from '../../core/entities/address.entity';
@@ -7,7 +7,7 @@ import { UserDto } from '../../users/dto/user.dto';
 import { UserEntity } from '../../users/entities/user.entity';
 
 @Entity('checkout_checkout')
-export class CheckoutEntity implements Checkout {
+export class CheckoutEntity {
 	@CreateDateColumn({ type: String })
 	@ApiProperty({ type: String, example: '2022-01-01' })
 	created: string;
@@ -26,11 +26,11 @@ export class CheckoutEntity implements Checkout {
 
 	@ManyToOne(() => UserEntity)
 	@ApiProperty({ type: UserDto })
-	user: User;
+	user: UserDto;
 
 	@ManyToOne(() => AddressEntity)
 	@ApiProperty({ type: AddressDto })
-	billingAddress: Address;
+	billingAddress: AddressDto;
 
 	@Column({ type: 'float' })
 	@ApiProperty({ type: Number, example: 12.3 })
@@ -46,7 +46,7 @@ export class CheckoutEntity implements Checkout {
 
 	@ManyToOne(() => AddressEntity)
 	@ApiProperty({ type: AddressDto })
-	shippingAddress: Address;
+	shippingAddress: AddressDto;
 
 	@Column({ type: Number })
 	@ApiProperty({ type: Number, example: 1 })
