@@ -1,4 +1,5 @@
-import { AttributeDto } from '@nima/sdk';
+import { useAttributes } from '@nima/react';
+import { toTitleCase } from '@nima/utils';
 import Link from 'next/link';
 import React from 'react';
 import { AdminColumn, AdminPage, AdminSection, NimaTitle } from '../../components';
@@ -9,7 +10,7 @@ interface AttributeListProps {
 }
 
 export default function AttributeList(props: AttributeListProps) {
-	const attributes: AttributeDto[] = [];
+	const { data: attributes } = useAttributes();
 
 	return <>
 		<NimaTitle title={ 'Attributes' }/>
@@ -40,14 +41,16 @@ export default function AttributeList(props: AttributeListProps) {
 							</tr>
 							</thead>
 							<tbody>
-							{ attributes.map(attribute => <tr key={ attribute.id }>
+							{ (attributes || []).map(attribute => <tr key={ attribute.id } className={ 'hover' }>
 								<td>{ attribute.name['en'] }</td>
-								<td>{ attribute.inputType }</td>
-								<td>{ attribute.filterableInStorefront }</td>
-								<td>{ attribute.filterableInStorefront }</td>
+								<td>{ toTitleCase(attribute.inputType) }</td>
+								<td>{ attribute.filterableInStorefront ? 'Yes' : 'No' }</td>
+								<td>{ attribute.filterableInStorefront ? 'Yes' : 'No' }</td>
 								<td>{ attribute.slug }</td>
 								<td>
-									<button className={ 'btn btn-primary' }>Edit</button>
+									<Link href={ NIMA_ROUTES.attributes.edit(attribute.id) }>
+										<button className={ 'btn btn-primary' }>Edit</button>
+									</Link>
 								</td>
 							</tr>) }
 							</tbody>

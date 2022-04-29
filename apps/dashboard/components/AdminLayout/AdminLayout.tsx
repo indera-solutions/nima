@@ -1,8 +1,7 @@
-import { useSession } from '@nima/react';
+import { useSession, useSettings } from '@nima/react';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useQueryClient } from 'react-query';
-import { useSettings } from '../../lib/reactQuery/settings.queries';
 import { NIMA_ROUTES } from '../../lib/routes';
 import { LoginForm } from '../authentication';
 import styles from './AdminLayout.module.scss';

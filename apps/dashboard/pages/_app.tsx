@@ -1,17 +1,28 @@
-import { SessionProvider } from '@nima/react';
+import { LanguageContextProvider, SessionProvider } from '@nima/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 import { AdminLayout } from '../components';
 import { adminRoutes } from '../lib/sidemenuItem';
 import './styles.css';
-
 
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
 			staleTime: 30000,
 			refetchOnWindowFocus: false,
+			onError: (error: any) => {
+				console.log(error.response);
+				if ( error?.response?.data?.message ) {
+					toast.error(error.response.data.message);
+				} else if ( error.message ) {
+					toast.error(`Something went wrong: ${ error.message }`);
+				} else {
+					toast.error(`Something went wrong`);
+				}
+			},
 		},
 	},
 });
@@ -27,12 +38,16 @@ function CustomApp({ Component, pageProps }: AppProps) {
 			<main className="app">
 				<QueryClientProvider client={ queryClient }>
 					<SessionProvider>
-						<AdminLayout links={ adminRoutes }>
-							<Component { ...pageProps } />
-						</AdminLayout>
+						<LanguageContextProvider>
+							<AdminLayout links={ adminRoutes }>
+								<Component { ...pageProps } />
+							</AdminLayout>
+						</LanguageContextProvider>
 					</SessionProvider>
 				</QueryClientProvider>
 			</main>
+			<ToastContainer/>
+
 		</>
 	);
 }

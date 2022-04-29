@@ -7,7 +7,7 @@ const coreApi = new CoreApi(defaultConfiguration);
 
 export function useSettings() {
 	const { state } = useSession();
-	return useQuery<SettingsDto>(NimaQueryCacheKeys.settings, async () => {
+	return useQuery<SettingsDto | undefined>(NimaQueryCacheKeys.settings, async () => {
 		try {
 			const res = await coreApi.settingsGetSettings();
 			return res.data;

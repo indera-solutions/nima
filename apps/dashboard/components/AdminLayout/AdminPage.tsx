@@ -37,7 +37,7 @@ export function AdminPage(props: AdminPageProps) {
 				</div>
 			}
 			{ props.footerContainer && <div className={ 'p-2 py-0 md:px-7 w-full ' }>
-				<AdminSection>
+				<AdminSection containerClass={ 'rounded-b-none' }>
 					{ props.footerContainer }
 				</AdminSection>
 			</div> }

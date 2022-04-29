@@ -108,79 +108,6 @@ export interface AddressDto {
 /**
  *
  * @export
- * @interface AddressEntity
- */
-export interface AddressEntity {
-	/**
-	 *
-	 * @type {number}
-	 * @memberof AddressEntity
-	 */
-	'id': number;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof AddressEntity
-	 */
-	'firstName'?: string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof AddressEntity
-	 */
-	'lastName'?: string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof AddressEntity
-	 */
-	'companyName'?: string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof AddressEntity
-	 */
-	'phone'?: string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof AddressEntity
-	 */
-	'country': string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof AddressEntity
-	 */
-	'state': string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof AddressEntity
-	 */
-	'city': string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof AddressEntity
-	 */
-	'zip': string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof AddressEntity
-	 */
-	'address': string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof AddressEntity
-	 */
-	'address2'?: string;
-}
-/**
- *
- * @export
  * @interface AttributeDto
  */
 export interface AttributeDto {
@@ -263,7 +190,6 @@ export interface AttributeDto {
 	 */
 	'unit'?: Unit;
 }
-
 /**
  *
  * @export
@@ -325,7 +251,6 @@ export interface AttributeValueDto {
 	 */
 	'dateTime'?: string;
 }
-
 /**
  *
  * @export
@@ -466,7 +391,6 @@ export interface CreateAttributeDto {
 	 */
 	'unit'?: Unit;
 }
-
 /**
  *
  * @export
@@ -522,7 +446,6 @@ export interface CreateAttributeValueDto {
 	 */
 	'dateTime'?: string;
 }
-
 /**
  *
  * @export
@@ -1105,7 +1028,6 @@ export interface CreateProductTypeDto {
 	 */
 	'slug': string;
 }
-
 /**
  *
  * @export
@@ -1214,44 +1136,6 @@ export interface MediaDto {
 /**
  *
  * @export
- * @interface MediaEntity
- */
-export interface MediaEntity {
-	/**
-	 *
-	 * @type {number}
-	 * @memberof MediaEntity
-	 */
-	'id': number;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof MediaEntity
-	 */
-	'mimeType': string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof MediaEntity
-	 */
-	'name': string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof MediaEntity
-	 */
-	'slug': string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof MediaEntity
-	 */
-	'url': string;
-}
-
-/**
- *
- * @export
  * @enum {string}
  */
 
@@ -1328,6 +1212,39 @@ export interface ProductTypeDto {
 	 */
 	'slug': string;
 }
+
+/**
+ *
+ * @export
+ * @interface RegisterUserDto
+ */
+export interface RegisterUserDto {
+	/**
+	 *
+	 * @type {string}
+	 * @memberof RegisterUserDto
+	 */
+	'email': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof RegisterUserDto
+	 */
+	'firstName'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof RegisterUserDto
+	 */
+	'lastName'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof RegisterUserDto
+	 */
+	'password': string;
+}
+
 /**
  *
  * @export
@@ -1396,16 +1313,16 @@ export interface SettingsDto {
 	'seoDescription': string;
 	/**
 	 *
-	 * @type {AddressEntity}
+	 * @type {AddressDto}
 	 * @memberof SettingsDto
 	 */
-	'shopAddress'?: AddressEntity;
+	'shopAddress'?: AddressDto;
 	/**
 	 *
-	 * @type {MediaEntity}
+	 * @type {MediaDto}
 	 * @memberof SettingsDto
 	 */
-	'siteLogo'?: MediaEntity;
+	'siteLogo'?: MediaDto;
 }
 /**
  *
@@ -1463,7 +1380,6 @@ export interface TranslatableDto {
 	 */
 	'en'?: string;
 }
-
 /**
  *
  * @export
@@ -1583,7 +1499,6 @@ export interface UpdateAttributeDto {
 	 */
 	'unit'?: Unit;
 }
-
 /**
  *
  * @export
@@ -1639,7 +1554,6 @@ export interface UpdateAttributeValueDto {
 	 */
 	'dateTime'?: string;
 }
-
 /**
  *
  * @export
@@ -2365,12 +2279,12 @@ export const AttributeValuesApiAxiosParamCreator = function (configuration?: Con
 		 */
 		attributeValuesDeleteValueByID: async (attributeId: number, valueId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'attributeId' is not null or undefined
-			assertParamExists('attributeValuesDeleteValueByID', 'attributeId', attributeId);
+			assertParamExists('attributeValuesDeleteValueByID', 'attributeId', attributeId)
 			// verify required parameter 'valueId' is not null or undefined
-			assertParamExists('attributeValuesDeleteValueByID', 'valueId', valueId);
+			assertParamExists('attributeValuesDeleteValueByID', 'valueId', valueId)
 			const localVarPath = `/api/v1/attributes/{attributeId}/values/{valueId}`
-				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)))
-				.replace(`{${ 'valueId' }}`, encodeURIComponent(String(valueId)));
+				.replace(`{${ "attributeId" }}`, encodeURIComponent(String(attributeId)))
+				.replace(`{${ "valueId" }}`, encodeURIComponent(String(valueId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -2401,12 +2315,12 @@ export const AttributeValuesApiAxiosParamCreator = function (configuration?: Con
 		 */
 		attributeValuesGetValueById: async (attributeId: number, valueId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'attributeId' is not null or undefined
-			assertParamExists('attributeValuesGetValueById', 'attributeId', attributeId);
+			assertParamExists('attributeValuesGetValueById', 'attributeId', attributeId)
 			// verify required parameter 'valueId' is not null or undefined
-			assertParamExists('attributeValuesGetValueById', 'valueId', valueId);
+			assertParamExists('attributeValuesGetValueById', 'valueId', valueId)
 			const localVarPath = `/api/v1/attributes/{attributeId}/values/{valueId}`
-				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)))
-				.replace(`{${ 'valueId' }}`, encodeURIComponent(String(valueId)));
+				.replace(`{${ "attributeId" }}`, encodeURIComponent(String(attributeId)))
+				.replace(`{${ "valueId" }}`, encodeURIComponent(String(valueId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -2436,9 +2350,9 @@ export const AttributeValuesApiAxiosParamCreator = function (configuration?: Con
 		 */
 		attributeValuesGetValuesOfAttributeById: async (attributeId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'attributeId' is not null or undefined
-			assertParamExists('attributeValuesGetValuesOfAttributeById', 'attributeId', attributeId);
+			assertParamExists('attributeValuesGetValuesOfAttributeById', 'attributeId', attributeId)
 			const localVarPath = `/api/v1/attributes/{attributeId}/values`
-				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)));
+				.replace(`{${ "attributeId" }}`, encodeURIComponent(String(attributeId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -2470,14 +2384,14 @@ export const AttributeValuesApiAxiosParamCreator = function (configuration?: Con
 		 */
 		attributeValuesPatchValue: async (attributeId: number, valueId: number, updateAttributeValueDto: UpdateAttributeValueDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'attributeId' is not null or undefined
-			assertParamExists('attributeValuesPatchValue', 'attributeId', attributeId);
+			assertParamExists('attributeValuesPatchValue', 'attributeId', attributeId)
 			// verify required parameter 'valueId' is not null or undefined
-			assertParamExists('attributeValuesPatchValue', 'valueId', valueId);
+			assertParamExists('attributeValuesPatchValue', 'valueId', valueId)
 			// verify required parameter 'updateAttributeValueDto' is not null or undefined
-			assertParamExists('attributeValuesPatchValue', 'updateAttributeValueDto', updateAttributeValueDto);
+			assertParamExists('attributeValuesPatchValue', 'updateAttributeValueDto', updateAttributeValueDto)
 			const localVarPath = `/api/v1/attributes/{attributeId}/values/{valueId}`
-				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)))
-				.replace(`{${ 'valueId' }}`, encodeURIComponent(String(valueId)));
+				.replace(`{${ "attributeId" }}`, encodeURIComponent(String(attributeId)))
+				.replace(`{${ "valueId" }}`, encodeURIComponent(String(valueId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -2495,7 +2409,7 @@ export const AttributeValuesApiAxiosParamCreator = function (configuration?: Con
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateAttributeValueDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateAttributeValueDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -2511,11 +2425,11 @@ export const AttributeValuesApiAxiosParamCreator = function (configuration?: Con
 		 */
 		attributeValuesSave: async (attributeId: number, createAttributeValueDto: CreateAttributeValueDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'attributeId' is not null or undefined
-			assertParamExists('attributeValuesSave', 'attributeId', attributeId);
+			assertParamExists('attributeValuesSave', 'attributeId', attributeId)
 			// verify required parameter 'createAttributeValueDto' is not null or undefined
-			assertParamExists('attributeValuesSave', 'createAttributeValueDto', createAttributeValueDto);
+			assertParamExists('attributeValuesSave', 'createAttributeValueDto', createAttributeValueDto)
 			const localVarPath = `/api/v1/attributes/{attributeId}/values`
-				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)));
+				.replace(`{${ "attributeId" }}`, encodeURIComponent(String(attributeId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -2533,7 +2447,7 @@ export const AttributeValuesApiAxiosParamCreator = function (configuration?: Con
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createAttributeValueDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createAttributeValueDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -2550,14 +2464,14 @@ export const AttributeValuesApiAxiosParamCreator = function (configuration?: Con
 		 */
 		attributeValuesUpdateValue: async (attributeId: number, valueId: number, createAttributeValueDto: CreateAttributeValueDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'attributeId' is not null or undefined
-			assertParamExists('attributeValuesUpdateValue', 'attributeId', attributeId);
+			assertParamExists('attributeValuesUpdateValue', 'attributeId', attributeId)
 			// verify required parameter 'valueId' is not null or undefined
-			assertParamExists('attributeValuesUpdateValue', 'valueId', valueId);
+			assertParamExists('attributeValuesUpdateValue', 'valueId', valueId)
 			// verify required parameter 'createAttributeValueDto' is not null or undefined
-			assertParamExists('attributeValuesUpdateValue', 'createAttributeValueDto', createAttributeValueDto);
+			assertParamExists('attributeValuesUpdateValue', 'createAttributeValueDto', createAttributeValueDto)
 			const localVarPath = `/api/v1/attributes/{attributeId}/values/{valueId}`
-				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)))
-				.replace(`{${ 'valueId' }}`, encodeURIComponent(String(valueId)));
+				.replace(`{${ "attributeId" }}`, encodeURIComponent(String(attributeId)))
+				.replace(`{${ "valueId" }}`, encodeURIComponent(String(valueId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -2575,14 +2489,14 @@ export const AttributeValuesApiAxiosParamCreator = function (configuration?: Con
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createAttributeValueDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createAttributeValueDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
 				options: localVarRequestOptions,
 			};
 		},
-	};
+	}
 };
 
 /**
@@ -2956,11 +2870,11 @@ export const AttributesApiAxiosParamCreator = function (configuration?: Configur
 		 */
 		attributesDeleteAttribute: async (attributeId: number, updateAttributeDto: UpdateAttributeDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'attributeId' is not null or undefined
-			assertParamExists('attributesDeleteAttribute', 'attributeId', attributeId);
+			assertParamExists('attributesDeleteAttribute', 'attributeId', attributeId)
 			// verify required parameter 'updateAttributeDto' is not null or undefined
-			assertParamExists('attributesDeleteAttribute', 'updateAttributeDto', updateAttributeDto);
+			assertParamExists('attributesDeleteAttribute', 'updateAttributeDto', updateAttributeDto)
 			const localVarPath = `/api/v1/attributes/{attributeId}`
-				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)));
+				.replace(`{${ "attributeId" }}`, encodeURIComponent(String(attributeId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -2978,7 +2892,7 @@ export const AttributesApiAxiosParamCreator = function (configuration?: Configur
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateAttributeDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateAttributeDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -3021,9 +2935,9 @@ export const AttributesApiAxiosParamCreator = function (configuration?: Configur
 		 */
 		attributesGetById: async (attributeId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'attributeId' is not null or undefined
-			assertParamExists('attributesGetById', 'attributeId', attributeId);
+			assertParamExists('attributesGetById', 'attributeId', attributeId)
 			const localVarPath = `/api/v1/attributes/{attributeId}`
-				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)));
+				.replace(`{${ "attributeId" }}`, encodeURIComponent(String(attributeId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -3054,11 +2968,11 @@ export const AttributesApiAxiosParamCreator = function (configuration?: Configur
 		 */
 		attributesPatchAttribute: async (attributeId: number, updateAttributeDto: UpdateAttributeDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'attributeId' is not null or undefined
-			assertParamExists('attributesPatchAttribute', 'attributeId', attributeId);
+			assertParamExists('attributesPatchAttribute', 'attributeId', attributeId)
 			// verify required parameter 'updateAttributeDto' is not null or undefined
-			assertParamExists('attributesPatchAttribute', 'updateAttributeDto', updateAttributeDto);
+			assertParamExists('attributesPatchAttribute', 'updateAttributeDto', updateAttributeDto)
 			const localVarPath = `/api/v1/attributes/{attributeId}`
-				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)));
+				.replace(`{${ "attributeId" }}`, encodeURIComponent(String(attributeId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -3076,7 +2990,7 @@ export const AttributesApiAxiosParamCreator = function (configuration?: Configur
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateAttributeDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateAttributeDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -3091,7 +3005,7 @@ export const AttributesApiAxiosParamCreator = function (configuration?: Configur
 		 */
 		attributesSave: async (createAttributeDto: CreateAttributeDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'createAttributeDto' is not null or undefined
-			assertParamExists('attributesSave', 'createAttributeDto', createAttributeDto);
+			assertParamExists('attributesSave', 'createAttributeDto', createAttributeDto)
 			const localVarPath = `/api/v1/attributes`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3110,7 +3024,7 @@ export const AttributesApiAxiosParamCreator = function (configuration?: Configur
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createAttributeDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createAttributeDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -3126,11 +3040,11 @@ export const AttributesApiAxiosParamCreator = function (configuration?: Configur
 		 */
 		attributesUpdateAttribute: async (attributeId: number, createAttributeDto: CreateAttributeDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'attributeId' is not null or undefined
-			assertParamExists('attributesUpdateAttribute', 'attributeId', attributeId);
+			assertParamExists('attributesUpdateAttribute', 'attributeId', attributeId)
 			// verify required parameter 'createAttributeDto' is not null or undefined
-			assertParamExists('attributesUpdateAttribute', 'createAttributeDto', createAttributeDto);
+			assertParamExists('attributesUpdateAttribute', 'createAttributeDto', createAttributeDto)
 			const localVarPath = `/api/v1/attributes/{attributeId}`
-				.replace(`{${ 'attributeId' }}`, encodeURIComponent(String(attributeId)));
+				.replace(`{${ "attributeId" }}`, encodeURIComponent(String(attributeId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -3148,7 +3062,7 @@ export const AttributesApiAxiosParamCreator = function (configuration?: Configur
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createAttributeDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createAttributeDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -3503,7 +3417,7 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 		 */
 		authLogin: async (loginUserDto: LoginUserDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'loginUserDto' is not null or undefined
-			assertParamExists('authLogin', 'loginUserDto', loginUserDto);
+			assertParamExists('authLogin', 'loginUserDto', loginUserDto)
 			const localVarPath = `/api/v1/auth/login`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3522,7 +3436,7 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(loginUserDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(loginUserDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -3531,10 +3445,13 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 		},
 		/**
 		 *
+		 * @param {RegisterUserDto} registerUserDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		authRegister: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		authRegister: async (registerUserDto: RegisterUserDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'registerUserDto' is not null or undefined
+			assertParamExists('authRegister', 'registerUserDto', registerUserDto)
 			const localVarPath = `/api/v1/auth/register`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3548,9 +3465,12 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 			const localVarQueryParameter = {} as any;
 
 
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(registerUserDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -3588,11 +3508,12 @@ export const AuthenticationApiFp = function (configuration?: Configuration) {
 		},
 		/**
 		 *
+		 * @param {RegisterUserDto} registerUserDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async authRegister(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.authRegister(options);
+		async authRegister(registerUserDto: RegisterUserDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.authRegister(registerUserDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 	};
@@ -3624,11 +3545,12 @@ export const AuthenticationApiFactory = function (configuration?: Configuration,
 		},
 		/**
 		 *
+		 * @param {RegisterUserDto} registerUserDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		authRegister(options?: any): AxiosPromise<void> {
-			return localVarFp.authRegister(options).then((request) => request(axios, basePath));
+		authRegister(registerUserDto: RegisterUserDto, options?: any): AxiosPromise<void> {
+			return localVarFp.authRegister(registerUserDto, options).then((request) => request(axios, basePath));
 		},
 	};
 };
@@ -3645,6 +3567,20 @@ export interface AuthenticationApiAuthLoginRequest {
 	 * @memberof AuthenticationApiAuthLogin
 	 */
 	readonly loginUserDto: LoginUserDto;
+}
+
+/**
+ * Request parameters for authRegister operation in AuthenticationApi.
+ * @export
+ * @interface AuthenticationApiAuthRegisterRequest
+ */
+export interface AuthenticationApiAuthRegisterRequest {
+	/**
+	 *
+	 * @type {RegisterUserDto}
+	 * @memberof AuthenticationApiAuthRegister
+	 */
+	readonly registerUserDto: RegisterUserDto;
 }
 
 /**
@@ -3677,12 +3613,13 @@ export class AuthenticationApi extends BaseAPI {
 
 	/**
 	 *
+	 * @param {AuthenticationApiAuthRegisterRequest} requestParameters Request parameters.
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}
 	 * @memberof AuthenticationApi
 	 */
-	public authRegister(options?: AxiosRequestConfig) {
-		return AuthenticationApiFp(this.configuration).authRegister(options).then((request) => request(this.axios, this.basePath));
+	public authRegister(requestParameters: AuthenticationApiAuthRegisterRequest, options?: AxiosRequestConfig) {
+		return AuthenticationApiFp(this.configuration).authRegister(requestParameters.registerUserDto, options).then((request) => request(this.axios, this.basePath));
 	}
 }
 
@@ -3701,7 +3638,7 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 		 */
 		categoriesCreate: async (createCategoryDto: CreateCategoryDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'createCategoryDto' is not null or undefined
-			assertParamExists('categoriesCreate', 'createCategoryDto', createCategoryDto);
+			assertParamExists('categoriesCreate', 'createCategoryDto', createCategoryDto)
 			const localVarPath = `/api/v1/categories`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3720,7 +3657,7 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createCategoryDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createCategoryDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -3763,9 +3700,9 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 		 */
 		categoriesFindOne: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('categoriesFindOne', 'id', id);
+			assertParamExists('categoriesFindOne', 'id', id)
 			const localVarPath = `/api/v1/categories/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -3795,9 +3732,9 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 		 */
 		categoriesRemove: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('categoriesRemove', 'id', id);
+			assertParamExists('categoriesRemove', 'id', id)
 			const localVarPath = `/api/v1/categories/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -3828,11 +3765,11 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 		 */
 		categoriesUpdate: async (id: string, updateCategoryDto: UpdateCategoryDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('categoriesUpdate', 'id', id);
+			assertParamExists('categoriesUpdate', 'id', id)
 			// verify required parameter 'updateCategoryDto' is not null or undefined
-			assertParamExists('categoriesUpdate', 'updateCategoryDto', updateCategoryDto);
+			assertParamExists('categoriesUpdate', 'updateCategoryDto', updateCategoryDto)
 			const localVarPath = `/api/v1/categories/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -3850,7 +3787,7 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateCategoryDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateCategoryDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -4115,7 +4052,7 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		checkoutCreate: async (createCheckoutDto: CreateCheckoutDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'createCheckoutDto' is not null or undefined
-			assertParamExists('checkoutCreate', 'createCheckoutDto', createCheckoutDto);
+			assertParamExists('checkoutCreate', 'createCheckoutDto', createCheckoutDto)
 			const localVarPath = `/api/v1/checkout`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4134,7 +4071,7 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createCheckoutDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createCheckoutDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -4177,9 +4114,9 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		checkoutFindOne: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('checkoutFindOne', 'id', id);
+			assertParamExists('checkoutFindOne', 'id', id)
 			const localVarPath = `/api/v1/checkout/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -4209,9 +4146,9 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		checkoutRemove: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('checkoutRemove', 'id', id);
+			assertParamExists('checkoutRemove', 'id', id)
 			const localVarPath = `/api/v1/checkout/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -4242,11 +4179,11 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		checkoutUpdate: async (id: string, updateCheckoutDto: UpdateCheckoutDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('checkoutUpdate', 'id', id);
+			assertParamExists('checkoutUpdate', 'id', id)
 			// verify required parameter 'updateCheckoutDto' is not null or undefined
-			assertParamExists('checkoutUpdate', 'updateCheckoutDto', updateCheckoutDto);
+			assertParamExists('checkoutUpdate', 'updateCheckoutDto', updateCheckoutDto)
 			const localVarPath = `/api/v1/checkout/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -4264,7 +4201,7 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateCheckoutDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateCheckoutDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -4541,7 +4478,7 @@ export const CoreApiAxiosParamCreator = function (configuration?: Configuration)
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -4561,7 +4498,7 @@ export const CoreApiAxiosParamCreator = function (configuration?: Configuration)
 		 */
 		settingsUpdateSettings: async (settingsDto: SettingsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'settingsDto' is not null or undefined
-			assertParamExists('settingsUpdateSettings', 'settingsDto', settingsDto);
+			assertParamExists('settingsUpdateSettings', 'settingsDto', settingsDto)
 			const localVarPath = `/api/v1/core/settings`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4576,7 +4513,7 @@ export const CoreApiAxiosParamCreator = function (configuration?: Configuration)
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -4584,7 +4521,7 @@ export const CoreApiAxiosParamCreator = function (configuration?: Configuration)
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(settingsDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(settingsDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -4801,7 +4738,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		discountSalesCreate: async (createDiscountSaleDto: CreateDiscountSaleDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'createDiscountSaleDto' is not null or undefined
-			assertParamExists('discountSalesCreate', 'createDiscountSaleDto', createDiscountSaleDto);
+			assertParamExists('discountSalesCreate', 'createDiscountSaleDto', createDiscountSaleDto)
 			const localVarPath = `/api/v1/discounts`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4820,7 +4757,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createDiscountSaleDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createDiscountSaleDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -4863,9 +4800,9 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		discountSalesFindOne: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('discountSalesFindOne', 'id', id);
+			assertParamExists('discountSalesFindOne', 'id', id)
 			const localVarPath = `/api/v1/discounts/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -4895,9 +4832,9 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		discountSalesRemove: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('discountSalesRemove', 'id', id);
+			assertParamExists('discountSalesRemove', 'id', id)
 			const localVarPath = `/api/v1/discounts/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -4928,11 +4865,11 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		discountSalesUpdate: async (id: string, updateDiscountDto: UpdateDiscountDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('discountSalesUpdate', 'id', id);
+			assertParamExists('discountSalesUpdate', 'id', id)
 			// verify required parameter 'updateDiscountDto' is not null or undefined
-			assertParamExists('discountSalesUpdate', 'updateDiscountDto', updateDiscountDto);
+			assertParamExists('discountSalesUpdate', 'updateDiscountDto', updateDiscountDto)
 			const localVarPath = `/api/v1/discounts/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -4950,7 +4887,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateDiscountDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateDiscountDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -5215,7 +5152,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 		 */
 		orderCreate: async (createOrderDto: CreateOrderDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'createOrderDto' is not null or undefined
-			assertParamExists('orderCreate', 'createOrderDto', createOrderDto);
+			assertParamExists('orderCreate', 'createOrderDto', createOrderDto)
 			const localVarPath = `/api/v1/order`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -5234,7 +5171,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createOrderDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createOrderDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -5277,9 +5214,9 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 		 */
 		orderFindOne: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('orderFindOne', 'id', id);
+			assertParamExists('orderFindOne', 'id', id)
 			const localVarPath = `/api/v1/order/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -5309,9 +5246,9 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 		 */
 		orderRemove: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('orderRemove', 'id', id);
+			assertParamExists('orderRemove', 'id', id)
 			const localVarPath = `/api/v1/order/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -5342,11 +5279,11 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 		 */
 		orderUpdate: async (id: string, updateOrderDto: UpdateOrderDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('orderUpdate', 'id', id);
+			assertParamExists('orderUpdate', 'id', id)
 			// verify required parameter 'updateOrderDto' is not null or undefined
-			assertParamExists('orderUpdate', 'updateOrderDto', updateOrderDto);
+			assertParamExists('orderUpdate', 'updateOrderDto', updateOrderDto)
 			const localVarPath = `/api/v1/order/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -5364,7 +5301,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateOrderDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateOrderDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -5629,7 +5566,7 @@ export const ProductTypesApiAxiosParamCreator = function (configuration?: Config
 		 */
 		productTypesCreate: async (createProductTypeDto: CreateProductTypeDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'createProductTypeDto' is not null or undefined
-			assertParamExists('productTypesCreate', 'createProductTypeDto', createProductTypeDto);
+			assertParamExists('productTypesCreate', 'createProductTypeDto', createProductTypeDto)
 			const localVarPath = `/api/v1/product-types`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -5648,7 +5585,7 @@ export const ProductTypesApiAxiosParamCreator = function (configuration?: Config
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createProductTypeDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createProductTypeDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -5691,9 +5628,9 @@ export const ProductTypesApiAxiosParamCreator = function (configuration?: Config
 		 */
 		productTypesFindOne: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('productTypesFindOne', 'id', id);
+			assertParamExists('productTypesFindOne', 'id', id)
 			const localVarPath = `/api/v1/product-types/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -5723,9 +5660,9 @@ export const ProductTypesApiAxiosParamCreator = function (configuration?: Config
 		 */
 		productTypesRemove: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('productTypesRemove', 'id', id);
+			assertParamExists('productTypesRemove', 'id', id)
 			const localVarPath = `/api/v1/product-types/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -5756,11 +5693,11 @@ export const ProductTypesApiAxiosParamCreator = function (configuration?: Config
 		 */
 		productTypesUpdate: async (id: string, updateProductTypeDto: UpdateProductTypeDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('productTypesUpdate', 'id', id);
+			assertParamExists('productTypesUpdate', 'id', id)
 			// verify required parameter 'updateProductTypeDto' is not null or undefined
-			assertParamExists('productTypesUpdate', 'updateProductTypeDto', updateProductTypeDto);
+			assertParamExists('productTypesUpdate', 'updateProductTypeDto', updateProductTypeDto)
 			const localVarPath = `/api/v1/product-types/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -5778,7 +5715,7 @@ export const ProductTypesApiAxiosParamCreator = function (configuration?: Config
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateProductTypeDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateProductTypeDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -6043,7 +5980,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		productsCreate: async (createProductDto: CreateProductDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'createProductDto' is not null or undefined
-			assertParamExists('productsCreate', 'createProductDto', createProductDto);
+			assertParamExists('productsCreate', 'createProductDto', createProductDto)
 			const localVarPath = `/api/v1/products`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6062,7 +5999,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createProductDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createProductDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -6105,9 +6042,9 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		productsFindOne: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('productsFindOne', 'id', id);
+			assertParamExists('productsFindOne', 'id', id)
 			const localVarPath = `/api/v1/products/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -6137,9 +6074,9 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		productsRemove: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('productsRemove', 'id', id);
+			assertParamExists('productsRemove', 'id', id)
 			const localVarPath = `/api/v1/products/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -6170,11 +6107,11 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		productsUpdate: async (id: string, updateProductDto: UpdateProductDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('productsUpdate', 'id', id);
+			assertParamExists('productsUpdate', 'id', id)
 			// verify required parameter 'updateProductDto' is not null or undefined
-			assertParamExists('productsUpdate', 'updateProductDto', updateProductDto);
+			assertParamExists('productsUpdate', 'updateProductDto', updateProductDto)
 			const localVarPath = `/api/v1/products/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -6192,7 +6129,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateProductDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateProductDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -6457,7 +6394,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 		 */
 		usersCreate: async (body: object, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'body' is not null or undefined
-			assertParamExists('usersCreate', 'body', body);
+			assertParamExists('usersCreate', 'body', body)
 			const localVarPath = `/api/v1/users`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6476,7 +6413,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -6519,9 +6456,9 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 		 */
 		usersFindOne: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('usersFindOne', 'id', id);
+			assertParamExists('usersFindOne', 'id', id)
 			const localVarPath = `/api/v1/users/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -6551,9 +6488,9 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 		 */
 		usersRemove: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('usersRemove', 'id', id);
+			assertParamExists('usersRemove', 'id', id)
 			const localVarPath = `/api/v1/users/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -6584,11 +6521,11 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 		 */
 		usersUpdate: async (id: string, body: object, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('usersUpdate', 'id', id);
+			assertParamExists('usersUpdate', 'id', id)
 			// verify required parameter 'body' is not null or undefined
-			assertParamExists('usersUpdate', 'body', body);
+			assertParamExists('usersUpdate', 'body', body)
 			const localVarPath = `/api/v1/users/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -6606,7 +6543,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),

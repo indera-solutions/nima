@@ -1,9 +1,9 @@
+import { useSettings, useUpdateSettings } from '@nima/react';
 import { SettingsDto } from '@nima/sdk';
 import { LanguageCode, languages } from '@nima/utils';
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { AdminColumn, AdminFooter, AdminPage, AdminSection, NimaTitle } from '../components';
-import { useSettings, useUpdateSettings } from '../lib/reactQuery/settings.queries';
 
 interface SettingsProps {
 

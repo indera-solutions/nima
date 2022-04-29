@@ -5,11 +5,12 @@ interface CommerceAdminSectionProps {
 	subtitle?: string;
 	titleRightContainer?: React.ReactNode;
 	children: React.ReactNode;
+	containerClass?: string;
 }
 
 export function AdminSection(props: CommerceAdminSectionProps) {
 	return (
-		<div className={ 'bg-white p-5 rounded-2xl shadow-lg ' }>
+		<div className={ 'bg-white p-5 rounded-2xl shadow-lg ' + (props.containerClass || '') }>
 			<div className={ 'flex justify-between' }>
 				{ props.title && <h2 className={ 'text-2xl font-medium' }>
 					{ props.title }
