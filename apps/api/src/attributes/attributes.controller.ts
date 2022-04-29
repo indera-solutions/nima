@@ -1,10 +1,13 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put } from '@nestjs/common';
-import { ApiBody, ApiNotFoundResponse, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiNotFoundResponse, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AttributesService } from './attributes.service';
 import { AttributeDto, CreateAttributeDto, UpdateAttributeDto } from './dto/attribute.dto';
 
 @Controller('attributes')
 @ApiTags('Attributes')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 export class AttributesController {
 	constructor(private service: AttributesService) {
 	}
