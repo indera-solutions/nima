@@ -18,11 +18,11 @@ import {
 	AdminPage,
 	AdminSection,
 	AttributeValuesForm,
+	MetadataEditor,
 	NimaTitle,
 	SelectEditingLanguage,
 	TranslatableInput,
 } from '../../components';
-import { MetadataEditor } from '../../components/forms/MetadataEditor';
 import { NIMA_ROUTES } from '../../lib/routes';
 
 interface AddAttributeProps {
@@ -188,6 +188,50 @@ export default function AddAttribute(props: AddAttributeProps) {
 									onChange={ (v => onValueEdit('metadata', v)) }/>
 					<MetadataEditor isPrivate values={ createAttributeDto.privateMetadata as Metadata }
 									onChange={ (v => onValueEdit('privateMetadata', v)) }/>
+				</AdminColumn>
+				<AdminColumn>
+					<AdminSection title={ 'Configurations' }>
+						<div className="form-control w-full max-w-xs">
+							<label className="label cursor-pointer justify-start gap-4">
+								<input type="checkbox" checked={ createAttributeDto.filterableInDashboard }
+									   className="checkbox"
+									   onChange={ e => onValueEdit('filterableInDashboard', e.target.checked) }
+								/>
+								<span className="label-text">Filterable In Dashboard</span>
+							</label>
+						</div>
+						<div className="form-control w-full max-w-xs">
+							<label className="label cursor-pointer justify-start gap-4">
+								<input type="checkbox" checked={ createAttributeDto.filterableInStorefront }
+									   className="checkbox"
+									   onChange={ e => onValueEdit('filterableInStorefront', e.target.checked) }
+								/>
+								<span className="label-text">Filterable In Store</span>
+							</label>
+						</div>
+						<div className="form-control w-full max-w-xs">
+							<label className="label cursor-pointer justify-start gap-4">
+								<input type="checkbox" checked={ createAttributeDto.availableInGrid }
+									   className="checkbox"
+									   onChange={ e => onValueEdit('availableInGrid', e.target.checked) }
+								/>
+								<span className="label-text">Available In Grid</span>
+							</label>
+						</div>
+
+						<div className="form-control w-full max-w-xs">
+							<label className="label">
+								<span className="label-text">Store Search Position</span>
+							</label>
+							<input
+								type={ 'number' }
+								min={ 0 }
+								value={ createAttributeDto.storefrontSearchPosition }
+								onChange={ (e => onValueEdit('storefrontSearchPosition', e.target.value)) }
+								className={ 'input input-bordered' }
+							/>
+						</div>
+					</AdminSection>
 				</AdminColumn>
 			</AdminPage>
 		</>

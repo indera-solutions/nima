@@ -16,9 +16,6 @@ export function SelectEditingLanguage(props: SelectEditingLanguageProps) {
 			>
 				{ l.toUpperCase() }
 			</span>) }
-			{/*<a className="tab tab-lifted">Tab 1</a>*/ }
-			{/*<a className="tab tab-lifted tab-active">Tab 2</a>*/ }
-			{/*<a className="tab tab-lifted">Tab 3</a>*/ }
 		</div>
 	);
 }
