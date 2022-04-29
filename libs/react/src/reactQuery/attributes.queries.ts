@@ -1,8 +1,16 @@
 import { defaultConfiguration, NimaQueryCacheKeys } from '@nima/react';
-import { AttributeDto, AttributesApi, CreateAttributeDto } from '@nima/sdk';
+import {
+	AttributeDto,
+	AttributesApi,
+	AttributeValueDto,
+	AttributeValuesApi,
+	CreateAttributeDto,
+	CreateAttributeValueDto,
+} from '@nima/sdk';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const attributesSDK = new AttributesApi(defaultConfiguration);
+const attributeValuesSDK = new AttributeValuesApi(defaultConfiguration);
 
 export function useAttributes() {
 	return useQuery<AttributeDto[]>(
@@ -34,16 +42,80 @@ export function useCreateAttributeMutation() {
 	const client = useQueryClient();
 	return useMutation<AttributeDto,
 		never,
-		{ createAttribute: CreateAttributeDto }>(
-		async ({ createAttribute }) => {
+		{ createAttributeDto: CreateAttributeDto }>(
+		async ({ createAttributeDto }) => {
 			const res = await attributesSDK.attributesSave({
-				createAttributeDto: createAttribute,
+				createAttributeDto,
 			});
 			return res.data;
 		},
 		{
 			onSuccess: () => {
 				client.invalidateQueries(NimaQueryCacheKeys.attributes.all);
+			},
+		},
+	);
+}
+
+export function useUpdateAttributeMutation() {
+	const client = useQueryClient();
+	return useMutation<AttributeDto,
+		never,
+		{
+			updateAttributeDto: CreateAttributeDto
+			attributeId: number,
+		}>(
+		async ({ updateAttributeDto, attributeId }) => {
+			const res = await attributesSDK.attributesUpdateAttribute({
+				createAttributeDto: updateAttributeDto,
+				attributeId,
+			});
+			return res.data;
+		},
+		{
+			onSuccess: () => {
+				client.invalidateQueries(NimaQueryCacheKeys.attributes.all);
+			},
+		},
+	);
+}
+
+
+export function useAttributeValues(attributeId?: number, options?: { refetchInterval: number | false }) {
+	return useQuery<AttributeValueDto[]>(
+		NimaQueryCacheKeys.attributes.values(attributeId),
+		async () => {
+			if ( !attributeId ) throw new Error('invalid attribute id');
+			const res = await attributeValuesSDK.attributeValuesGetValuesOfAttributeById({
+				attributeId: attributeId,
+			});
+			return res.data;
+		},
+		{
+			...options,
+			enabled: !!attributeId,
+		},
+	);
+}
+
+export function useAddAttributeValueMutation() {
+	const client = useQueryClient();
+	return useMutation<AttributeValueDto,
+		never,
+		{
+			createAttributeValue: CreateAttributeValueDto,
+			attributeId: number
+		}>(
+		async ({ createAttributeValue, attributeId }) => {
+			const res = await attributeValuesSDK.attributeValuesSave({
+				attributeId: attributeId,
+				createAttributeValueDto: createAttributeValue,
+			});
+			return res.data;
+		},
+		{
+			onSuccess: (data, variables, context) => {
+				client.invalidateQueries(NimaQueryCacheKeys.attributes.id(variables.attributeId));
 			},
 		},
 	);

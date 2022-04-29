@@ -48,7 +48,9 @@ export default function AttributeList(props: AttributeListProps) {
 								<td>{ attribute.filterableInStorefront ? 'Yes' : 'No' }</td>
 								<td>{ attribute.slug }</td>
 								<td>
-									<button className={ 'btn btn-primary' }>Edit</button>
+									<Link href={ NIMA_ROUTES.attributes.edit(attribute.id) }>
+										<button className={ 'btn btn-primary' }>Edit</button>
+									</Link>
 								</td>
 							</tr>) }
 							</tbody>
