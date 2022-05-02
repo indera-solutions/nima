@@ -11,6 +11,22 @@ export class ProductTypeDto extends OmitType(ProductTypeEntity, ['attributes', '
 	@ApiProperty({ type: [ProductTypeVariantAttributeDto] })
 	@IsArray()
 	variantAttributes: ProductTypeVariantAttributeDto[];
+
+	static prepare(entity: ProductTypeEntity, options?: { isAdmin?: boolean }): ProductTypeDto {
+		return {
+			id: entity.id,
+			name: entity.name,
+			slug: entity.slug,
+			hasVariants: entity.hasVariants,
+			isDigital: entity.isDigital,
+			isShippingRequired: entity.isShippingRequired,
+			metadata: entity.metadata,
+			privateMetadata: options?.isAdmin ? entity.privateMetadata : {},
+			weight: entity.weight,
+			attributes: entity.attributes.map(pta => ProductTypeAttributeDto.prepare(pta)),
+			variantAttributes: entity.variantAttributes.map(ptva => ProductTypeVariantAttributeDto.prepare(ptva)),
+		};
+	}
 }
 
 export class CreateProductTypeDto extends OmitType(ProductTypeDto, ['id']) {

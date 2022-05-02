@@ -18,35 +18,39 @@ export class ProductTypesController {
 	@Post()
 	@ApiOkResponse({ type: ProductTypeDto })
 	@ApiBody({ type: CreateProductTypeDto })
-	create(@Body() createProductTypeDto: CreateProductTypeDto): Promise<ProductTypeDto> {
-		return this.productTypesService.save({ dto: createProductTypeDto });
+	async create(@Body() createProductTypeDto: CreateProductTypeDto): Promise<ProductTypeDto> {
+		const res = await this.productTypesService.save({ dto: createProductTypeDto });
+		return ProductTypeDto.prepare(res);
 	}
 
 	@Get()
 	@ApiOkResponse({ type: [ProductTypeDto] })
-	findAll(): Promise<ProductTypeDto[]> {
-		return this.productTypesService.list();
+	async findAll(): Promise<ProductTypeDto[]> {
+		const res = await this.productTypesService.list();
+		return res.map(r => ProductTypeDto.prepare(r));
 	}
 
 	@Get(':productTypeId')
 	@ApiOkResponse({ type: ProductTypeDto })
 	@ApiParam({ type: Number, name: 'productTypeId' })
-	findOne(@Param('productTypeId', ParseIntPipe) id: number): Promise<ProductTypeDto> {
-		return this.productTypesService.getById({ id });
+	async findOne(@Param('productTypeId', ParseIntPipe) id: number): Promise<ProductTypeDto> {
+		const res = await this.productTypesService.getById({ id });
+		return ProductTypeDto.prepare(res);
+
 	}
 
 	@Put(':productTypeId')
 	@ApiOkResponse({ type: ProductTypeDto })
 	@ApiParam({ type: Number, name: 'productTypeId' })
 	@ApiBody({ type: CreateProductTypeDto })
-	update(@Param('productTypeId', ParseIntPipe) productTypeId: number, @Body() createProductTypeDto: CreateProductTypeDto) {
+	async update(@Param('productTypeId', ParseIntPipe) productTypeId: number, @Body() createProductTypeDto: CreateProductTypeDto) {
 		return this.productTypesService.save({ id: productTypeId, dto: createProductTypeDto });
 	}
 
 	@Delete(':productTypeId')
 	@ApiOkResponse({ type: ProductTypeDto })
 	@ApiParam({ type: Number, name: 'productTypeId' })
-	remove(@Param('productTypeId', ParseIntPipe) productTypeId: number) {
+	async remove(@Param('productTypeId', ParseIntPipe) productTypeId: number) {
 		return this.productTypesService.deleteById({ id: productTypeId });
 	}
 }

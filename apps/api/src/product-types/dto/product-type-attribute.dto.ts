@@ -6,6 +6,13 @@ export class ProductTypeAttributeDto extends OmitType(ProductTypeAttributeEntity
 	@ApiProperty()
 	@IsInt()
 	attributeId: number;
+
+	static prepare(entity: ProductTypeAttributeEntity): ProductTypeAttributeDto {
+		return {
+			attributeId: entity.attribute.id,
+			sortOrder: entity.sortOrder,
+		};
+	}
 }
 
 export class CreateProductTypeAttributeDto extends ProductTypeAttributeDto {
@@ -18,6 +25,14 @@ export class ProductTypeVariantAttributeDto extends OmitType(ProductTypeVariantA
 	@ApiProperty()
 	@IsInt()
 	attributeId: number;
+
+	static prepare(entity: ProductTypeVariantAttributeEntity): ProductTypeVariantAttributeDto {
+		return {
+			attributeId: entity.attribute.id,
+			sortOrder: entity.sortOrder,
+			variantSelection: entity.variantSelection,
+		};
+	}
 }
 
 export class CreateProductTypeVariantAttributeDto extends ProductTypeVariantAttributeDto {

@@ -1,7 +1,7 @@
 import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { EmptyObject, getSlug } from '@nima/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
-import { CreateProductTypeDto, ProductTypeDto, UpdateProductTypeDto } from './dto/product-type.dto';
+import { CreateProductTypeDto, ProductTypeDto } from './dto/product-type.dto';
 import { ProductTypeEntity } from './entities';
 import { ProductTypeAttributesService } from './product-type-attributes.service';
 import { ProductTypeVariantAttributesService } from './product-type-variant-attributes.service';
@@ -34,13 +34,13 @@ export class ProductTypesService {
 		};
 	}
 
-	save(params: { dto: CreateProductTypeDto }): Promise<ProductTypeDto>
-	save(params: { dto: CreateProductTypeDto, id: number }): Promise<ProductTypeDto>
+	save(params: { dto: CreateProductTypeDto }): Promise<ProductTypeEntity>
+	save(params: { dto: CreateProductTypeDto, id: number }): Promise<ProductTypeEntity>
 	@Transactional()
-	async save(params: { dto: CreateProductTypeDto, id?: number }): Promise<ProductTypeDto> {
+	async save(params: { dto: CreateProductTypeDto, id?: number }): Promise<ProductTypeEntity> {
 		const { dto, id } = params;
 		let productTypeId = undefined;
-		let oldPt: ProductTypeDto = undefined;
+		let oldPt: ProductTypeEntity = undefined;
 		if ( id ) {
 			productTypeId = Number(id);
 			if ( isNaN(productTypeId) ) throw new BadRequestException('PRODUCT_TYPE_ID_IS_NaN');
@@ -60,13 +60,13 @@ export class ProductTypesService {
 		const pt = await this.productTypeRepository.save({ ...dto, id: productTypeId });
 
 		pt.attributes = [];
-		const oldPtAttr = oldPt?.attributes.map(attr => attr.attributeId) || [];
+		const oldPtAttr = oldPt?.attributes.map(attr => attr.attribute.id) || [];
 		for ( const attribute of dto.attributes ) {
 			if ( !oldPtAttr.includes(attribute.attributeId) ) {
 				const res = await this.simpleAttributeService.save({ productTypeId: pt.id, dto: attribute });
 				pt.attributes.push(res);
 			} else {
-				pt.attributes.push(oldPt?.attributes.find(att => att.attributeId === attribute.attributeId));
+				pt.attributes.push(oldPt?.attributes.find(att => att.attribute.id === attribute.attributeId));
 			}
 		}
 		for ( const attrId of oldPtAttr ) {
@@ -75,14 +75,14 @@ export class ProductTypesService {
 			}
 		}
 
-		const oldPtVAttr = oldPt?.variantAttributes.map(attr => attr.attributeId) || [];
+		const oldPtVAttr = oldPt?.variantAttributes.map(attr => attr.attribute.id) || [];
 		pt.variantAttributes = [];
 		for ( const attribute of dto.variantAttributes ) {
 			if ( !oldPtVAttr.includes(attribute.attributeId) ) {
 				const res = await this.variantAttributeService.save({ productTypeId: pt.id, dto: attribute });
 				pt.variantAttributes.push(res);
 			} else {
-				pt.variantAttributes.push(oldPt?.variantAttributes.find(att => att.attributeId === attribute.attributeId));
+				pt.variantAttributes.push(oldPt?.variantAttributes.find(att => att.attribute.id === attribute.attributeId));
 			}
 		}
 		for ( const attrId of oldPtVAttr ) {
@@ -90,31 +90,20 @@ export class ProductTypesService {
 				await this.variantAttributeService.deleteProductTypeAttribute({ productTypeId: pt.id, attributeId: attrId });
 			}
 		}
-		return ProductTypesService.prepareProductType(pt, true);
+		return pt;
 	}
 
-	async list(params?: EmptyObject): Promise<ProductTypeDto[]> {
-		const res = await this.productTypeRepository.find();
-		return res.map(pt => ProductTypesService.prepareProductType(pt));
+	async list(params?: EmptyObject): Promise<ProductTypeEntity[]> {
+		return await this.productTypeRepository.find();
 	}
 
-	async getById(params: { id: number, isAdmin?: boolean }): Promise<ProductTypeDto> {
+	async getById(params: { id: number, isAdmin?: boolean }): Promise<ProductTypeEntity> {
 		const { id, isAdmin } = params;
 		if ( !id ) throw new BadRequestException('INVALID_PRODUCT_TYPE_ID');
-		const res = await this.productTypeRepository.getById(id);
-		return ProductTypesService.prepareProductType(res, isAdmin);
+		return await this.productTypeRepository.getById(id);
 	}
 
-	async patchProductType(params: { dto: UpdateProductTypeDto, productTypeId: number }) {
-		const { dto, productTypeId } = params;
-		const pt = await this.getById({ id: productTypeId, isAdmin: true });
-		for ( const dtoKey in dto ) {
-			pt[dtoKey] = dto[dtoKey];
-		}
-		return this.save({ dto: pt, id: productTypeId });
-	}
-
-	async deleteById(params: { id: number }): Promise<ProductTypeDto> {
+	async deleteById(params: { id: number }): Promise<ProductTypeEntity> {
 		const { id } = params;
 		if ( !id ) throw new BadRequestException('INVALID_PRODUCT_TYPE_ID');
 		const pt = await this.getById({ id });
