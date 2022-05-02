@@ -1027,6 +1027,18 @@ export interface CreateProductTypeDto {
 	 * @memberof CreateProductTypeDto
 	 */
 	'slug': string;
+	/**
+	 *
+	 * @type {Array<ProductTypeAttributeDto>}
+	 * @memberof CreateProductTypeDto
+	 */
+	'attributes': Array<ProductTypeAttributeDto>;
+	/**
+	 *
+	 * @type {Array<ProductTypeVariantAttributeDto>}
+	 * @memberof CreateProductTypeDto
+	 */
+	'variantAttributes': Array<ProductTypeVariantAttributeDto>;
 }
 /**
  *
@@ -1154,6 +1166,26 @@ export enum OrderStatus {
 /**
  *
  * @export
+ * @interface ProductTypeAttributeDto
+ */
+export interface ProductTypeAttributeDto {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ProductTypeAttributeDto
+	 */
+	'sortOrder': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ProductTypeAttributeDto
+	 */
+	'attributeId': number;
+}
+
+/**
+ *
+ * @export
  * @interface ProductTypeDto
  */
 export interface ProductTypeDto {
@@ -1211,7 +1243,46 @@ export interface ProductTypeDto {
 	 * @memberof ProductTypeDto
 	 */
 	'slug': string;
+	/**
+	 *
+	 * @type {Array<ProductTypeAttributeDto>}
+	 * @memberof ProductTypeDto
+	 */
+	'attributes': Array<ProductTypeAttributeDto>;
+	/**
+	 *
+	 * @type {Array<ProductTypeVariantAttributeDto>}
+	 * @memberof ProductTypeDto
+	 */
+	'variantAttributes': Array<ProductTypeVariantAttributeDto>;
 }
+
+/**
+ *
+ * @export
+ * @interface ProductTypeVariantAttributeDto
+ */
+export interface ProductTypeVariantAttributeDto {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ProductTypeVariantAttributeDto
+	 */
+	'sortOrder': number;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof ProductTypeVariantAttributeDto
+	 */
+	'variantSelection': boolean;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ProductTypeVariantAttributeDto
+	 */
+	'attributeId': number;
+}
+
 /**
  *
  * @export
@@ -2084,61 +2155,6 @@ export interface UpdateProductDto {
 	 * @memberof UpdateProductDto
 	 */
 	'minPrice'?: number;
-}
-/**
- *
- * @export
- * @interface UpdateProductTypeDto
- */
-export interface UpdateProductTypeDto {
-	/**
-	 *
-	 * @type {string}
-	 * @memberof UpdateProductTypeDto
-	 */
-	'name'?: string;
-	/**
-	 *
-	 * @type {boolean}
-	 * @memberof UpdateProductTypeDto
-	 */
-	'hasVariants'?: boolean;
-	/**
-	 *
-	 * @type {boolean}
-	 * @memberof UpdateProductTypeDto
-	 */
-	'isShippingRequired'?: boolean;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof UpdateProductTypeDto
-	 */
-	'weight'?: number;
-	/**
-	 *
-	 * @type {boolean}
-	 * @memberof UpdateProductTypeDto
-	 */
-	'isDigital'?: boolean;
-	/**
-	 *
-	 * @type {object}
-	 * @memberof UpdateProductTypeDto
-	 */
-	'metadata'?: object;
-	/**
-	 *
-	 * @type {object}
-	 * @memberof UpdateProductTypeDto
-	 */
-	'privateMetadata'?: object;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof UpdateProductTypeDto
-	 */
-	'slug'?: string;
 }
 /**
  *
@@ -5668,15 +5684,15 @@ export const ProductTypesApiAxiosParamCreator = function (configuration?: Config
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} productTypeId
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		productTypesFindOne: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-			// verify required parameter 'id' is not null or undefined
-			assertParamExists('productTypesFindOne', 'id', id)
-			const localVarPath = `/api/v1/product-types/{id}`
-				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
+		productTypesFindOne: async (productTypeId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'productTypeId' is not null or undefined
+			assertParamExists('productTypesFindOne', 'productTypeId', productTypeId)
+			const localVarPath = `/api/v1/product-types/{productTypeId}`
+				.replace(`{${ "productTypeId" }}`, encodeURIComponent(String(productTypeId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -5700,15 +5716,15 @@ export const ProductTypesApiAxiosParamCreator = function (configuration?: Config
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} productTypeId
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		productTypesRemove: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-			// verify required parameter 'id' is not null or undefined
-			assertParamExists('productTypesRemove', 'id', id)
-			const localVarPath = `/api/v1/product-types/{id}`
-				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
+		productTypesRemove: async (productTypeId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'productTypeId' is not null or undefined
+			assertParamExists('productTypesRemove', 'productTypeId', productTypeId)
+			const localVarPath = `/api/v1/product-types/{productTypeId}`
+				.replace(`{${ "productTypeId" }}`, encodeURIComponent(String(productTypeId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -5732,18 +5748,18 @@ export const ProductTypesApiAxiosParamCreator = function (configuration?: Config
 		},
 		/**
 		 *
-		 * @param {string} id
-		 * @param {UpdateProductTypeDto} updateProductTypeDto
+		 * @param {number} productTypeId
+		 * @param {CreateProductTypeDto} createProductTypeDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		productTypesUpdate: async (id: string, updateProductTypeDto: UpdateProductTypeDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-			// verify required parameter 'id' is not null or undefined
-			assertParamExists('productTypesUpdate', 'id', id)
-			// verify required parameter 'updateProductTypeDto' is not null or undefined
-			assertParamExists('productTypesUpdate', 'updateProductTypeDto', updateProductTypeDto)
-			const localVarPath = `/api/v1/product-types/{id}`
-				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
+		productTypesUpdate: async (productTypeId: number, createProductTypeDto: CreateProductTypeDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'productTypeId' is not null or undefined
+			assertParamExists('productTypesUpdate', 'productTypeId', productTypeId)
+			// verify required parameter 'createProductTypeDto' is not null or undefined
+			assertParamExists('productTypesUpdate', 'createProductTypeDto', createProductTypeDto)
+			const localVarPath = `/api/v1/product-types/{productTypeId}`
+				.replace(`{${ "productTypeId" }}`, encodeURIComponent(String(productTypeId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -5751,7 +5767,7 @@ export const ProductTypesApiAxiosParamCreator = function (configuration?: Config
 				baseOptions = configuration.baseOptions;
 			}
 
-			const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+			const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
@@ -5761,7 +5777,7 @@ export const ProductTypesApiAxiosParamCreator = function (configuration?: Config
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateProductTypeDto, localVarRequestOptions, configuration)
+			localVarRequestOptions.data = serializeDataIfNeeded(createProductTypeDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -5784,7 +5800,7 @@ export const ProductTypesApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async productTypesCreate(createProductTypeDto: CreateProductTypeDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async productTypesCreate(createProductTypeDto: CreateProductTypeDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductTypeDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.productTypesCreate(createProductTypeDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -5793,39 +5809,39 @@ export const ProductTypesApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async productTypesFindAll(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async productTypesFindAll(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ProductTypeDto>>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.productTypesFindAll(options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} productTypeId
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async productTypesFindOne(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.productTypesFindOne(id, options);
+		async productTypesFindOne(productTypeId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductTypeDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.productTypesFindOne(productTypeId, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} productTypeId
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async productTypesRemove(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.productTypesRemove(id, options);
+		async productTypesRemove(productTypeId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductTypeDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.productTypesRemove(productTypeId, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
-		 * @param {string} id
-		 * @param {UpdateProductTypeDto} updateProductTypeDto
+		 * @param {number} productTypeId
+		 * @param {CreateProductTypeDto} createProductTypeDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async productTypesUpdate(id: string, updateProductTypeDto: UpdateProductTypeDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.productTypesUpdate(id, updateProductTypeDto, options);
+		async productTypesUpdate(productTypeId: number, createProductTypeDto: CreateProductTypeDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductTypeDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.productTypesUpdate(productTypeId, createProductTypeDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 	};
@@ -5844,7 +5860,7 @@ export const ProductTypesApiFactory = function (configuration?: Configuration, b
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		productTypesCreate(createProductTypeDto: CreateProductTypeDto, options?: any): AxiosPromise<void> {
+		productTypesCreate(createProductTypeDto: CreateProductTypeDto, options?: any): AxiosPromise<ProductTypeDto> {
 			return localVarFp.productTypesCreate(createProductTypeDto, options).then((request) => request(axios, basePath));
 		},
 		/**
@@ -5852,36 +5868,36 @@ export const ProductTypesApiFactory = function (configuration?: Configuration, b
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		productTypesFindAll(options?: any): AxiosPromise<void> {
+		productTypesFindAll(options?: any): AxiosPromise<Array<ProductTypeDto>> {
 			return localVarFp.productTypesFindAll(options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} productTypeId
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		productTypesFindOne(id: string, options?: any): AxiosPromise<void> {
-			return localVarFp.productTypesFindOne(id, options).then((request) => request(axios, basePath));
+		productTypesFindOne(productTypeId: number, options?: any): AxiosPromise<ProductTypeDto> {
+			return localVarFp.productTypesFindOne(productTypeId, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} productTypeId
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		productTypesRemove(id: string, options?: any): AxiosPromise<void> {
-			return localVarFp.productTypesRemove(id, options).then((request) => request(axios, basePath));
+		productTypesRemove(productTypeId: number, options?: any): AxiosPromise<ProductTypeDto> {
+			return localVarFp.productTypesRemove(productTypeId, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
-		 * @param {string} id
-		 * @param {UpdateProductTypeDto} updateProductTypeDto
+		 * @param {number} productTypeId
+		 * @param {CreateProductTypeDto} createProductTypeDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		productTypesUpdate(id: string, updateProductTypeDto: UpdateProductTypeDto, options?: any): AxiosPromise<void> {
-			return localVarFp.productTypesUpdate(id, updateProductTypeDto, options).then((request) => request(axios, basePath));
+		productTypesUpdate(productTypeId: number, createProductTypeDto: CreateProductTypeDto, options?: any): AxiosPromise<ProductTypeDto> {
+			return localVarFp.productTypesUpdate(productTypeId, createProductTypeDto, options).then((request) => request(axios, basePath));
 		},
 	};
 };
@@ -5908,10 +5924,10 @@ export interface ProductTypesApiProductTypesCreateRequest {
 export interface ProductTypesApiProductTypesFindOneRequest {
 	/**
 	 *
-	 * @type {string}
+	 * @type {number}
 	 * @memberof ProductTypesApiProductTypesFindOne
 	 */
-	readonly id: string;
+	readonly productTypeId: number;
 }
 
 /**
@@ -5922,10 +5938,10 @@ export interface ProductTypesApiProductTypesFindOneRequest {
 export interface ProductTypesApiProductTypesRemoveRequest {
 	/**
 	 *
-	 * @type {string}
+	 * @type {number}
 	 * @memberof ProductTypesApiProductTypesRemove
 	 */
-	readonly id: string;
+	readonly productTypeId: number;
 }
 
 /**
@@ -5936,17 +5952,17 @@ export interface ProductTypesApiProductTypesRemoveRequest {
 export interface ProductTypesApiProductTypesUpdateRequest {
 	/**
 	 *
-	 * @type {string}
+	 * @type {number}
 	 * @memberof ProductTypesApiProductTypesUpdate
 	 */
-	readonly id: string;
+	readonly productTypeId: number;
 
 	/**
 	 *
-	 * @type {UpdateProductTypeDto}
+	 * @type {CreateProductTypeDto}
 	 * @memberof ProductTypesApiProductTypesUpdate
 	 */
-	readonly updateProductTypeDto: UpdateProductTypeDto;
+	readonly createProductTypeDto: CreateProductTypeDto;
 }
 
 /**
@@ -5985,7 +6001,7 @@ export class ProductTypesApi extends BaseAPI {
 	 * @memberof ProductTypesApi
 	 */
 	public productTypesFindOne(requestParameters: ProductTypesApiProductTypesFindOneRequest, options?: AxiosRequestConfig) {
-		return ProductTypesApiFp(this.configuration).productTypesFindOne(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+		return ProductTypesApiFp(this.configuration).productTypesFindOne(requestParameters.productTypeId, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -5996,7 +6012,7 @@ export class ProductTypesApi extends BaseAPI {
 	 * @memberof ProductTypesApi
 	 */
 	public productTypesRemove(requestParameters: ProductTypesApiProductTypesRemoveRequest, options?: AxiosRequestConfig) {
-		return ProductTypesApiFp(this.configuration).productTypesRemove(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+		return ProductTypesApiFp(this.configuration).productTypesRemove(requestParameters.productTypeId, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -6007,7 +6023,7 @@ export class ProductTypesApi extends BaseAPI {
 	 * @memberof ProductTypesApi
 	 */
 	public productTypesUpdate(requestParameters: ProductTypesApiProductTypesUpdateRequest, options?: AxiosRequestConfig) {
-		return ProductTypesApiFp(this.configuration).productTypesUpdate(requestParameters.id, requestParameters.updateProductTypeDto, options).then((request) => request(this.axios, this.basePath));
+		return ProductTypesApiFp(this.configuration).productTypesUpdate(requestParameters.productTypeId, requestParameters.createProductTypeDto, options).then((request) => request(this.axios, this.basePath));
 	}
 }
 

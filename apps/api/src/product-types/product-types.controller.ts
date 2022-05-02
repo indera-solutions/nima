@@ -43,14 +43,16 @@ export class ProductTypesController {
 	@ApiOkResponse({ type: ProductTypeDto })
 	@ApiParam({ type: Number, name: 'productTypeId' })
 	@ApiBody({ type: CreateProductTypeDto })
-	async update(@Param('productTypeId', ParseIntPipe) productTypeId: number, @Body() createProductTypeDto: CreateProductTypeDto) {
-		return this.productTypesService.save({ id: productTypeId, dto: createProductTypeDto });
+	async update(@Param('productTypeId', ParseIntPipe) productTypeId: number, @Body() createProductTypeDto: CreateProductTypeDto): Promise<ProductTypeDto> {
+		const res = await this.productTypesService.save({ id: productTypeId, dto: createProductTypeDto });
+		return ProductTypeDto.prepare(res);
 	}
 
 	@Delete(':productTypeId')
 	@ApiOkResponse({ type: ProductTypeDto })
 	@ApiParam({ type: Number, name: 'productTypeId' })
-	async remove(@Param('productTypeId', ParseIntPipe) productTypeId: number) {
-		return this.productTypesService.deleteById({ id: productTypeId });
+	async remove(@Param('productTypeId', ParseIntPipe) productTypeId: number): Promise<ProductTypeDto> {
+		const res = await this.productTypesService.deleteById({ id: productTypeId });
+		return ProductTypeDto.prepare(res);
 	}
 }
