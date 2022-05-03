@@ -2,7 +2,6 @@ import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/com
 import { AttributesService } from '../attributes/attributes.service';
 import {
 	CreateProductTypeVariantAttributeDto,
-	ProductTypeVariantAttributeDto,
 	UpdateProductTypeVariantAttributeDto,
 } from './dto/product-type-attribute.dto';
 import { ProductTypeVariantAttributeEntity } from './entities';
@@ -17,14 +16,6 @@ export class ProductTypeVariantAttributesService {
 		private productTypesService: ProductTypesService,
 		private attributesService: AttributesService,
 	) {
-	}
-
-	static prepareProductTypeVariantAttribute(pta: ProductTypeVariantAttributeEntity): ProductTypeVariantAttributeDto {
-		return {
-			attributeId: pta.attribute.id,
-			sortOrder: pta.sortOrder,
-			variantSelection: pta.variantSelection,
-		};
 	}
 
 	save(params: { productTypeId: number, dto: CreateProductTypeVariantAttributeDto }): Promise<ProductTypeVariantAttributeEntity>

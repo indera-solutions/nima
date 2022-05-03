@@ -1,13 +1,8 @@
 import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { EmptyObject, getSlug } from '@nima/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
-import {
-	CreateProductTypeAttributeDto,
-	CreateProductTypeVariantAttributeDto,
-	ProductTypeAttributeDto,
-	ProductTypeVariantAttributeDto,
-} from './dto/product-type-attribute.dto';
-import { CreateProductTypeDto, ProductTypeDto } from './dto/product-type.dto';
+import { CreateProductTypeAttributeDto, CreateProductTypeVariantAttributeDto } from './dto/product-type-attribute.dto';
+import { CreateProductTypeDto } from './dto/product-type.dto';
 import { ProductTypeAttributeEntity, ProductTypeEntity, ProductTypeVariantAttributeEntity } from './entities';
 import { ProductTypeAttributesService } from './product-type-attributes.service';
 import { ProductTypeVariantAttributesService } from './product-type-variant-attributes.service';
@@ -24,21 +19,6 @@ export class ProductTypesService {
 	) {
 	}
 
-	private static prepareProductType(pt: ProductTypeEntity, isAdmin?: boolean): ProductTypeDto {
-		return {
-			id: pt.id,
-			name: pt.name,
-			slug: pt.slug,
-			hasVariants: pt.hasVariants,
-			isDigital: pt.isDigital,
-			isShippingRequired: pt.isShippingRequired,
-			metadata: pt.metadata,
-			privateMetadata: isAdmin ? pt.privateMetadata : {},
-			weight: pt.weight,
-			attributes: pt.attributes.map(pta => ProductTypeAttributeDto.prepare(pta)),
-			variantAttributes: pt.variantAttributes.map(ptva => ProductTypeVariantAttributeDto.prepare(ptva)),
-		};
-	}
 
 	save(params: { dto: CreateProductTypeDto }): Promise<ProductTypeEntity>
 	save(params: { dto: CreateProductTypeDto, id: number }): Promise<ProductTypeEntity>
@@ -62,61 +42,16 @@ export class ProductTypesService {
 		if ( erroneousAttributeId ) {
 			throw new BadRequestException('NOT_EXCLUSIVE_ATTRIBUTES', `Attributes and Variant Attributes cannot contain the same Attribute ID. ID ${ erroneousAttributeId } appears twice`);
 		}
-
 		const pt = await this.productTypeRepository.save({ ...dto, id: productTypeId, attributes: undefined, variantAttributes: undefined });
 
-		pt.attributes = [];
-		await this.syncAttributes({ newAttributes: dto.attributes, oldAttributes: pt.attributes, ptId: pt.id });
+		await Promise.all([
+			this.syncAttributes({ newAttributes: dto.attributes, oldAttributes: (oldPt?.attributes || []), ptId: pt.id }),
+			this.syncVariantAttributes({ newAttributes: dto.variantAttributes, oldAttributes: (oldPt?.variantAttributes || []), ptId: pt.id }),
+		]);
 
-		await this.syncVariantAttributes({ newAttributes: dto.variantAttributes, oldAttributes: pt.variantAttributes, ptId: pt.id });
+
 		return await this.getById({ id: pt.id });
 	}
-
-	private async syncAttributes(params: { oldAttributes: ProductTypeAttributeEntity[], newAttributes: CreateProductTypeAttributeDto[], ptId: number }) {
-		const { oldAttributes, newAttributes, ptId } = params;
-		const oldIds = oldAttributes.map(value => value.attribute.id);
-		const newIds = newAttributes.map(value => value.attributeId);
-		const toDelete = oldIds.filter(id => !newIds.includes(id));
-		const toAdd = newAttributes.filter(att => !oldIds.includes(att.attributeId));
-		const existing = oldAttributes.filter(att => newIds.includes(att.attribute.id));
-		const toUpdate = existing.filter(att => att.sortOrder !== newAttributes.find(nAtt => nAtt.attributeId === att.attribute.id).sortOrder);
-
-		for ( const toDeleteElement of toDelete ) {
-			await this.simpleAttributeService.deleteProductTypeAttribute({ productTypeId: ptId, attributeId: toDeleteElement });
-		}
-		for ( const createProductTypeAttributeDto of toAdd ) {
-			await this.simpleAttributeService.save({ productTypeId: ptId, dto: createProductTypeAttributeDto });
-		}
-		for ( const productTypeAttributeEntity of toUpdate ) {
-			const newAttr = newAttributes.find(attr => attr.attributeId = productTypeAttributeEntity.attribute.id);
-			await this.simpleAttributeService.patch({ productTypeId: ptId, dto: { sortOrder: newAttr.sortOrder }, productTypeAttributeId: productTypeAttributeEntity.id });
-		}
-	}
-
-	private async syncVariantAttributes(params: { oldAttributes: ProductTypeVariantAttributeEntity[], newAttributes: CreateProductTypeVariantAttributeDto[], ptId: number }) {
-		const { oldAttributes, newAttributes, ptId } = params;
-		const oldIds = oldAttributes.map(value => value.attribute.id);
-		const newIds = newAttributes.map(value => value.attributeId);
-		const toDelete = oldIds.filter(id => !newIds.includes(id));
-		const toAdd = newAttributes.filter(att => !oldIds.includes(att.attributeId));
-		const existing = oldAttributes.filter(att => newIds.includes(att.attribute.id));
-		const toUpdate = existing.filter(att => {
-			const nAtt = newAttributes.find(nAtt => nAtt.attributeId === att.attribute.id);
-			return att.sortOrder !== nAtt.sortOrder || att.variantSelection !== nAtt.variantSelection;
-		});
-
-		for ( const toDeleteElement of toDelete ) {
-			await this.variantAttributeService.deleteProductTypeAttribute({ productTypeId: ptId, attributeId: toDeleteElement });
-		}
-		for ( const createProductTypeAttributeDto of toAdd ) {
-			await this.variantAttributeService.save({ productTypeId: ptId, dto: createProductTypeAttributeDto });
-		}
-		for ( const productTypeAttributeEntity of toUpdate ) {
-			const newAttr = newAttributes.find(attr => attr.attributeId = productTypeAttributeEntity.attribute.id);
-			await this.variantAttributeService.patch({ productTypeId: ptId, dto: { sortOrder: newAttr.sortOrder, variantSelection: newAttr.variantSelection }, productTypeAttributeId: productTypeAttributeEntity.id });
-		}
-	}
-
 
 	async list(params?: EmptyObject): Promise<ProductTypeEntity[]> {
 		return await this.productTypeRepository.find();
@@ -134,5 +69,54 @@ export class ProductTypesService {
 		const pt = await this.getById({ id });
 		await this.productTypeRepository.deleteById(id);
 		return pt;
+	}
+
+	private async syncAttributes(params: { oldAttributes: ProductTypeAttributeEntity[], newAttributes: CreateProductTypeAttributeDto[], ptId: number }) {
+		const { oldAttributes, newAttributes, ptId } = params;
+		const oldIds = oldAttributes.map(value => value.attribute.id);
+		const newIds = newAttributes.map(value => value.attributeId);
+		const toDelete = oldIds.filter(id => !newIds.includes(id));
+		const toAdd = newAttributes.filter(att => !oldIds.includes(att.attributeId));
+		const existing = oldAttributes.filter(att => newIds.includes(att.attribute.id));
+		const toUpdate = existing.filter(att => att.sortOrder !== newAttributes.find(nAtt => nAtt.attributeId === att.attribute.id).sortOrder);
+		const promises: Promise<any>[] = [];
+		for ( const toDeleteElement of toDelete ) {
+			promises.push(this.simpleAttributeService.deleteProductTypeAttribute({ productTypeId: ptId, attributeId: toDeleteElement }));
+		}
+		for ( const createProductTypeAttributeDto of toAdd ) {
+			promises.push(this.simpleAttributeService.save({ productTypeId: ptId, dto: createProductTypeAttributeDto }));
+		}
+		for ( const productTypeAttributeEntity of toUpdate ) {
+			const newAttr = newAttributes.find(attr => attr.attributeId = productTypeAttributeEntity.attribute.id);
+			promises.push(this.simpleAttributeService.patch({ productTypeId: ptId, dto: { sortOrder: newAttr.sortOrder }, productTypeAttributeId: productTypeAttributeEntity.id }));
+		}
+		await Promise.all(promises);
+	}
+
+	private async syncVariantAttributes(params: { oldAttributes: ProductTypeVariantAttributeEntity[], newAttributes: CreateProductTypeVariantAttributeDto[], ptId: number }) {
+		const { oldAttributes, newAttributes, ptId } = params;
+		console.dir(params, { depth: 100 });
+		const oldIds = oldAttributes.map(value => value.attribute.id);
+		const newIds = newAttributes.map(value => value.attributeId);
+		const toDelete = oldIds.filter(id => !newIds.includes(id));
+		const toAdd = newAttributes.filter(att => !oldIds.includes(att.attributeId));
+		const existing = oldAttributes.filter(att => newIds.includes(att.attribute.id));
+		const toUpdate = existing.filter(att => {
+			const nAtt = newAttributes.find(nAtt => nAtt.attributeId === att.attribute.id);
+			return att.sortOrder !== nAtt.sortOrder || att.variantSelection !== nAtt.variantSelection;
+		});
+		const promises: Promise<any>[] = [];
+
+		for ( const toDeleteElement of toDelete ) {
+			promises.push(this.variantAttributeService.deleteProductTypeAttribute({ productTypeId: ptId, attributeId: toDeleteElement }));
+		}
+		for ( const createProductTypeAttributeDto of toAdd ) {
+			promises.push(this.variantAttributeService.save({ productTypeId: ptId, dto: createProductTypeAttributeDto }));
+		}
+		for ( const productTypeAttributeEntity of toUpdate ) {
+			const newAttr = newAttributes.find(attr => attr.attributeId = productTypeAttributeEntity.attribute.id);
+			promises.push(this.variantAttributeService.patch({ productTypeId: ptId, dto: { sortOrder: newAttr.sortOrder, variantSelection: newAttr.variantSelection }, productTypeAttributeId: productTypeAttributeEntity.id }));
+		}
+		await Promise.all(promises);
 	}
 }

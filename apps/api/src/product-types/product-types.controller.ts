@@ -1,17 +1,16 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
-import { ApiBody, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateProductTypeDto, ProductTypeDto } from './dto/product-type.dto';
-import { ProductTypeAttributesService } from './product-type-attributes.service';
-import { ProductTypeVariantAttributesService } from './product-type-variant-attributes.service';
 import { ProductTypesService } from './product-types.service';
 
 @Controller('product-types')
 @ApiTags('Product Types')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 export class ProductTypesController {
 	constructor(
 		private readonly productTypesService: ProductTypesService,
-		private readonly productTypeAttributesService: ProductTypeAttributesService,
-		private readonly productTypeVariantAttributesService: ProductTypeVariantAttributesService,
 	) {
 	}
 
@@ -33,7 +32,7 @@ export class ProductTypesController {
 	@Get(':productTypeId')
 	@ApiOkResponse({ type: ProductTypeDto })
 	@ApiParam({ type: Number, name: 'productTypeId' })
-	async findOne(@Param('productTypeId', ParseIntPipe) id: number): Promise<ProductTypeDto> {
+	async getById(@Param('productTypeId', ParseIntPipe) id: number): Promise<ProductTypeDto> {
 		const res = await this.productTypesService.getById({ id });
 		return ProductTypeDto.prepare(res);
 

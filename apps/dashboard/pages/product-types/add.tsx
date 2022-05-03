@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { Attributes, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
+import { SVGPlus } from '../../assets/SVGIcons';
 import { AdminColumn, AdminFooter, AdminPage, AdminSection, MetadataEditor, NimaTitle } from '../../components';
 import { NIMA_ROUTES } from '../../lib/routes';
 
@@ -280,7 +281,9 @@ function AvailableAttributesModal(props: { id: string, availableAttributes: Attr
 	}
 
 	return <>
-		<label htmlFor={ props.id } className="btn modal-button">Add Attributes</label>
+		<label htmlFor={ props.id }
+			   className={ 'btn btn-primary  gap-2 modal-button ' + (props.availableAttributes.length === 0 ? 'btn-disabled ' : '') }>
+			<SVGPlus width={ '20' } height={ '20' }/> Add Attributes</label>
 
 		<input type="checkbox" id={ props.id } className="modal-toggle"/>
 		<div className="modal">

@@ -1,11 +1,7 @@
 import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { AttributesService } from '../attributes/attributes.service';
-import {
-	CreateProductTypeAttributeDto,
-	ProductTypeAttributeDto,
-	UpdateProductTypeAttributeDto,
-} from './dto/product-type-attribute.dto';
+import { CreateProductTypeAttributeDto, UpdateProductTypeAttributeDto } from './dto/product-type-attribute.dto';
 import { ProductTypeAttributeEntity } from './entities';
 import { ProductTypesService } from './product-types.service';
 import { ProductTypeAttributeRepository } from './repositories';
@@ -20,12 +16,6 @@ export class ProductTypeAttributesService {
 	) {
 	}
 
-	static prepareProductTypeAttribute(pta: ProductTypeAttributeEntity): ProductTypeAttributeDto {
-		return {
-			attributeId: pta.attribute.id,
-			sortOrder: pta.sortOrder,
-		};
-	}
 
 	save(params: { productTypeId: number, dto: CreateProductTypeAttributeDto }): Promise<ProductTypeAttributeEntity>
 	save(params: { productTypeId: number, dto: CreateProductTypeAttributeDto, productTypeAttributeId: number }): Promise<ProductTypeAttributeEntity>

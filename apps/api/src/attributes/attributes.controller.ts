@@ -15,7 +15,7 @@ export class AttributesController {
 	@Post()
 	@ApiOkResponse({ type: AttributeDto })
 	@ApiBody({ type: CreateAttributeDto })
-	save(@Body() createAttributeDto: CreateAttributeDto): Promise<AttributeDto> {
+	create(@Body() createAttributeDto: CreateAttributeDto): Promise<AttributeDto> {
 		return this.service.save({ dto: createAttributeDto });
 	}
 
@@ -37,7 +37,7 @@ export class AttributesController {
 	@ApiOkResponse({ type: AttributeDto })
 	@ApiBody({ type: UpdateAttributeDto })
 	@ApiParam({ type: Number, name: 'attributeId' })
-	patchAttribute(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() updateAttributeDto: UpdateAttributeDto): Promise<AttributeDto> {
+	patch(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() updateAttributeDto: UpdateAttributeDto): Promise<AttributeDto> {
 		return this.service.update({ id: attributeId, dto: updateAttributeDto });
 	}
 
@@ -45,7 +45,7 @@ export class AttributesController {
 	@ApiOkResponse({ type: AttributeDto })
 	@ApiBody({ type: CreateAttributeDto })
 	@ApiParam({ type: Number, name: 'attributeId' })
-	updateAttribute(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() createAttributeDto: CreateAttributeDto): Promise<AttributeDto> {
+	update(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() createAttributeDto: CreateAttributeDto): Promise<AttributeDto> {
 		return this.service.save({ id: attributeId, dto: createAttributeDto });
 	}
 
@@ -53,7 +53,7 @@ export class AttributesController {
 	@ApiOkResponse({ type: AttributeDto })
 	@ApiBody({ type: UpdateAttributeDto })
 	@ApiParam({ type: Number, name: 'attributeId' })
-	deleteAttribute(@Param('attributeId', ParseIntPipe) attributeId: number): Promise<AttributeDto> {
+	remove(@Param('attributeId', ParseIntPipe) attributeId: number): Promise<AttributeDto> {
 		return this.service.deleteById({ id: attributeId });
 	}
 }
