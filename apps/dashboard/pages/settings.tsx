@@ -3,6 +3,7 @@ import { SettingsDto } from '@nima/sdk';
 import { LanguageCode, languages } from '@nima/utils';
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
+import { toast } from 'react-toastify';
 import { AdminColumn, AdminFooter, AdminPage, AdminSection, NimaTitle } from '../components';
 
 interface SettingsProps {
@@ -43,6 +44,7 @@ export default function SettingsPage(props: SettingsProps) {
 
 	async function onSave() {
 		await updateSettingsMutation.mutateAsync({ settings });
+		toast.success('Settings Updated.');
 	}
 
 	return (

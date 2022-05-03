@@ -27,10 +27,10 @@ export class ProductTypeAttributesService {
 		};
 	}
 
-	save(params: { productTypeId: number, dto: CreateProductTypeAttributeDto }): Promise<ProductTypeAttributeDto>
-	save(params: { productTypeId: number, dto: CreateProductTypeAttributeDto, productTypeAttributeId: number }): Promise<ProductTypeAttributeDto>
+	save(params: { productTypeId: number, dto: CreateProductTypeAttributeDto }): Promise<ProductTypeAttributeEntity>
+	save(params: { productTypeId: number, dto: CreateProductTypeAttributeDto, productTypeAttributeId: number }): Promise<ProductTypeAttributeEntity>
 	@Transactional()
-	async save(params: { productTypeId: number, dto: CreateProductTypeAttributeDto, productTypeAttributeId?: number }): Promise<ProductTypeAttributeDto> {
+	async save(params: { productTypeId: number, dto: CreateProductTypeAttributeDto, productTypeAttributeId?: number }): Promise<ProductTypeAttributeEntity> {
 		const { productTypeAttributeId, dto, productTypeId } = params;
 		let _productTypeAttributeId = undefined;
 		const attribute = await this.attributesService.getById({ id: dto.attributeId });
@@ -42,33 +42,33 @@ export class ProductTypeAttributesService {
 		return await this.productTypeAttributeRepository.save({ ...dto, id: _productTypeAttributeId, attribute: attribute, productType: productType });
 	}
 
-	async listOfProductType(params: { productTypeId: number }): Promise<ProductTypeAttributeDto[]> {
+	async listOfProductType(params: { productTypeId: number }): Promise<ProductTypeAttributeEntity[]> {
 		const { productTypeId } = params;
-		const res = await this.productTypeAttributeRepository.listOfProductType(productTypeId);
-		return res.map(pta => ProductTypeAttributesService.prepareProductTypeAttribute(pta));
+		return await this.productTypeAttributeRepository.listOfProductType(productTypeId);
 	}
 
-	async getById(params: { productTypeAttributeId: number }): Promise<ProductTypeAttributeDto> {
+	async getById(params: { productTypeAttributeId: number }): Promise<ProductTypeAttributeEntity> {
 		const { productTypeAttributeId } = params;
-		const res = await this.productTypeAttributeRepository.getById(productTypeAttributeId);
-		return ProductTypeAttributesService.prepareProductTypeAttribute(res);
+		return await this.productTypeAttributeRepository.getById(productTypeAttributeId);
 	}
 
-	async patch(params: { productTypeId: number, productTypeAttributeId: number, dto: UpdateProductTypeAttributeDto }): Promise<ProductTypeAttributeDto> {
-		// const { productTypeId, productTypeAttributeId, dto } = params;
-		// const pta = await this.getById({ productTypeAttributeId: productTypeAttributeId });
-		// const tempPta = new CreateProductTypeAttributeDto();
-		// for ( const dtoKey in dto ) {
-		// 	tempPta[dtoKey] = dto[dtoKey] || pta[dtoKey];
-		// }
-		// tempPta.attributeId = dto.attributeId || pta.attribute.id;
-		// return this.save({ dto: tempPta, productTypeId: productTypeId, productTypeAttributeId:
-		// productTypeAttributeId });
-		throw new Error('');
+	async patch(params: { productTypeId: number, productTypeAttributeId: number, dto: Partial<UpdateProductTypeAttributeDto> }): Promise<ProductTypeAttributeEntity> {
+		const { productTypeId, productTypeAttributeId, dto } = params;
+		const pta = await this.getById({ productTypeAttributeId: productTypeAttributeId });
+		const tempPta = new CreateProductTypeAttributeDto();
+		for ( const dtoKey in dto ) {
+			tempPta[dtoKey] = dto[dtoKey] || pta[dtoKey];
+		}
+		tempPta.attributeId = dto.attributeId || pta.attribute.id;
+		return this.save({
+			dto: tempPta, productTypeId: productTypeId, productTypeAttributeId:
+			productTypeAttributeId,
+		});
+		// throw new Error('');
 
 	}
 
-	async deleteById(params: { productTypeAttributeId: number }): Promise<ProductTypeAttributeDto> {
+	async deleteById(params: { productTypeAttributeId: number }): Promise<ProductTypeAttributeEntity> {
 		const { productTypeAttributeId } = params;
 		const attr = await this.getById({ productTypeAttributeId });
 		await this.productTypeAttributeRepository.deleteById(productTypeAttributeId);

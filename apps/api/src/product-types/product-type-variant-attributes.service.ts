@@ -27,9 +27,9 @@ export class ProductTypeVariantAttributesService {
 		};
 	}
 
-	save(params: { productTypeId: number, dto: CreateProductTypeVariantAttributeDto }): Promise<ProductTypeVariantAttributeDto>
-	save(params: { productTypeId: number, dto: CreateProductTypeVariantAttributeDto, productTypeAttributeId: number }): Promise<ProductTypeVariantAttributeDto>
-	async save(params: { productTypeId: number, dto: CreateProductTypeVariantAttributeDto, productTypeAttributeId?: number }): Promise<ProductTypeVariantAttributeDto> {
+	save(params: { productTypeId: number, dto: CreateProductTypeVariantAttributeDto }): Promise<ProductTypeVariantAttributeEntity>
+	save(params: { productTypeId: number, dto: CreateProductTypeVariantAttributeDto, productTypeAttributeId: number }): Promise<ProductTypeVariantAttributeEntity>
+	async save(params: { productTypeId: number, dto: CreateProductTypeVariantAttributeDto, productTypeAttributeId?: number }): Promise<ProductTypeVariantAttributeEntity> {
 		const { productTypeAttributeId, dto, productTypeId } = params;
 		let _productTypeAttributeId = undefined;
 		const attribute = await this.attributesService.getById({ id: dto.attributeId });
@@ -41,39 +41,39 @@ export class ProductTypeVariantAttributesService {
 		return await this.productTypeVariantAttributeRepository.save({ ...dto, id: _productTypeAttributeId, attribute: attribute, productType: productType });
 	}
 
-	async listOfProductType(params: { productTypeId: number }): Promise<ProductTypeVariantAttributeDto[]> {
+	async listOfProductType(params: { productTypeId: number }): Promise<ProductTypeVariantAttributeEntity[]> {
 		const { productTypeId } = params;
-		const res = await this.productTypeVariantAttributeRepository.listOfProductType(productTypeId);
-		return res.map(pta => ProductTypeVariantAttributesService.prepareProductTypeVariantAttribute(pta));
+		return await this.productTypeVariantAttributeRepository.listOfProductType(productTypeId);
 	}
 
-	async getById(params: { productTypeAttributeId: number }): Promise<ProductTypeVariantAttributeDto> {
+	async getById(params: { productTypeAttributeId: number }): Promise<ProductTypeVariantAttributeEntity> {
 		const { productTypeAttributeId } = params;
-		const res = await this.productTypeVariantAttributeRepository.getById(productTypeAttributeId);
-		return ProductTypeVariantAttributesService.prepareProductTypeVariantAttribute(res);
+		return await this.productTypeVariantAttributeRepository.getById(productTypeAttributeId);
 	}
 
-	async patch(params: { productTypeId: number, productTypeAttributeId: number, dto: UpdateProductTypeVariantAttributeDto }): Promise<ProductTypeVariantAttributeDto> {
-		// const { productTypeId, productTypeAttributeId, dto } = params;
-		// const pta = await this.getById({ productTypeAttributeId: productTypeAttributeId });
-		// const tempPta = new CreateProductTypeVariantAttributeDto();
-		// for ( const dtoKey in dto ) {
-		// 	tempPta[dtoKey] = dto[dtoKey] || pta[dtoKey];
-		// }
-		// tempPta.attributeId = dto.attributeId || pta.attribute.id;
-		// return this.save({ dto: tempPta, productTypeId: productTypeId, productTypeAttributeId:
-		// productTypeAttributeId });
-		throw new Error('');
+	async patch(params: { productTypeId: number, productTypeAttributeId: number, dto: Partial<UpdateProductTypeVariantAttributeDto> }): Promise<ProductTypeVariantAttributeEntity> {
+		const { productTypeId, productTypeAttributeId, dto } = params;
+		const pta = await this.getById({ productTypeAttributeId: productTypeAttributeId });
+		const tempPta = new CreateProductTypeVariantAttributeDto();
+		for ( const dtoKey in dto ) {
+			tempPta[dtoKey] = dto[dtoKey] || pta[dtoKey];
+		}
+		tempPta.attributeId = dto.attributeId || pta.attribute.id;
+		return this.save({
+			dto: tempPta, productTypeId: productTypeId, productTypeAttributeId:
+			productTypeAttributeId,
+		});
+		// throw new Error('');
 	}
 
-	async deleteById(params: { productTypeAttributeId: number }): Promise<ProductTypeVariantAttributeDto> {
+	async deleteById(params: { productTypeAttributeId: number }): Promise<ProductTypeVariantAttributeEntity> {
 		const { productTypeAttributeId } = params;
 		const attr = await this.getById({ productTypeAttributeId });
 		await this.productTypeVariantAttributeRepository.deleteById(productTypeAttributeId);
 		return attr;
 	}
 
-	async deleteProductTypeAttribute(params: { attributeId: number; productTypeId: number }) {
+	async deleteProductTypeAttribute(params: { attributeId: number; productTypeId: number }): Promise<ProductTypeVariantAttributeEntity> {
 		const { productTypeId, attributeId } = params;
 		const attr = await this.productTypeVariantAttributeRepository.getByAttributeAndProductType(productTypeId, attributeId);
 		await this.productTypeVariantAttributeRepository.deleteByAttributeAndProductType(productTypeId, attributeId);

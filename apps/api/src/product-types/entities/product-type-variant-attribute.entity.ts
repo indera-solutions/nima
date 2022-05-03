@@ -11,10 +11,10 @@ export class ProductTypeVariantAttributeEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@ManyToOne(() => AttributeEntity, { eager: true })
+	@ManyToOne(() => AttributeEntity, { eager: true, onDelete: 'CASCADE', orphanedRowAction: 'delete' })
 	attribute: AttributeDto;
 
-	@ManyToOne(() => ProductTypeEntity)
+	@ManyToOne(() => ProductTypeEntity, { onDelete: 'CASCADE', orphanedRowAction: 'delete' })
 	productType: ProductTypeDto;
 
 	@Column()
