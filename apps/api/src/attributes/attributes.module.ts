@@ -13,6 +13,7 @@ import { AttributeRepository } from './entities/attribute.repository';
 	imports: [TypeOrmModule.forFeature([AttributeRepository, AttributeValuesRepository])],
 	providers: [AttributesService, AttributeValuesService],
 	controllers: [AttributesController, AttributeValuesController],
+	exports: [AttributesService, AttributeValuesService],
 })
 export class AttributesModule {
 }

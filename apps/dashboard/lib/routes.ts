@@ -1,6 +1,6 @@
 const BASE = '';
 const ATTRIBUTES_INDEX = BASE + '/attributes';
-const PRODUCT_TYPES_INDEX = BASE + '/productTypes';
+const PRODUCT_TYPES_INDEX = BASE + '/product-types';
 const PRODUCTS_INDEX = BASE + '/products';
 const SETTINGS_INDEX = BASE + '/settings';
 

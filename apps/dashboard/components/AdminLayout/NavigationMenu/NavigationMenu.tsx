@@ -24,7 +24,7 @@ export function NavigationMenu(props: NavigationMenuProps): React.ReactElement {
 							   href={ link.link }
 						   >
 							   <a><h3
-								   className={ 'text-lg cursor-pointer ' + (router.asPath === link.link ? 'font-bold' : '') }>{ link.name }</h3>
+								   className={ 'text-lg cursor-pointer ' + (router.asPath.startsWith(link.link) ? 'font-bold' : '') }>{ link.name }</h3>
 							   </a>
 						   </Link>
 						   { link.children && link.children.map(child => <Link

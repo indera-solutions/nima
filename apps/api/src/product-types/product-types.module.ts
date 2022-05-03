@@ -1,12 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import {
-	ProductTypeAttributeEntity,
-	ProductTypeEntity,
-	ProductTypeVariantAttributeEntity,
-} from './entities';
-import { ProductTypeAttributeService } from './product-type-attribute.service';
-import { ProductTypeVariantAttributeService } from './product-type-variant-attribute.service';
+import { AttributesModule } from '../attributes/attributes.module';
+import { ProductTypeAttributeEntity, ProductTypeEntity, ProductTypeVariantAttributeEntity } from './entities';
+import { ProductTypeAttributesService } from './product-type-attributes.service';
+import { ProductTypeVariantAttributesService } from './product-type-variant-attributes.service';
 import { ProductTypesController } from './product-types.controller';
 import { ProductTypesService } from './product-types.service';
 import {
@@ -22,9 +19,10 @@ import {
 			ProductTypeAttributeRepository,
 			ProductTypeVariantAttributeRepository,
 		]),
+		AttributesModule,
 	],
 	controllers: [ProductTypesController],
-	providers: [ProductTypesService, ProductTypeAttributeService, ProductTypeVariantAttributeService],
+	providers: [ProductTypesService, ProductTypeAttributesService, ProductTypeVariantAttributesService],
 })
 export class ProductTypesModule {
 }

@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiNotFoundResponse, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AttributeValuesService } from './attribute-values.service';
 import { AttributeValueDto, CreateAttributeValueDto, UpdateAttributeValueDto } from './dto/attribute-value.dto';
@@ -14,7 +14,7 @@ export class AttributeValuesController {
 
 	@Post()
 	@ApiParam({ type: Number, name: 'attributeId' })
-	@ApiResponse({ type: AttributeValueDto })
+	@ApiOkResponse({ type: AttributeValueDto })
 	@ApiBody({ type: CreateAttributeValueDto })
 	save(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() createAttributeDto: CreateAttributeValueDto): Promise<AttributeValueDto> {
 		return this.service.save({ attributeId: attributeId, dto: createAttributeDto });
@@ -22,7 +22,7 @@ export class AttributeValuesController {
 
 	@Get()
 	@ApiParam({ type: Number, name: 'attributeId' })
-	@ApiResponse({ type: [AttributeValueDto] })
+	@ApiOkResponse({ type: [AttributeValueDto] })
 	getValuesOfAttributeById(@Param('attributeId', ParseIntPipe) attributeId: number): Promise<AttributeValueDto[]> {
 		return this.service.getOfAttribute({ attributeId: attributeId });
 	}
@@ -31,7 +31,7 @@ export class AttributeValuesController {
 	@ApiParam({ type: Number, name: 'attributeId' })
 	@ApiParam({ type: Number, name: 'valueId' })
 	@ApiNotFoundResponse({ description: 'ATTRIBUTE_VALUE_NOT_FOUND' })
-	@ApiResponse({ type: AttributeValueDto })
+	@ApiOkResponse({ type: AttributeValueDto })
 	getValueById(@Param('attributeId', ParseIntPipe) attributeId: number, @Param('valueId', ParseIntPipe) valueId: number): Promise<AttributeValueDto> {
 		return this.service.getById({ id: valueId });
 	}
@@ -40,7 +40,7 @@ export class AttributeValuesController {
 	@ApiParam({ type: Number, name: 'attributeId' })
 	@ApiParam({ type: Number, name: 'valueId' })
 	@ApiNotFoundResponse({ description: 'ATTRIBUTE_VALUE_NOT_FOUND' })
-	@ApiResponse({ type: AttributeValueDto })
+	@ApiOkResponse({ type: AttributeValueDto })
 	patchValue(@Param('attributeId', ParseIntPipe) attributeId: number, @Param('valueId', ParseIntPipe) valueId: number, @Body() updateAttributeValueDto: UpdateAttributeValueDto): Promise<AttributeValueDto> {
 		return this.service.update({ valueId: valueId, dto: updateAttributeValueDto, attributeId: attributeId });
 	}
@@ -49,7 +49,7 @@ export class AttributeValuesController {
 	@ApiParam({ type: Number, name: 'attributeId' })
 	@ApiParam({ type: Number, name: 'valueId' })
 	@ApiNotFoundResponse({ description: 'ATTRIBUTE_VALUE_NOT_FOUND' })
-	@ApiResponse({ type: AttributeValueDto })
+	@ApiOkResponse({ type: AttributeValueDto })
 	updateValue(@Param('attributeId', ParseIntPipe) attributeId: number, @Param('valueId', ParseIntPipe) valueId: number, @Body() createAttributeValueDto: CreateAttributeValueDto): Promise<AttributeValueDto> {
 		return this.service.save({ attributeId: valueId, dto: createAttributeValueDto });
 	}
@@ -57,7 +57,7 @@ export class AttributeValuesController {
 	@Delete('/:valueId')
 	@ApiParam({ type: Number, name: 'attributeId' })
 	@ApiParam({ type: Number, name: 'valueId' })
-	@ApiResponse({ type: AttributeValueDto })
+	@ApiOkResponse({ type: AttributeValueDto })
 	deleteValueByID(@Param('attributeId', ParseIntPipe) attributeId: number, @Param('valueId', ParseIntPipe) valueId: number): Promise<AttributeValueDto> {
 		return this.service.deleteById({ id: valueId });
 	}

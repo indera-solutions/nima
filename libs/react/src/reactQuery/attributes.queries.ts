@@ -44,7 +44,7 @@ export function useCreateAttributeMutation() {
 		never,
 		{ createAttributeDto: CreateAttributeDto }>(
 		async ({ createAttributeDto }) => {
-			const res = await attributesSDK.attributesSave({
+			const res = await attributesSDK.attributesCreate({
 				createAttributeDto,
 			});
 			return res.data;
@@ -66,7 +66,7 @@ export function useUpdateAttributeMutation() {
 			attributeId: number,
 		}>(
 		async ({ updateAttributeDto, attributeId }) => {
-			const res = await attributesSDK.attributesUpdateAttribute({
+			const res = await attributesSDK.attributesUpdate({
 				createAttributeDto: updateAttributeDto,
 				attributeId,
 			});

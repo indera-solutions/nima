@@ -1,28 +1,27 @@
-import { Trans, useAttributes } from '@nima/react';
-import { toTitleCase } from '@nima/utils';
+import { useProductTypes } from '@nima/react';
 import Link from 'next/link';
 import React from 'react';
 import { AdminColumn, AdminPage, AdminSection, NimaTitle } from '../../components';
 import { NIMA_ROUTES } from '../../lib/routes';
 
-interface AttributeListProps {
+interface ProductTypesListProps {
 
 }
 
-export default function AttributeList(props: AttributeListProps) {
-	const { data: attributes } = useAttributes();
+export default function ProductTypesList(props: ProductTypesListProps) {
+	const { data: productTypes } = useProductTypes();
 
 	return <>
-		<NimaTitle title={ 'Attributes' }/>
+		<NimaTitle title={ 'Product Types' }/>
 		<AdminPage
-			label={ 'Attributes' }
+			label={ 'Product Types' }
 		>
 			<AdminColumn>
 				<AdminSection
 					title={ 'List' }
-					subtitle={ (attributes?.length || 0) + ' attributes' }
+					subtitle={ (productTypes?.length || 0) + ' product types' }
 					titleRightContainer={
-						<Link href={ NIMA_ROUTES.attributes.add() }>
+						<Link href={ NIMA_ROUTES.productTypes.add() }>
 							<a
 								className={ 'btn btn-primary' }>Add new</a>
 						</Link>
@@ -33,22 +32,18 @@ export default function AttributeList(props: AttributeListProps) {
 							<thead>
 							<tr>
 								<th>Name</th>
-								<th>Type</th>
-								<th>Public</th>
-								<th>Used in Filtering</th>
 								<th>Slug</th>
+								<th>Has Variants</th>
 								<th>Actions</th>
 							</tr>
 							</thead>
 							<tbody>
-							{ (attributes || []).map(attribute => <tr key={ attribute.id } className={ 'hover' }>
-								<td><Trans useEditingLanguage>{ attribute.name }</Trans></td>
-								<td>{ toTitleCase(attribute.inputType) }</td>
-								<td>{ attribute.filterableInStorefront ? 'Yes' : 'No' }</td>
-								<td>{ attribute.filterableInStorefront ? 'Yes' : 'No' }</td>
+							{ (productTypes || []).map(attribute => <tr key={ attribute.id } className={ 'hover' }>
+								<td>{ attribute.name }</td>
 								<td>{ attribute.slug }</td>
+								<td>{ attribute.hasVariants ? 'Yes' : 'No' }</td>
 								<td>
-									<Link href={ NIMA_ROUTES.attributes.edit(attribute.id) }>
+									<Link href={ NIMA_ROUTES.productTypes.edit(attribute.id) }>
 										<button className={ 'btn btn-primary' }>Edit</button>
 									</Link>
 								</td>
