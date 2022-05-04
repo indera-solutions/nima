@@ -5,6 +5,7 @@ import {
 	CreateDateColumn,
 	Entity,
 	ManyToOne,
+	OneToMany,
 	OneToOne,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
@@ -14,6 +15,7 @@ import { CategoryEntity } from '../../categories/entities/category.entity';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { ProductTypeDto } from '../../product-types/dto/product-type.dto';
 import { ProductTypeEntity } from '../../product-types/entities';
+import { AssignedProductAttributeEntity } from './product-attribute-assignment.entity';
 import { ProductVariantEntity } from './product-variant.entity';
 
 @Entity('products_products')
@@ -110,4 +112,7 @@ export class ProductEntity {
 	@Column({ type: 'float' })
 	@ApiProperty({ type: Number, example: 12.3 })
 	minPrice: number;
+
+	@OneToMany(() => AssignedProductAttributeEntity, assignedAttr => assignedAttr.product, { eager: true })
+	attributes: AssignedProductAttributeEntity[];
 }

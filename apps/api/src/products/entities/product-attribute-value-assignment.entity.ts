@@ -3,10 +3,6 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { AttributeValueDto } from '../../attributes/dto/attribute-value.dto';
 import { AttributeValueEntity } from '../../attributes/entities/attribute-value.entity';
 import {
-	AssignedProductAttributeDto,
-	AssignedProductVariantAttributeDto,
-} from '../dto/product-attribute-assignment.dto';
-import {
 	AssignedProductAttributeEntity,
 	AssignedProductVariantAttributeEntity,
 } from './product-attribute-assignment.entity';
@@ -22,12 +18,12 @@ export class AssignedProductAttributeValueEntity {
 	sortOrder: number;
 
 	@ManyToOne(() => AssignedProductAttributeEntity)
-	@ApiProperty({ type: AssignedProductAttributeDto })
-	assignedProductAttribute: AssignedProductAttributeDto;
+		// @ApiProperty({ type: AssignedProductAttributeDto })
+	assignedProductAttribute: AssignedProductAttributeEntity;
 
 	@ManyToOne(() => AttributeValueEntity)
 	@ApiProperty({ type: AttributeValueDto })
-	value: AttributeValueDto;
+	value: AttributeValueEntity;
 }
 
 @Entity('products_assigned_product_variant_attribute_values')
@@ -41,10 +37,10 @@ export class AssignedProductVariantAttributeValueEntity {
 	sortOrder: number;
 
 	@ManyToOne(() => AssignedProductVariantAttributeEntity)
-	@ApiProperty({ type: AssignedProductVariantAttributeDto })
-	assignedProductVariantAttribute: AssignedProductVariantAttributeDto;
+		// @ApiProperty({ type: AssignedProductVariantAttributeDto })
+	assignedProductVariantAttribute: AssignedProductVariantAttributeEntity;
 
 	@ManyToOne(() => AttributeValueEntity)
 	@ApiProperty({ type: AttributeValueDto })
-	value: AttributeValueDto;
+	value: AttributeValueEntity;
 }

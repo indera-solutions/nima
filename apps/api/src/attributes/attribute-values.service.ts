@@ -24,7 +24,6 @@ export class AttributeValuesService {
 			fileUrl: av.fileUrl,
 			richText: av.richText,
 			sortOrder: av.sortOrder,
-			attribute: av.attribute,
 		};
 	}
 
