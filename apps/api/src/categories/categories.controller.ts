@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CategoriesService } from './categories.service';
-import {CreateCategoryDto, UpdateCategoryDto} from './dto/category.dto';
+import { CategoryDto, CreateCategoryDto, UpdateCategoryDto } from './dto/category.dto';
+import { CategoryEntity } from './entities/category.entity';
 
 @Controller('categories')
 @ApiTags('Categories')
@@ -10,8 +11,11 @@ export class CategoriesController {
 	}
 
 	@Post()
-	create(@Body() createCategoryDto: CreateCategoryDto) {
-		return this.categoriesService.create(createCategoryDto);
+	@ApiBody({ type: CreateCategoryDto })
+	@ApiCreatedResponse({ type: CategoryDto })
+	async create(@Body() createCategoryDto: CreateCategoryDto): Promise<CategoryDto> {
+		const res: CategoryEntity = await this.categoriesService.create(createCategoryDto);
+		return CategoryDto.prepare(res);
 	}
 
 	@Get()
@@ -20,8 +24,10 @@ export class CategoriesController {
 	}
 
 	@Get(':id')
-	findOne(@Param('id') id: string) {
-		return this.categoriesService.findOne(+id);
+	@ApiOkResponse({ type: CategoryDto })
+	async findOne(@Param('id', ParseIntPipe) id: number): Promise<CategoryDto> {
+		const res = await this.categoriesService.findOne(id);
+		return CategoryDto.prepare(res);
 	}
 
 	@Patch(':id')
