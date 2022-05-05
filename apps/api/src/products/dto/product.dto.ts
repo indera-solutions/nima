@@ -1,15 +1,19 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
+import { IsArray, IsInt } from 'class-validator';
 import { ProductEntity } from '../entities/product.entity';
 import { CreateAssignedProductAttributeDto, ProductAttributeDto } from './product-attribute-assignment.dto';
 
 export class ProductDto extends OmitType(ProductEntity, ['productType', 'attributes', 'category']) {
 	@ApiProperty()
+	@IsInt()
 	productTypeId: number;
 
 	@ApiProperty()
+	@IsInt()
 	categoryId: number;
 
 	@ApiProperty({ type: [ProductAttributeDto] })
+	@IsArray()
 	attributes: ProductAttributeDto[];
 
 	static prepare(entity: ProductEntity, options?: { isAdmin?: boolean }): ProductDto {
@@ -18,7 +22,8 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'attribu
 			name: entity.name,
 			slug: entity.slug,
 			productTypeId: entity.productType.id,
-			categoryId: entity.category.id,
+			//TODO: Remove after implementing Category Service
+			categoryId: entity.category?.id,
 			chargeTaxes: entity.chargeTaxes,
 			created: entity.created,
 			currency: entity.currency,
@@ -42,9 +47,14 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'attribu
 	}
 }
 
-export class CreateProductDto extends OmitType(ProductDto, ['id', 'attributes']) {
+export class CreateProductDto extends OmitType(ProductDto, ['id', 'attributes', 'created', 'updatedAt', 'defaultVariant']) {
 	@ApiProperty({ type: [CreateAssignedProductAttributeDto] })
+	@IsArray()
 	attributes: CreateAssignedProductAttributeDto[];
+
+	@ApiProperty()
+	@IsInt()
+	defaultVariantId: number;
 }
 
 export class UpdateProductDto extends PartialType(ProductDto) {

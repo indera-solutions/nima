@@ -24,11 +24,11 @@ export class AssignedProductAttributeEntity {
 	@ApiProperty({ type: ProductDto })
 	product: ProductEntity;
 
-	@ManyToOne(() => ProductTypeAttributeEntity)
+	@ManyToOne(() => ProductTypeAttributeEntity, { eager: true })
 	@ApiProperty({ type: ProductTypeAttributeDto })
 	productTypeAttribute: ProductTypeAttributeEntity;
 
-	@OneToMany(() => AssignedProductAttributeValueEntity, assignedValue => assignedValue.assignedProductAttribute)
+	@OneToMany(() => AssignedProductAttributeValueEntity, assignedValue => assignedValue.assignedProductAttribute, { eager: true })
 	values: AssignedProductAttributeValueEntity[];
 }
 

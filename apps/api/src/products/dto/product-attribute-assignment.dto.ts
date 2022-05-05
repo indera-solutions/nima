@@ -24,7 +24,7 @@ export class AssignedProductAttributeDto extends OmitType(AssignedProductAttribu
 	@ApiProperty({ type: ProductTypeAttributeDto })
 	productTypeAttribute: ProductTypeAttributeDto;
 
-	static prepare(entity: AssignedProductAttributeEntity, options?: { isAdmin?: boolean }): AssignedProductAttributeDto {
+	static prepare(entity: AssignedProductAttributeEntity): AssignedProductAttributeDto {
 		return {
 			id: entity.id,
 			productTypeAttribute: ProductTypeAttributeDto.prepare(entity.productTypeAttribute),
@@ -33,12 +33,12 @@ export class AssignedProductAttributeDto extends OmitType(AssignedProductAttribu
 	}
 }
 
-export class CreateAssignedProductAttributeDto extends OmitType(AssignedProductAttributeDto, ['id', 'values']) {
-	@ApiProperty({ type: [CreateAssignedProductAttributeValueDto] })
-	values: CreateAssignedProductAttributeValueDto[];
-
+export class CreateAssignedProductAttributeDto extends OmitType(AssignedProductAttributeDto, ['id', 'values', 'productTypeAttribute']) {
 	@ApiProperty()
 	productTypeAttributeId: number;
+
+	@ApiProperty({ type: [CreateAssignedProductAttributeValueDto] })
+	values: CreateAssignedProductAttributeValueDto[];
 }
 
 export class UpdateAssignedProductAttributeDto extends PartialType(CreateAssignedProductAttributeDto) {
@@ -51,7 +51,7 @@ export class AssignedProductVariantAttributeDto extends OmitType(AssignedProduct
 	@ApiProperty({ type: ProductTypeVariantAttributeDto })
 	productTypeVariantAttribute: ProductTypeVariantAttributeDto;
 
-	static prepare(entity: AssignedProductVariantAttributeEntity, options?: { isAdmin?: boolean }): AssignedProductVariantAttributeDto {
+	static prepare(entity: AssignedProductVariantAttributeEntity): AssignedProductVariantAttributeDto {
 		return {
 			id: entity.id,
 			productTypeVariantAttribute: ProductTypeVariantAttributeDto.prepare(entity.productTypeVariantAttribute),

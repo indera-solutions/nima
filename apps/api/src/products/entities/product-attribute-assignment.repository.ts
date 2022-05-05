@@ -12,4 +12,17 @@ export class AssignedProductAttributeRepository extends BaseRepository<AssignedP
 			},
 		});
 	}
+
+	async deleteProductAttribute(productId: number, attributeId: number) {
+		return await this.delete({
+			product: {
+				id: productId,
+			},
+			productTypeAttribute: {
+				attribute: {
+					id: attributeId,
+				},
+			},
+		});
+	}
 }

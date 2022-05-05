@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AttributesModule } from '../attributes/attributes.module';
 import { ProductTypesModule } from '../product-types/product-types.module';
 import {
 	AssignedProductAttributeEntity,
@@ -10,6 +11,7 @@ import {
 	AssignedProductAttributeValueEntity,
 	AssignedProductVariantAttributeValueEntity,
 } from './entities/product-attribute-value-assignment.entity';
+import { AssignedProductAttributeValueRepository } from './entities/product-attribute-value-assignment.repository';
 import { ProductVariantEntity } from './entities/product-variant.entity';
 import { ProductEntity } from './entities/product.entity';
 import { ProductRepository } from './entities/product.repository';
@@ -28,10 +30,11 @@ export const ProductsModuleEntities = [
 const ProductsModuleRepositories = [
 	ProductRepository,
 	AssignedProductAttributeRepository,
+	AssignedProductAttributeValueRepository,
 ];
 
 @Module({
-	imports: [TypeOrmModule.forFeature(ProductsModuleRepositories), ProductTypesModule],
+	imports: [TypeOrmModule.forFeature(ProductsModuleRepositories), ProductTypesModule, AttributesModule],
 	controllers: [ProductsController],
 	providers: [ProductsService],
 	exports: [ProductsService],
