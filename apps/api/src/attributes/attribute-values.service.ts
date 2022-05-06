@@ -74,4 +74,8 @@ export class AttributeValuesService {
 		await this.attributeValueRepository.deleteById(id);
 		return attrVal;
 	}
+
+	async attributeDrillDown(params: { ids: number[] }) {
+		return await this.attributeValueRepository.attributeDrillDown(params.ids);
+	}
 }

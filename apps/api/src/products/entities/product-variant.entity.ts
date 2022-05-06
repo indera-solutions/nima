@@ -11,7 +11,6 @@ import {
 	UpdateDateColumn,
 } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
-import { ProductDto } from '../dto/product.dto';
 import { AssignedProductVariantAttributeEntity } from './product-attribute-assignment.entity';
 import { ProductEntity } from './product.entity';
 
@@ -34,7 +33,7 @@ export class ProductVariantEntity {
 	name: Translatable;
 
 	@ManyToOne(() => ProductEntity)
-	@ApiProperty({ type: ProductDto })
+	// @ApiProperty({ type: ProductDto })
 	product: ProductEntity;
 
 	@Column({ nullable: true })

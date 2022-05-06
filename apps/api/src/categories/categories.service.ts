@@ -70,4 +70,8 @@ export class CategoriesService {
 
 		await this.categoryRepository.delete(params.id);
 	}
+
+	async listIdsOfChildren(params: { id: number }) {
+		return await this.categoryRepository.listIdsOfChildren(params.id);
+	}
 }

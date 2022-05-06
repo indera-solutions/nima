@@ -1,34 +1,39 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { IsArray, IsInt } from 'class-validator';
+import { CategoryDto } from '../../categories/dto/category.dto';
 import { ProductEntity } from '../entities/product.entity';
 import { CreateAssignedProductAttributeDto, ProductAttributeDto } from './product-attribute-assignment.dto';
+import { ProductVariantDto } from './product-variant.dto';
 
-export class ProductDto extends OmitType(ProductEntity, ['productType', 'attributes', 'category']) {
+export class ProductDto extends OmitType(ProductEntity, ['productType', 'attributes', 'category', 'defaultVariant']) {
 	@ApiProperty()
 	@IsInt()
 	productTypeId: number;
 
-	@ApiProperty()
+	@ApiProperty({ type: () => CategoryDto })
 	@IsInt()
-	categoryId: number;
+	categoryId: CategoryDto;
 
-	@ApiProperty({ type: [ProductAttributeDto] })
+	@ApiProperty({ type: () => [ProductAttributeDto] })
 	@IsArray()
 	attributes: ProductAttributeDto[];
 
+	@ApiProperty({ type: () => ProductVariantDto })
+	defaultVariant: ProductVariantDto;
+
 	static prepare(entity: ProductEntity, options?: { isAdmin?: boolean }): ProductDto {
+		console.dir(entity, { depth: 100 });
 		return {
 			id: entity.id,
 			name: entity.name,
 			slug: entity.slug,
 			productTypeId: entity.productType.id,
-			//TODO: Remove after implementing Category Service
-			categoryId: entity.category?.id,
+			categoryId: CategoryDto.prepare(entity.category),
 			chargeTaxes: entity.chargeTaxes,
 			created: entity.created,
 			currency: entity.currency,
 			weight: entity.weight,
-			defaultVariant: entity.defaultVariant,
+			defaultVariant: ProductVariantDto.prepare(entity.defaultVariant),
 			description: entity.description,
 			descriptionPlaintext: entity.descriptionPlaintext,
 			metadata: entity.metadata,

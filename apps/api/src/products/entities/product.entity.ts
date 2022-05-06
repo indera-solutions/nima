@@ -16,7 +16,6 @@ import { CategoryEntity } from '../../categories/entities/category.entity';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { ProductTypeDto } from '../../product-types/dto/product-type.dto';
 import { ProductTypeEntity } from '../../product-types/entities';
-import { ProductVariantDto } from '../dto/product-variant.dto';
 import { AssignedProductAttributeEntity } from './product-attribute-assignment.entity';
 import { ProductVariantEntity } from './product-variant.entity';
 
@@ -87,7 +86,7 @@ export class ProductEntity {
 	slug: string;
 
 	@OneToOne(() => ProductVariantEntity)
-	@ApiProperty({ type: ProductVariantDto })
+	// @ApiProperty({ type: ProductVariantDto })
 	defaultVariant: ProductVariantEntity;
 
 	@Column({ type: String })

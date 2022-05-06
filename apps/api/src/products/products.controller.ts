@@ -1,12 +1,30 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
-import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	ParseIntPipe,
+	Post,
+	Put,
+	Query,
+	Req,
+	ValidationPipe,
+} from '@nestjs/common';
+import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { plainToInstance } from 'class-transformer';
+import { ProductFilterParamsDto, ProductFilterResultDto } from './dto/product-filtering.dto';
 import { CreateProductDto, ProductDto } from './dto/product.dto';
+import { FilteringService } from './filtering.service';
 import { ProductsService } from './products.service';
 
 @Controller('products')
 @ApiTags('Products')
 export class ProductsController {
-	constructor(private readonly productsService: ProductsService) {
+	constructor(
+		private readonly productsService: ProductsService,
+		private readonly filteringService: FilteringService,
+	) {
 	}
 
 	@Post()
@@ -18,10 +36,11 @@ export class ProductsController {
 	}
 
 	@Get()
-	@ApiOkResponse({ type: [ProductDto] })
-	async findAll() {
-		const products = await this.productsService.findAll();
-		return products.map(product => ProductDto.prepare(product));
+	@ApiOkResponse({ type: ProductFilterResultDto })
+	@ApiQuery({ type: () => ProductFilterParamsDto })
+	async findAll(@Req() request: Request, @Query(new ValidationPipe({})) query, @Query('filters') filters) {
+		const res = await this.filteringService.productFilterQuery(plainToInstance(ProductFilterParamsDto, query, { enableImplicitConversion: true }));
+		return res;
 	}
 
 	@Get(':id')

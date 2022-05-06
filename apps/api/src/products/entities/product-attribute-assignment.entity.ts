@@ -5,8 +5,6 @@ import {
 	ProductTypeVariantAttributeDto,
 } from '../../product-types/dto/product-type-attribute.dto';
 import { ProductTypeAttributeEntity, ProductTypeVariantAttributeEntity } from '../../product-types/entities';
-import { ProductVariantDto } from '../dto/product-variant.dto';
-import { ProductDto } from '../dto/product.dto';
 import {
 	AssignedProductAttributeValueEntity,
 	AssignedProductVariantAttributeValueEntity,
@@ -21,7 +19,7 @@ export class AssignedProductAttributeEntity {
 	id: number;
 
 	@ManyToOne(() => ProductEntity, product => product.attributes)
-	@ApiProperty({ type: ProductDto })
+	// @ApiProperty({ type: ProductDto })
 	product: ProductEntity;
 
 	@ManyToOne(() => ProductTypeAttributeEntity, { eager: true })
@@ -39,7 +37,7 @@ export class AssignedProductVariantAttributeEntity {
 	id: number;
 
 	@ManyToOne(() => ProductVariantEntity)
-	@ApiProperty({ type: ProductVariantDto })
+		// @ApiProperty({ type: ProductVariantDto })
 	variant: ProductVariantEntity;
 
 	@ManyToOne(() => ProductTypeVariantAttributeEntity, { eager: true })

@@ -6,6 +6,7 @@ import { ProductTypeAttributesService } from '../product-types/product-type-attr
 import { ProductTypesService } from '../product-types/product-types.service';
 import { CreateAssignedProductAttributeDto } from './dto/product-attribute-assignment.dto';
 import { CreateAssignedProductAttributeValueDto } from './dto/product-attribute-value-assignment.dto';
+import { ProductQueryFilterDto } from './dto/product-filtering.dto';
 import { CreateProductDto } from './dto/product.dto';
 import { AssignedProductAttributeEntity } from './entities/product-attribute-assignment.entity';
 import { AssignedProductAttributeRepository } from './entities/product-attribute-assignment.repository';
@@ -141,5 +142,9 @@ export class ProductsService {
 	private async createValue(dto: CreateAssignedProductAttributeValueDto, assignment: AssignedProductAttributeEntity) {
 		const value = await this.attributeValuesService.getById({ id: dto.valueId });
 		await this.assignedProductAttributeValueRepository.save({ value: value, assignedProductAttribute: assignment, sortOrder: dto.sortOrder });
+	}
+
+	async findFilteredProductIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string): Promise<{ id: number, price: number }[]> {
+		return await this.productRepository.findFilteredProductIds(collectionId, categoryIds, filters, search);
 	}
 }
