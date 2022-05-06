@@ -1,11 +1,7 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { IsArray } from 'class-validator';
 import { ProductVariantEntity } from '../entities/product-variant.entity';
-import {
-	CreateAssignedProductAttributeDto,
-	CreateAssignedProductVariantAttributeDto,
-	ProductAttributeDto,
-} from './product-attribute-assignment.dto';
+import { CreateAssignedProductVariantAttributeDto, ProductAttributeDto } from './product-attribute-assignment.dto';
 import { ProductDto } from './product.dto';
 
 export class ProductVariantDto extends OmitType(ProductVariantEntity, ['attributes', 'product']) {
@@ -43,7 +39,7 @@ export class ProductVariantDto extends OmitType(ProductVariantEntity, ['attribut
 }
 
 export class CreateProductVariantDto extends OmitType(ProductVariantDto, ['created', 'id', 'updatedAt', 'product', 'attributes']) {
-	@ApiProperty({ type: [CreateAssignedProductAttributeDto] })
+	@ApiProperty({ type: [CreateAssignedProductVariantAttributeDto] })
 	@IsArray()
 	attributes: CreateAssignedProductVariantAttributeDto[];
 }

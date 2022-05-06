@@ -60,12 +60,12 @@ export class AssignedProductVariantAttributeDto extends OmitType(AssignedProduct
 	}
 }
 
-export class CreateAssignedProductVariantAttributeDto extends OmitType(AssignedProductVariantAttributeDto, ['id', 'values']) {
-	@ApiProperty({ type: [CreateAssignedProductVariantAttributeValueDto] })
-	values: CreateAssignedProductVariantAttributeValueDto[];
-
+export class CreateAssignedProductVariantAttributeDto extends OmitType(AssignedProductVariantAttributeDto, ['id', 'values', 'productTypeVariantAttribute']) {
 	@ApiProperty()
 	productTypeVariantAttributeId: number;
+
+	@ApiProperty({ type: [CreateAssignedProductVariantAttributeValueDto] })
+	values: CreateAssignedProductVariantAttributeValueDto[];
 }
 
 export class UpdateAssignedProductVariantAttributeDto extends PartialType(CreateAssignedProductVariantAttributeDto) {
