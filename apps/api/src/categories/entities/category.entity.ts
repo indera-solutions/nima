@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Metadata, Translatable } from '@nima/utils';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { IsNotEmptyObject, IsObject, IsString } from 'class-validator';
+import { Column, Entity, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
-import { CategoryDto } from '../dto/category.dto';
 
 @Entity('categories_categories')
+@Tree('closure-table')
 export class CategoryEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
@@ -12,33 +13,42 @@ export class CategoryEntity {
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: Object, example: {} })
+	@IsObject()
 	privateMetadata: Metadata;
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: Object, example: {} })
+	@IsObject()
 	metadata: Metadata;
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: TranslatableDto, example: { en: 'Category Seo Name' } })
+	@IsObject()
 	seoTitle: Translatable;
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: TranslatableDto, example: { en: 'Category Seo Description' } })
+	@IsObject()
 	seoDescription: Translatable;
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: TranslatableDto, example: { en: 'Category Name' } })
+	@IsNotEmptyObject()
 	name: Translatable;
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: TranslatableDto, example: { en: 'Category Description' } })
+	@IsObject()
 	description: Translatable;
 
-	@Column()
+	@Column({ unique: true })
 	@ApiProperty({ type: String, example: 'category-name' })
+	@IsString()
 	slug: string;
 
-	@ManyToOne(() => CategoryEntity)
-	@ApiProperty({ type: CategoryDto })
-	parent: CategoryDto;
+	@TreeParent()
+	parent: CategoryEntity;
+
+	@TreeChildren()
+	children: CategoryEntity[];
 }

@@ -56,7 +56,6 @@ export default function AttributeList(props: AttributeListProps) {
 							</tbody>
 						</table>
 					</div>
-					{/*{ attributes && <LoomTable header={ attributesTableHeaders } rows={ tableRows } /> }*/ }
 				</AdminSection>
 			</AdminColumn>
 

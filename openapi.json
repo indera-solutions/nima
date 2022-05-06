@@ -14,7 +14,7 @@
 		},
 		"/api/v1/attributes": {
 			"post": {
-				"operationId": "Attributes_save",
+				"operationId": "Attributes_create",
 				"parameters": [ ],
 				"requestBody": {
 					"required": true,
@@ -40,6 +40,11 @@
 				},
 				"tags": [
 					"Attributes"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"get": {
@@ -62,6 +67,11 @@
 				},
 				"tags": [
 					"Attributes"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -95,10 +105,15 @@
 				},
 				"tags": [
 					"Attributes"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"patch": {
-				"operationId": "Attributes_patchAttribute",
+				"operationId": "Attributes_patch",
 				"parameters": [
 					{
 						"name": "attributeId",
@@ -133,10 +148,15 @@
 				},
 				"tags": [
 					"Attributes"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"put": {
-				"operationId": "Attributes_updateAttribute",
+				"operationId": "Attributes_update",
 				"parameters": [
 					{
 						"name": "attributeId",
@@ -171,10 +191,15 @@
 				},
 				"tags": [
 					"Attributes"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"delete": {
-				"operationId": "Attributes_deleteAttribute",
+				"operationId": "Attributes_remove",
 				"parameters": [
 					{
 						"name": "attributeId",
@@ -209,6 +234,11 @@
 				},
 				"tags": [
 					"Attributes"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -249,6 +279,11 @@
 				},
 				"tags": [
 					"Attribute Values"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"get": {
@@ -280,6 +315,11 @@
 				},
 				"tags": [
 					"Attribute Values"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -321,6 +361,11 @@
 				},
 				"tags": [
 					"Attribute Values"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"patch": {
@@ -370,6 +415,11 @@
 				},
 				"tags": [
 					"Attribute Values"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"put": {
@@ -419,6 +469,11 @@
 				},
 				"tags": [
 					"Attribute Values"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"delete": {
@@ -455,6 +510,11 @@
 				},
 				"tags": [
 					"Attribute Values"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -597,6 +657,11 @@
 				},
 				"tags": [
 					"Product Types"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"get": {
@@ -619,12 +684,17 @@
 				},
 				"tags": [
 					"Product Types"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
 		"/api/v1/product-types/{productTypeId}": {
 			"get": {
-				"operationId": "ProductTypes_findOne",
+				"operationId": "ProductTypes_getById",
 				"parameters": [
 					{
 						"name": "productTypeId",
@@ -649,44 +719,11 @@
 				},
 				"tags": [
 					"Product Types"
-				]
-			},
-			"patch": {
-				"operationId": "ProductTypes_patch",
-				"parameters": [
-					{
-						"name": "productTypeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					}
 				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/UpdateProductTypeDto"
-							}
-						}
+				"security": [
+					{
+						"bearer": [ ]
 					}
-				},
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ProductTypeDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Product Types"
 				]
 			},
 			"put": {
@@ -725,6 +762,11 @@
 				},
 				"tags": [
 					"Product Types"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"delete": {
@@ -753,510 +795,11 @@
 				},
 				"tags": [
 					"Product Types"
-				]
-			}
-		},
-		"/api/v1/product-types/{productTypeId}/attributes": {
-			"get": {
-				"operationId": "ProductTypes_findAttributesOfProductType",
-				"parameters": [
-					{
-						"name": "productTypeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					}
 				],
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/AttributesOfProductTypeDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Product Types"
-				]
-			}
-		},
-		"/api/v1/product-types/{productTypeId}/attributes/simple": {
-			"post": {
-				"operationId": "ProductTypeAttributes_create",
-				"parameters": [
+				"security": [
 					{
-						"name": "productTypeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
+						"bearer": [ ]
 					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CreateProductTypeAttributeDto"
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ProductTypeAttributeDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Product Type Simple Attributes"
-				]
-			},
-			"get": {
-				"operationId": "ProductTypeAttributes_findAll",
-				"parameters": [
-					{
-						"name": "productTypeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/ProductTypeAttributeDto"
-									}
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Product Type Simple Attributes"
-				]
-			}
-		},
-		"/api/v1/product-types/{productTypeId}/attributes/simple/{productTypeAttributeId}": {
-			"get": {
-				"operationId": "ProductTypeAttributes_getOne",
-				"parameters": [
-					{
-						"name": "productTypeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					},
-					{
-						"name": "productTypeAttributeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ProductTypeAttributeDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Product Type Simple Attributes"
-				]
-			},
-			"patch": {
-				"operationId": "ProductTypeAttributes_patch",
-				"parameters": [
-					{
-						"name": "productTypeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					},
-					{
-						"name": "productTypeAttributeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/UpdateProductTypeAttributeDto"
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ProductTypeAttributeDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Product Type Simple Attributes"
-				]
-			},
-			"put": {
-				"operationId": "ProductTypeAttributes_update",
-				"parameters": [
-					{
-						"name": "productTypeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					},
-					{
-						"name": "productTypeAttributeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CreateProductTypeAttributeDto"
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ProductTypeAttributeDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Product Type Simple Attributes"
-				]
-			},
-			"delete": {
-				"operationId": "ProductTypeAttributes_remove",
-				"parameters": [
-					{
-						"name": "productTypeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					},
-					{
-						"name": "productTypeAttributeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ProductTypeAttributeDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Product Type Simple Attributes"
-				]
-			}
-		},
-		"/api/v1/product-types/{productTypeId}/attributes/variant": {
-			"post": {
-				"operationId": "ProductTypeVariantAttributes_create",
-				"parameters": [
-					{
-						"name": "productTypeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CreateProductTypeVariantAttributeDto"
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ProductTypeVariantAttributeDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Product Type Variant Attributes"
-				]
-			},
-			"get": {
-				"operationId": "ProductTypeVariantAttributes_findAll",
-				"parameters": [
-					{
-						"name": "productTypeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/ProductTypeVariantAttributeDto"
-									}
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Product Type Variant Attributes"
-				]
-			}
-		},
-		"/api/v1/product-types/{productTypeId}/attributes/variant/{productTypeAttributeId}": {
-			"get": {
-				"operationId": "ProductTypeVariantAttributes_getOne",
-				"parameters": [
-					{
-						"name": "productTypeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					},
-					{
-						"name": "productTypeAttributeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ProductTypeVariantAttributeDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Product Type Variant Attributes"
-				]
-			},
-			"patch": {
-				"operationId": "ProductTypeVariantAttributes_patch",
-				"parameters": [
-					{
-						"name": "productTypeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					},
-					{
-						"name": "productTypeAttributeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/UpdateProductTypeVariantAttributeDto"
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ProductTypeVariantAttributeDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Product Type Variant Attributes"
-				]
-			},
-			"put": {
-				"operationId": "ProductTypeVariantAttributes_update",
-				"parameters": [
-					{
-						"name": "productTypeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					},
-					{
-						"name": "productTypeAttributeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CreateProductTypeVariantAttributeDto"
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ProductTypeVariantAttributeDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Product Type Variant Attributes"
-				]
-			},
-			"delete": {
-				"operationId": "ProductTypeVariantAttributes_remove",
-				"parameters": [
-					{
-						"name": "productTypeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					},
-					{
-						"name": "productTypeAttributeId",
-						"required": true,
-						"in": "path",
-						"schema": {
-							"type": "number"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ProductTypeVariantAttributeDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Product Type Variant Attributes"
 				]
 			}
 		},
@@ -1276,7 +819,14 @@
 				},
 				"responses": {
 					"201": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CategoryDto"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -1285,10 +835,30 @@
 			},
 			"get": {
 				"operationId": "Categories_findAll",
-				"parameters": [ ],
+				"parameters": [
+					{
+						"name": "depth",
+						"required": false,
+						"in": "query",
+						"description": "The depth of children to retrieve. Set 0 for only the root categories, leave empty for the full tree",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
 				"responses": {
 					"200": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/CategoryDto"
+									}
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -1299,26 +869,48 @@
 		"/api/v1/categories/{id}": {
 			"get": {
 				"operationId": "Categories_findOne",
+				"summary": "Get a category by id",
+				"description": "Gets a category. Use depth query to control the level of children to retrieve",
 				"parameters": [
 					{
 						"name": "id",
 						"required": true,
 						"in": "path",
+						"description": "The id of the category to get",
 						"schema": {
-							"type": "string"
+							"type": "number"
+						}
+					},
+					{
+						"name": "depth",
+						"required": false,
+						"in": "query",
+						"description": "The depth of children to retrieve. Set 0 for only the requested category, leave empty for the full tree",
+						"schema": {
+							"type": "number"
 						}
 					}
 				],
 				"responses": {
 					"200": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CategoryDto"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The category does not exists"
 					}
 				},
 				"tags": [
 					"Categories"
 				]
 			},
-			"patch": {
+			"put": {
 				"operationId": "Categories_update",
 				"parameters": [
 					{
@@ -1326,7 +918,7 @@
 						"required": true,
 						"in": "path",
 						"schema": {
-							"type": "string"
+							"type": "number"
 						}
 					}
 				],
@@ -1342,7 +934,14 @@
 				},
 				"responses": {
 					"200": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CategoryDto"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -1357,7 +956,16 @@
 						"required": true,
 						"in": "path",
 						"schema": {
-							"type": "string"
+							"type": "number"
+						}
+					},
+					{
+						"name": "forceDelete",
+						"required": false,
+						"in": "query",
+						"description": "Deletes the children subcategories. Default to false.",
+						"schema": {
+							"type": "boolean"
 						}
 					}
 				],
@@ -2395,6 +2003,43 @@
 					}
 				}
 			},
+			"ProductTypeAttributeDto": {
+				"type": "object",
+				"properties": {
+					"sortOrder": {
+						"type": "number",
+						"example": 1
+					},
+					"attributeId": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"sortOrder",
+					"attributeId"
+				]
+			},
+			"ProductTypeVariantAttributeDto": {
+				"type": "object",
+				"properties": {
+					"sortOrder": {
+						"type": "number",
+						"example": 1
+					},
+					"variantSelection": {
+						"type": "boolean",
+						"example": true
+					},
+					"attributeId": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"sortOrder",
+					"variantSelection",
+					"attributeId"
+				]
+			},
 			"ProductTypeDto": {
 				"type": "object",
 				"properties": {
@@ -2433,6 +2078,18 @@
 					"slug": {
 						"type": "string",
 						"example": "product-type"
+					},
+					"attributes": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ProductTypeAttributeDto"
+						}
+					},
+					"variantAttributes": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ProductTypeVariantAttributeDto"
+						}
 					}
 				},
 				"required": [
@@ -2444,7 +2101,9 @@
 					"isDigital",
 					"metadata",
 					"privateMetadata",
-					"slug"
+					"slug",
+					"attributes",
+					"variantAttributes"
 				]
 			},
 			"CategoryDto": {
@@ -2506,8 +2165,11 @@
 						"type": "string",
 						"example": "category-name"
 					},
-					"parent": {
-						"type": "object"
+					"children": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CategoryDto"
+						}
 					}
 				},
 				"required": [
@@ -2519,7 +2181,7 @@
 					"name",
 					"description",
 					"slug",
-					"parent"
+					"children"
 				]
 			},
 			"CreateProductDto": {
@@ -2790,77 +2452,7 @@
 					"slug": {
 						"type": "string",
 						"example": "product-type"
-					}
-				},
-				"required": [
-					"name",
-					"hasVariants",
-					"isShippingRequired",
-					"weight",
-					"isDigital",
-					"metadata",
-					"privateMetadata",
-					"slug"
-				]
-			},
-			"ProductTypeAttributeDto": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "number",
-						"example": 1
 					},
-					"attribute": {
-						"$ref": "#/components/schemas/AttributeDto"
-					},
-					"productType": {
-						"type": "object"
-					},
-					"sortOrder": {
-						"type": "number",
-						"example": 1
-					}
-				},
-				"required": [
-					"id",
-					"attribute",
-					"productType",
-					"sortOrder"
-				]
-			},
-			"ProductTypeVariantAttributeDto": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "number",
-						"example": 1
-					},
-					"attribute": {
-						"$ref": "#/components/schemas/AttributeDto"
-					},
-					"productType": {
-						"type": "object"
-					},
-					"sortOrder": {
-						"type": "number",
-						"example": 1
-					},
-					"variantSelection": {
-						"type": "boolean",
-						"example": true
-					}
-				},
-				"required": [
-					"id",
-					"attribute",
-					"productType",
-					"sortOrder",
-					"variantSelection"
-				]
-			},
-			"AttributesOfProductTypeDto": {
-				"type": "object",
-				"properties": {
 					"attributes": {
 						"type": "array",
 						"items": {
@@ -2875,111 +2467,17 @@
 					}
 				},
 				"required": [
+					"name",
+					"hasVariants",
+					"isShippingRequired",
+					"weight",
+					"isDigital",
+					"metadata",
+					"privateMetadata",
+					"slug",
 					"attributes",
 					"variantAttributes"
 				]
-			},
-			"UpdateProductTypeDto": {
-				"type": "object",
-				"properties": {
-					"name": {
-						"type": "string",
-						"example": "Product Type"
-					},
-					"hasVariants": {
-						"type": "boolean",
-						"example": false
-					},
-					"isShippingRequired": {
-						"type": "boolean",
-						"example": false
-					},
-					"weight": {
-						"type": "number",
-						"example": 22.1
-					},
-					"isDigital": {
-						"type": "boolean",
-						"example": false
-					},
-					"metadata": {
-						"type": "object",
-						"example": {}
-					},
-					"privateMetadata": {
-						"type": "object",
-						"example": {}
-					},
-					"slug": {
-						"type": "string",
-						"example": "product-type"
-					}
-				}
-			},
-			"CreateProductTypeAttributeDto": {
-				"type": "object",
-				"properties": {
-					"sortOrder": {
-						"type": "number",
-						"example": 1
-					},
-					"attributeId": {
-						"type": "number"
-					}
-				},
-				"required": [
-					"sortOrder",
-					"attributeId"
-				]
-			},
-			"UpdateProductTypeAttributeDto": {
-				"type": "object",
-				"properties": {
-					"sortOrder": {
-						"type": "number",
-						"example": 1
-					},
-					"attributeId": {
-						"type": "number"
-					}
-				}
-			},
-			"CreateProductTypeVariantAttributeDto": {
-				"type": "object",
-				"properties": {
-					"sortOrder": {
-						"type": "number",
-						"example": 1
-					},
-					"variantSelection": {
-						"type": "boolean",
-						"example": true
-					},
-					"attributeId": {
-						"type": "number"
-					}
-				},
-				"required": [
-					"sortOrder",
-					"variantSelection",
-					"attributeId"
-				]
-			},
-			"UpdateProductTypeVariantAttributeDto": {
-				"type": "object",
-				"properties": {
-					"sortOrder": {
-						"type": "number",
-						"example": 1
-					},
-					"variantSelection": {
-						"type": "boolean",
-						"example": true
-					},
-					"attributeId": {
-						"type": "number"
-					}
-				}
 			},
 			"CreateCategoryDto": {
 				"type": "object",
@@ -3111,7 +2609,17 @@
 						"type": "number",
 						"example": 1
 					}
-				}
+				},
+				"required": [
+					"privateMetadata",
+					"metadata",
+					"seoTitle",
+					"seoDescription",
+					"name",
+					"description",
+					"slug",
+					"parentId"
+				]
 			},
 			"LanguageCode": {
 				"type": "string",

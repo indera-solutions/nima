@@ -23,6 +23,11 @@ export const NimaQueryCacheKeys = {
 		attributes: (id?: number) => [...NimaQueryCacheKeys.productTypes.all, 'ID', id, 'ATTRIBUTES'] as const,
 		variantAttributes: (id?: number) => [...NimaQueryCacheKeys.productTypes.all, 'ID', id, 'VARIANT_ATTRIBUTES'] as const,
 	},
+	categories: {
+		all: [NIMA_QUERY_PREFIX, CATEGORIES_QUERY_PREFIX] as const,
+		list: () => [...NimaQueryCacheKeys.categories.all, 'LIST'] as const,
+		id: (id?: number) => [...NimaQueryCacheKeys.categories.all, 'ID', id] as const,
+	},
 	// categories: {
 	// 	all: [NIMA_QUERY_PREFIX, CATEGORIES_QUERY_PREFIX] as const,
 	// list: () => [...NimaQueryCacheKeys.categories.all, 'LIST'] as const, id: (id?: number) =>

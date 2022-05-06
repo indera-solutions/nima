@@ -49,5 +49,5 @@ export function parseQueryString(str: string | string[]): string {
 }
 
 export function getSlug(input: string): string {
-	return encodeURIComponent(input.replace(' ', '-')).toLowerCase();
+	return encodeURIComponent(input.replace(/ /g, '-')).toLowerCase();
 }

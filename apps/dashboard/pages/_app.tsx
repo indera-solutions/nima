@@ -8,21 +8,35 @@ import { AdminLayout } from '../components';
 import { adminRoutes } from '../lib/sidemenuItem';
 import './styles.css';
 
+function errorLogging(error: any) {
+	console.log('mpike?');
+	console.log(error.response);
+	console.log('asdasd', error.response.data);
+	if ( error?.response?.data?.message ) {
+		if ( Array.isArray(error.response.data.message) ) {
+			for ( const e of error.response.data.message ) {
+				toast.error(e);
+			}
+		} else {
+			toast.error(error.response.data.message);
+		}
+	} else if ( error.message ) {
+		toast.error(`Something went wrong: ${ error.message }`);
+	} else {
+		toast.error(`Something went wrong`);
+	}
+}
+
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
 			staleTime: 30000,
 			refetchOnWindowFocus: false,
-			onError: (error: any) => {
-				console.log(error.response);
-				if ( error?.response?.data?.message ) {
-					toast.error(error.response.data.message);
-				} else if ( error.message ) {
-					toast.error(`Something went wrong: ${ error.message }`);
-				} else {
-					toast.error(`Something went wrong`);
-				}
-			},
+			onError: errorLogging,
+			retry: false,
+		},
+		mutations: {
+			onError: errorLogging,
 		},
 	},
 });

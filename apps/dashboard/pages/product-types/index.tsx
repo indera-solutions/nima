@@ -51,7 +51,6 @@ export default function ProductTypesList(props: ProductTypesListProps) {
 							</tbody>
 						</table>
 					</div>
-					{/*{ attributes && <LoomTable header={ attributesTableHeaders } rows={ tableRows } /> }*/ }
 				</AdminSection>
 			</AdminColumn>
 

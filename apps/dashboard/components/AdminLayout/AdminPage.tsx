@@ -14,7 +14,7 @@ export function AdminPage(props: AdminPageProps) {
 	if ( Array.isArray(props.children) && props.children.length !== 2 ) throw new Error('Only 2 columns are supported');
 
 	return (
-		<div>
+		<div id={ 'admin-page' }>
 			<div className={ 'flex justify-between items-center justify-center px-7 pt-6' }>
 				<h1 className={ 'text-4xl font-medium' }>{ props.label }</h1>
 
