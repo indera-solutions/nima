@@ -1,56 +1,86 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Metadata, Translatable } from '@nima/utils';
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { IsBoolean, IsInt, IsNotEmptyObject, IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
+import {
+	Column,
+	CreateDateColumn,
+	Entity,
+	ManyToOne,
+	OneToMany,
+	PrimaryGeneratedColumn,
+	UpdateDateColumn,
+} from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { ProductDto } from '../dto/product.dto';
+import { AssignedProductVariantAttributeEntity } from './product-attribute-assignment.entity';
 import { ProductEntity } from './product.entity';
 
 @Entity('products_product_variants')
 export class ProductVariantEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })
+	@IsInt()
 	id: number;
 
 	@Column()
 	@ApiProperty({ type: String, example: 'product-sku-1' })
+	@IsString()
 	sku: string;
 
 	@Column({ type: 'jsonb', default: {} })
-	@ApiProperty({ type: TranslatableDto, example: { en: 'Category Seo Name' } })
+	@ApiProperty({ type: TranslatableDto, example: { en: 'Product Variant Name' } })
+	@IsObject()
+	@IsNotEmptyObject()
 	name: Translatable;
 
 	@ManyToOne(() => ProductEntity)
 	@ApiProperty({ type: ProductDto })
-	product: ProductDto;
+	product: ProductEntity;
 
 	@Column({ nullable: true })
 	@ApiProperty({ type: Number, example: 1, required: false })
+	@IsNumber()
+	@IsOptional()
 	weight?: number;
 
 	@Column({ type: 'jsonb', default: {} })
+	@ApiProperty({ type: Object, example: {} })
+	@IsObject()
 	metadata: Metadata;
 
 	@Column({ type: 'jsonb', default: {} })
+	@ApiProperty({ type: Object, example: {} })
+	@IsObject()
 	privateMetadata: Metadata;
 
 	@Column({ nullable: true })
 	@ApiProperty({ type: Number, example: 1, required: false })
+	@IsInt()
+	@IsOptional()
 	sortOrder?: number;
 
 	@Column({ nullable: true })
 	@ApiProperty({ type: Boolean, example: false, required: false })
+	@IsBoolean()
+	@IsOptional()
 	isPreorder?: boolean;
 
 	@Column({ nullable: true })
 	@ApiProperty({ type: String, example: '2022-01-01', required: false })
+	@IsString()
+	@IsOptional()
 	preorderEndDate?: string;
 
 	@Column({ nullable: true })
 	@ApiProperty({ type: Number, example: 1, required: false })
+	@IsInt()
+	@IsOptional()
 	preorderGlobalThreshold?: number;
 
 	@Column({ nullable: true })
 	@ApiProperty({ type: Number, example: 1, required: false })
+	@IsInt()
+	@IsOptional()
 	quantityLimitPerCustomer?: number;
 
 	@CreateDateColumn({ type: String })
@@ -64,22 +94,32 @@ export class ProductVariantEntity {
 	//Pricing
 	@Column()
 	@ApiProperty({ type: String, example: 'EUR' })
+	@IsString()
 	currency: string;
 
-	@Column({ nullable: true })
+	@Column({ type: 'float', nullable: true })
 	@ApiProperty({ type: Number, example: 1.4, required: false })
+	@IsNumber()
+	@IsOptional()
 	priceAmount?: number;
 
-	@Column({ nullable: true })
+	@Column({ type: 'float', nullable: true })
 	@ApiProperty({ type: Number, example: 1.2, required: false })
+	@IsNumber()
+	@IsOptional()
 	costPriceAmount?: number;
 
 	//Stock
 	@Column()
 	@ApiProperty({ type: Number, example: 10 })
+	@IsInt()
 	stock: number;
 
 	@Column()
 	@ApiProperty({ type: Boolean, example: true })
+	@IsBoolean()
 	trackInventory: boolean;
+
+	@OneToMany(() => AssignedProductVariantAttributeEntity, assignedAttr => assignedAttr.variant, { eager: true, onUpdate: 'NO ACTION' })
+	attributes: AssignedProductVariantAttributeEntity[];
 }

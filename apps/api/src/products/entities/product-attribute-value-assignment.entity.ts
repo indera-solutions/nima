@@ -40,7 +40,7 @@ export class AssignedProductVariantAttributeValueEntity {
 		// @ApiProperty({ type: AssignedProductVariantAttributeDto })
 	assignedProductVariantAttribute: AssignedProductVariantAttributeEntity;
 
-	@ManyToOne(() => AttributeValueEntity)
+	@ManyToOne(() => AttributeValueEntity, { eager: true })
 	@ApiProperty({ type: AttributeValueDto })
 	value: AttributeValueEntity;
 }

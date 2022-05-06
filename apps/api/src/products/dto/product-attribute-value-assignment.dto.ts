@@ -35,6 +35,7 @@ export class AssignedProductVariantAttributeValueDto extends OmitType(AssignedPr
 		return {
 			id: entity.id,
 			sortOrder: entity.sortOrder,
+
 			value: AttributeValueDto.prepare(entity.value),
 		};
 	}

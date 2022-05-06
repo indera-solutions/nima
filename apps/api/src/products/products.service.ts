@@ -128,7 +128,7 @@ export class ProductsService {
 		const promises: Promise<any>[] = [];
 
 		for ( const toDeleteElement of toDelete ) {
-			promises.push(this.assignedProductAttributeValueRepository.deleteProductTypeAttribute(assignment.id, toDeleteElement));
+			promises.push(this.assignedProductAttributeValueRepository.deleteProductAttributeValue(assignment.id, toDeleteElement));
 		}
 		for ( const createAssignedProductAttributeValueDto of toAdd ) {
 			promises.push(this.createValue(createAssignedProductAttributeValueDto, assignment));

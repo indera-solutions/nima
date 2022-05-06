@@ -81,5 +81,12 @@ export class ProductAttributeDto extends OmitType(AttributeEntity, ['values']) {
 			values: attr.values.map(av => av.value).map(v => AttributeValueDto.prepare(v)),
 		};
 	}
+
+	static prepareVariant(attr: AssignedProductVariantAttributeEntity): ProductAttributeDto {
+		return {
+			...AttributeDto.prepare(attr.productTypeVariantAttribute.attribute),
+			values: attr.values.map(av => av.value).map(v => AttributeValueDto.prepare(v)),
+		};
+	}
 }
 
