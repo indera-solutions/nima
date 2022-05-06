@@ -307,10 +307,10 @@ export interface CategoryDto {
 	'slug': string;
 	/**
 	 *
-	 * @type {object}
+	 * @type {Array<CategoryDto>}
 	 * @memberof CategoryDto
 	 */
-	'parent': object;
+	'children': Array<CategoryDto>;
 }
 /**
  *
@@ -3725,10 +3725,12 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 		},
 		/**
 		 *
+		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the root categories, leave empty
+		 *     for the full tree
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		categoriesFindAll: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		categoriesFindAll: async (depth?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			const localVarPath = `/api/v1/categories`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3741,6 +3743,10 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
+			if ( depth !== undefined ) {
+				localVarQueryParameter['depth'] = depth;
+			}
+
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -3752,12 +3758,15 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 			};
 		},
 		/**
-		 *
-		 * @param {string} id
+		 * Gets a category. Use depth query to control the level of children to retrieve
+		 * @summary Get a category by id
+		 * @param {number} id The id of the category to get
+		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the requested category, leave
+		 *     empty for the full tree
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		categoriesFindOne: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		categoriesFindOne: async (id: number, depth?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('categoriesFindOne', 'id', id)
 			const localVarPath = `/api/v1/categories/{id}`
@@ -3772,6 +3781,10 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
+
+			if ( depth !== undefined ) {
+				localVarQueryParameter['depth'] = depth;
+			}
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -3817,12 +3830,12 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {UpdateCategoryDto} updateCategoryDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		categoriesUpdate: async (id: string, updateCategoryDto: UpdateCategoryDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		categoriesUpdate: async (id: number, updateCategoryDto: UpdateCategoryDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('categoriesUpdate', 'id', id)
 			// verify required parameter 'updateCategoryDto' is not null or undefined
@@ -3836,7 +3849,7 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 				baseOptions = configuration.baseOptions;
 			}
 
-			const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+			const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
@@ -3869,27 +3882,32 @@ export const CategoriesApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async categoriesCreate(createCategoryDto: CreateCategoryDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async categoriesCreate(createCategoryDto: CreateCategoryDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CategoryDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.categoriesCreate(createCategoryDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
+		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the root categories, leave empty
+		 *     for the full tree
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async categoriesFindAll(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.categoriesFindAll(options);
+		async categoriesFindAll(depth?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CategoryDto>>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.categoriesFindAll(depth, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
-		 *
-		 * @param {string} id
+		 * Gets a category. Use depth query to control the level of children to retrieve
+		 * @summary Get a category by id
+		 * @param {number} id The id of the category to get
+		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the requested category, leave
+		 *     empty for the full tree
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async categoriesFindOne(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.categoriesFindOne(id, options);
+		async categoriesFindOne(id: number, depth?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CategoryDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.categoriesFindOne(id, depth, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
@@ -3904,12 +3922,12 @@ export const CategoriesApiFp = function (configuration?: Configuration) {
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {UpdateCategoryDto} updateCategoryDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async categoriesUpdate(id: string, updateCategoryDto: UpdateCategoryDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async categoriesUpdate(id: number, updateCategoryDto: UpdateCategoryDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CategoryDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.categoriesUpdate(id, updateCategoryDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -3929,25 +3947,30 @@ export const CategoriesApiFactory = function (configuration?: Configuration, bas
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		categoriesCreate(createCategoryDto: CreateCategoryDto, options?: any): AxiosPromise<void> {
+		categoriesCreate(createCategoryDto: CreateCategoryDto, options?: any): AxiosPromise<CategoryDto> {
 			return localVarFp.categoriesCreate(createCategoryDto, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
+		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the root categories, leave empty
+		 *     for the full tree
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		categoriesFindAll(options?: any): AxiosPromise<void> {
-			return localVarFp.categoriesFindAll(options).then((request) => request(axios, basePath));
+		categoriesFindAll(depth?: number, options?: any): AxiosPromise<Array<CategoryDto>> {
+			return localVarFp.categoriesFindAll(depth, options).then((request) => request(axios, basePath));
 		},
 		/**
-		 *
-		 * @param {string} id
+		 * Gets a category. Use depth query to control the level of children to retrieve
+		 * @summary Get a category by id
+		 * @param {number} id The id of the category to get
+		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the requested category, leave
+		 *     empty for the full tree
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		categoriesFindOne(id: string, options?: any): AxiosPromise<void> {
-			return localVarFp.categoriesFindOne(id, options).then((request) => request(axios, basePath));
+		categoriesFindOne(id: number, depth?: number, options?: any): AxiosPromise<CategoryDto> {
+			return localVarFp.categoriesFindOne(id, depth, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -3960,12 +3983,12 @@ export const CategoriesApiFactory = function (configuration?: Configuration, bas
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {UpdateCategoryDto} updateCategoryDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		categoriesUpdate(id: string, updateCategoryDto: UpdateCategoryDto, options?: any): AxiosPromise<void> {
+		categoriesUpdate(id: number, updateCategoryDto: UpdateCategoryDto, options?: any): AxiosPromise<CategoryDto> {
 			return localVarFp.categoriesUpdate(id, updateCategoryDto, options).then((request) => request(axios, basePath));
 		},
 	};
@@ -3986,17 +4009,38 @@ export interface CategoriesApiCategoriesCreateRequest {
 }
 
 /**
+ * Request parameters for categoriesFindAll operation in CategoriesApi.
+ * @export
+ * @interface CategoriesApiCategoriesFindAllRequest
+ */
+export interface CategoriesApiCategoriesFindAllRequest {
+	/**
+	 * The depth of children to retrieve. Set 0 for only the root categories, leave empty for the full tree
+	 * @type {number}
+	 * @memberof CategoriesApiCategoriesFindAll
+	 */
+	readonly depth?: number;
+}
+
+/**
  * Request parameters for categoriesFindOne operation in CategoriesApi.
  * @export
  * @interface CategoriesApiCategoriesFindOneRequest
  */
 export interface CategoriesApiCategoriesFindOneRequest {
 	/**
-	 *
-	 * @type {string}
+	 * The id of the category to get
+	 * @type {number}
 	 * @memberof CategoriesApiCategoriesFindOne
 	 */
-	readonly id: string;
+	readonly id: number;
+
+	/**
+	 * The depth of children to retrieve. Set 0 for only the requested category, leave empty for the full tree
+	 * @type {number}
+	 * @memberof CategoriesApiCategoriesFindOne
+	 */
+	readonly depth?: number;
 }
 
 /**
@@ -4021,10 +4065,10 @@ export interface CategoriesApiCategoriesRemoveRequest {
 export interface CategoriesApiCategoriesUpdateRequest {
 	/**
 	 *
-	 * @type {string}
+	 * @type {number}
 	 * @memberof CategoriesApiCategoriesUpdate
 	 */
-	readonly id: string;
+	readonly id: number;
 
 	/**
 	 *
@@ -4054,23 +4098,25 @@ export class CategoriesApi extends BaseAPI {
 
 	/**
 	 *
+	 * @param {CategoriesApiCategoriesFindAllRequest} requestParameters Request parameters.
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}
 	 * @memberof CategoriesApi
 	 */
-	public categoriesFindAll(options?: AxiosRequestConfig) {
-		return CategoriesApiFp(this.configuration).categoriesFindAll(options).then((request) => request(this.axios, this.basePath));
+	public categoriesFindAll(requestParameters: CategoriesApiCategoriesFindAllRequest = {}, options?: AxiosRequestConfig) {
+		return CategoriesApiFp(this.configuration).categoriesFindAll(requestParameters.depth, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
-	 *
+	 * Gets a category. Use depth query to control the level of children to retrieve
+	 * @summary Get a category by id
 	 * @param {CategoriesApiCategoriesFindOneRequest} requestParameters Request parameters.
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}
 	 * @memberof CategoriesApi
 	 */
 	public categoriesFindOne(requestParameters: CategoriesApiCategoriesFindOneRequest, options?: AxiosRequestConfig) {
-		return CategoriesApiFp(this.configuration).categoriesFindOne(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+		return CategoriesApiFp(this.configuration).categoriesFindOne(requestParameters.id, requestParameters.depth, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**

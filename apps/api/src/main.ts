@@ -39,7 +39,7 @@ async function bootstrap() {
 		customCss: SwaggerDarkModeCss,
 	});
 
-	app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
+	app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));
 
 	await app.listen(port);
 	Logger.log(`🚀 Application is running on: http://localhost:${ port }/${ globalPrefix }`);

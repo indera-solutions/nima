@@ -38,10 +38,10 @@ export class CategoryEntity {
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: TranslatableDto, example: { en: 'Category Description' } })
-	@IsNotEmptyObject()
+	@IsObject()
 	description: Translatable;
 
-	@Column()
+	@Column({ unique: true })
 	@ApiProperty({ type: String, example: 'category-name' })
 	@IsString()
 	slug: string;

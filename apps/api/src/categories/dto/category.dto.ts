@@ -1,4 +1,4 @@
-import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
+import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { IsNumber, IsOptional } from 'class-validator';
 import { CategoryEntity } from '../entities/category.entity';
 
@@ -30,5 +30,5 @@ export class CreateCategoryDto extends OmitType(CategoryDto, ['id', 'children'])
 	parentId?: number;
 }
 
-export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {
+export class UpdateCategoryDto extends CreateCategoryDto {
 }
