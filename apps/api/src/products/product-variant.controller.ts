@@ -22,7 +22,7 @@ export class ProductVariantController {
 	@ApiParam({ type: Number, name: 'productId' })
 	@ApiOkResponse({ type: [ProductVariantDto] })
 	async findOfProduct(@Param('productId', ParseIntPipe) productId: number) {
-		const products = await this.productVariantService.findAll({ productId: productId });
+		const products = await this.productVariantService.findOfProduct({ productId: productId });
 		return products.map(product => ProductVariantDto.prepare(product));
 	}
 

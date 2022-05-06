@@ -85,7 +85,6 @@ export class ProductsService {
 
 	private async syncAttributes(params: { oldAttributes: AssignedProductAttributeEntity[], newAttributes: CreateAssignedProductAttributeDto[], product: ProductEntity }) {
 		const { oldAttributes, newAttributes, product } = params;
-		console.log('syncing attributes');
 		const oldIds = oldAttributes.map(value => value.productTypeAttribute.id);
 		const newIds = newAttributes.map(value => value.productTypeAttributeId);
 		const toDelete = oldIds.filter(id => !newIds.includes(id));
@@ -115,7 +114,6 @@ export class ProductsService {
 
 	private async syncValues(params: { oldValues: AssignedProductAttributeValueEntity[], newValues: CreateAssignedProductAttributeValueDto[], assignment: AssignedProductAttributeEntity }) {
 		const { oldValues, newValues, assignment } = params;
-		console.log('syncing values');
 		const oldIds = oldValues.map(value => value.value.id);
 		const newIds = newValues.map(value => value.valueId);
 		const toDelete = oldIds.filter(id => !newIds.includes(id));

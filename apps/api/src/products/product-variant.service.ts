@@ -48,7 +48,11 @@ export class ProductVariantService {
 		return await this.getById({ id: variant.id });
 	}
 
-	async findAll(params: { productId: number }): Promise<ProductVariantEntity[]> {
+	async findOfProduct(params: { productId: number }): Promise<ProductVariantEntity[]> {
+		return await this.productVariantRepository.findByProductId(params.productId);
+	}
+
+	async findAll(): Promise<ProductVariantEntity[]> {
 		return await this.productVariantRepository.find();
 	}
 
@@ -107,15 +111,13 @@ export class ProductVariantService {
 	}
 
 	private async createAttributeAssignment(dto: CreateAssignedProductVariantAttributeDto, variant: ProductVariantEntity) {
-		const productTypeAttribute = await this.productTypeVariantAttributesService.getById({ productTypeAttributeId: dto.productTypeVariantAttributeId });
-		console.log({ productTypeAttribute });
-		const assignment = await this.assignedProductVariantAttributeRepository.save({ variant: variant, productTypeAttribute: productTypeAttribute });
+		const productTypeVariantAttributeEntity = await this.productTypeVariantAttributesService.getById({ productTypeAttributeId: dto.productTypeVariantAttributeId });
+		const assignment = await this.assignedProductVariantAttributeRepository.save({ variant: variant, productTypeVariantAttribute: productTypeVariantAttributeEntity });
 		await this.syncValues({ oldValues: [], newValues: dto.values, assignment: assignment });
 	}
 
 	private async syncValues(params: { oldValues: AssignedProductVariantAttributeValueEntity[], newValues: CreateAssignedProductVariantAttributeValueDto[], assignment: AssignedProductVariantAttributeEntity }) {
 		const { oldValues, newValues, assignment } = params;
-		console.log('syncing values');
 		const oldIds = oldValues.map(value => value.value.id);
 		const newIds = newValues.map(value => value.valueId);
 		const toDelete = oldIds.filter(id => !newIds.includes(id));
@@ -142,6 +144,6 @@ export class ProductVariantService {
 
 	private async createValue(dto: CreateAssignedProductVariantAttributeValueDto, assignment: AssignedProductVariantAttributeEntity) {
 		const value = await this.attributeValuesService.getById({ id: dto.valueId });
-		await this.assignedProductVariantAttributeValueRepository.save({ value: value, assignedProductAttribute: assignment, sortOrder: dto.sortOrder });
+		await this.assignedProductVariantAttributeValueRepository.save({ value: value, assignedProductVariantAttribute: assignment, sortOrder: dto.sortOrder });
 	}
 }

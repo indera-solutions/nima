@@ -46,6 +46,6 @@ export class AssignedProductVariantAttributeEntity {
 	@ApiProperty({ type: ProductTypeVariantAttributeDto })
 	productTypeVariantAttribute: ProductTypeVariantAttributeEntity;
 
-	@OneToMany(() => AssignedProductAttributeValueEntity, assignedValue => assignedValue.assignedProductAttribute, { eager: true })
+	@OneToMany(() => AssignedProductVariantAttributeValueEntity, assignedValue => assignedValue.assignedProductVariantAttribute, { eager: true })
 	values: AssignedProductVariantAttributeValueEntity[];
 }

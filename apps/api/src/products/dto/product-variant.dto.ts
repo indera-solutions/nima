@@ -17,7 +17,6 @@ export class ProductVariantDto extends OmitType(ProductVariantEntity, ['attribut
 	product: ProductDto;
 
 	static prepare(entity: ProductVariantEntity, options?: { isAdmin?: boolean }): ProductVariantDto {
-		console.dir(entity.attributes, { depth: 100 });
 		return {
 			id: entity.id,
 			name: entity.name,
