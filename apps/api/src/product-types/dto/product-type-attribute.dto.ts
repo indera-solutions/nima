@@ -2,13 +2,15 @@ import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { IsInt } from 'class-validator';
 import { ProductTypeAttributeEntity, ProductTypeVariantAttributeEntity } from '../entities';
 
-export class ProductTypeAttributeDto extends OmitType(ProductTypeAttributeEntity, ['productType', 'attribute', 'id']) {
+export class ProductTypeAttributeDto extends OmitType(ProductTypeAttributeEntity, ['productType', 'attribute']) {
 	@ApiProperty()
 	@IsInt()
 	attributeId: number;
 
+
 	static prepare(entity: ProductTypeAttributeEntity): ProductTypeAttributeDto {
 		return {
+			id: entity.id,
 			attributeId: entity.attribute.id,
 			sortOrder: entity.sortOrder,
 		};

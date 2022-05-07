@@ -1,25 +1,23 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { IsArray, IsInt } from 'class-validator';
-import { CategoryDto } from '../../categories/dto/category.dto';
 import { ProductEntity } from '../entities/product.entity';
 import { CreateAssignedProductAttributeDto, ProductAttributeDto } from './product-attribute-assignment.dto';
-import { ProductVariantDto } from './product-variant.dto';
 
 export class ProductDto extends OmitType(ProductEntity, ['productType', 'attributes', 'category', 'defaultVariant']) {
 	@ApiProperty()
 	@IsInt()
 	productTypeId: number;
 
-	@ApiProperty({ type: () => CategoryDto })
+	@ApiProperty()
 	@IsInt()
-	categoryId: CategoryDto;
+	categoryId: number;
 
 	@ApiProperty({ type: () => [ProductAttributeDto] })
 	@IsArray()
 	attributes: ProductAttributeDto[];
 
-	@ApiProperty({ type: () => ProductVariantDto })
-	defaultVariant: ProductVariantDto;
+	@ApiProperty()
+	defaultVariantId: number;
 
 	static prepare(entity: ProductEntity, options?: { isAdmin?: boolean }): ProductDto {
 		console.dir(entity, { depth: 100 });
@@ -28,12 +26,12 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'attribu
 			name: entity.name,
 			slug: entity.slug,
 			productTypeId: entity.productType.id,
-			categoryId: CategoryDto.prepare(entity.category),
+			categoryId: entity.category.id,
 			chargeTaxes: entity.chargeTaxes,
 			created: entity.created,
 			currency: entity.currency,
 			weight: entity.weight,
-			defaultVariant: ProductVariantDto.prepare(entity.defaultVariant),
+			defaultVariantId: entity.defaultVariant?.id,
 			description: entity.description,
 			descriptionPlaintext: entity.descriptionPlaintext,
 			metadata: entity.metadata,
@@ -52,14 +50,19 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'attribu
 	}
 }
 
-export class CreateProductDto extends OmitType(ProductDto, ['id', 'attributes', 'created', 'updatedAt', 'defaultVariant']) {
+export class CreateProductDto extends OmitType(ProductDto, ['id', 'attributes', 'created', 'updatedAt', 'defaultVariantId', 'categoryId']) {
 	@ApiProperty({ type: [CreateAssignedProductAttributeDto] })
 	@IsArray()
 	attributes: CreateAssignedProductAttributeDto[];
 
+	// @ApiProperty()
+	// @IsInt()
+	// defaultVariantId: number;
+
+
 	@ApiProperty()
 	@IsInt()
-	defaultVariantId: number;
+	categoryId: number;
 }
 
 export class UpdateProductDto extends PartialType(ProductDto) {

@@ -11,7 +11,6 @@ import {
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
-import { CategoryDto } from '../../categories/dto/category.dto';
 import { CategoryEntity } from '../../categories/entities/category.entity';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { ProductTypeDto } from '../../product-types/dto/product-type.dto';
@@ -28,14 +27,12 @@ export class ProductEntity {
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: TranslatableDto, example: { en: 'Product Name' } })
-	@IsObject()
 	@IsNotEmptyObject()
 	name: Translatable;
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: TranslatableDto, example: { en: 'Product Description' } })
 	@IsObject()
-	@IsNotEmptyObject()
 	description: Translatable;
 
 	@UpdateDateColumn({ type: String })
@@ -47,7 +44,6 @@ export class ProductEntity {
 	productType: ProductTypeEntity;
 
 	@ManyToOne(() => CategoryEntity /*,object => object.products*/, { eager: true })
-	@ApiProperty({ type: CategoryDto })
 	category: CategoryEntity;
 
 	@Column({ type: String })
@@ -86,7 +82,7 @@ export class ProductEntity {
 	slug: string;
 
 	@OneToOne(() => ProductVariantEntity)
-	// @ApiProperty({ type: ProductVariantDto })
+		// @ApiProperty({ type: ProductVariantDto })
 	defaultVariant: ProductVariantEntity;
 
 	@Column({ type: String })

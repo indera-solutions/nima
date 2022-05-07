@@ -1,7 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { BasePaginatedRequest, PaginatedResults } from '@nima/utils';
+import { BasePaginatedRequest, getSlug, PaginatedResults } from '@nima/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { AttributeValuesService } from '../attributes/attribute-values.service';
+import { CategoriesService } from '../categories/categories.service';
 import { ProductTypeAttributesService } from '../product-types/product-type-attributes.service';
 import { ProductTypesService } from '../product-types/product-types.service';
 import { CreateAssignedProductAttributeDto } from './dto/product-attribute-assignment.dto';
@@ -20,6 +21,7 @@ export class ProductsService {
 	constructor(
 		private productRepository: ProductRepository,
 		private productTypesService: ProductTypesService,
+		private categoryService: CategoriesService,
 		private productTypeAttributesService: ProductTypeAttributesService,
 		private assignedProductAttributeRepository: AssignedProductAttributeRepository,
 		private assignedProductAttributeValueRepository: AssignedProductAttributeValueRepository,
@@ -42,7 +44,16 @@ export class ProductsService {
 		const productType = await this.productTypesService.getById({ id: dto.productTypeId });
 		if ( !productType ) throw new NotFoundException('PRODUCT_TYPE_NOT_FOUND');
 		// const attributes = await this.constructAttributes(dto.attributes);
-		const product = await this.productRepository.save({ ...dto, id: productId, productType: productType, attributes: undefined });
+		if ( !dto.slug ) dto.slug = getSlug(dto.name.en || dto.name.el);
+		const category = await this.categoryService.findOne({ id: dto.categoryId, depth: 0 });
+		const product = await this.productRepository.save({
+			...dto,
+			id: productId,
+			productType: productType,
+			category,
+			attributes: undefined,
+		});
+
 
 		await this.syncAttributes({ oldAttributes: oldProduct?.attributes || [], newAttributes: dto.attributes, product: product });
 
@@ -82,6 +93,10 @@ export class ProductsService {
 		const product = await this.getById({ id: id });
 		await this.productRepository.deleteById(id);
 		return product;
+	}
+
+	async findFilteredProductIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string): Promise<{ id: number, price: number }[]> {
+		return await this.productRepository.findFilteredProductIds(collectionId, categoryIds, filters, search);
 	}
 
 	private async syncAttributes(params: { oldAttributes: AssignedProductAttributeEntity[], newAttributes: CreateAssignedProductAttributeDto[], product: ProductEntity }) {
@@ -142,9 +157,5 @@ export class ProductsService {
 	private async createValue(dto: CreateAssignedProductAttributeValueDto, assignment: AssignedProductAttributeEntity) {
 		const value = await this.attributeValuesService.getById({ id: dto.valueId });
 		await this.assignedProductAttributeValueRepository.save({ value: value, assignedProductAttribute: assignment, sortOrder: dto.sortOrder });
-	}
-
-	async findFilteredProductIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string): Promise<{ id: number, price: number }[]> {
-		return await this.productRepository.findFilteredProductIds(collectionId, categoryIds, filters, search);
 	}
 }

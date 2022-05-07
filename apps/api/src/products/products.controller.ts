@@ -39,7 +39,8 @@ export class ProductsController {
 	@ApiOkResponse({ type: ProductFilterResultDto })
 	@ApiQuery({ type: () => ProductFilterParamsDto })
 	async findAll(@Req() request: Request, @Query(new ValidationPipe({})) query, @Query('filters') filters) {
-		const res = await this.filteringService.productFilterQuery(plainToInstance(ProductFilterParamsDto, query, { enableImplicitConversion: true }));
+		const filterObj = plainToInstance(ProductFilterParamsDto, query, { enableImplicitConversion: true });
+		const res = await this.filteringService.productFilterQuery(filterObj);
 		return res;
 	}
 

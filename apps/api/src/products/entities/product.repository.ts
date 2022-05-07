@@ -1,8 +1,6 @@
 import { LanguageCode } from '@nima/utils';
 import { EntityRepository } from 'typeorm';
 import { BaseRepository } from 'typeorm-transactional-cls-hooked';
-import { CategoryEntity } from '../../categories/entities/category.entity';
-import { ProductTypeEntity } from '../../product-types/entities';
 import { ProductQueryFilterDto, ProductSorting } from '../dto/product-filtering.dto';
 import {
 	AssignedProductAttributeEntity,
@@ -84,11 +82,13 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 
 	async findByIdsWithSorting(ids: number[], skip?: number, take?: number, sorting?: ProductSorting, language: LanguageCode = LanguageCode.en): Promise<ProductEntity[]> {
 		const q = this.createQueryBuilder('p')
-					  .leftJoinAndSelect(ProductTypeEntity, 'pt', `pt.id = p."productTypeId"`)
-					  .leftJoinAndSelect(CategoryEntity, 'c', `c.id = p."categoryId"`)
+					  .leftJoinAndSelect('p.productType', 'pt')
+					  .leftJoinAndSelect('p.category', 'c')
+					  .leftJoinAndSelect('p.attributes', 'att')
 					  .whereInIds(ids)
 					  .skip(skip)
 					  .take(take);
+
 
 		if ( sorting ) {
 			if ( sorting === ProductSorting.NAME_ASC || sorting === ProductSorting.NAME_DESC ) {
@@ -102,6 +102,9 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 			}
 		}
 
-		return await q.getMany();
+		console.log('----');
+		const res = await q.getMany();
+		console.log('-###-');
+		return res;
 	}
 }

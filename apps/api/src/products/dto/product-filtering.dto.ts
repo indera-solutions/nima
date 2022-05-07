@@ -49,7 +49,7 @@ export class ProductFilterResultDto implements PaginatedResults<ProductDto> {
 	@ApiProperty()
 	selectedMaxPrice: number;
 
-	@ApiProperty()
+	@ApiProperty({ type: [ProductDto] })
 	items: ProductDto[];
 
 	@ApiProperty()
@@ -77,7 +77,7 @@ export class ProductFilterParamsDto {
 	@ApiPropertyOptional({ type: () => ProductQueryFilterDto, isArray: true })
 	@Type(() => ProductQueryFilterDto)
 	@Transform(params => {
-		console.log(params);
+		if ( !params.value ) return [];
 		return Array.isArray(params.value) ? params.value.map(v => JSON.parse(v)) : JSON.parse(params.value);
 	})
 	@ValidateNested()

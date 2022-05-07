@@ -9,9 +9,6 @@ import { adminRoutes } from '../lib/sidemenuItem';
 import './styles.css';
 
 function errorLogging(error: any) {
-	console.log('mpike?');
-	console.log(error.response);
-	console.log('asdasd', error.response.data);
 	if ( error?.response?.data?.message ) {
 		if ( Array.isArray(error.response.data.message) ) {
 			for ( const e of error.response.data.message ) {
@@ -33,7 +30,6 @@ const queryClient = new QueryClient({
 			staleTime: 30000,
 			refetchOnWindowFocus: false,
 			onError: errorLogging,
-			retry: false,
 		},
 		mutations: {
 			onError: errorLogging,
