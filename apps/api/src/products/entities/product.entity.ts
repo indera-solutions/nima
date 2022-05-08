@@ -96,7 +96,7 @@ export class ProductEntity {
 	@IsInt()
 	rating: number;
 
-	@Column({ type: String })
+	@Column({ type: String, default: '' })
 	searchDocument: string;
 
 	@CreateDateColumn({ type: String })

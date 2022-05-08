@@ -7,7 +7,7 @@ export interface EditProductAttributeProps {
 	productTypeId: number;
 	isVariants?: boolean;
 	productAttributeValue: CreateAssignedProductAttributeDto | CreateAssignedProductVariantAttributeDto;
-	onSelect: (productAttributeValue: CreateAssignedProductAttributeDto) => void;
+	onSelect: (productAttributeValue: CreateAssignedProductAttributeDto | CreateAssignedProductVariantAttributeDto) => void;
 }
 
 export interface EditSingleProductAttributeProps extends Omit<EditProductAttributeProps, 'productTypeId'> {

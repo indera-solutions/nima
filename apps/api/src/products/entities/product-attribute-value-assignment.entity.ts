@@ -13,7 +13,7 @@ export class AssignedProductAttributeValueEntity {
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
 
-	@Column()
+	@Column({ nullable: true })
 	@ApiProperty({ type: Number, example: 1 })
 	sortOrder: number;
 
@@ -32,7 +32,7 @@ export class AssignedProductVariantAttributeValueEntity {
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
 
-	@Column()
+	@Column({ nullable: true })
 	@ApiProperty({ type: Number, example: 1 })
 	sortOrder: number;
 

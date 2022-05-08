@@ -1,5 +1,11 @@
-import { useCreateProductVariationMutation, useProductById, useProductTypeId } from '@nima/react';
-import { CreateAssignedProductAttributeDto, CreateProductVariantDto } from '@nima/sdk';
+import {
+	useCreateProductVariationMutation,
+	useProductById,
+	useProductTypeId,
+	useProductVariantById,
+	useUpdateProductVariationMutation,
+} from '@nima/react';
+import { CreateAssignedProductVariantAttributeDto, CreateProductVariantDto } from '@nima/sdk';
 import { Metadata, parseIdStr } from '@nima/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -17,6 +23,7 @@ import {
 	SelectEditingLanguage,
 	TranslatableInput,
 } from '../../components';
+import { PrintJson } from '../../components/utils/PrintJSON';
 import { NIMA_ROUTES } from '../../lib/routes';
 
 interface VariantsProps {
@@ -26,24 +33,27 @@ interface VariantsProps {
 export default function Variants(props: VariantsProps) {
 	const router = useRouter();
 	const productId = router.query['productId'] ? parseIdStr(router.query['productId']) : undefined;
+	const variantId = router.query['variantId'] ? parseIdStr(router.query['variantId']) : undefined;
+	const isEditing = !!variantId;
+
 	const { data: product } = useProductById(productId);
 	const { data: productType } = useProductTypeId(product?.productTypeId);
-	console.log(productType);
 
-	// const { data: attributeTypes } = useProductTypeVariantAttributes(product?.productType?.id);
-	// const [productAttributeValues, setProductAttributeValues] = useState<ProductAttributeValue[]>([]);
+	const { data: existingVariation } = useProductVariantById(productId, variantId, { refetchInterval: false });
+
 
 	const createProductVariationMutation = useCreateProductVariationMutation();
-	// const addProductVariationAttributeValueMutation = useAddProductVariationAttributeValueMutation();
+	const updateProductVariationMutation = useUpdateProductVariationMutation();
+
 
 	const [createProductVariation, setCreateProductVariation] = useState<CreateProductVariantDto>({
-			name: {},
-			privateMetadata: {},
-			attributes: [],
-			currency: 'EUR',
-			metadata: {},
-			costPriceAmount: 0,
-			isPreorder: false,
+		name: {},
+		privateMetadata: {},
+		attributes: [],
+		currency: 'EUR',
+		metadata: {},
+		costPriceAmount: 0,
+		isPreorder: false,
 			sku: '',
 			stock: 0,
 			trackInventory: false,
@@ -51,18 +61,8 @@ export default function Variants(props: VariantsProps) {
 	);
 
 
-	//
-	// useEffect(() => {
-	// 	if ( !attributeTypes ) return;
-	// 	setProductAttributeValues(attributeTypes.map(pta => ({
-	// 		productTypeAttributeId: pta.id,
-	// 		attributeId: pta.attribute.id,
-	// 		required: pta.attribute.valueRequired,
-	// 		isVariantSelection: pta.variantSelection,
-	// 	})));
-	// }, [attributeTypes]);
-
 	useEffect(() => {
+		if ( !isEditing ) return;
 		if ( !productType ) return;
 		setCreateProductVariation(state => ({
 			...state,
@@ -74,15 +74,34 @@ export default function Variants(props: VariantsProps) {
 		}));
 	}, [productType]);
 
+	useEffect(() => {
+		if ( !existingVariation ) return;
+		const { id, attributes, updatedAt, created, ...rest } = existingVariation;
+		setCreateProductVariation({
+			...rest,
+			attributes: productType ? attributes.map(att => {
+				const pta = productType.variantAttributes.find(a => a.attributeId === att.id);
+				if ( !pta ) throw new Error('att not found');
+				return {
+					productTypeVariantAttributeId: pta.id,
+					values: att.values.map((v, index) => ({
+						valueId: v.id,
+						sortOrder: v.sortOrder || index,
+					})),
+				};
+			}) : [],
+		});
+	}, [existingVariation, productType]);
+
 
 	const variationAttributes = productType?.variantAttributes.filter(va => !va.variantSelection) || [];
 	const selectionAttributes = productType?.variantAttributes.filter(va => va.variantSelection) || [];
 
 
-	function onAttributeChange(productAttributeValue: CreateAssignedProductAttributeDto) {
+	function onAttributeChange(productAttributeValue: CreateAssignedProductVariantAttributeDto) {
 		setCreateProductVariation(state => {
-			const attribute = state.attributes.find(att => att.productTypeVariantAttributeId === productAttributeValue.productTypeAttributeId);
-			if ( !attribute ) return state;
+			const attribute = state.attributes.find(att => att.productTypeVariantAttributeId === productAttributeValue.productTypeVariantAttributeId);
+			if ( !attribute ) return { ...state };
 			attribute.values = productAttributeValue.values;
 			return {
 				...state,
@@ -91,14 +110,23 @@ export default function Variants(props: VariantsProps) {
 	}
 
 	async function onCreateVariant() {
-		// try {
-		if ( !productId ) throw new Error('Invalid Product id');
-		const createdProductVariant = await createProductVariationMutation.mutateAsync({
-			productId: productId || 0,
-			createProductVariantDto: createProductVariation,
-		});
-		toast.success('Variation Created');
-		await router.push(NIMA_ROUTES.products.edit(productId));
+		if ( isEditing ) {
+			await updateProductVariationMutation.mutateAsync({
+				createProductVariantDto: createProductVariation,
+				productId,
+				id: variantId,
+			});
+			toast.success('Variation Updated');
+
+		} else {
+			if ( !productId ) throw new Error('Invalid Product id');
+			const createdProductVariant = await createProductVariationMutation.mutateAsync({
+				productId: productId || 0,
+				createProductVariantDto: createProductVariation,
+			});
+			toast.success('Variation Created');
+			await router.push(NIMA_ROUTES.products.edit(productId));
+		}
 	}
 
 	function onValueEdit(name: keyof CreateProductVariantDto, value: any) {
@@ -134,6 +162,9 @@ export default function Variants(props: VariantsProps) {
 
 				<AdminColumn>
 					<AdminSection title={ 'General Information' } titleRightContainer={ <SelectEditingLanguage/> }>
+						<PrintJson obj={ existingVariation }/>
+						<PrintJson obj={ createProductVariation }/>
+
 						<label className="label">
 							<span className="label-text">Name</span>
 						</label>

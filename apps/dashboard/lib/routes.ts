@@ -36,6 +36,7 @@ export const NIMA_ROUTES = {
 		import: () => PRODUCTS_INDEX + '/import',
 		edit: (id: string | number) => PRODUCTS_INDEX + '/add' + appendQuery({ id }),
 		createVariant: (id: string | number) => PRODUCTS_INDEX + '/variants' + appendQuery({ productId: id }),
+		editVariant: (id: string | number, variantId) => PRODUCTS_INDEX + '/variants' + appendQuery({ productId: id, variantId }),
 	},
 	settings: {
 		index: SETTINGS_INDEX,

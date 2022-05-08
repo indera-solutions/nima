@@ -30,22 +30,12 @@ export const NimaQueryCacheKeys = {
 		list: () => [...NimaQueryCacheKeys.categories.all, 'LIST'] as const,
 		id: (id?: number) => [...NimaQueryCacheKeys.categories.all, 'ID', id] as const,
 	},
-	// categories: {
-	// 	all: [NIMA_QUERY_PREFIX, CATEGORIES_QUERY_PREFIX] as const,
-	// list: () => [...NimaQueryCacheKeys.categories.all, 'LIST'] as const, id: (id?: number) =>
-	// [...NimaQueryCacheKeys.categories.all, 'ID', id] as const, // products: (id?: number, filters?: any) =>
-	// [...NimaQueryCacheKeys.categories.all, 'ID', id, 'PRODUCTS', // filters || {}] as const, fields: (id?:
-	// number) => [...NimaQueryCacheKeys.categories.all, 'ID', id, // 'FIELDS'] as const, },
 	products: {
 		all: [NIMA_QUERY_PREFIX, PRODUCTS_QUERY_PREFIX] as const,
 		list: (options: ProductsApiProductsFindAllRequest) => [...NimaQueryCacheKeys.products.all, 'LIST', options] as const,
 		id: (id?: number) => [...NimaQueryCacheKeys.products.all, 'ID', id] as const,
-		// listVariants: (id?: number) => [...NimaQueryCacheKeys.products.all, 'ID', id, 'VARIANTS'] as const,
-		// listAttributes: (id?: number) => [...NimaQueryCacheKeys.products.all, 'ID', id, 'ATTRIBUTES'] as const,
-		// listVariantAttributes: (id?: number, variantId?: number) => [...NimaQueryCacheKeys.products.all, 'ID', id,
-		// 'VARIANTS', variantId, 'ATTRIBUTES'] as const, listVariantAttributesValue: (id?: number, variantId?: number,
-		// assignedVariantAttributeId?: number) => [...NimaQueryCacheKeys.products.all, 'ID', id, 'VARIANTS',
-		// variantId, 'ATTRIBUTES', assignedVariantAttributeId, 'VALUES'] as const,
+		listVariants: (id?: number) => [...NimaQueryCacheKeys.products.all, 'ID', id, 'VARIANTS'] as const,
+		variant: (id?: number, variantId?: number) => [...NimaQueryCacheKeys.products.all, 'ID', id, 'VARIANTS', variantId] as const,
 	},
 	// orders: { all:
 	// [NIMA_QUERY_PREFIX, ORDERS_QUERY_PREFIX] as const, list: (pageSize: number, pageNumber: number) =>

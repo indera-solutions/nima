@@ -25,15 +25,23 @@ export function DropdownValueSelector(props: EditSingleProductAttributeProps & {
 	const selected = useMemo(() => {
 		if ( !props.productAttributeValue.values ) return undefined;
 		if ( !values ) return;
-
-		// if ( Array.isArray(valueId) ) throw new Error('Can\'t handle array values');
-		// const temp = values.find(v => v.id === valueId);
-		// if ( !temp ) return undefined;
-		// return {
-		// 	label: getTranslation(temp.name, languages.currentEditingLanguage),
-		// 	value: valueId,
-		// };
-
+		if ( props.isMulti ) {
+			return props.productAttributeValue.values.map(value => {
+				const temp = value ? values.find(v => v.id === value.valueId) : undefined;
+				if ( !temp ) throw new Error('Attribute not found');
+				return {
+					label: getTranslation(temp.name, languages.currentEditingLanguage),
+					value: value.valueId,
+				};
+			});
+		} else {
+			const temp = props.productAttributeValue.values[0] ? values.find(v => v.id === props.productAttributeValue.values[0].valueId) : undefined;
+			if ( !temp ) return undefined;
+			return {
+				label: getTranslation(temp.name, languages.currentEditingLanguage),
+				value: props.productAttributeValue.values[0].valueId,
+			};
+		}
 	}, [props.productAttributeValue.values, values]);
 
 	async function handleChange(newValue: OnChangeValue<any, false>, actionMeta: ActionMeta<any>) {
