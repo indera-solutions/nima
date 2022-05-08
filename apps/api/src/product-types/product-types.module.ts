@@ -23,6 +23,7 @@ import {
 	],
 	controllers: [ProductTypesController],
 	providers: [ProductTypesService, ProductTypeAttributesService, ProductTypeVariantAttributesService],
+	exports: [ProductTypesService, ProductTypeAttributesService, ProductTypeVariantAttributesService],
 })
 export class ProductTypesModule {
 }

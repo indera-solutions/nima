@@ -12,7 +12,6 @@ function appendQuery(q: any): string {
 		skipNull: true,
 	});
 	return str.length === 0 ? '' : '?' + str;
-	// if(Object.keys(q).length===0)
 }
 
 export const NIMA_ROUTES = {
@@ -33,10 +32,11 @@ export const NIMA_ROUTES = {
 	},
 	products: {
 		list: PRODUCTS_INDEX,
-		add: () => NIMA_ROUTES.products.list + '/add',
-		import: () => NIMA_ROUTES.products.list + '/import',
-		edit: (id: string | number) => NIMA_ROUTES.products.list + '/add' + appendQuery({ id }),
-		createVariant: (id: string | number) => NIMA_ROUTES.products.list + '/' + id + '/variants/add',
+		add: () => PRODUCTS_INDEX + '/add',
+		import: () => PRODUCTS_INDEX + '/import',
+		edit: (id: string | number) => PRODUCTS_INDEX + '/add' + appendQuery({ id }),
+		createVariant: (id: string | number) => PRODUCTS_INDEX + '/variants' + appendQuery({ productId: id }),
+		editVariant: (id: string | number, variantId) => PRODUCTS_INDEX + '/variants' + appendQuery({ productId: id, variantId }),
 	},
 	settings: {
 		index: SETTINGS_INDEX,

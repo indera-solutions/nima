@@ -24,7 +24,6 @@ export class AttributeValuesService {
 			fileUrl: av.fileUrl,
 			richText: av.richText,
 			sortOrder: av.sortOrder,
-			attribute: av.attribute,
 		};
 	}
 
@@ -74,5 +73,9 @@ export class AttributeValuesService {
 		const attrVal = await this.getById({ id });
 		await this.attributeValueRepository.deleteById(id);
 		return attrVal;
+	}
+
+	async attributeDrillDown(params: { ids: number[] }) {
+		return await this.attributeValueRepository.attributeDrillDown(params.ids);
 	}
 }

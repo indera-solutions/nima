@@ -41,11 +41,9 @@ export function useCreateCategoryMutation() {
 		never,
 		{ createCategoryDto: CreateCategoryDto }>(
 		async ({ createCategoryDto }) => {
-			console.log(1);
 			const res = await categoriesSDK.categoriesCreate({
 				createCategoryDto,
 			});
-			console.log(2);
 			return res.data;
 		},
 		{

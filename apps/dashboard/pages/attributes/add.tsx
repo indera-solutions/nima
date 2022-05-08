@@ -62,6 +62,16 @@ export default function AddAttribute(props: AddAttributeProps) {
 	const updateAttributeMutation = useUpdateAttributeMutation();
 	const addAttributeValueMutation = useAddAttributeValueMutation();
 
+	useEffect(() => {
+		if ( createAttributeDto.inputType === InputType.DROPDOWN || createAttributeDto.inputType === InputType.MULTISELECT ) {
+			setValues([]);
+		} else if ( createAttributeDto.inputType === InputType.BOOLEAN ) {
+			setValues([
+				{ boolean: true, name: { 'en': 'Yes', 'el': 'Ναι' } },
+				{ boolean: false, name: { 'en': 'No', 'el': 'Όχι' } },
+			]);
+		}
+	}, [createAttributeDto.inputType]);
 
 	useEffect(() => {
 		if ( !existingAttribute ) return;
@@ -93,7 +103,7 @@ export default function AddAttribute(props: AddAttributeProps) {
 					});
 				}));
 				toast.success('Attribute Created!');
-				await router.push(NIMA_ROUTES.attributes.list);
+				// await router.push(NIMA_ROUTES.attributes.list);
 			} catch ( e: any ) {
 				console.log(e);
 			}
