@@ -9,16 +9,20 @@ import {
 	Put,
 	Query,
 	Req,
+	UseGuards,
 	ValidationPipe,
 } from '@nestjs/common';
-import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ProductFilterParamsDto, ProductFilterResultDto } from './dto/product-filtering.dto';
 import { CreateProductDto, ProductDto } from './dto/product.dto';
 import { FilteringService } from './filtering.service';
 import { ProductsService } from './products.service';
 
 @Controller('products')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 @ApiTags('Products')
 export class ProductsController {
 	constructor(

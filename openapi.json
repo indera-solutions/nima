@@ -1357,6 +1357,123 @@
 				]
 			}
 		},
+		"/api/v1/media": {
+			"post": {
+				"operationId": "Media_createMedia",
+				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"file": {
+										"type": "string",
+										"format": "binary"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MediaDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Media"
+				]
+			},
+			"get": {
+				"operationId": "Media_listMedia",
+				"parameters": [ ],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/MediaDto"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Media"
+				]
+			}
+		},
+		"/api/v1/media/{id}": {
+			"get": {
+				"operationId": "Media_getById",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MediaDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Media"
+				]
+			},
+			"delete": {
+				"operationId": "Media_deleteById",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MediaDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Media"
+				]
+			}
+		},
 		"/api/v1/users": {
 			"post": {
 				"operationId": "Users_create",
