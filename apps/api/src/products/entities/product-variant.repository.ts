@@ -3,7 +3,6 @@ import { EntityRepository } from 'typeorm';
 import { BaseRepository } from 'typeorm-transactional-cls-hooked';
 import { AttributeValueEntity } from '../../attributes/entities/attribute-value.entity';
 import { AttributeEntity } from '../../attributes/entities/attribute.entity';
-import { ProductTypeEntity } from '../../product-types/entities';
 import { ProductQueryFilterDto, ProductSorting } from '../dto/product-filtering.dto';
 import {
 	AssignedProductAttributeEntity,
@@ -101,7 +100,9 @@ export class ProductVariantRepository extends BaseRepository<ProductVariantEntit
 					.leftJoin(AssignedProductAttributeValueEntity, `apav${ index }`, `apa.id = apav${ index }."assignedProductAttributeId"`)
 					.leftJoin(AssignedProductVariantAttributeEntity, `ava${ index }`, `ava${ index }."variantId" = pv.id`)
 					.leftJoin(AssignedProductVariantAttributeValueEntity, `avav${ index }`, `avav${ index }."assignedProductVariantAttributeId" = ava${ index }.id`)
-					.andWhere(`(avav${ index }."valueId" IN (:...values${ index }) OR apav${ index }."valueId" IN (:...values${ index }))`, { [`values${ index }`]: value.values });
+					.leftJoin(AttributeValueEntity, `av1${ index }`, `avav${ index }."valueId" = av1${ index }.id`)
+					.leftJoin(AttributeValueEntity, `av2${ index }`, `apav${ index }."valueId" = av2${ index }.id`)
+					.andWhere(`(av1${ index }."slug" IN (:...values${ index }) OR av2${ index }."slug" IN (:...values${ index }))`, { [`values${ index }`]: value.values });
 			});
 		}
 
@@ -110,9 +111,15 @@ export class ProductVariantRepository extends BaseRepository<ProductVariantEntit
 	}
 
 	async findByIdsWithSorting(ids: number[], skip?: number, take?: number, sorting?: ProductSorting, language: LanguageCode = LanguageCode.en): Promise<ProductVariantEntity[]> {
-		const q = this.createQueryBuilder('product_variants')
-					  .leftJoin(ProductEntity, 'products', 'product_variants."productId" = products.id')
-					  .leftJoin(ProductTypeEntity, 'product-type', 'products."productTypeId" = product-type.id')
+		const q = this.createQueryBuilder('pv')
+					  .leftJoinAndSelect('pv.product', 'p')
+					  .leftJoinAndSelect('p.productType', 'pt')
+					  .leftJoinAndSelect('p.category', 'c')
+					  .leftJoinAndSelect('p.attributes', 'att')
+					  .leftJoinAndSelect('att.values', 'aval')
+					  .leftJoinAndSelect('aval.value', 'avalval')
+					  .leftJoinAndSelect('att.productTypeAttribute', 'pta')
+					  .leftJoinAndSelect('pta.attribute', 'attr')
 					  .whereInIds(ids)
 					  .skip(skip)
 					  .take(take);

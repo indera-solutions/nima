@@ -97,8 +97,6 @@ export class ProductEntity {
 	rating: number;
 
 	@Column({ type: String })
-	@ApiProperty({ type: String, example: 'Product Name' })
-	@IsString()
 	searchDocument: string;
 
 	@CreateDateColumn({ type: String })

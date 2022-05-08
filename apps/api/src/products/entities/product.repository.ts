@@ -1,6 +1,7 @@
 import { LanguageCode } from '@nima/utils';
 import { EntityRepository } from 'typeorm';
 import { BaseRepository } from 'typeorm-transactional-cls-hooked';
+import { AttributeValueEntity } from '../../attributes/entities/attribute-value.entity';
 import { ProductQueryFilterDto, ProductSorting } from '../dto/product-filtering.dto';
 import {
 	AssignedProductAttributeEntity,
@@ -62,21 +63,28 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 			//TODO: Collection Handling
 		}
 
+		console.log(filters);
+
 		if ( filters && filters.length > 0 ) {
 			caQb.leftJoin(ProductVariantEntity, 'pv', `pv."productId" = p.id`)
 				.leftJoin(AssignedProductAttributeEntity, `apa`, `p.id = apa."productId"`);
 
 			filters.forEach((value, index) => {
+				console.log(value);
 				if ( !value.values || value.values.length === 0 ) return;
+				console.log(value.values);
 				caQb
 					.leftJoin(AssignedProductAttributeValueEntity, `apav${ index }`, `apa.id = apav${ index }."assignedProductAttributeId"`)
 					.leftJoin(AssignedProductVariantAttributeEntity, `ava${ index }`, `ava${ index }."variantId" = pv.id`)
 					.leftJoin(AssignedProductVariantAttributeValueEntity, `avav${ index }`, `avav${ index }."assignedProductVariantAttributeId" = ava${ index }.id`)
-					.andWhere(`(avav${ index }."valueId" IN (:...values${ index }) OR apav${ index }."valueId" IN (:...values${ index }))`, { [`values${ index }`]: value.values });
+					.leftJoin(AttributeValueEntity, `av1${ index }`, `avav${ index }."valueId" = av1${ index }.id`)
+					.leftJoin(AttributeValueEntity, `av2${ index }`, `apav${ index }."valueId" = av2${ index }.id`)
+					.andWhere(`(av1${ index }."slug" IN (:...values${ index }) OR av2${ index }."slug" IN (:...values${ index }))`, { [`values${ index }`]: value.values });
 			});
 		}
 
 		const res = await caQb.getRawMany();
+		console.log({ res });
 		return res.map(r => ({ id: Number(r.id), price: Number(r.price) }));
 	}
 
@@ -85,7 +93,12 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 					  .leftJoinAndSelect('p.productType', 'pt')
 					  .leftJoinAndSelect('p.category', 'c')
 					  .leftJoinAndSelect('p.attributes', 'att')
+					  .leftJoinAndSelect('att.values', 'aval')
+					  .leftJoinAndSelect('aval.value', 'avalval')
+					  .leftJoinAndSelect('att.productTypeAttribute', 'pta')
+					  .leftJoinAndSelect('pta.attribute', 'attr')
 					  .whereInIds(ids)
+			// .loadRelationIdAndMap('category', 'p.category')
 					  .skip(skip)
 					  .take(take);
 
@@ -102,9 +115,10 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 			}
 		}
 
-		console.log('----');
+		// console.log('----');
 		const res = await q.getMany();
-		console.log('-###-');
+		// console.dir({ res }, { depth: 100 });
+		// console.log('-###-');
 		return res;
 	}
 }

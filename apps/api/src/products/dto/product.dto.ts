@@ -3,7 +3,7 @@ import { IsArray, IsInt } from 'class-validator';
 import { ProductEntity } from '../entities/product.entity';
 import { CreateAssignedProductAttributeDto, ProductAttributeDto } from './product-attribute-assignment.dto';
 
-export class ProductDto extends OmitType(ProductEntity, ['productType', 'attributes', 'category', 'defaultVariant']) {
+export class ProductDto extends OmitType(ProductEntity, ['productType', 'attributes', 'category', 'defaultVariant', 'searchDocument']) {
 	@ApiProperty()
 	@IsInt()
 	productTypeId: number;
@@ -20,7 +20,6 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'attribu
 	defaultVariantId: number;
 
 	static prepare(entity: ProductEntity, options?: { isAdmin?: boolean }): ProductDto {
-		console.dir(entity, { depth: 100 });
 		return {
 			id: entity.id,
 			name: entity.name,
@@ -41,7 +40,6 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'attribu
 			isVisibleInListings: entity.isVisibleInListings,
 			minPrice: entity.minPrice,
 			rating: entity.rating,
-			searchDocument: entity.searchDocument,
 			seoDescription: entity.seoDescription,
 			seoTitle: entity.seoTitle,
 			updatedAt: entity.updatedAt,

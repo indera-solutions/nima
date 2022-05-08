@@ -27,10 +27,6 @@ export class ProductQueryFilterDto {
 	attributeSlug: string;
 	@ApiProperty()
 	values: number[];
-
-	constructor(input) {
-		console.log(input);
-	}
 }
 
 export class ProductFilterResultDto implements PaginatedResults<ProductDto> {
@@ -78,7 +74,7 @@ export class ProductFilterParamsDto {
 	@Type(() => ProductQueryFilterDto)
 	@Transform(params => {
 		if ( !params.value ) return [];
-		return Array.isArray(params.value) ? params.value.map(v => JSON.parse(v)) : JSON.parse(params.value);
+		return Array.isArray(params.value) ? params.value.map(v => JSON.parse(v)) : [JSON.parse(params.value)];
 	})
 	@ValidateNested()
 	@Expose()

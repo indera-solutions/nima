@@ -1034,12 +1034,6 @@ export interface CreateProductDto {
 	'rating': number;
 	/**
 	 *
-	 * @type {string}
-	 * @memberof CreateProductDto
-	 */
-	'searchDocument': string;
-	/**
-	 *
 	 * @type {boolean}
 	 * @memberof CreateProductDto
 	 */
@@ -1257,6 +1251,7 @@ export interface CreateProductVariantDto {
 	 */
 	'attributes': Array<CreateAssignedProductVariantAttributeDto>;
 }
+
 /**
  *
  * @export
@@ -1362,6 +1357,7 @@ export interface MediaDto {
 	 */
 	'url': string;
 }
+
 /**
  *
  * @export
@@ -1560,12 +1556,6 @@ export interface ProductDto {
 	 * @type {string}
 	 * @memberof ProductDto
 	 */
-	'searchDocument': string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof ProductDto
-	 */
 	'created': string;
 	/**
 	 *
@@ -1702,6 +1692,7 @@ export interface ProductQueryFilterDto {
 	 */
 	'values': Array<string>;
 }
+
 /**
  *
  * @export
@@ -2142,6 +2133,7 @@ export interface TranslatableDto {
 	 */
 	'en'?: string;
 }
+
 /**
  *
  * @export

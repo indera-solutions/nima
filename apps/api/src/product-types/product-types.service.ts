@@ -95,7 +95,7 @@ export class ProductTypesService {
 
 	private async syncVariantAttributes(params: { oldAttributes: ProductTypeVariantAttributeEntity[], newAttributes: CreateProductTypeVariantAttributeDto[], ptId: number }) {
 		const { oldAttributes, newAttributes, ptId } = params;
-		console.dir(params, { depth: 100 });
+		// console.dir(params, { depth: 100 });
 		const oldIds = oldAttributes.map(value => value.attribute.id);
 		const newIds = newAttributes.map(value => value.attributeId);
 		const toDelete = oldIds.filter(id => !newIds.includes(id));

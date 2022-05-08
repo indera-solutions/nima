@@ -40,6 +40,7 @@ export class ProductsController {
 	@ApiQuery({ type: () => ProductFilterParamsDto })
 	async findAll(@Req() request: Request, @Query(new ValidationPipe({})) query, @Query('filters') filters) {
 		const filterObj = plainToInstance(ProductFilterParamsDto, query, { enableImplicitConversion: true });
+		// if (Array.isArray(filterObj.filters))
 		const res = await this.filteringService.productFilterQuery(filterObj);
 		return res;
 	}
