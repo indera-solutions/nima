@@ -1,11 +1,14 @@
 import { getTranslation, useCategories, useLanguages, useProductTypeId, useProductTypes } from '@nima/react';
-import { CreateAssignedProductAttributeDto, CreateProductDto } from '@nima/sdk';
+import { CreateAssignedProductAttributeDto, CreateProductDto, CreateProductVariantDto } from '@nima/sdk';
 import { getSlug, Metadata, parseIdStr } from '@nima/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useCreateProductMutation } from '../../../../libs/react/src/reactQuery/products.queries';
+import {
+	useCreateProductMutation,
+	useCreateProductVariationMutation,
+} from '../../../../libs/react/src/reactQuery/products.queries';
 import {
 	AdminColumn,
 	AdminFooter,
@@ -16,7 +19,7 @@ import {
 	SelectEditingLanguage,
 	TranslatableInput,
 } from '../../components';
-import { EditProductAttribute } from '../../components/products';
+import { EditProductAttribute, EditVariantInformation } from '../../components/products';
 import { NIMA_ROUTES } from '../../lib/routes';
 
 interface AddProps {
@@ -31,6 +34,7 @@ export default function Add(props: AddProps) {
 	const isEditing = !!id;
 
 	const createProductMutation = useCreateProductMutation();
+	const createProductVariationMutation = useCreateProductVariationMutation();
 
 
 	const [createProductDto, setCreateProductDto] = useState<CreateProductDto>({
@@ -47,7 +51,7 @@ export default function Add(props: AddProps) {
 		metadata: {},
 		minPrice: 0,
 		privateMetadata: {},
-		productTypeId: 3,  //TODO replace with 0
+		productTypeId: 4,  //TODO replace with 0
 		rating: 0,
 		searchDocument: '',
 		seoDescription: '',
@@ -55,6 +59,27 @@ export default function Add(props: AddProps) {
 		seoTitle: '',
 		weight: 0,
 	});
+
+	const [defaultVariant, setDefaultVariant] = useState<CreateProductVariantDto>({
+			name: {},
+			privateMetadata: {},
+			attributes: [],
+			currency: 'EUR',
+			metadata: {},
+			costPriceAmount: 0,
+			isPreorder: false,
+			sku: '',
+			stock: 0,
+			trackInventory: false,
+		},
+	);
+
+	const isReadyToSubmit: boolean = useMemo(() => {
+		if ( !createProductDto.categoryId || !createProductDto.productTypeId ) return false;
+		if ( !createProductDto.name[languages.defaultLanguage] ) return false;
+		// TODO add check for required attributes
+		return true;
+	}, [createProductDto]);
 
 	const { data: productTypes } = useProductTypes();
 	const { data: categories } = useCategories();
@@ -71,11 +96,25 @@ export default function Add(props: AddProps) {
 		}));
 	}, [productType]);
 
+	useEffect(() => {
+		onVariantValueEdit('name', createProductDto.name);
+	}, [createProductDto.name]);
+
 	async function onCreateProduct() {
+		if ( !isReadyToSubmit || !productType ) {
+			toast.error('Please fill all the required fields');
+			return;
+		}
 		if ( !isEditing ) {
 			const createdProduct = await createProductMutation.mutateAsync({
 				createProductDto,
 			});
+			if ( !productType.hasVariants ) {
+				await createProductVariationMutation.mutateAsync({
+					productId: createdProduct.id,
+					createProductVariantDto: defaultVariant,
+				});
+			}
 			toast.success('Product Created.');
 		}
 	}
@@ -87,8 +126,14 @@ export default function Add(props: AddProps) {
 		}));
 	}
 
+	function onVariantValueEdit(name: keyof CreateProductVariantDto, value: any) {
+		setDefaultVariant(state => ({
+			...state,
+			[name]: value,
+		}));
+	}
+
 	function onAttributeChange(productAttributeValue: CreateAssignedProductAttributeDto) {
-		console.log('productAttributeValue', productAttributeValue);
 		setCreateProductDto(state => {
 			const attribute = state.attributes.find(att => att.productTypeAttributeId === productAttributeValue.productTypeAttributeId);
 			if ( !attribute ) return state;
@@ -111,12 +156,12 @@ export default function Add(props: AddProps) {
 					</Link>
 
 					<button className="btn btn-success"
+							disabled={ !isReadyToSubmit }
 							onClick={ onCreateProduct }>{ isEditing ? 'Save' : 'Create' }</button>
 				</AdminFooter> }
 			>
 				<AdminColumn>
 					<AdminSection title={ 'General Information' } titleRightContainer={ <SelectEditingLanguage/> }>
-						{ JSON.stringify(createProductDto) }
 						<label className="label">
 							<span className="label-text">Name</span>
 						</label>
@@ -153,7 +198,6 @@ export default function Add(props: AddProps) {
 					{ createProductDto.attributes.length > 0 &&
 						<AdminSection title={ 'Attributes' }
 									  subtitle={ createProductDto.attributes.length + ' attributes' }>
-							{/*{JSON.stringify(productAttributeValues)}*/ }
 							{ createProductDto.attributes.map(productAttributeValue => <EditProductAttribute
 								key={ productAttributeValue.productTypeAttributeId }
 								productTypeId={ createProductDto.productTypeId }
@@ -161,6 +205,13 @@ export default function Add(props: AddProps) {
 								productAttributeValue={ productAttributeValue }/>) }
 						</AdminSection>
 					}
+
+					{ (productType && !productType?.hasVariants) &&
+						<>
+							<EditVariantInformation state={ defaultVariant } onValueEdit={ onVariantValueEdit }/>
+						</>
+					}
+
 					<MetadataEditor values={ createProductDto.metadata as Metadata }
 									onChange={ (v => onValueEdit('metadata', v)) }/>
 					<MetadataEditor isPrivate values={ createProductDto.privateMetadata as Metadata }

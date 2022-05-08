@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Metadata, Translatable } from '@nima/utils';
-import { IsBoolean, IsInt, IsNotEmptyObject, IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsInt, IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
 import {
 	Column,
 	CreateDateColumn,
@@ -29,11 +29,9 @@ export class ProductVariantEntity {
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: TranslatableDto, example: { en: 'Product Variant Name' } })
 	@IsObject()
-	@IsNotEmptyObject()
 	name: Translatable;
 
-	@ManyToOne(() => ProductEntity)
-	// @ApiProperty({ type: ProductDto })
+	@ManyToOne(() => ProductEntity, { deferrable: 'INITIALLY DEFERRED', onDelete: 'CASCADE' })
 	product: ProductEntity;
 
 	@Column({ nullable: true })

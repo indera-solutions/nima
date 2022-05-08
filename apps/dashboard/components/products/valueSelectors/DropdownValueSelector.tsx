@@ -76,7 +76,7 @@ export function DropdownValueSelector(props: EditSingleProductAttributeProps & {
 				props.onSelect({
 					...props.productAttributeValue,
 					values: newValue.map((v: any, index) => ({
-						valueId: v.value,
+						valueId: newAttributeValue.id,
 						sortOrder: index,
 					})),
 				});
@@ -84,7 +84,7 @@ export function DropdownValueSelector(props: EditSingleProductAttributeProps & {
 				props.onSelect({
 					...props.productAttributeValue,
 					values: [{
-						valueId: newValue.value,
+						valueId: newAttributeValue.id,
 						sortOrder: 0,
 					}],
 				});

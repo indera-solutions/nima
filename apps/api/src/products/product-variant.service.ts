@@ -45,6 +45,14 @@ export class ProductVariantService {
 
 		await this.syncAttributes({ oldAttributes: oldVariant?.attributes || [], newAttributes: dto.attributes, variant: variant });
 
+		const allVariants = await this.findOfProduct({ productId });
+		if ( allVariants.length === 1 ) {
+			await this.productsService.setDefaultVariant({
+				productId,
+				variantId: variant.id,
+			});
+		}
+
 		return await this.getById({ id: variant.id });
 	}
 

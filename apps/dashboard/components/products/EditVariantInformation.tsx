@@ -4,7 +4,7 @@ import { AdminSection } from '../AdminLayout';
 
 interface EditVariantInformationProps {
 	state: CreateProductVariantDto,
-	onValueEdit: (value: any, name: string) => void
+	onValueEdit: (name: keyof CreateProductVariantDto, value: any) => void
 }
 
 export function EditVariantInformation(props: EditVariantInformationProps) {
@@ -15,9 +15,9 @@ export function EditVariantInformation(props: EditVariantInformationProps) {
 			<label className="label">
 				<span className="label-text">Price</span>
 			</label>
-			<input type="number" placeholder="SKU" className="input input-bordered w-full max-w-xs"
+			<input type="number" placeholder="Price" className="input input-bordered w-full max-w-xs"
 				   value={ state.priceAmount }
-				   onChange={ (e) => onValueEdit(e.target.value, 'priceAmount') }
+				   onChange={ (e) => onValueEdit('priceAmount', +e.target.value) }
 				   name={ 'priceAmount' }/>
 		</AdminSection>
 		<AdminSection title={ 'Inventory' }>
@@ -26,7 +26,7 @@ export function EditVariantInformation(props: EditVariantInformationProps) {
 			</label>
 			<input type="text" placeholder="SKU" className="input input-bordered w-full max-w-xs"
 				   value={ state.sku }
-				   onChange={ (e) => onValueEdit(e.target.value, 'sku') }
+				   onChange={ (e) => onValueEdit('sku', e.target.value) }
 				   name={ 'SKU' }/>
 
 			<label className="label">
@@ -34,13 +34,13 @@ export function EditVariantInformation(props: EditVariantInformationProps) {
 			</label>
 			<input type="number" min={ 0 } placeholder="0" className="input input-bordered w-full max-w-xs"
 				   value={ state.stock || 0 }
-				   onChange={ (e) => onValueEdit(e.target.value, 'stock') }
+				   onChange={ (e) => onValueEdit('stock', +e.target.value) }
 				   name={ 'stock' }/>
 
 
 			<label className="label cursor-pointer justify-start gap-3">
 				<input type="checkbox" className="checkbox" checked={ state.trackInventory || false }
-					   onChange={ (e) => onValueEdit(e.target.checked, 'trackInventory') }/>
+					   onChange={ (e) => onValueEdit('trackInventory', e.target.checked) }/>
 				<span className="label-text">Track Inventory</span>
 			</label>
 		</AdminSection>

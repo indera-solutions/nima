@@ -1,14 +1,18 @@
 import { defaultConfiguration, NimaQueryCacheKeys } from '@nima/react';
 import {
 	CreateProductDto,
+	CreateProductVariantDto,
 	ProductDto,
 	ProductFilterResultDto,
 	ProductsApi,
 	ProductsApiProductsFindAllRequest,
+	ProductVariantDto,
+	ProductVariantsApi,
 } from '@nima/sdk';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const productsSDK = new ProductsApi(defaultConfiguration);
+const productVariationsSDK = new ProductVariantsApi(defaultConfiguration);
 
 export function useProducts(options: ProductsApiProductsFindAllRequest) {
 	return useQuery<ProductFilterResultDto>(
@@ -29,6 +33,29 @@ export function useCreateProductMutation() {
 		async ({ createProductDto }) => {
 			const res = await productsSDK.productsCreate({
 				createProductDto,
+			});
+			return res.data;
+		},
+		{
+			onSuccess: () => {
+				client.invalidateQueries(NimaQueryCacheKeys.products.all);
+			},
+		},
+	);
+}
+
+export function useCreateProductVariationMutation() {
+	const client = useQueryClient();
+	return useMutation<ProductVariantDto,
+		never,
+		{
+			productId: number,
+			createProductVariantDto: CreateProductVariantDto,
+		}>(
+		async ({ createProductVariantDto, productId }) => {
+			const res = await productVariationsSDK.productVariantCreate({
+				productId: productId,
+				createProductVariantDto: createProductVariantDto,
 			});
 			return res.data;
 		},

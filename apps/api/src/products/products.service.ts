@@ -99,6 +99,12 @@ export class ProductsService {
 		return await this.productRepository.findFilteredProductIds(collectionId, categoryIds, filters, search);
 	}
 
+	async setDefaultVariant(params: { productId: number, variantId: number }) {
+		await this.productRepository.update(params.productId, {
+			defaultVariant: { id: params.variantId },
+		});
+	}
+
 	private async syncAttributes(params: { oldAttributes: AssignedProductAttributeEntity[], newAttributes: CreateAssignedProductAttributeDto[], product: ProductEntity }) {
 		const { oldAttributes, newAttributes, product } = params;
 		const oldIds = oldAttributes.map(value => value.productTypeAttribute.id);
@@ -158,4 +164,6 @@ export class ProductsService {
 		const value = await this.attributeValuesService.getById({ id: dto.valueId });
 		await this.assignedProductAttributeValueRepository.save({ value: value, assignedProductAttribute: assignment, sortOrder: dto.sortOrder });
 	}
+
+
 }

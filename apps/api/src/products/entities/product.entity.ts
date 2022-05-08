@@ -5,6 +5,7 @@ import {
 	Column,
 	CreateDateColumn,
 	Entity,
+	JoinColumn,
 	ManyToOne,
 	OneToMany,
 	OneToOne,
@@ -81,8 +82,8 @@ export class ProductEntity {
 	@IsString()
 	slug: string;
 
-	@OneToOne(() => ProductVariantEntity)
-		// @ApiProperty({ type: ProductVariantDto })
+	@OneToOne(() => ProductVariantEntity, { deferrable: 'INITIALLY DEFERRED', onDelete: 'CASCADE' })
+	@JoinColumn()
 	defaultVariant: ProductVariantEntity;
 
 	@Column({ type: String })
