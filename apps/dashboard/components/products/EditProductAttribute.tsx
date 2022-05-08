@@ -1,11 +1,12 @@
 import { Trans, useAttributeById, useProductTypeId } from '@nima/react';
-import { CreateAssignedProductAttributeDto, InputType } from '@nima/sdk';
+import { CreateAssignedProductAttributeDto, CreateAssignedProductVariantAttributeDto, InputType } from '@nima/sdk';
 import React from 'react';
 import { BooleanSelector, DropdownValueSelector } from './valueSelectors';
 
 export interface EditProductAttributeProps {
 	productTypeId: number;
-	productAttributeValue: CreateAssignedProductAttributeDto;
+	isVariants?: boolean;
+	productAttributeValue: CreateAssignedProductAttributeDto | CreateAssignedProductVariantAttributeDto;
 	onSelect: (productAttributeValue: CreateAssignedProductAttributeDto) => void;
 }
 
@@ -15,7 +16,8 @@ export interface EditSingleProductAttributeProps extends Omit<EditProductAttribu
 
 export function EditProductAttribute(props: EditProductAttributeProps) {
 	const { data: productType } = useProductTypeId(props.productTypeId);
-	const attributeFromType = productType?.attributes.find(at => at.id === props.productAttributeValue.productTypeAttributeId);
+	const id = props.productAttributeValue ? props.productAttributeValue['productTypeAttributeId'] || props.productAttributeValue['productTypeVariantAttributeId'] : undefined;
+	const attributeFromType = props.isVariants ? productType?.variantAttributes.find(at => at.id === id) : productType?.attributes.find(at => at.id === id);
 	const attributeId: number | undefined = attributeFromType?.attributeId;
 	const { data: attribute } = useAttributeById(attributeId);
 	if ( !attribute || !attributeId ) return null;

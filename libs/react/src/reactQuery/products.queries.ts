@@ -24,6 +24,21 @@ export function useProducts(options: ProductsApiProductsFindAllRequest) {
 	);
 }
 
+export function useProductById(id?: number, options?: { refetchInterval: number | false }) {
+	return useQuery<ProductDto>(
+		NimaQueryCacheKeys.products.id(id),
+		async () => {
+			if ( !id ) throw new Error('Invalid id');
+			const res = await productsSDK.productsGetById({ id });
+			return res.data;
+		},
+		{
+			enabled: !!id,
+			refetchInterval: options?.refetchInterval,
+		},
+	);
+}
+
 
 export function useCreateProductMutation() {
 	const client = useQueryClient();

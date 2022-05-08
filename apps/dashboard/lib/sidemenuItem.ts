@@ -3,6 +3,10 @@ import { NIMA_ROUTES } from './routes';
 
 export const adminRoutes: NavigationItem[] = [
 	{
+		name: 'Products',
+		link: NIMA_ROUTES.products.list,
+	},
+	{
 		name: 'Attributes',
 		link: NIMA_ROUTES.attributes.list,
 	},
@@ -13,10 +17,6 @@ export const adminRoutes: NavigationItem[] = [
 	{
 		name: 'Categories',
 		link: NIMA_ROUTES.categories.list,
-	},
-	{
-		name: 'Products',
-		link: NIMA_ROUTES.products.list,
 	},
 	{
 		name: 'Settings',

@@ -1,4 +1,12 @@
-import { getTranslation, useCategories, useLanguages, useProductTypeId, useProductTypes } from '@nima/react';
+import {
+	getTranslation,
+	useCategories,
+	useCreateProductMutation,
+	useCreateProductVariationMutation,
+	useLanguages,
+	useProductTypeId,
+	useProductTypes,
+} from '@nima/react';
 import { CreateAssignedProductAttributeDto, CreateProductDto, CreateProductVariantDto } from '@nima/sdk';
 import { getSlug, Metadata, parseIdStr } from '@nima/utils';
 import Link from 'next/link';
@@ -6,20 +14,17 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import {
-	useCreateProductMutation,
-	useCreateProductVariationMutation,
-} from '../../../../libs/react/src/reactQuery/products.queries';
-import {
 	AdminColumn,
 	AdminFooter,
 	AdminPage,
 	AdminSection,
+	EditProductAttribute,
+	EditVariantInformation,
 	MetadataEditor,
 	NimaTitle,
 	SelectEditingLanguage,
 	TranslatableInput,
 } from '../../components';
-import { EditProductAttribute, EditVariantInformation } from '../../components/products';
 import { NIMA_ROUTES } from '../../lib/routes';
 
 interface AddProps {
@@ -51,7 +56,7 @@ export default function Add(props: AddProps) {
 		metadata: {},
 		minPrice: 0,
 		privateMetadata: {},
-		productTypeId: 4,  //TODO replace with 0
+		productTypeId: 0,
 		rating: 0,
 		searchDocument: '',
 		seoDescription: '',
@@ -114,8 +119,12 @@ export default function Add(props: AddProps) {
 					productId: createdProduct.id,
 					createProductVariantDto: defaultVariant,
 				});
+				toast.success('Product Created.');
+
+			} else {
+				toast.success('Product Created.');
+				await router.push(NIMA_ROUTES.products.createVariant(createdProduct.id));
 			}
-			toast.success('Product Created.');
 		}
 	}
 

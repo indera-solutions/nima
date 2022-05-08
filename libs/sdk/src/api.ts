@@ -1829,6 +1829,12 @@ export interface ProductTypeVariantAttributeDto {
 	 * @type {number}
 	 * @memberof ProductTypeVariantAttributeDto
 	 */
+	'id': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ProductTypeVariantAttributeDto
+	 */
 	'sortOrder': number;
 	/**
 	 *
