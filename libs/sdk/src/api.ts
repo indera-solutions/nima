@@ -1070,12 +1070,6 @@ export interface CreateProductDto {
 	'productTypeId': number;
 	/**
 	 *
-	 * @type {Array<ProductMediaDto>}
-	 * @memberof CreateProductDto
-	 */
-	'productMedia': Array<ProductMediaDto>;
-	/**
-	 *
 	 * @type {Array<CreateAssignedProductAttributeDto>}
 	 * @memberof CreateProductDto
 	 */
@@ -1086,6 +1080,12 @@ export interface CreateProductDto {
 	 * @memberof CreateProductDto
 	 */
 	'categoryId': number;
+	/**
+	 *
+	 * @type {Array<CreateSortableMediaDto>}
+	 * @memberof CreateProductDto
+	 */
+	'productMedia': Array<CreateSortableMediaDto>;
 }
 /**
  *
@@ -1256,6 +1256,26 @@ export interface CreateProductVariantDto {
 	 * @memberof CreateProductVariantDto
 	 */
 	'attributes': Array<CreateAssignedProductVariantAttributeDto>;
+}
+
+/**
+ *
+ * @export
+ * @interface CreateSortableMediaDto
+ */
+export interface CreateSortableMediaDto {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateSortableMediaDto
+	 */
+	'sortOrder': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateSortableMediaDto
+	 */
+	'mediaId': number;
 }
 
 /**
@@ -1674,10 +1694,10 @@ export interface ProductDto {
 	'defaultVariantId': number;
 	/**
 	 *
-	 * @type {Array<ProductMediaDto>}
+	 * @type {Array<SortableMediaDto>}
 	 * @memberof ProductDto
 	 */
-	'productMedia': Array<ProductMediaDto>;
+	'productMedia': Array<SortableMediaDto>;
 }
 /**
  *
@@ -1740,27 +1760,6 @@ export interface ProductFilterResultDto {
 	 */
 	'totalCount': number;
 }
-
-/**
- *
- * @export
- * @interface ProductMediaDto
- */
-export interface ProductMediaDto {
-	/**
-	 *
-	 * @type {number}
-	 * @memberof ProductMediaDto
-	 */
-	'sortOrder': number;
-	/**
-	 *
-	 * @type {MediaDto}
-	 * @memberof ProductMediaDto
-	 */
-	'media': MediaDto;
-}
-
 /**
  *
  * @export
@@ -2165,6 +2164,27 @@ export interface SettingsDto {
 	 */
 	'siteLogo'?: MediaDto;
 }
+
+/**
+ *
+ * @export
+ * @interface SortableMediaDto
+ */
+export interface SortableMediaDto {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof SortableMediaDto
+	 */
+	'sortOrder': number;
+	/**
+	 *
+	 * @type {MediaDto}
+	 * @memberof SortableMediaDto
+	 */
+	'media': MediaDto;
+}
+
 /**
  *
  * @export

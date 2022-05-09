@@ -41,6 +41,8 @@ export const NimaQueryCacheKeys = {
 	media: {
 		all: [NIMA_QUERY_PREFIX, MEDIA_QUERY_PREFIX] as const,
 		list: (options: { page?: number, pageSize?: number }) => [...NimaQueryCacheKeys.media.all, 'LIST', options] as const,
+		id: (id?: number) => [...NimaQueryCacheKeys.media.all, 'ID', id] as const,
+
 	},
 	// orders: { all:
 	// [NIMA_QUERY_PREFIX, ORDERS_QUERY_PREFIX] as const, list: (pageSize: number, pageNumber: number) =>

@@ -1,8 +1,8 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { IsArray, IsInt } from 'class-validator';
+import { CreateSortableMediaDto, SortableMediaDto } from '../../core/dto/media.dto';
 import { ProductEntity } from '../entities/product.entity';
 import { CreateAssignedProductAttributeDto, ProductAttributeDto } from './product-attribute-assignment.dto';
-import { ProductMediaDto } from './productMedia.dto';
 
 export class ProductDto extends OmitType(ProductEntity, ['productType', 'productMedia', 'attributes', 'category', 'defaultVariant', 'searchDocument']) {
 	@ApiProperty()
@@ -20,8 +20,8 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'product
 	@ApiProperty()
 	defaultVariantId: number;
 
-	@ApiProperty({ type: () => ProductMediaDto, isArray: true })
-	productMedia: ProductMediaDto[];
+	@ApiProperty({ type: () => SortableMediaDto, isArray: true })
+	productMedia: SortableMediaDto[];
 
 	static prepare(entity: ProductEntity, options?: { isAdmin?: boolean }): ProductDto {
 		return {
@@ -45,7 +45,7 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'product
 			minPrice: entity.minPrice,
 			rating: entity.rating,
 			seoDescription: entity.seoDescription,
-			productMedia: entity.productMedia.map(pm => ProductMediaDto.prepare(pm)),
+			productMedia: entity.productMedia.map(pm => SortableMediaDto.prepare(pm)),
 			seoTitle: entity.seoTitle,
 			updatedAt: entity.updatedAt,
 			attributes: entity.attributes.map(attr => ProductAttributeDto.prepare(attr)),
@@ -53,7 +53,7 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'product
 	}
 }
 
-export class CreateProductDto extends OmitType(ProductDto, ['id', 'attributes', 'created', 'updatedAt', 'defaultVariantId', 'categoryId']) {
+export class CreateProductDto extends OmitType(ProductDto, ['id', 'attributes', 'created', 'updatedAt', 'productMedia', 'defaultVariantId', 'categoryId']) {
 	@ApiProperty({ type: [CreateAssignedProductAttributeDto] })
 	@IsArray()
 	attributes: CreateAssignedProductAttributeDto[];
@@ -66,6 +66,9 @@ export class CreateProductDto extends OmitType(ProductDto, ['id', 'attributes', 
 	@ApiProperty()
 	@IsInt()
 	categoryId: number;
+
+	@ApiProperty({ type: () => CreateSortableMediaDto, isArray: true })
+	productMedia: CreateSortableMediaDto[];
 }
 
 export class UpdateProductDto extends PartialType(ProductDto) {

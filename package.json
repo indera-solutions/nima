@@ -43,6 +43,7 @@
 		"postcss": "^8.4.12",
 		"query-string": "^7.1.1",
 		"react": "18.0.0",
+		"react-beautiful-dnd": "^13.1.0",
 		"react-dom": "18.0.0",
 		"react-dropzone": "^14.2.1",
 		"react-query": "^3.38.0",

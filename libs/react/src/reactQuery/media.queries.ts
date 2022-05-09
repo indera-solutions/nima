@@ -1,6 +1,6 @@
 import { defaultConfiguration, NimaQueryCacheKeys } from '@nima/react';
 import { MediaApi, MediaDto, MediaListPaginated } from '@nima/sdk';
-import { useInfiniteQuery, useMutation, useQueryClient } from 'react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
 
 const mediaSdk = new MediaApi(defaultConfiguration);
 
@@ -21,7 +21,21 @@ export function useMediaPaginated(options: { pageSize?: number }) {
 			keepPreviousData: true,
 		},
 	);
+}
 
+export function useMediaById(id?: number, options?: { refetchInterval: number | false }) {
+	return useQuery<MediaDto>(
+		NimaQueryCacheKeys.media.id(id),
+		async () => {
+			if ( !id ) throw new Error('Invalid id');
+			const res = await mediaSdk.mediaGetById({ id });
+			return res.data;
+		},
+		{
+			enabled: !!id,
+			refetchInterval: options?.refetchInterval,
+		},
+	);
 }
 
 export function useMediaUploadMutation(options: { onProgress?: (newProgress: number, fileName: string) => void }) {
