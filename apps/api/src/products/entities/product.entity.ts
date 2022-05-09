@@ -6,6 +6,8 @@ import {
 	CreateDateColumn,
 	Entity,
 	JoinColumn,
+	JoinTable,
+	ManyToMany,
 	ManyToOne,
 	OneToMany,
 	OneToOne,
@@ -14,6 +16,7 @@ import {
 } from 'typeorm';
 import { CategoryEntity } from '../../categories/entities/category.entity';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
+import { MediaEntity } from '../../core/entities/media.entity';
 import { ProductTypeDto } from '../../product-types/dto/product-type.dto';
 import { ProductTypeEntity } from '../../product-types/entities';
 import { AssignedProductAttributeEntity } from './product-attribute-assignment.entity';
@@ -128,6 +131,11 @@ export class ProductEntity {
 	@ApiProperty({ type: Number, example: 12.3 })
 	@IsNumber()
 	minPrice: number;
+
+	@ManyToMany(() => MediaEntity)
+	@JoinTable()
+	media?: MediaEntity[];
+
 
 	@OneToMany(() => AssignedProductAttributeEntity, assignedAttr => assignedAttr.product, { eager: true, onUpdate: 'NO ACTION' })
 	attributes: AssignedProductAttributeEntity[];

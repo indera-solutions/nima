@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Translatable } from '@nima/utils';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { TranslatableDto } from '../dto/translatable.dto';
 
 @Entity('core_media')
@@ -25,6 +25,10 @@ export class MediaEntity {
 	@ApiProperty({ type: String, example: '' })
 	url: string;
 
+	@Column({ nullable: true })
+	@ApiProperty({ type: String, example: '', nullable: true })
+	thumbnailUrl?: string;
+
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: TranslatableDto, example: { en: 'alt text' } })
 	alt: Translatable;
@@ -32,4 +36,8 @@ export class MediaEntity {
 	@Column()
 	@ApiProperty({ type: Number, example: 1024 })
 	byteSize: number;
+
+	@CreateDateColumn({ type: String })
+	@ApiProperty({ type: String, example: '2022-01-01' })
+	created: string;
 }

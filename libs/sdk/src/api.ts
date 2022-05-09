@@ -1356,6 +1356,56 @@ export interface MediaDto {
 	 * @memberof MediaDto
 	 */
 	'url': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof MediaDto
+	 */
+	'thumbnailUrl': string | null;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof MediaDto
+	 */
+	'alt': TranslatableDto;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof MediaDto
+	 */
+	'byteSize': number;
+}
+
+/**
+ *
+ * @export
+ * @interface MediaListPaginated
+ */
+export interface MediaListPaginated {
+	/**
+	 *
+	 * @type {Array<MediaDto>}
+	 * @memberof MediaListPaginated
+	 */
+	'items': Array<MediaDto>;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof MediaListPaginated
+	 */
+	'pageNumber': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof MediaListPaginated
+	 */
+	'pageSize': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof MediaListPaginated
+	 */
+	'totalCount': number;
 }
 
 /**
@@ -5852,9 +5902,9 @@ export const MediaApiAxiosParamCreator = function (configuration?: Configuration
 		 */
 		mediaDeleteById: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('mediaDeleteById', 'id', id);
+			assertParamExists('mediaDeleteById', 'id', id)
 			const localVarPath = `/api/v1/media/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -5884,9 +5934,9 @@ export const MediaApiAxiosParamCreator = function (configuration?: Configuration
 		 */
 		mediaGetById: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('mediaGetById', 'id', id);
+			assertParamExists('mediaGetById', 'id', id)
 			const localVarPath = `/api/v1/media/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -5910,10 +5960,12 @@ export const MediaApiAxiosParamCreator = function (configuration?: Configuration
 		},
 		/**
 		 *
+		 * @param {number} [page]
+		 * @param {number} [pageSize]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		mediaListMedia: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		mediaListMedia: async (page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			const localVarPath = `/api/v1/media`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -5926,6 +5978,14 @@ export const MediaApiAxiosParamCreator = function (configuration?: Configuration
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
+			if ( page !== undefined ) {
+				localVarQueryParameter['page'] = page;
+			}
+
+			if ( pageSize !== undefined ) {
+				localVarQueryParameter['pageSize'] = pageSize;
+			}
+
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -5936,7 +5996,7 @@ export const MediaApiAxiosParamCreator = function (configuration?: Configuration
 				options: localVarRequestOptions,
 			};
 		},
-	};
+	}
 };
 
 /**
@@ -5978,11 +6038,13 @@ export const MediaApiFp = function (configuration?: Configuration) {
 		},
 		/**
 		 *
+		 * @param {number} [page]
+		 * @param {number} [pageSize]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async mediaListMedia(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MediaDto>>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.mediaListMedia(options);
+		async mediaListMedia(page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaListPaginated>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.mediaListMedia(page, pageSize, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 	};
@@ -6024,11 +6086,13 @@ export const MediaApiFactory = function (configuration?: Configuration, basePath
 		},
 		/**
 		 *
+		 * @param {number} [page]
+		 * @param {number} [pageSize]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		mediaListMedia(options?: any): AxiosPromise<Array<MediaDto>> {
-			return localVarFp.mediaListMedia(options).then((request) => request(axios, basePath));
+		mediaListMedia(page?: number, pageSize?: number, options?: any): AxiosPromise<MediaListPaginated> {
+			return localVarFp.mediaListMedia(page, pageSize, options).then((request) => request(axios, basePath));
 		},
 	};
 };
@@ -6076,6 +6140,27 @@ export interface MediaApiMediaGetByIdRequest {
 }
 
 /**
+ * Request parameters for mediaListMedia operation in MediaApi.
+ * @export
+ * @interface MediaApiMediaListMediaRequest
+ */
+export interface MediaApiMediaListMediaRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof MediaApiMediaListMedia
+	 */
+	readonly page?: number;
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof MediaApiMediaListMedia
+	 */
+	readonly pageSize?: number;
+}
+
+/**
  * MediaApi - object-oriented interface
  * @export
  * @class MediaApi
@@ -6117,12 +6202,13 @@ export class MediaApi extends BaseAPI {
 
 	/**
 	 *
+	 * @param {MediaApiMediaListMediaRequest} requestParameters Request parameters.
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}
 	 * @memberof MediaApi
 	 */
-	public mediaListMedia(options?: AxiosRequestConfig) {
-		return MediaApiFp(this.configuration).mediaListMedia(options).then((request) => request(this.axios, this.basePath));
+	public mediaListMedia(requestParameters: MediaApiMediaListMediaRequest = {}, options?: AxiosRequestConfig) {
+		return MediaApiFp(this.configuration).mediaListMedia(requestParameters.page, requestParameters.pageSize, options).then((request) => request(this.axios, this.basePath));
 	}
 }
 
@@ -7489,6 +7575,10 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -7534,6 +7624,10 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 			if ( filters ) {
 				localVarQueryParameter['filters'] = filters;
@@ -7611,6 +7705,10 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -7642,6 +7740,10 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 			const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -7677,6 +7779,10 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 			const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';

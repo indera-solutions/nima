@@ -1,10 +1,20 @@
-import { Controller, Delete, Get, Param, ParseIntPipe, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+	Controller,
+	Delete,
+	Get,
+	Param,
+	ParseIntPipe,
+	Post,
+	Query,
+	UploadedFile,
+	UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiConsumes, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiConsumes, ApiCreatedResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Express } from 'express';
 import 'multer';
 import { ApiFile } from '../core.decorator';
-import { MediaDto } from '../dto/media.dto';
+import { MediaDto, MediaListPaginated } from '../dto/media.dto';
 import { MediaService } from './media.service';
 
 
@@ -25,10 +35,23 @@ export class MediaController {
 	}
 
 	@Get()
-	@ApiOkResponse({ type: [MediaDto] })
-	async listMedia() {
-		const res = await this.mediaService.list();
-		return res.map(r => MediaDto.prepare(r));
+	@ApiQuery({ type: Number, required: false, name: 'page' })
+	@ApiQuery({ type: Number, required: false, name: 'pageSize' })
+	@ApiOkResponse({ type: MediaListPaginated })
+	async listMedia(
+		@Query('page') page?: number,
+		@Query('pageSize') pageSize?: number,
+	): Promise<MediaListPaginated> {
+		const res = await this.mediaService.list({
+			page,
+			pageSize,
+		});
+		return {
+			totalCount: res.totalCount,
+			items: res.items.map(i => MediaDto.prepare(i)),
+			pageSize: res.pageSize,
+			pageNumber: res.pageNumber,
+		};
 	}
 
 	@Get(':id')

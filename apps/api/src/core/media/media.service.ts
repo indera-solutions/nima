@@ -1,10 +1,12 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { getSlug } from '@nima/utils';
+import { getSlug, PaginatedResults } from '@nima/utils';
 import { Express } from 'express';
 import { CoreService } from '../core.service';
 import { CreateMediaDto } from '../dto/media.dto';
 import { MediaEntity } from '../entities/media.entity';
 import { MediaRepository } from '../entities/media.repository';
+
+const imageThumbnail = require('image-thumbnail');
 
 @Injectable()
 export class MediaService {
@@ -24,12 +26,27 @@ export class MediaService {
 			throw new Error('S3_UPLOAD_FAILED');
 		}
 
+		let thumbnailUrl;
+		if ( file.mimetype && file.mimetype.startsWith('image') ) {
+			const thumbnail = await imageThumbnail(file.buffer);
+			try {
+				const thumbnails3res = await this.coreService.uploadFileToS3(thumbnail.buffer, 'thumbnail_' + originalFilename);
+				if ( thumbnails3res ) {
+					thumbnailUrl = 'https://loom-cdn.indera.gr/' + thumbnails3res.Key;
+				}
+			} catch ( e ) {
+				console.log('Thumbnail failed', e);
+			}
+		}
+
+
 		const media = await this.saveMedia({
 			dto: {
 				name: originalFilename,
 				slug: getSlug(originalFilename),
 				url: 'https://loom-cdn.indera.gr/' + res.Key,
 				mimeType: file.mimetype ? file.mimetype : '',
+				thumbnailUrl: thumbnailUrl,
 				alt: {},
 				byteSize: file.size,
 			},
@@ -43,8 +60,26 @@ export class MediaService {
 		return this.mediaRepository.save(dto);
 	}
 
-	async list(): Promise<MediaEntity[]> {
-		return this.mediaRepository.find();
+	async list(params: { page?: number, pageSize?: number }): Promise<PaginatedResults<MediaEntity>> {
+		const count = await this.mediaRepository.count();
+		const pageSize = params.pageSize || 20;
+		const take = pageSize;
+		const skip = ((params.page || 1) - 1) * take;
+		const res = await this.mediaRepository.find({
+			skip,
+			take,
+			order: {
+				created: 'DESC',
+			},
+		});
+
+		return {
+			items: res,
+			pageNumber: params.page || 1,
+			pageSize: pageSize,
+			totalCount: count,
+		};
+
 	}
 
 	async listOfMimeType(params: { mimeType: string }): Promise<MediaEntity[]> {
