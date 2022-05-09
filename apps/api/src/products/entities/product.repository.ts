@@ -97,6 +97,8 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 					  .leftJoinAndSelect('aval.value', 'avalval')
 					  .leftJoinAndSelect('att.productTypeAttribute', 'pta')
 					  .leftJoinAndSelect('pta.attribute', 'attr')
+					  .leftJoinAndSelect('p.productMedia', 'pmedia')
+					  .leftJoinAndSelect('pmedia.media', 'pmediaMedia')
 					  .whereInIds(ids)
 			// .loadRelationIdAndMap('category', 'p.category')
 					  .skip(skip)

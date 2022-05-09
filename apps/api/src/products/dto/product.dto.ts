@@ -2,8 +2,9 @@ import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { IsArray, IsInt } from 'class-validator';
 import { ProductEntity } from '../entities/product.entity';
 import { CreateAssignedProductAttributeDto, ProductAttributeDto } from './product-attribute-assignment.dto';
+import { ProductMediaDto } from './productMedia.dto';
 
-export class ProductDto extends OmitType(ProductEntity, ['productType', 'attributes', 'category', 'defaultVariant', 'searchDocument']) {
+export class ProductDto extends OmitType(ProductEntity, ['productType', 'productMedia', 'attributes', 'category', 'defaultVariant', 'searchDocument']) {
 	@ApiProperty()
 	@IsInt()
 	productTypeId: number;
@@ -18,6 +19,9 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'attribu
 
 	@ApiProperty()
 	defaultVariantId: number;
+
+	@ApiProperty({ type: () => ProductMediaDto, isArray: true })
+	productMedia: ProductMediaDto[];
 
 	static prepare(entity: ProductEntity, options?: { isAdmin?: boolean }): ProductDto {
 		return {
@@ -41,6 +45,7 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'attribu
 			minPrice: entity.minPrice,
 			rating: entity.rating,
 			seoDescription: entity.seoDescription,
+			productMedia: entity.productMedia.map(pm => ProductMediaDto.prepare(pm)),
 			seoTitle: entity.seoTitle,
 			updatedAt: entity.updatedAt,
 			attributes: entity.attributes.map(attr => ProductAttributeDto.prepare(attr)),

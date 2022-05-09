@@ -1070,6 +1070,12 @@ export interface CreateProductDto {
 	'productTypeId': number;
 	/**
 	 *
+	 * @type {Array<ProductMediaDto>}
+	 * @memberof CreateProductDto
+	 */
+	'productMedia': Array<ProductMediaDto>;
+	/**
+	 *
 	 * @type {Array<CreateAssignedProductAttributeDto>}
 	 * @memberof CreateProductDto
 	 */
@@ -1374,8 +1380,13 @@ export interface MediaDto {
 	 * @memberof MediaDto
 	 */
 	'byteSize': number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof MediaDto
+	 */
+	'created': string;
 }
-
 /**
  *
  * @export
@@ -1661,6 +1672,12 @@ export interface ProductDto {
 	 * @memberof ProductDto
 	 */
 	'defaultVariantId': number;
+	/**
+	 *
+	 * @type {Array<ProductMediaDto>}
+	 * @memberof ProductDto
+	 */
+	'productMedia': Array<ProductMediaDto>;
 }
 /**
  *
@@ -1723,6 +1740,27 @@ export interface ProductFilterResultDto {
 	 */
 	'totalCount': number;
 }
+
+/**
+ *
+ * @export
+ * @interface ProductMediaDto
+ */
+export interface ProductMediaDto {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ProductMediaDto
+	 */
+	'sortOrder': number;
+	/**
+	 *
+	 * @type {MediaDto}
+	 * @memberof ProductMediaDto
+	 */
+	'media': MediaDto;
+}
+
 /**
  *
  * @export

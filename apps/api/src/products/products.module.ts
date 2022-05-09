@@ -23,6 +23,7 @@ import { ProductVariantEntity } from './entities/product-variant.entity';
 import { ProductVariantRepository } from './entities/product-variant.repository';
 import { ProductEntity } from './entities/product.entity';
 import { ProductRepository } from './entities/product.repository';
+import { ProductMediaEntity } from './entities/ProductMedia';
 import { FilteringService } from './filtering.service';
 import { ProductVariantController } from './product-variant.controller';
 import { ProductVariantService } from './product-variant.service';
@@ -31,6 +32,7 @@ import { ProductsService } from './products.service';
 
 export const ProductsModuleEntities = [
 	ProductEntity,
+	ProductMediaEntity,
 	ProductVariantEntity,
 	AssignedProductAttributeEntity,
 	AssignedProductVariantAttributeEntity,

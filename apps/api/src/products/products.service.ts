@@ -52,6 +52,7 @@ export class ProductsService {
 			productType: productType,
 			category,
 			attributes: undefined,
+			media: [],
 		});
 
 
