@@ -10,6 +10,7 @@ import { AssignedProductVariantAttributeEntity } from './entities/product-attrib
 import { AssignedProductVariantAttributeRepository } from './entities/product-attribute-assignment.repository';
 import { AssignedProductVariantAttributeValueEntity } from './entities/product-attribute-value-assignment.entity';
 import { AssignedProductVariantAttributeValueRepository } from './entities/product-attribute-value-assignment.repository';
+import { ProductVariantMediaRepository } from './entities/product-variant-media.repository';
 import { ProductVariantEntity } from './entities/product-variant.entity';
 import { ProductVariantRepository } from './entities/product-variant.repository';
 import { ProductsService } from './products.service';
@@ -22,6 +23,7 @@ export class ProductVariantService {
 		private productTypeVariantAttributesService: ProductTypeVariantAttributesService,
 		private assignedProductVariantAttributeRepository: AssignedProductVariantAttributeRepository,
 		private assignedProductVariantAttributeValueRepository: AssignedProductVariantAttributeValueRepository,
+		private productVariantMediaRepository: ProductVariantMediaRepository,
 		private attributeValuesService: AttributeValuesService,
 	) {
 	}
@@ -41,9 +43,15 @@ export class ProductVariantService {
 		const product = await this.productsService.getById({ id: productId });
 		if ( !product ) throw new NotFoundException('PRODUCT_TYPE_NOT_FOUND');
 		// const attributes = await this.constructAttributes(dto.attributes);
-		const variant = await this.productVariantRepository.save({ ...dto, id: variantId, product: product, attributes: undefined });
+		const variant = await this.productVariantRepository.save({ ...dto, id: variantId, product: product, attributes: undefined, productMedia: undefined });
 
 		await this.syncAttributes({ oldAttributes: oldVariant?.attributes || [], newAttributes: dto.attributes, variant: variant });
+
+		await this.syncProductMedia({
+			variant,
+			oldProductMedia: oldVariant?.productMedia || [],
+			productMedia: dto.productMedia,
+		});
 
 		const allVariants = await this.findOfProduct({ productId });
 		if ( allVariants.length === 1 ) {
@@ -94,6 +102,63 @@ export class ProductVariantService {
 		await this.productVariantRepository.deleteById(id);
 		return product;
 	}
+
+	private async syncProductMedia(params: { productMedia: CreateProductVariantDto['productMedia'], oldProductMedia: ProductVariantEntity['productMedia'], variant: ProductVariantEntity }) {
+		const { productMedia, oldProductMedia, variant } = params;
+		console.log('variant.id', variant.id);
+		const oldIds = oldProductMedia.map(pm => pm.media.id);
+		const newIds = productMedia.map(pm => pm.mediaId);
+
+		const toDelete = oldIds.filter(id => !newIds.includes(id));
+		const toAdd = productMedia.filter(pm => !oldIds.includes(pm.mediaId));
+
+		const existing = oldProductMedia.filter(pt => newIds.includes(pt.media.id));
+		const toUpdate = existing.filter(pm => pm.sortOrder !== productMedia.find(m => m.mediaId === pm.media.id)?.sortOrder);
+
+		const promises: Promise<any>[] = [];
+		for ( const toDeleteElement of toDelete ) {
+			promises.push(this.productVariantMediaRepository.delete({
+				media: {
+					id: toDeleteElement,
+				},
+				productVariant: {
+					id: variant.id,
+				},
+			}));
+		}
+		for ( const toAddElement of toAdd ) {
+			promises.push(this.productVariantMediaRepository.insert({
+				media: {
+					id: toAddElement.mediaId,
+				},
+				productVariant: {
+					id: variant.id,
+				},
+				sortOrder: toAddElement.sortOrder,
+
+			}));
+		}
+
+		for ( const toUpdateElement of toUpdate ) {
+			const newValue = productMedia.find(pm => pm.mediaId === toUpdateElement.media.id);
+			if ( !newValue ) continue;
+			promises.push(this.productVariantMediaRepository.update({
+					media: {
+						id: toUpdateElement.media.id,
+					},
+					productVariant: {
+						id: variant.id,
+					},
+				},
+				{
+					sortOrder: newValue.sortOrder,
+				},
+			));
+		}
+
+		await Promise.all(promises);
+	}
+
 
 	private async syncAttributes(params: { oldAttributes: AssignedProductVariantAttributeEntity[], newAttributes: CreateAssignedProductVariantAttributeDto[], variant: ProductVariantEntity }) {
 		const { oldAttributes, newAttributes, variant } = params;

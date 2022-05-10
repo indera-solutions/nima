@@ -52,7 +52,7 @@ export function MediaSelectorSection(props: MediaSelectorSectionProps) {
 		const newArray = reorder([...ids], result.source.index, result.destination.index);
 		const newOrder: CreateSortableMediaDto[] = newArray.map((t, i) => ({
 			mediaId: t,
-			sortOrder: i + 1,
+			sortOrder: i,
 		}));
 		props.onSelect(newOrder);
 	}, [ids]);
@@ -112,6 +112,6 @@ export function MediaSelectorSection(props: MediaSelectorSectionProps) {
 function ImageItem(props: { id: number }) {
 	const { data: media } = useMediaById(props.id);
 	if ( !media ) return null;
-	return <img src={ media.thumbnailUrl } alt=""/>;
+	return <img className={ 'h-full' } src={ media.thumbnailUrl } alt=""/>;
 }
 

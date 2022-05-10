@@ -50,7 +50,7 @@ export function MediaList(props: MediaListProps) {
 												 onClick={ () => onImageSelect(media) }
 												 className={ 'flex justify-center items-center border w-28 h-28 ' + (selectedIds.includes(media.id) ? 'border-double border-4 border-indigo-600' : '') }>
 							{ media.thumbnailUrl ?
-								<img className={ 'object-contain' } src={ media.thumbnailUrl } alt=""/> :
+								<img className={ 'object-contain h-full' } src={ media.thumbnailUrl } alt=""/> :
 								<div className={ '' }>{ media.name }</div> }
 						</div>,
 					) }

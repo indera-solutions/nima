@@ -20,6 +20,9 @@ import {
 	AssignedProductVariantAttributeValueRepository,
 } from './entities/product-attribute-value-assignment.repository';
 import { ProductMediaEntity } from './entities/product-media.entity';
+import { ProductMediaRepository } from './entities/product-media.repository';
+import { ProductVariantMediaEntity } from './entities/product-variant-media.entity';
+import { ProductVariantMediaRepository } from './entities/product-variant-media.repository';
 import { ProductVariantEntity } from './entities/product-variant.entity';
 import { ProductVariantRepository } from './entities/product-variant.repository';
 import { ProductEntity } from './entities/product.entity';
@@ -38,6 +41,8 @@ export const ProductsModuleEntities = [
 	AssignedProductVariantAttributeEntity,
 	AssignedProductAttributeValueEntity,
 	AssignedProductVariantAttributeValueEntity,
+	ProductVariantMediaEntity,
+
 ];
 
 const ProductsModuleRepositories = [
@@ -47,6 +52,8 @@ const ProductsModuleRepositories = [
 	ProductVariantRepository,
 	AssignedProductVariantAttributeValueRepository,
 	AssignedProductVariantAttributeRepository,
+	ProductMediaRepository,
+	ProductVariantMediaRepository,
 ];
 
 @Module({

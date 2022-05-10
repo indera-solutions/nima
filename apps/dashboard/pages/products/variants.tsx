@@ -18,12 +18,12 @@ import {
 	AdminSection,
 	EditProductAttribute,
 	EditVariantInformation,
+	MediaSelectorSection,
 	MetadataEditor,
 	NimaTitle,
 	SelectEditingLanguage,
 	TranslatableInput,
 } from '../../components';
-import { PrintJson } from '../../components/utils/PrintJSON';
 import { NIMA_ROUTES } from '../../lib/routes';
 
 interface VariantsProps {
@@ -47,22 +47,23 @@ export default function Variants(props: VariantsProps) {
 
 
 	const [createProductVariation, setCreateProductVariation] = useState<CreateProductVariantDto>({
-		name: {},
-		privateMetadata: {},
-		attributes: [],
-		currency: 'EUR',
-		metadata: {},
-		costPriceAmount: 0,
-		isPreorder: false,
+			name: {},
+			privateMetadata: {},
+			attributes: [],
+			currency: 'EUR',
+			metadata: {},
+			costPriceAmount: 0,
+			isPreorder: false,
 			sku: '',
 			stock: 0,
 			trackInventory: false,
+			productMedia: [],
 		},
 	);
 
 
 	useEffect(() => {
-		if ( !isEditing ) return;
+		if ( isEditing ) return;
 		if ( !productType ) return;
 		setCreateProductVariation(state => ({
 			...state,
@@ -76,9 +77,10 @@ export default function Variants(props: VariantsProps) {
 
 	useEffect(() => {
 		if ( !existingVariation ) return;
-		const { id, attributes, updatedAt, created, ...rest } = existingVariation;
+		const { id, attributes, updatedAt, productMedia, created, ...rest } = existingVariation;
 		setCreateProductVariation({
 			...rest,
+			productMedia: productMedia.map(pm => ({ mediaId: pm.media.id, sortOrder: pm.sortOrder })),
 			attributes: productType ? attributes.map(att => {
 				const pta = productType.variantAttributes.find(a => a.attributeId === att.id);
 				if ( !pta ) throw new Error('att not found');
@@ -162,9 +164,6 @@ export default function Variants(props: VariantsProps) {
 
 				<AdminColumn>
 					<AdminSection title={ 'General Information' } titleRightContainer={ <SelectEditingLanguage/> }>
-						<PrintJson obj={ existingVariation }/>
-						<PrintJson obj={ createProductVariation }/>
-
 						<label className="label">
 							<span className="label-text">Name</span>
 						</label>
@@ -199,6 +198,12 @@ export default function Variants(props: VariantsProps) {
 					}
 
 					<EditVariantInformation state={ createProductVariation } onValueEdit={ onValueEdit }/>
+
+					<MediaSelectorSection
+						isMulti
+						sortableMedia={ createProductVariation.productMedia }
+						onSelect={ (media) => onValueEdit('productMedia', media) }
+					/>
 
 					<MetadataEditor values={ createProductVariation.metadata as Metadata }
 									onChange={ (value) => onValueEdit('metadata', value) }/>

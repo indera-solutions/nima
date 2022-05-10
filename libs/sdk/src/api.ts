@@ -1256,8 +1256,13 @@ export interface CreateProductVariantDto {
 	 * @memberof CreateProductVariantDto
 	 */
 	'attributes': Array<CreateAssignedProductVariantAttributeDto>;
+	/**
+	 *
+	 * @type {Array<CreateSortableMediaDto>}
+	 * @memberof CreateProductVariantDto
+	 */
+	'productMedia': Array<CreateSortableMediaDto>;
 }
-
 /**
  *
  * @export
@@ -1277,7 +1282,6 @@ export interface CreateSortableMediaDto {
 	 */
 	'mediaId': number;
 }
-
 /**
  *
  * @export
@@ -1438,7 +1442,6 @@ export interface MediaListPaginated {
 	 */
 	'totalCount': number;
 }
-
 /**
  *
  * @export
@@ -1779,7 +1782,6 @@ export interface ProductQueryFilterDto {
 	 */
 	'values': Array<string>;
 }
-
 /**
  *
  * @export
@@ -2053,6 +2055,12 @@ export interface ProductVariantDto {
 	 * @memberof ProductVariantDto
 	 */
 	'product': ProductDto;
+	/**
+	 *
+	 * @type {Array<SortableMediaDto>}
+	 * @memberof ProductVariantDto
+	 */
+	'productMedia': Array<SortableMediaDto>;
 }
 /**
  *
@@ -2164,7 +2172,6 @@ export interface SettingsDto {
 	 */
 	'siteLogo'?: MediaDto;
 }
-
 /**
  *
  * @export
@@ -2184,7 +2191,6 @@ export interface SortableMediaDto {
 	 */
 	'media': MediaDto;
 }
-
 /**
  *
  * @export
@@ -2241,7 +2247,6 @@ export interface TranslatableDto {
 	 */
 	'en'?: string;
 }
-
 /**
  *
  * @export

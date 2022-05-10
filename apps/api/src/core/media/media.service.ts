@@ -28,7 +28,10 @@ export class MediaService {
 
 		let thumbnailUrl;
 		if ( file.mimetype && file.mimetype.startsWith('image') ) {
-			const thumbnail = await imageThumbnail(file.buffer);
+			const thumbnail = await imageThumbnail(file.buffer, {
+				width: 450,
+				percentage: 60,
+			});
 			try {
 				const thumbnails3res = await this.coreService.uploadFileToS3(thumbnail.buffer, 'thumbnail_' + originalFilename);
 				if ( thumbnails3res ) {

@@ -88,6 +88,7 @@ export default function Add(props: AddProps) {
 			sku: '',
 			stock: 0,
 			trackInventory: false,
+			productMedia: [],
 		},
 	);
 
@@ -148,6 +149,7 @@ export default function Add(props: AddProps) {
 		setDefaultVariant({
 			...rest,
 			attributes: [],
+			productMedia: [],
 		});
 	}, [existingProductVariants, productType]);
 
