@@ -1,5 +1,5 @@
-import { defaultConfiguration, NimaQueryCacheKeys } from '@nima/react';
-import { CategoriesApi, CategoryDto, CreateCategoryDto } from '@nima/sdk';
+import { defaultConfiguration, NimaQueryCacheKeys } from '@nima-cms/react';
+import { CategoriesApi, CategoryDto, CreateCategoryDto } from '@nima-cms/sdk';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const categoriesSDK = new CategoriesApi(defaultConfiguration);

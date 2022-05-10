@@ -1,5 +1,5 @@
-import { useSettings } from '@nima/react';
-import { LanguageCode } from '@nima/utils';
+import { useSettings } from '@nima-cms/react';
+import { LanguageCode } from '@nima-cms/utils';
 import React, { useContext, useState } from 'react';
 
 require('dayjs/locale/el');

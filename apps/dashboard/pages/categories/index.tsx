@@ -1,4 +1,4 @@
-import { useCategories } from '@nima/react';
+import { useCategories } from '@nima-cms/react';
 import Link from 'next/link';
 import React from 'react';
 import { AdminColumn, AdminPage, AdminSection, NimaTitle } from '../../components';

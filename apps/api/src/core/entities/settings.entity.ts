@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { LanguageCode } from '@nima/utils';
+import { LanguageCode } from '@nima-cms/utils';
 import { IsBoolean, IsEmail, IsEnum, IsString, IsUrl } from 'class-validator';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { AddressDto } from '../dto/address.dto';

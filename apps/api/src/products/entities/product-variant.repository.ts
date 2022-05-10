@@ -1,4 +1,4 @@
-import { LanguageCode } from '@nima/utils';
+import { LanguageCode } from '@nima-cms/utils';
 import { EntityRepository } from 'typeorm';
 import { BaseRepository } from 'typeorm-transactional-cls-hooked';
 import { AttributeValueEntity } from '../../attributes/entities/attribute-value.entity';

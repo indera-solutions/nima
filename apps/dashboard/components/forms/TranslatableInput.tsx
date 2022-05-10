@@ -1,5 +1,5 @@
-import { useLanguages } from '@nima/react';
-import { Translatable } from '@nima/utils';
+import { useLanguages } from '@nima-cms/react';
+import { Translatable } from '@nima-cms/utils';
 import React from 'react';
 
 export interface TranslatableInputProps extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'value' | 'type' | 'onChange' | 'placeholder'> {

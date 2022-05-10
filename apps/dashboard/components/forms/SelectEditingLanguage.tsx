@@ -1,4 +1,4 @@
-import { useLanguages } from '@nima/react';
+import { useLanguages } from '@nima-cms/react';
 import React from 'react';
 
 interface SelectEditingLanguageProps {

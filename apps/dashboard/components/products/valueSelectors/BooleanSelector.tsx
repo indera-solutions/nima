@@ -1,4 +1,4 @@
-import { useAttributeValues, useLanguages } from '@nima/react';
+import { useAttributeValues, useLanguages } from '@nima-cms/react';
 import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { EditSingleProductAttributeProps } from '../EditProductAttribute';

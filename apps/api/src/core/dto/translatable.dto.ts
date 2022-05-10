@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Translatable } from '@nima/utils';
+import { Translatable } from '@nima-cms/utils';
 
 export class TranslatableDto implements Translatable {
 	@ApiProperty({ type: String, required: false })

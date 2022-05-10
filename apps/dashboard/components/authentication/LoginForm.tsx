@@ -1,4 +1,4 @@
-import { useAuth } from '@nima/react';
+import { useAuth } from '@nima-cms/react';
 import React, { useState } from 'react';
 
 interface LoginFormProps {

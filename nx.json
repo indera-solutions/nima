@@ -1,5 +1,5 @@
 {
-	"npmScope": "nima",
+	"npmScope": "nima-cms",
 	"affected": {
 		"defaultBase": "main"
 	},
@@ -17,7 +17,12 @@
 		"default": {
 			"runner": "@nrwl/nx-cloud",
 			"options": {
-				"cacheableOperations": ["build", "lint", "test", "e2e"],
+				"cacheableOperations": [
+					"build",
+					"lint",
+					"test",
+					"e2e"
+				],
 				"accessToken": "NjQ2ODhkYWYtZDU2MS00OGNlLTg1ZDUtMTUxOGY0YTdkNDhmfHJlYWQtd3JpdGU="
 			}
 		}

@@ -1,4 +1,4 @@
-import { Trans } from '@nima/react';
+import { Trans } from '@nima-cms/react';
 import Link from 'next/link';
 import React from 'react';
 import { useProducts } from '../../../../libs/react/src/reactQuery/products.queries';

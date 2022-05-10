@@ -1,4 +1,4 @@
-import { defaultConfiguration, NimaQueryCacheKeys } from '@nima/react';
+import { defaultConfiguration, NimaQueryCacheKeys } from '@nima-cms/react';
 import {
 	CreateProductDto,
 	CreateProductVariantDto,
@@ -8,7 +8,7 @@ import {
 	ProductsApiProductsFindAllRequest,
 	ProductVariantDto,
 	ProductVariantsApi,
-} from '@nima/sdk';
+} from '@nima-cms/sdk';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const productsSDK = new ProductsApi(defaultConfiguration);

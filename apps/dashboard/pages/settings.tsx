@@ -1,6 +1,6 @@
-import { useSettings, useUpdateSettings } from '@nima/react';
-import { SettingsDto } from '@nima/sdk';
-import { LanguageCode, languages } from '@nima/utils';
+import { useSettings, useUpdateSettings } from '@nima-cms/react';
+import { SettingsDto } from '@nima-cms/sdk';
+import { LanguageCode, languages } from '@nima-cms/utils';
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { toast } from 'react-toastify';

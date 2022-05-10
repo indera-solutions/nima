@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { BasePaginatedRequest, PaginatedResults } from '@nima/utils';
+import { BasePaginatedRequest, PaginatedResults } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { AttributeValuesService } from '../attributes/attribute-values.service';
 import { ProductTypeVariantAttributesService } from '../product-types/product-type-variant-attributes.service';

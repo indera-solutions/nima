@@ -5,7 +5,7 @@ import {
 	NotFoundException,
 	NotImplementedException,
 } from '@nestjs/common';
-import { getSlug } from '@nima/utils';
+import { getSlug } from '@nima-cms/utils';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto/category.dto';
 import { CategoryEntity } from './entities/category.entity';
 import { CategoryRepository } from './entities/category.repository';

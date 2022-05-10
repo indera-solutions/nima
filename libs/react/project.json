@@ -4,16 +4,37 @@
 	"projectType": "library",
 	"tags": [ "type:ui", "score:shared" ],
 	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"outputs": [
+				"{options.outputPath}"
+			],
+			"options": {
+				"outputPath": "dist/libs/react",
+				"tsConfig": "libs/react/tsconfig.lib.json",
+				"packageJson": "libs/react/package.json",
+				"main": "libs/react/src/index.ts",
+				"assets": [
+					"libs/react/*.md"
+				]
+			}
+		},
 		"lint": {
 			"executor": "@nrwl/linter:eslint",
-			"outputs": [ "{options.outputFile}" ],
+			"outputs": [
+				"{options.outputFile}"
+			],
 			"options": {
-				"lintFilePatterns": [ "libs/react/**/*.{ts,tsx,js,jsx}" ]
+				"lintFilePatterns": [
+					"libs/react/**/*.{ts,tsx,js,jsx}"
+				]
 			}
 		},
 		"test": {
 			"executor": "@nrwl/jest:jest",
-			"outputs": [ "coverage/libs/react" ],
+			"outputs": [
+				"coverage/libs/react"
+			],
 			"options": {
 				"jestConfig": "libs/react/jest.config.js",
 				"passWithNoTests": true

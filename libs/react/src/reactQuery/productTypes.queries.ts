@@ -1,5 +1,5 @@
-import { defaultConfiguration, NimaQueryCacheKeys } from '@nima/react';
-import { CreateProductTypeDto, ProductTypeDto, ProductTypesApi } from '@nima/sdk';
+import { defaultConfiguration, NimaQueryCacheKeys } from '@nima-cms/react';
+import { CreateProductTypeDto, ProductTypeDto, ProductTypesApi } from '@nima-cms/sdk';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const productTypesSDK = new ProductTypesApi(defaultConfiguration);

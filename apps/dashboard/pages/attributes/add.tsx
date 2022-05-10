@@ -4,9 +4,9 @@ import {
 	useAttributeValues,
 	useCreateAttributeMutation,
 	useUpdateAttributeMutation,
-} from '@nima/react';
-import { AttributeValueDto, CreateAttributeDto, CreateAttributeValueDto, InputType } from '@nima/sdk';
-import { enumToArray, isCreateAttributeValueDto, Metadata, parseIdStr, toTitleCase } from '@nima/utils';
+} from '@nima-cms/react';
+import { AttributeValueDto, CreateAttributeDto, CreateAttributeValueDto, InputType } from '@nima-cms/sdk';
+import { enumToArray, isCreateAttributeValueDto, Metadata, parseIdStr, toTitleCase } from '@nima-cms/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';

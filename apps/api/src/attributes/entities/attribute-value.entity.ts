@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Translatable } from '@nima/utils';
+import { Translatable } from '@nima-cms/utils';
 import { IsBoolean, IsInt, IsNotEmptyObject, IsObject, IsOptional, IsRFC3339, IsString, IsUrl } from 'class-validator';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';

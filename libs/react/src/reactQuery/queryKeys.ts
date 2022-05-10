@@ -1,4 +1,4 @@
-import { ProductsApiProductsFindAllRequest } from '@nima/sdk';
+import { ProductsApiProductsFindAllRequest } from '@nima-cms/sdk';
 
 const NIMA_QUERY_PREFIX = 'COMMERCE_V2';
 const SETTINGS_QUERY_PREFIX = 'SETTINGS';

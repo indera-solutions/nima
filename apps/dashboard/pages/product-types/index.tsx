@@ -1,4 +1,4 @@
-import { useProductTypes } from '@nima/react';
+import { useProductTypes } from '@nima-cms/react';
 import Link from 'next/link';
 import React from 'react';
 import { AdminColumn, AdminPage, AdminSection, NimaTitle } from '../../components';

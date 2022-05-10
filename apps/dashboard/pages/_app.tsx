@@ -1,4 +1,4 @@
-import { LanguageContextProvider, SessionProvider } from '@nima/react';
+import { LanguageContextProvider, SessionProvider } from '@nima-cms/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { QueryClient, QueryClientProvider } from 'react-query';

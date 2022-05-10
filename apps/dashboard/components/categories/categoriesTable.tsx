@@ -1,5 +1,5 @@
-import { Trans } from '@nima/react';
-import { CategoryDto } from '@nima/sdk';
+import { Trans } from '@nima-cms/react';
+import { CategoryDto } from '@nima-cms/sdk';
 import Link from 'next/link';
 import React from 'react';
 import { NIMA_ROUTES } from '../../lib/routes';

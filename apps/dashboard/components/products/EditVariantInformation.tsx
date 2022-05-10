@@ -1,4 +1,4 @@
-import { CreateProductVariantDto } from '@nima/sdk';
+import { CreateProductVariantDto } from '@nima-cms/sdk';
 import React from 'react';
 import { AdminSection } from '../AdminLayout';
 

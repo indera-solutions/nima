@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { LanguageCode, Metadata } from '@nima/utils';
+import { LanguageCode, Metadata } from '@nima-cms/utils';
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { AddressDto } from '../../core/dto/address.dto';
 import { AddressEntity } from '../../core/entities/address.entity';
