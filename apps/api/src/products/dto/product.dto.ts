@@ -68,6 +68,7 @@ export class CreateProductDto extends OmitType(ProductDto, ['id', 'attributes', 
 	categoryId: number;
 
 	@ApiProperty({ type: () => CreateSortableMediaDto, isArray: true })
+	@IsArray()
 	productMedia: CreateSortableMediaDto[];
 }
 

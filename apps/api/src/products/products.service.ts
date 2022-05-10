@@ -1,5 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { BasePaginatedRequest, getSlug, PaginatedResults } from '@nima/utils';
+import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { AttributeValuesService } from '../attributes/attribute-values.service';
 import { CategoriesService } from '../categories/categories.service';
@@ -13,6 +15,7 @@ import { AssignedProductAttributeEntity } from './entities/product-attribute-ass
 import { AssignedProductAttributeRepository } from './entities/product-attribute-assignment.repository';
 import { AssignedProductAttributeValueEntity } from './entities/product-attribute-value-assignment.entity';
 import { AssignedProductAttributeValueRepository } from './entities/product-attribute-value-assignment.repository';
+import { ProductMediaEntity } from './entities/product-media.entity';
 import { ProductEntity } from './entities/product.entity';
 import { ProductRepository } from './entities/product.repository';
 
@@ -26,6 +29,7 @@ export class ProductsService {
 		private assignedProductAttributeRepository: AssignedProductAttributeRepository,
 		private assignedProductAttributeValueRepository: AssignedProductAttributeValueRepository,
 		private attributeValuesService: AttributeValuesService,
+		@InjectRepository(ProductMediaEntity) private productMediaRepository: Repository<ProductMediaEntity>,
 	) {
 	}
 
@@ -46,15 +50,16 @@ export class ProductsService {
 		// const attributes = await this.constructAttributes(dto.attributes);
 		if ( !dto.slug ) dto.slug = getSlug(dto.name.en || dto.name.el);
 		const category = await this.categoryService.findOne({ id: dto.categoryId, depth: 0 });
+
 		const product = await this.productRepository.save({
 			...dto,
 			id: productId,
 			productType: productType,
 			category,
 			attributes: undefined,
-			media: [],
-		});
 
+			// media: media,
+		});
 
 		await this.syncAttributes({ oldAttributes: oldProduct?.attributes || [], newAttributes: dto.attributes, product: product });
 
@@ -104,6 +109,36 @@ export class ProductsService {
 		await this.productRepository.update(params.productId, {
 			defaultVariant: { id: params.variantId },
 		});
+	}
+
+	private async syncProductMedia(params: { productMedia: CreateProductDto['productMedia'], product: ProductEntity }) {
+		const { productMedia, product } = params;
+
+		const oldIds = product.productMedia.map(pm => pm.media.id);
+		const newIds = productMedia.map(pm => pm.mediaId);
+
+		const toDelete = oldIds.filter(id => !newIds.includes(id));
+		const toAdd = productMedia.filter(pm => !oldIds.includes(pm.mediaId));
+
+		const existing = product.productMedia.filter(pt => newIds.includes(pt.media.id));
+		const toUpdate = existing.filter(pm => pm.sortOrder !== productMedia.find(m => m.mediaId === pm.media.id)?.sortOrder);
+
+		const promises: Promise<any>[] = [];
+		for ( const toDeleteElement of toDelete ) {
+			promises.push(this.productMediaRepository.delete({
+				media: {
+					id: toDeleteElement,
+				},
+				product: {
+					id: product.id,
+				},
+			}));
+		}
+		for ( const createProductTypeAttributeDto of toAdd ) {
+			promises.push(this.productMediaRepository.insert({}));
+		}
+
+
 	}
 
 	private async syncAttributes(params: { oldAttributes: AssignedProductAttributeEntity[], newAttributes: CreateAssignedProductAttributeDto[], product: ProductEntity }) {

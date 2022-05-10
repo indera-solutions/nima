@@ -21,3 +21,4 @@ export class ProductMediaEntity implements ISortableMediaEntity {
 
 }
 
+

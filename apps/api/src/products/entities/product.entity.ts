@@ -17,8 +17,8 @@ import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { ProductTypeDto } from '../../product-types/dto/product-type.dto';
 import { ProductTypeEntity } from '../../product-types/entities';
 import { AssignedProductAttributeEntity } from './product-attribute-assignment.entity';
+import { ProductMediaEntity } from './product-media.entity';
 import { ProductVariantEntity } from './product-variant.entity';
-import { ProductMediaEntity } from './ProductMedia';
 
 @Entity('products_products')
 export class ProductEntity {
