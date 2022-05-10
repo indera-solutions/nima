@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Translatable } from '@nima/utils';
+import { Translatable } from '@nima-cms/utils';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { ProductVariantDto } from '../../products/dto/product-variant.dto';

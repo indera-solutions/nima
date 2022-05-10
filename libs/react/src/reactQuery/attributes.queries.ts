@@ -1,4 +1,4 @@
-import { defaultConfiguration, NimaQueryCacheKeys } from '@nima/react';
+import { defaultConfiguration, NimaQueryCacheKeys } from '@nima-cms/react';
 import {
 	AttributeDto,
 	AttributesApi,
@@ -6,7 +6,7 @@ import {
 	AttributeValuesApi,
 	CreateAttributeDto,
 	CreateAttributeValueDto,
-} from '@nima/sdk';
+} from '@nima-cms/sdk';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const attributesSDK = new AttributesApi(defaultConfiguration);

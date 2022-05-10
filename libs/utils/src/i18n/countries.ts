@@ -1,4 +1,4 @@
-import { Translatable } from '@nima/utils';
+import { Translatable } from '@nima-cms/utils';
 
 export interface ICountry {
 	name: string,

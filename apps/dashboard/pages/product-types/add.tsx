@@ -4,9 +4,9 @@ import {
 	useCreateProductTypeMutation,
 	useProductTypeId,
 	useUpdateProductTypeMutation,
-} from '@nima/react';
-import { AttributeDto, CreateProductTypeDto } from '@nima/sdk';
-import { Metadata, parseIdStr } from '@nima/utils';
+} from '@nima-cms/react';
+import { AttributeDto, CreateProductTypeDto } from '@nima-cms/sdk';
+import { Metadata, parseIdStr } from '@nima-cms/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { Attributes, useEffect, useMemo, useState } from 'react';

@@ -11,9 +11,9 @@ import {
 	useProductVariantsByProductId,
 	useUpdateProductMutation,
 	useUpdateProductVariationMutation,
-} from '@nima/react';
-import { CreateAssignedProductAttributeDto, CreateProductDto, CreateProductVariantDto } from '@nima/sdk';
-import { getSlug, Metadata, parseIdStr } from '@nima/utils';
+} from '@nima-cms/react';
+import { CreateAssignedProductAttributeDto, CreateProductDto, CreateProductVariantDto } from '@nima-cms/sdk';
+import { getSlug, Metadata, parseIdStr } from '@nima-cms/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';

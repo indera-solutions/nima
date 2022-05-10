@@ -1,4 +1,4 @@
-import { Metadata } from '@nima/utils';
+import { Metadata } from '@nima-cms/utils';
 import React from 'react';
 import { SVGPlus } from '../../assets/SVGIcons';
 import { AdminSection } from '../AdminLayout';

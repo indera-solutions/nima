@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Metadata } from '@nima/utils';
+import { Metadata } from '@nima-cms/utils';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserDto } from '../../users/dto/user.dto';
 import { UserEntity } from '../../users/entities/user.entity';

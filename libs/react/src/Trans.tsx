@@ -1,4 +1,4 @@
-import { LanguageCode, Translatable } from '@nima/utils';
+import { LanguageCode, Translatable } from '@nima-cms/utils';
 import React from 'react';
 import { useLanguages } from './providers';
 

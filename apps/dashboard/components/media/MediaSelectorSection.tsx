@@ -1,5 +1,5 @@
-import { useMediaById } from '@nima/react';
-import { CreateSortableMediaDto } from '@nima/sdk';
+import { useMediaById } from '@nima-cms/react';
+import { CreateSortableMediaDto } from '@nima-cms/sdk';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { SVGPlus } from '../../assets/SVGIcons';

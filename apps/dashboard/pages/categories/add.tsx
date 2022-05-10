@@ -4,9 +4,9 @@ import {
 	useCreateCategoryMutation,
 	useLanguages,
 	useUpdateCategoryMutation,
-} from '@nima/react';
-import { CreateCategoryDto } from '@nima/sdk';
-import { getSlug, Metadata, parseIdStr } from '@nima/utils';
+} from '@nima-cms/react';
+import { CreateCategoryDto } from '@nima-cms/sdk';
+import { getSlug, Metadata, parseIdStr } from '@nima-cms/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';

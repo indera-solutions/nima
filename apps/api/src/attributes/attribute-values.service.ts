@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { EmptyObject, getSlug } from '@nima/utils';
+import { EmptyObject, getSlug } from '@nima-cms/utils';
 import { AttributeValueDto, CreateAttributeValueDto, UpdateAttributeValueDto } from './dto/attribute-value.dto';
 import { AttributeValueEntity } from './entities/attribute-value.entity';
 import { AttributeValuesRepository } from './entities/attribute-values.repository';

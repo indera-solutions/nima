@@ -1,4 +1,4 @@
-import { CreateAttributeValueDto } from '@nima/sdk';
+import { CreateAttributeValueDto } from '@nima-cms/sdk';
 
 export function isCreateAttributeValueDto(x: unknown): x is CreateAttributeValueDto {
 	if ( !x ) return false;

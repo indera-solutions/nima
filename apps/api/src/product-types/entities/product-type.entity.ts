@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Metadata } from '@nima/utils';
+import { Metadata } from '@nima-cms/utils';
 import { IsBoolean, IsInt, IsNumber, IsObject, IsString } from 'class-validator';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ProductTypeAttributeEntity } from './product-type-attribute.entity';

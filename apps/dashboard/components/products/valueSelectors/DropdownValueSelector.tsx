@@ -1,4 +1,4 @@
-import { getTranslation, useAddAttributeValueMutation, useAttributeValues, useLanguages } from '@nima/react';
+import { getTranslation, useAddAttributeValueMutation, useAttributeValues, useLanguages } from '@nima-cms/react';
 import React, { useMemo } from 'react';
 import { ActionMeta, OnChangeValue } from 'react-select';
 import CreatableSelect from 'react-select/creatable';

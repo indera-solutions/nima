@@ -1,5 +1,5 @@
-import { getAccessToken } from '@nima/react';
-import { Configuration } from '@nima/sdk';
+import { getAccessToken } from '@nima-cms/react';
+import { Configuration } from '@nima-cms/sdk';
 
 export const defaultConfiguration = new Configuration({
 	accessToken: () => getAccessToken() || '',

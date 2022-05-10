@@ -1,5 +1,5 @@
-import { defaultConfiguration, useSession } from '@nima/react';
-import { CoreApi, SettingsDto } from '@nima/sdk';
+import { defaultConfiguration, useSession } from '@nima-cms/react';
+import { CoreApi, SettingsDto } from '@nima-cms/sdk';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { NimaQueryCacheKeys } from './queryKeys';
 

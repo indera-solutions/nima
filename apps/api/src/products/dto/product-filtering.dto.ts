@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { LanguageCode, PaginatedResults } from '@nima/utils';
+import { LanguageCode, PaginatedResults } from '@nima-cms/utils';
 import { Expose, Transform, Type } from 'class-transformer';
 import { IsArray, IsBoolean, IsEnum, IsInt, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { ProductDto } from './product.dto';

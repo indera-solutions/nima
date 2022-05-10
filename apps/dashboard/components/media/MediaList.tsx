@@ -1,5 +1,5 @@
-import { useMediaPaginated } from '@nima/react';
-import { MediaDto } from '@nima/sdk';
+import { useMediaPaginated } from '@nima-cms/react';
+import { MediaDto } from '@nima-cms/sdk';
 import React, { useMemo, useState } from 'react';
 
 export interface MediaListProps {

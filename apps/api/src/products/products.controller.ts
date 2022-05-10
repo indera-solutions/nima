@@ -21,8 +21,6 @@ import { FilteringService } from './filtering.service';
 import { ProductsService } from './products.service';
 
 @Controller('products')
-@UseGuards(JwtAuthGuard)
-@ApiBearerAuth()
 @ApiTags('Products')
 export class ProductsController {
 	constructor(
@@ -34,6 +32,8 @@ export class ProductsController {
 	@Post()
 	@ApiCreatedResponse({ type: ProductDto })
 	@ApiBody({ type: CreateProductDto })
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
 	async create(@Body() createProductDto: CreateProductDto) {
 		const product = await this.productsService.save({ dto: createProductDto });
 		return ProductDto.prepare(product);
@@ -59,6 +59,8 @@ export class ProductsController {
 	@Put(':id')
 	@ApiOkResponse({ type: ProductDto })
 	@ApiBody({ type: CreateProductDto })
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
 	async update(@Param('id', ParseIntPipe) id: number, @Body() createProductDto: CreateProductDto) {
 		const product = await this.productsService.save({ dto: createProductDto, id: id });
 		return ProductDto.prepare(product);
@@ -66,6 +68,8 @@ export class ProductsController {
 
 	@Delete(':id')
 	@ApiOkResponse({ type: ProductDto })
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
 	async remove(@Param('id', ParseIntPipe) id: number) {
 		const product = await this.productsService.remove({ id: id });
 		return ProductDto.prepare(product);

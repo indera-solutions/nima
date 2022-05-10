@@ -1,4 +1,4 @@
-import { AttributeValueDto, CreateAttributeValueDto, InputType } from '@nima/sdk';
+import { AttributeValueDto, CreateAttributeValueDto, InputType } from '@nima-cms/sdk';
 import React from 'react';
 import { AdminSection } from '../AdminLayout';
 import { DropdownValues } from './DropdownValues';

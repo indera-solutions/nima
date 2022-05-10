@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { getSlug, PaginatedResults } from '@nima/utils';
+import { getSlug, PaginatedResults } from '@nima-cms/utils';
 import { Express } from 'express';
 import { CoreService } from '../core.service';
 import { CreateMediaDto } from '../dto/media.dto';

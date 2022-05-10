@@ -1,5 +1,5 @@
-import { defaultConfiguration, NimaQueryCacheKeys } from '@nima/react';
-import { MediaApi, MediaDto, MediaListPaginated } from '@nima/sdk';
+import { defaultConfiguration, NimaQueryCacheKeys } from '@nima-cms/react';
+import { MediaApi, MediaDto, MediaListPaginated } from '@nima-cms/sdk';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
 
 const mediaSdk = new MediaApi(defaultConfiguration);

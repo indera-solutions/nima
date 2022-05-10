@@ -1,4 +1,4 @@
-import { useSession, useSettings } from '@nima/react';
+import { useSession, useSettings } from '@nima-cms/react';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useQueryClient } from 'react-query';

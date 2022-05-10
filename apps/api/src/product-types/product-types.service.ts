@@ -1,5 +1,5 @@
 import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
-import { EmptyObject, getSlug } from '@nima/utils';
+import { EmptyObject, getSlug } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { CreateProductTypeAttributeDto, CreateProductTypeVariantAttributeDto } from './dto/product-type-attribute.dto';
 import { CreateProductTypeDto } from './dto/product-type.dto';

@@ -1,5 +1,5 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger';
-import { PaginatedResults } from '@nima/utils';
+import { PaginatedResults } from '@nima-cms/utils';
 import { IsInt } from 'class-validator';
 import { MediaEntity } from '../entities/media.entity';
 

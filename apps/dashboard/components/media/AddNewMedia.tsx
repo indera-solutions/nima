@@ -1,4 +1,4 @@
-import { useMediaUploadMutation } from '@nima/react';
+import { useMediaUploadMutation } from '@nima-cms/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 

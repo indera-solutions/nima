@@ -1,6 +1,6 @@
-import { Trans, useLanguages } from '@nima/react';
-import { AttributeValueDto, CreateAttributeValueDto } from '@nima/sdk';
-import { Translatable } from '@nima/utils';
+import { Trans, useLanguages } from '@nima-cms/react';
+import { AttributeValueDto, CreateAttributeValueDto } from '@nima-cms/sdk';
+import { Translatable } from '@nima-cms/utils';
 import React, { useState } from 'react';
 import { AdminSection } from '../AdminLayout';
 import { TranslatableInput } from '../forms';

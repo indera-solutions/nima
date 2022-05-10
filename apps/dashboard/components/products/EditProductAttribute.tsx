@@ -1,5 +1,5 @@
-import { Trans, useAttributeById, useProductTypeId } from '@nima/react';
-import { CreateAssignedProductAttributeDto, CreateAssignedProductVariantAttributeDto, InputType } from '@nima/sdk';
+import { Trans, useAttributeById, useProductTypeId } from '@nima-cms/react';
+import { CreateAssignedProductAttributeDto, CreateAssignedProductVariantAttributeDto, InputType } from '@nima-cms/sdk';
 import React from 'react';
 import { BooleanSelector, DropdownValueSelector } from './valueSelectors';
 

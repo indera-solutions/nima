@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { LanguageCode, Metadata } from '@nima/utils';
+import { LanguageCode, Metadata } from '@nima-cms/utils';
 import {
 	Column,
 	CreateDateColumn,

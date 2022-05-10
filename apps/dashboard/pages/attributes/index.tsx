@@ -1,5 +1,5 @@
-import { Trans, useAttributes } from '@nima/react';
-import { toTitleCase } from '@nima/utils';
+import { Trans, useAttributes } from '@nima-cms/react';
+import { toTitleCase } from '@nima-cms/utils';
 import Link from 'next/link';
 import React from 'react';
 import { AdminColumn, AdminPage, AdminSection, NimaTitle } from '../../components';
