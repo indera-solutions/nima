@@ -27,7 +27,6 @@ export function MetadataEditor(props: MetadataEditorProps) {
 		temp.forEach(entry => {
 			newMetadata[entry[0]] = entry[1];
 		});
-		console.log(newMetadata);
 		if ( props.onChange ) props.onChange(newMetadata);
 	}
 
@@ -36,7 +35,6 @@ export function MetadataEditor(props: MetadataEditorProps) {
 		if ( key === undefined ) return;
 		const temp = { ...props.values };
 		temp[key] = str;
-		console.log(temp);
 		if ( props.onChange ) props.onChange(temp);
 	}
 

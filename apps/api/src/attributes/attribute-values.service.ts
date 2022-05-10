@@ -35,7 +35,6 @@ export class AttributeValuesService {
 		if ( !dto.slug ) {
 			const temp = dto.name['en'] || dto.name['el'];
 			if ( !temp ) throw new Error('no name for slug');
-			console.log(temp);
 			dto.slug = getSlug(temp);
 		}
 		const res = await this.attributeValueRepository.save({ ...dto, id: valueId, attribute: attribute });

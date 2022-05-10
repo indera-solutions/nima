@@ -120,6 +120,8 @@ export class ProductVariantRepository extends BaseRepository<ProductVariantEntit
 					  .leftJoinAndSelect('aval.value', 'avalval')
 					  .leftJoinAndSelect('att.productTypeAttribute', 'pta')
 					  .leftJoinAndSelect('pta.attribute', 'attr')
+					  .leftJoinAndSelect('pv.productMedia', 'pmedia')
+					  .leftJoinAndSelect('pmedia.media', 'pmediaMedia')
 					  .whereInIds(ids)
 					  .skip(skip)
 					  .take(take);

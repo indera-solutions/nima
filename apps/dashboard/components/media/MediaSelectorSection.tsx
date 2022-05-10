@@ -34,13 +34,6 @@ export function MediaSelectorSection(props: MediaSelectorSectionProps) {
 		if ( closeLabelRef.current ) closeLabelRef.current.click();
 	}
 
-	function swapElement(array, indexA, indexB) {
-		console.log(indexA, indexB);
-		const tmp = array[indexA];
-		array[indexA] = array[indexB];
-		array[indexB] = tmp;
-	}
-
 	const onDragEnd = useCallback((result) => {
 		const reorder = (list: number[], startIndex, endIndex) => {
 			const result = Array.from(list);

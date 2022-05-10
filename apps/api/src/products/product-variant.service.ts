@@ -105,7 +105,6 @@ export class ProductVariantService {
 
 	private async syncProductMedia(params: { productMedia: CreateProductVariantDto['productMedia'], oldProductMedia: ProductVariantEntity['productMedia'], variant: ProductVariantEntity }) {
 		const { productMedia, oldProductMedia, variant } = params;
-		console.log('variant.id', variant.id);
 		const oldIds = oldProductMedia.map(pm => pm.media.id);
 		const newIds = productMedia.map(pm => pm.mediaId);
 
