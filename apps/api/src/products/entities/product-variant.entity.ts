@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { AssignedProductVariantAttributeEntity } from './product-attribute-assignment.entity';
+import { ProductVariantMediaEntity } from './product-variant-media.entity';
 import { ProductEntity } from './product.entity';
 
 @Entity('products_product_variants')
@@ -116,6 +117,9 @@ export class ProductVariantEntity {
 	@ApiProperty({ type: Boolean, example: true })
 	@IsBoolean()
 	trackInventory: boolean;
+
+	@OneToMany(() => ProductVariantMediaEntity, pm => pm.productVariant, { eager: true })
+	productMedia: ProductVariantMediaEntity[];
 
 	@OneToMany(() => AssignedProductVariantAttributeEntity, assignedAttr => assignedAttr.variant, { eager: true, onUpdate: 'NO ACTION' })
 	attributes: AssignedProductVariantAttributeEntity[];

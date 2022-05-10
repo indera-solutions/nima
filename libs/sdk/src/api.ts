@@ -1080,6 +1080,12 @@ export interface CreateProductDto {
 	 * @memberof CreateProductDto
 	 */
 	'categoryId': number;
+	/**
+	 *
+	 * @type {Array<CreateSortableMediaDto>}
+	 * @memberof CreateProductDto
+	 */
+	'productMedia': Array<CreateSortableMediaDto>;
 }
 /**
  *
@@ -1250,8 +1256,32 @@ export interface CreateProductVariantDto {
 	 * @memberof CreateProductVariantDto
 	 */
 	'attributes': Array<CreateAssignedProductVariantAttributeDto>;
+	/**
+	 *
+	 * @type {Array<CreateSortableMediaDto>}
+	 * @memberof CreateProductVariantDto
+	 */
+	'productMedia': Array<CreateSortableMediaDto>;
 }
-
+/**
+ *
+ * @export
+ * @interface CreateSortableMediaDto
+ */
+export interface CreateSortableMediaDto {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateSortableMediaDto
+	 */
+	'sortOrder': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateSortableMediaDto
+	 */
+	'mediaId': number;
+}
 /**
  *
  * @export
@@ -1356,8 +1386,62 @@ export interface MediaDto {
 	 * @memberof MediaDto
 	 */
 	'url': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof MediaDto
+	 */
+	'thumbnailUrl': string | null;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof MediaDto
+	 */
+	'alt': TranslatableDto;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof MediaDto
+	 */
+	'byteSize': number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof MediaDto
+	 */
+	'created': string;
 }
-
+/**
+ *
+ * @export
+ * @interface MediaListPaginated
+ */
+export interface MediaListPaginated {
+	/**
+	 *
+	 * @type {Array<MediaDto>}
+	 * @memberof MediaListPaginated
+	 */
+	'items': Array<MediaDto>;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof MediaListPaginated
+	 */
+	'pageNumber': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof MediaListPaginated
+	 */
+	'pageSize': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof MediaListPaginated
+	 */
+	'totalCount': number;
+}
 /**
  *
  * @export
@@ -1611,6 +1695,12 @@ export interface ProductDto {
 	 * @memberof ProductDto
 	 */
 	'defaultVariantId': number;
+	/**
+	 *
+	 * @type {Array<SortableMediaDto>}
+	 * @memberof ProductDto
+	 */
+	'productMedia': Array<SortableMediaDto>;
 }
 /**
  *
@@ -1692,7 +1782,6 @@ export interface ProductQueryFilterDto {
 	 */
 	'values': Array<string>;
 }
-
 /**
  *
  * @export
@@ -1966,6 +2055,12 @@ export interface ProductVariantDto {
 	 * @memberof ProductVariantDto
 	 */
 	'product': ProductDto;
+	/**
+	 *
+	 * @type {Array<SortableMediaDto>}
+	 * @memberof ProductVariantDto
+	 */
+	'productMedia': Array<SortableMediaDto>;
 }
 /**
  *
@@ -2080,6 +2175,25 @@ export interface SettingsDto {
 /**
  *
  * @export
+ * @interface SortableMediaDto
+ */
+export interface SortableMediaDto {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof SortableMediaDto
+	 */
+	'sortOrder': number;
+	/**
+	 *
+	 * @type {MediaDto}
+	 * @memberof SortableMediaDto
+	 */
+	'media': MediaDto;
+}
+/**
+ *
+ * @export
  * @interface SuccessLoginResponse
  */
 export interface SuccessLoginResponse {
@@ -2133,7 +2247,6 @@ export interface TranslatableDto {
 	 */
 	'en'?: string;
 }
-
 /**
  *
  * @export
@@ -5801,6 +5914,369 @@ export class DiscountApi extends BaseAPI {
 
 
 /**
+ * MediaApi - axios parameter creator
+ * @export
+ */
+export const MediaApiAxiosParamCreator = function (configuration?: Configuration) {
+	return {
+		/**
+		 *
+		 * @param {any} [file]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		mediaCreateMedia: async (file?: any, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			const localVarPath = `/api/v1/media`;
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+			const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+
+			if ( file !== undefined ) {
+				localVarFormParams.append('file', file as any);
+			}
+
+
+			localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = localVarFormParams;
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		mediaDeleteById: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('mediaDeleteById', 'id', id)
+			const localVarPath = `/api/v1/media/{id}`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		mediaGetById: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('mediaGetById', 'id', id)
+			const localVarPath = `/api/v1/media/{id}`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} [page]
+		 * @param {number} [pageSize]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		mediaListMedia: async (page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			const localVarPath = `/api/v1/media`;
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			if ( page !== undefined ) {
+				localVarQueryParameter['page'] = page;
+			}
+
+			if ( pageSize !== undefined ) {
+				localVarQueryParameter['pageSize'] = pageSize;
+			}
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+	}
+};
+
+/**
+ * MediaApi - functional programming interface
+ * @export
+ */
+export const MediaApiFp = function (configuration?: Configuration) {
+	const localVarAxiosParamCreator = MediaApiAxiosParamCreator(configuration);
+	return {
+		/**
+		 *
+		 * @param {any} [file]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async mediaCreateMedia(file?: any, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.mediaCreateMedia(file, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async mediaDeleteById(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.mediaDeleteById(id, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async mediaGetById(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.mediaGetById(id, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} [page]
+		 * @param {number} [pageSize]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async mediaListMedia(page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaListPaginated>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.mediaListMedia(page, pageSize, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+	};
+};
+
+/**
+ * MediaApi - factory interface
+ * @export
+ */
+export const MediaApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+	const localVarFp = MediaApiFp(configuration);
+	return {
+		/**
+		 *
+		 * @param {any} [file]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		mediaCreateMedia(file?: any, options?: any): AxiosPromise<MediaDto> {
+			return localVarFp.mediaCreateMedia(file, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		mediaDeleteById(id: number, options?: any): AxiosPromise<MediaDto> {
+			return localVarFp.mediaDeleteById(id, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		mediaGetById(id: number, options?: any): AxiosPromise<MediaDto> {
+			return localVarFp.mediaGetById(id, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} [page]
+		 * @param {number} [pageSize]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		mediaListMedia(page?: number, pageSize?: number, options?: any): AxiosPromise<MediaListPaginated> {
+			return localVarFp.mediaListMedia(page, pageSize, options).then((request) => request(axios, basePath));
+		},
+	};
+};
+
+/**
+ * Request parameters for mediaCreateMedia operation in MediaApi.
+ * @export
+ * @interface MediaApiMediaCreateMediaRequest
+ */
+export interface MediaApiMediaCreateMediaRequest {
+	/**
+	 *
+	 * @type {any}
+	 * @memberof MediaApiMediaCreateMedia
+	 */
+	readonly file?: any;
+}
+
+/**
+ * Request parameters for mediaDeleteById operation in MediaApi.
+ * @export
+ * @interface MediaApiMediaDeleteByIdRequest
+ */
+export interface MediaApiMediaDeleteByIdRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof MediaApiMediaDeleteById
+	 */
+	readonly id: number;
+}
+
+/**
+ * Request parameters for mediaGetById operation in MediaApi.
+ * @export
+ * @interface MediaApiMediaGetByIdRequest
+ */
+export interface MediaApiMediaGetByIdRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof MediaApiMediaGetById
+	 */
+	readonly id: number;
+}
+
+/**
+ * Request parameters for mediaListMedia operation in MediaApi.
+ * @export
+ * @interface MediaApiMediaListMediaRequest
+ */
+export interface MediaApiMediaListMediaRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof MediaApiMediaListMedia
+	 */
+	readonly page?: number;
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof MediaApiMediaListMedia
+	 */
+	readonly pageSize?: number;
+}
+
+/**
+ * MediaApi - object-oriented interface
+ * @export
+ * @class MediaApi
+ * @extends {BaseAPI}
+ */
+export class MediaApi extends BaseAPI {
+	/**
+	 *
+	 * @param {MediaApiMediaCreateMediaRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof MediaApi
+	 */
+	public mediaCreateMedia(requestParameters: MediaApiMediaCreateMediaRequest = {}, options?: AxiosRequestConfig) {
+		return MediaApiFp(this.configuration).mediaCreateMedia(requestParameters.file, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {MediaApiMediaDeleteByIdRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof MediaApi
+	 */
+	public mediaDeleteById(requestParameters: MediaApiMediaDeleteByIdRequest, options?: AxiosRequestConfig) {
+		return MediaApiFp(this.configuration).mediaDeleteById(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {MediaApiMediaGetByIdRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof MediaApi
+	 */
+	public mediaGetById(requestParameters: MediaApiMediaGetByIdRequest, options?: AxiosRequestConfig) {
+		return MediaApiFp(this.configuration).mediaGetById(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {MediaApiMediaListMediaRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof MediaApi
+	 */
+	public mediaListMedia(requestParameters: MediaApiMediaListMediaRequest = {}, options?: AxiosRequestConfig) {
+		return MediaApiFp(this.configuration).mediaListMedia(requestParameters.page, requestParameters.pageSize, options).then((request) => request(this.axios, this.basePath));
+	}
+}
+
+
+/**
  * OrdersApi - axios parameter creator
  * @export
  */
@@ -7162,6 +7638,10 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -7207,6 +7687,10 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 			if ( filters ) {
 				localVarQueryParameter['filters'] = filters;
@@ -7284,6 +7768,10 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -7315,6 +7803,10 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 			const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -7350,6 +7842,10 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 			const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';

@@ -19,6 +19,10 @@ export const adminRoutes: NavigationItem[] = [
 		link: NIMA_ROUTES.categories.list,
 	},
 	{
+		name: 'Media',
+		link: NIMA_ROUTES.media.index,
+	},
+	{
 		name: 'Settings',
 		link: NIMA_ROUTES.settings.index,
 	},

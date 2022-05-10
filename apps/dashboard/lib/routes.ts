@@ -5,6 +5,7 @@ const ATTRIBUTES_INDEX = BASE + '/attributes';
 const PRODUCT_TYPES_INDEX = BASE + '/product-types';
 const PRODUCTS_INDEX = BASE + '/products';
 const CATEGORIES_INDEX = BASE + '/categories';
+const MEDIA_INDEX = BASE + '/media';
 const SETTINGS_INDEX = BASE + '/settings';
 
 function appendQuery(q: any): string {
@@ -37,6 +38,9 @@ export const NIMA_ROUTES = {
 		edit: (id: string | number) => PRODUCTS_INDEX + '/add' + appendQuery({ id }),
 		createVariant: (id: string | number) => PRODUCTS_INDEX + '/variants' + appendQuery({ productId: id }),
 		editVariant: (id: string | number, variantId) => PRODUCTS_INDEX + '/variants' + appendQuery({ productId: id, variantId }),
+	},
+	media: {
+		index: MEDIA_INDEX,
 	},
 	settings: {
 		index: SETTINGS_INDEX,

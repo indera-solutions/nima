@@ -17,6 +17,7 @@ import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { ProductTypeDto } from '../../product-types/dto/product-type.dto';
 import { ProductTypeEntity } from '../../product-types/entities';
 import { AssignedProductAttributeEntity } from './product-attribute-assignment.entity';
+import { ProductMediaEntity } from './product-media.entity';
 import { ProductVariantEntity } from './product-variant.entity';
 
 @Entity('products_products')
@@ -128,6 +129,10 @@ export class ProductEntity {
 	@ApiProperty({ type: Number, example: 12.3 })
 	@IsNumber()
 	minPrice: number;
+
+	@OneToMany(() => ProductMediaEntity, pm => pm.product, { eager: true })
+	productMedia: ProductMediaEntity[];
+
 
 	@OneToMany(() => AssignedProductAttributeEntity, assignedAttr => assignedAttr.product, { eager: true, onUpdate: 'NO ACTION' })
 	attributes: AssignedProductAttributeEntity[];

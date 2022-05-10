@@ -25,6 +25,7 @@ import {
 	AdminSection,
 	EditProductAttribute,
 	EditVariantInformation,
+	MediaSelectorSection,
 	MetadataEditor,
 	NimaTitle,
 	SelectEditingLanguage,
@@ -72,6 +73,7 @@ export default function Add(props: AddProps) {
 		slug: '',
 		seoTitle: '',
 		weight: 0,
+		productMedia: [],
 	});
 
 
@@ -86,6 +88,7 @@ export default function Add(props: AddProps) {
 			sku: '',
 			stock: 0,
 			trackInventory: false,
+			productMedia: [],
 		},
 	);
 
@@ -119,9 +122,10 @@ export default function Add(props: AddProps) {
 
 	useEffect(() => {
 		if ( !existingProduct ) return;
-		const { id, attributes, updatedAt, created, ...rest } = existingProduct;
+		const { id, attributes, productMedia, updatedAt, created, ...rest } = existingProduct;
 		setCreateProductDto({
 			...rest,
+			productMedia: productMedia.map(pm => ({ mediaId: pm.media.id, sortOrder: pm.sortOrder })),
 			attributes: productType ? attributes.map(att => {
 				const pta = productType.attributes.find(a => a.attributeId === att.id);
 				if ( !pta ) throw new Error('att not found');
@@ -145,6 +149,7 @@ export default function Add(props: AddProps) {
 		setDefaultVariant({
 			...rest,
 			attributes: [],
+			productMedia: [],
 		});
 	}, [existingProductVariants, productType]);
 
@@ -335,6 +340,12 @@ export default function Add(props: AddProps) {
 
 						</AdminSection>
 					}
+
+					<MediaSelectorSection
+						isMulti
+						sortableMedia={ createProductDto.productMedia }
+						onSelect={ (media) => onValueEdit('productMedia', media) }
+					/>
 
 					<MetadataEditor values={ createProductDto.metadata as Metadata }
 									onChange={ (v => onValueEdit('metadata', v)) }/>

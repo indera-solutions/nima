@@ -104,12 +104,14 @@ export default function AddProductType(props: AddProductTypeProps) {
 			for ( const id of newAttributesIds ) {
 				if ( isVariant ) {
 					temp.variantAttributes.push({
+						id: undefined,
 						attributeId: id,
 						variantSelection: false,
 						sortOrder: temp.variantAttributes.length,
 					});
 				} else {
 					temp.attributes.push({
+						id: undefined,
 						attributeId: id,
 						sortOrder: temp.attributes.length,
 					});
@@ -276,7 +278,6 @@ function AvailableAttributesModal(props: { id: string, availableAttributes: Attr
 
 	function onSave() {
 		const ids = Object.keys(checkedMap).filter(id => checkedMap[id]).map(id => +id);
-		console.log('ids', ids);
 		props.onNewAttributes(ids);
 	}
 

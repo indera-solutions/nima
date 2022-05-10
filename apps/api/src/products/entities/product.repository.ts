@@ -63,16 +63,12 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 			//TODO: Collection Handling
 		}
 
-		console.log(filters);
-
 		if ( filters && filters.length > 0 ) {
 			caQb.leftJoin(ProductVariantEntity, 'pv', `pv."productId" = p.id`)
 				.leftJoin(AssignedProductAttributeEntity, `apa`, `p.id = apa."productId"`);
 
 			filters.forEach((value, index) => {
-				console.log(value);
 				if ( !value.values || value.values.length === 0 ) return;
-				console.log(value.values);
 				caQb
 					.leftJoin(AssignedProductAttributeValueEntity, `apav${ index }`, `apa.id = apav${ index }."assignedProductAttributeId"`)
 					.leftJoin(AssignedProductVariantAttributeEntity, `ava${ index }`, `ava${ index }."variantId" = pv.id`)
@@ -84,7 +80,6 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 		}
 
 		const res = await caQb.getRawMany();
-		console.log({ res });
 		return res.map(r => ({ id: Number(r.id), price: Number(r.price) }));
 	}
 
@@ -97,6 +92,8 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 					  .leftJoinAndSelect('aval.value', 'avalval')
 					  .leftJoinAndSelect('att.productTypeAttribute', 'pta')
 					  .leftJoinAndSelect('pta.attribute', 'attr')
+					  .leftJoinAndSelect('p.productMedia', 'pmedia')
+					  .leftJoinAndSelect('pmedia.media', 'pmediaMedia')
 					  .whereInIds(ids)
 			// .loadRelationIdAndMap('category', 'p.category')
 					  .skip(skip)
@@ -115,10 +112,7 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 			}
 		}
 
-		// console.log('----');
 		const res = await q.getMany();
-		// console.dir({ res }, { depth: 100 });
-		// console.log('-###-');
 		return res;
 	}
 }

@@ -13,6 +13,7 @@ import { AssignedProductAttributeEntity } from './entities/product-attribute-ass
 import { AssignedProductAttributeRepository } from './entities/product-attribute-assignment.repository';
 import { AssignedProductAttributeValueEntity } from './entities/product-attribute-value-assignment.entity';
 import { AssignedProductAttributeValueRepository } from './entities/product-attribute-value-assignment.repository';
+import { ProductMediaRepository } from './entities/product-media.repository';
 import { ProductEntity } from './entities/product.entity';
 import { ProductRepository } from './entities/product.repository';
 
@@ -25,6 +26,7 @@ export class ProductsService {
 		private productTypeAttributesService: ProductTypeAttributesService,
 		private assignedProductAttributeRepository: AssignedProductAttributeRepository,
 		private assignedProductAttributeValueRepository: AssignedProductAttributeValueRepository,
+		private productMediaRepository: ProductMediaRepository,
 		private attributeValuesService: AttributeValuesService,
 	) {
 	}
@@ -46,15 +48,21 @@ export class ProductsService {
 		// const attributes = await this.constructAttributes(dto.attributes);
 		if ( !dto.slug ) dto.slug = getSlug(dto.name.en || dto.name.el);
 		const category = await this.categoryService.findOne({ id: dto.categoryId, depth: 0 });
+
 		const product = await this.productRepository.save({
 			...dto,
 			id: productId,
 			productType: productType,
 			category,
 			attributes: undefined,
+			productMedia: undefined,
 		});
 
-
+		await this.syncProductMedia({
+			product,
+			oldProductMedia: oldProduct?.productMedia || [],
+			productMedia: dto.productMedia,
+		});
 		await this.syncAttributes({ oldAttributes: oldProduct?.attributes || [], newAttributes: dto.attributes, product: product });
 
 		return await this.getById({ id: product.id });
@@ -103,6 +111,63 @@ export class ProductsService {
 		await this.productRepository.update(params.productId, {
 			defaultVariant: { id: params.variantId },
 		});
+	}
+
+	private async syncProductMedia(params: { productMedia: CreateProductDto['productMedia'], oldProductMedia: ProductEntity['productMedia'], product: ProductEntity }) {
+		const { productMedia, oldProductMedia, product } = params;
+		const oldIds = oldProductMedia.map(pm => pm.media.id);
+		const newIds = productMedia.map(pm => pm.mediaId);
+
+		const toDelete = oldIds.filter(id => !newIds.includes(id));
+		const toAdd = productMedia.filter(pm => !oldIds.includes(pm.mediaId));
+
+		const existing = oldProductMedia.filter(pt => newIds.includes(pt.media.id));
+		const toUpdate = existing.filter(pm => pm.sortOrder !== productMedia.find(m => m.mediaId === pm.media.id)?.sortOrder);
+
+		const promises: Promise<any>[] = [];
+		for ( const toDeleteElement of toDelete ) {
+			promises.push(this.productMediaRepository.delete({
+				media: {
+					id: toDeleteElement,
+				},
+				product: {
+					id: product.id,
+				},
+			}));
+		}
+		for ( const toAddElement of toAdd ) {
+			promises.push(this.productMediaRepository.insert({
+				media: {
+					id: toAddElement.mediaId,
+				},
+				product: {
+					id: product.id,
+				},
+				sortOrder: toAddElement.sortOrder,
+
+			}));
+		}
+
+		for ( const toUpdateElement of toUpdate ) {
+			const newValue = productMedia.find(pm => pm.mediaId === toUpdateElement.media.id);
+			if ( !newValue ) continue;
+			promises.push(this.productMediaRepository.update({
+					media: {
+						id: toUpdateElement.media.id,
+					},
+					product: {
+						id: product.id,
+					},
+				},
+				{
+					sortOrder: newValue.sortOrder,
+				},
+			));
+		}
+
+		await Promise.all(promises);
+
+
 	}
 
 	private async syncAttributes(params: { oldAttributes: AssignedProductAttributeEntity[], newAttributes: CreateAssignedProductAttributeDto[], product: ProductEntity }) {

@@ -62,7 +62,6 @@ export class FilteringService {
 			const rawDrillDown = await this.attributeValuesService.attributeDrillDown({ ids: ids });
 			attributeDrillDown = this.attributeFilterRawArrayToDrillDownArray(rawDrillDown);
 		} else {
-			console.log(1);
 			const result = await this.productVariantRepository.findFilteredVariantIds(collectionId, categoryIdArray, params.filters, params.search);
 
 			if ( result.length === 0 )
@@ -77,9 +76,7 @@ export class FilteringService {
 				if ( resultElement.price > maxPrice ) maxPrice = resultElement.price;
 			}
 			ids = result.map(res => res.id);
-			console.log(2);
 			products = await this.productVariantRepository.findByIdsWithSorting(ids, skip, take, params.sorting, params.language);
-			console.log(3);
 			const rawDrillDown = await this.productVariantRepository.attributeDrillDown(ids);
 			attributeDrillDown = this.attributeFilterRawArrayToDrillDownArray(rawDrillDown);
 		}
