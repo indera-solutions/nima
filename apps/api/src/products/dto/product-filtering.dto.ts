@@ -18,7 +18,7 @@ export class AttributeDrillDownDto {
 	attributeId: number;
 	@ApiProperty()
 	attributeSlug: string;
-	@ApiProperty({ type: AttributeDrillDownValuesDto })
+	@ApiProperty({ type: AttributeDrillDownValuesDto, isArray: true })
 	fieldValues: AttributeDrillDownValuesDto[];
 }
 

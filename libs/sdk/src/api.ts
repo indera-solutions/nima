@@ -125,10 +125,10 @@ export interface AttributeDrillDownDto {
 	'attributeSlug': string;
 	/**
 	 *
-	 * @type {AttributeDrillDownValuesDto}
+	 * @type {Array<AttributeDrillDownValuesDto>}
 	 * @memberof AttributeDrillDownDto
 	 */
-	'fieldValues': AttributeDrillDownValuesDto;
+	'fieldValues': Array<AttributeDrillDownValuesDto>;
 }
 /**
  *
@@ -1282,6 +1282,7 @@ export interface CreateSortableMediaDto {
 	 */
 	'mediaId': number;
 }
+
 /**
  *
  * @export
@@ -1442,6 +1443,7 @@ export interface MediaListPaginated {
 	 */
 	'totalCount': number;
 }
+
 /**
  *
  * @export
@@ -1782,6 +1784,7 @@ export interface ProductQueryFilterDto {
 	 */
 	'values': Array<string>;
 }
+
 /**
  *
  * @export
@@ -2247,6 +2250,7 @@ export interface TranslatableDto {
 	 */
 	'en'?: string;
 }
+
 /**
  *
  * @export
@@ -7155,6 +7159,10 @@ export const ProductVariantsApiAxiosParamCreator = function (configuration?: Con
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -7262,6 +7270,10 @@ export const ProductVariantsApiAxiosParamCreator = function (configuration?: Con
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -7300,6 +7312,10 @@ export const ProductVariantsApiAxiosParamCreator = function (configuration?: Con
 			const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -7688,10 +7704,6 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
-			// authentication bearer required
-			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
 			if ( filters ) {
 				localVarQueryParameter['filters'] = filters;
 			}
@@ -7767,10 +7779,6 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
-
-			// authentication bearer required
-			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);

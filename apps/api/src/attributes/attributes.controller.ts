@@ -6,8 +6,6 @@ import { AttributeDto, CreateAttributeDto, UpdateAttributeDto } from './dto/attr
 
 @Controller('attributes')
 @ApiTags('Attributes')
-@UseGuards(JwtAuthGuard)
-@ApiBearerAuth()
 export class AttributesController {
 	constructor(private service: AttributesService) {
 	}
@@ -15,6 +13,8 @@ export class AttributesController {
 	@Post()
 	@ApiOkResponse({ type: AttributeDto })
 	@ApiBody({ type: CreateAttributeDto })
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
 	create(@Body() createAttributeDto: CreateAttributeDto): Promise<AttributeDto> {
 		return this.service.save({ dto: createAttributeDto });
 	}
@@ -37,6 +37,8 @@ export class AttributesController {
 	@ApiOkResponse({ type: AttributeDto })
 	@ApiBody({ type: UpdateAttributeDto })
 	@ApiParam({ type: Number, name: 'attributeId' })
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
 	patch(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() updateAttributeDto: UpdateAttributeDto): Promise<AttributeDto> {
 		return this.service.update({ id: attributeId, dto: updateAttributeDto });
 	}
@@ -45,6 +47,8 @@ export class AttributesController {
 	@ApiOkResponse({ type: AttributeDto })
 	@ApiBody({ type: CreateAttributeDto })
 	@ApiParam({ type: Number, name: 'attributeId' })
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
 	update(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() createAttributeDto: CreateAttributeDto): Promise<AttributeDto> {
 		return this.service.save({ id: attributeId, dto: createAttributeDto });
 	}
@@ -53,6 +57,8 @@ export class AttributesController {
 	@ApiOkResponse({ type: AttributeDto })
 	@ApiBody({ type: UpdateAttributeDto })
 	@ApiParam({ type: Number, name: 'attributeId' })
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
 	remove(@Param('attributeId', ParseIntPipe) attributeId: number): Promise<AttributeDto> {
 		return this.service.deleteById({ id: attributeId });
 	}

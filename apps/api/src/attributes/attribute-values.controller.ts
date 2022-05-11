@@ -6,8 +6,7 @@ import { AttributeValueDto, CreateAttributeValueDto, UpdateAttributeValueDto } f
 
 @Controller('attributes/:attributeId/values')
 @ApiTags('Attribute Values')
-@UseGuards(JwtAuthGuard)
-@ApiBearerAuth()
+
 export class AttributeValuesController {
 	constructor(private readonly service: AttributeValuesService) {
 	}
@@ -16,6 +15,8 @@ export class AttributeValuesController {
 	@ApiParam({ type: Number, name: 'attributeId' })
 	@ApiOkResponse({ type: AttributeValueDto })
 	@ApiBody({ type: CreateAttributeValueDto })
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
 	save(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() createAttributeDto: CreateAttributeValueDto): Promise<AttributeValueDto> {
 		return this.service.save({ attributeId: attributeId, dto: createAttributeDto });
 	}
@@ -41,6 +42,8 @@ export class AttributeValuesController {
 	@ApiParam({ type: Number, name: 'valueId' })
 	@ApiNotFoundResponse({ description: 'ATTRIBUTE_VALUE_NOT_FOUND' })
 	@ApiOkResponse({ type: AttributeValueDto })
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
 	patchValue(@Param('attributeId', ParseIntPipe) attributeId: number, @Param('valueId', ParseIntPipe) valueId: number, @Body() updateAttributeValueDto: UpdateAttributeValueDto): Promise<AttributeValueDto> {
 		return this.service.update({ valueId: valueId, dto: updateAttributeValueDto, attributeId: attributeId });
 	}
@@ -50,6 +53,8 @@ export class AttributeValuesController {
 	@ApiParam({ type: Number, name: 'valueId' })
 	@ApiNotFoundResponse({ description: 'ATTRIBUTE_VALUE_NOT_FOUND' })
 	@ApiOkResponse({ type: AttributeValueDto })
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
 	updateValue(@Param('attributeId', ParseIntPipe) attributeId: number, @Param('valueId', ParseIntPipe) valueId: number, @Body() createAttributeValueDto: CreateAttributeValueDto): Promise<AttributeValueDto> {
 		return this.service.save({ attributeId: valueId, dto: createAttributeValueDto });
 	}
@@ -58,6 +63,8 @@ export class AttributeValuesController {
 	@ApiParam({ type: Number, name: 'attributeId' })
 	@ApiParam({ type: Number, name: 'valueId' })
 	@ApiOkResponse({ type: AttributeValueDto })
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
 	deleteValueByID(@Param('attributeId', ParseIntPipe) attributeId: number, @Param('valueId', ParseIntPipe) valueId: number): Promise<AttributeValueDto> {
 		return this.service.deleteById({ id: valueId });
 	}
