@@ -1,5 +1,4 @@
 {
-	"root": "apps/dashboard",
 	"sourceRoot": "apps/dashboard",
 	"projectType": "application",
 	"targets": {
@@ -12,7 +11,8 @@
 				"outputPath": "dist/apps/dashboard"
 			},
 			"configurations": {
-				"production": {}
+				"production": {},
+				"development": {}
 			}
 		},
 		"serve": {
@@ -26,8 +26,13 @@
 				"production": {
 					"buildTarget": "dashboard:build:production",
 					"dev": false
+				},
+				"development": {
+					"buildTarget": "dashboard:build:development",
+					"dev": true
 				}
-			}
+			},
+			"defaultConfiguration": "development"
 		},
 		"export": {
 			"executor": "@nrwl/next:export",
@@ -39,7 +44,7 @@
 			"executor": "@nrwl/jest:jest",
 			"outputs": [ "coverage/apps/dashboard" ],
 			"options": {
-				"jestConfig": "apps/dashboard/jest.config.js",
+				"jestConfig": "apps/dashboard/jest.config.ts",
 				"passWithNoTests": true
 			}
 		},

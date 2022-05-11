@@ -1,5 +1,4 @@
 {
-	"root": "libs/sdk",
 	"sourceRoot": "libs/sdk/src",
 	"targets": {
 		"build": {
@@ -24,7 +23,7 @@
 			"executor": "@nrwl/jest:jest",
 			"outputs": [ "coverage/libs/sdk" ],
 			"options": {
-				"jestConfig": "libs/sdk/jest.config.js",
+				"jestConfig": "libs/sdk/jest.config.ts",
 				"passWithNoTests": true
 			}
 		}

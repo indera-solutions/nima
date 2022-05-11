@@ -15,15 +15,9 @@
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
-			"@nima-cms/react": [
-				"libs/react/src/index.ts"
-			],
-			"@nima-cms/sdk": [
-				"libs/sdk/src/index.ts"
-			],
-			"@nima-cms/utils": [
-				"libs/utils/src/index.ts"
-			]
+			"@nima-cms/react": [ "libs/react/src/index.ts" ],
+			"@nima-cms/sdk": [ "libs/sdk/src/index.ts" ],
+			"@nima-cms/utils": [ "libs/utils/src/index.ts" ]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]
