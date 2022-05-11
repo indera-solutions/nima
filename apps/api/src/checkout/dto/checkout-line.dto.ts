@@ -1,13 +1,16 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger';
+import { IsInt } from 'class-validator';
 import { CheckoutLineEntity } from '../entities/checkout-line.entity';
 
-export class CheckoutLineDto extends CheckoutLineEntity {
-}
-
-export class CreateCheckoutLineDto extends OmitType(CheckoutLineDto, ['id', 'variant', 'checkout']) {
-	@ApiProperty({ type: Number })
+export class CheckoutLineDto extends OmitType(CheckoutLineEntity, ['checkout', 'variant']) {
+	@ApiProperty()
+	@IsInt()
 	variantId: number;
 
-	@ApiProperty({ type: String })
-	checkoutToken: string;
+	static prepare(entity: CheckoutLineEntity): CheckoutLineDto {
+		return {
+			quantity: entity.quantity,
+			variantId: entity.variant.id,
+		};
+	}
 }

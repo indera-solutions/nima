@@ -1,10 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { LanguageCode, Metadata } from '@nima-cms/utils';
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { IsEmail, IsInt, IsObject, IsString } from 'class-validator';
+import {
+	Column,
+	CreateDateColumn,
+	Entity,
+	ManyToOne,
+	OneToMany,
+	PrimaryGeneratedColumn,
+	UpdateDateColumn,
+} from 'typeorm';
 import { AddressDto } from '../../core/dto/address.dto';
 import { AddressEntity } from '../../core/entities/address.entity';
 import { UserDto } from '../../users/dto/user.dto';
 import { UserEntity } from '../../users/entities/user.entity';
+import { CheckoutLineEntity } from './checkout-line.entity';
 
 @Entity('checkout_checkout')
 export class CheckoutEntity {
@@ -12,25 +22,26 @@ export class CheckoutEntity {
 	@ApiProperty({ type: String, example: '2022-01-01' })
 	created: string;
 
-	@CreateDateColumn({ type: String })
+	@UpdateDateColumn({ type: String })
 	@ApiProperty({ type: String, example: '2022-01-01' })
 	lastChange: string;
 
 	@Column({ type: String, nullable: true })
 	@ApiProperty({ type: String, example: 'test@example.com', required: false })
+	@IsEmail()
 	email?: string;
 
 	@PrimaryGeneratedColumn('uuid')
 	@ApiProperty({ type: String, example: '' })
 	token: string;
 
-	@ManyToOne(() => UserEntity)
+	@ManyToOne(() => UserEntity, { nullable: true })
 	@ApiProperty({ type: UserDto })
-	user: UserDto;
+	user?: UserEntity;
 
-	@ManyToOne(() => AddressEntity)
+	@ManyToOne(() => AddressEntity, { nullable: true })
 	@ApiProperty({ type: AddressDto })
-	billingAddress: AddressDto;
+	billingAddress?: AddressEntity;
 
 	@Column({ type: 'float' })
 	@ApiProperty({ type: Number, example: 12.3 })
@@ -42,15 +53,17 @@ export class CheckoutEntity {
 
 	@Column({ type: String })
 	@ApiProperty({ type: String, example: 'checkout-note' })
+	@IsString()
 	note: string;
 
-	@ManyToOne(() => AddressEntity)
+	@ManyToOne(() => AddressEntity, { nullable: true })
 	@ApiProperty({ type: AddressDto })
-	shippingAddress: AddressDto;
+	shippingAddress?: AddressEntity;
 
-	@Column({ type: Number })
+	@Column({ type: Number, nullable: true })
 	@ApiProperty({ type: Number, example: 1 })
-	shipping_method_id;
+	@IsInt()
+	shipping_method_id?;
 
 	@Column({ type: String, nullable: true })
 	@ApiProperty({ type: String, example: 'ASDF123', required: false })
@@ -62,18 +75,22 @@ export class CheckoutEntity {
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: Object, example: {} })
+	@IsObject()
 	metadata: Metadata;
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: Object, example: {} })
+	@IsObject()
 	privateMetadata: Metadata;
 
 	@Column({ type: String })
 	@ApiProperty({ type: String, example: 'EUR' })
+	@IsString()
 	currency: string;
 
 	@Column({ type: String })
 	@ApiProperty({ type: String, example: 'Greece' })
+	@IsString()
 	country: string;
 
 	@Column({ type: String, nullable: true })
@@ -86,5 +103,9 @@ export class CheckoutEntity {
 
 	@Column({ enum: LanguageCode, type: 'enum' })
 	@ApiProperty({ enum: LanguageCode, enumName: 'LanguageCode' })
+	@IsString()
 	languageCode: LanguageCode;
+
+	@OneToMany(() => CheckoutLineEntity, line => line.checkout)
+	lines: CheckoutLineEntity[];
 }
