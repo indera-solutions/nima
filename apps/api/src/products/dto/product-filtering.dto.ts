@@ -69,14 +69,6 @@ export enum ProductSorting {
 }
 
 export class ProductFilterParamsDto {
-	// @ApiPropertyOptional({ type: () => ProductQueryFilterDto, isArray: true })
-	// @Type(() => ProductQueryFilterDto)
-	// @Transform(params => {
-	// 	if ( !params.value ) return [];
-	// 	return Array.isArray(params.value) ? params.value.map(v => JSON.parse(v)) : [JSON.parse(params.value)];
-	// })
-	// @ValidateNested()
-	// @Expose()
 	@ApiProperty({ type: [Number], required: false })
 	@IsInt({ each: true })
 	@IsOptional()

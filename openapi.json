@@ -67,11 +67,6 @@
 				},
 				"tags": [
 					"Attributes"
-				],
-				"security": [
-					{
-						"bearer": [ ]
-					}
 				]
 			}
 		},
@@ -105,11 +100,6 @@
 				},
 				"tags": [
 					"Attributes"
-				],
-				"security": [
-					{
-						"bearer": [ ]
-					}
 				]
 			},
 			"patch": {
@@ -315,11 +305,6 @@
 				},
 				"tags": [
 					"Attribute Values"
-				],
-				"security": [
-					{
-						"bearer": [ ]
-					}
 				]
 			}
 		},
@@ -361,11 +346,6 @@
 				},
 				"tags": [
 					"Attribute Values"
-				],
-				"security": [
-					{
-						"bearer": [ ]
-					}
 				]
 			},
 			"patch": {
@@ -546,6 +526,11 @@
 				},
 				"tags": [
 					"Products"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"get": {
@@ -553,12 +538,12 @@
 				"parameters": [
 					{
 						"required": false,
-						"name": "filters",
+						"name": "attributeValueIds",
 						"in": "query",
 						"schema": {
 							"type": "array",
 							"items": {
-								"$ref": "#/components/schemas/ProductQueryFilterDto"
+								"type": "number"
 							}
 						}
 					},
@@ -611,17 +596,17 @@
 						}
 					},
 					{
+						"required": false,
 						"name": "itemsPerPage",
 						"in": "query",
-						"required": true,
 						"schema": {
 							"type": "number"
 						}
 					},
 					{
+						"required": false,
 						"name": "page",
 						"in": "query",
-						"required": true,
 						"schema": {
 							"type": "number"
 						}
@@ -725,6 +710,11 @@
 				},
 				"tags": [
 					"Products"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"delete": {
@@ -753,6 +743,11 @@
 				},
 				"tags": [
 					"Products"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -793,6 +788,11 @@
 				},
 				"tags": [
 					"Product Variants"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"get": {
@@ -908,6 +908,11 @@
 				},
 				"tags": [
 					"Product Variants"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"delete": {
@@ -944,6 +949,11 @@
 				},
 				"tags": [
 					"Product Variants"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -1158,7 +1168,7 @@
 						"name": "depth",
 						"required": false,
 						"in": "query",
-						"description": "The depth of children to retrieve. Set 0 for only the root categories, leave empty for the full tree",
+						"description": "The depth of children to retrieve. Set 0 for only the root categories, -1 for flat array, leave empty for the full tree",
 						"schema": {
 							"type": "number"
 						}
@@ -1395,17 +1405,31 @@
 			},
 			"get": {
 				"operationId": "Media_listMedia",
-				"parameters": [ ],
+				"parameters": [
+					{
+						"name": "page",
+						"required": false,
+						"in": "query",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "pageSize",
+						"required": false,
+						"in": "query",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "",
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/MediaDto"
-									}
+									"$ref": "#/components/schemas/MediaListPaginated"
 								}
 							}
 						}
@@ -2472,6 +2496,22 @@
 					"values"
 				]
 			},
+			"CreateSortableMediaDto": {
+				"type": "object",
+				"properties": {
+					"sortOrder": {
+						"type": "number",
+						"example": 1
+					},
+					"mediaId": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"sortOrder",
+					"mediaId"
+				]
+			},
 			"CreateProductDto": {
 				"type": "object",
 				"properties": {
@@ -2562,6 +2602,12 @@
 					},
 					"categoryId": {
 						"type": "number"
+					},
+					"productMedia": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CreateSortableMediaDto"
+						}
 					}
 				},
 				"required": [
@@ -2583,7 +2629,8 @@
 					"minPrice",
 					"productTypeId",
 					"attributes",
-					"categoryId"
+					"categoryId",
+					"productMedia"
 				]
 			},
 			"ProductAttributeDto": {
@@ -2665,6 +2712,81 @@
 					"storefrontSearchPosition",
 					"inputType",
 					"values"
+				]
+			},
+			"MediaDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"example": 1
+					},
+					"mimeType": {
+						"type": "string",
+						"example": "image/png"
+					},
+					"name": {
+						"type": "string",
+						"example": "Media Name"
+					},
+					"slug": {
+						"type": "string",
+						"example": "media-name"
+					},
+					"url": {
+						"type": "string",
+						"example": ""
+					},
+					"thumbnailUrl": {
+						"type": "string",
+						"example": "",
+						"nullable": true
+					},
+					"alt": {
+						"example": {
+							"en": "alt text"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"byteSize": {
+						"type": "number",
+						"example": 1024
+					},
+					"created": {
+						"type": "string",
+						"example": "2022-01-01"
+					}
+				},
+				"required": [
+					"id",
+					"mimeType",
+					"name",
+					"slug",
+					"url",
+					"thumbnailUrl",
+					"alt",
+					"byteSize",
+					"created"
+				]
+			},
+			"SortableMediaDto": {
+				"type": "object",
+				"properties": {
+					"sortOrder": {
+						"type": "number",
+						"example": 1
+					},
+					"media": {
+						"$ref": "#/components/schemas/MediaDto"
+					}
+				},
+				"required": [
+					"sortOrder",
+					"media"
 				]
 			},
 			"ProductDto": {
@@ -2772,6 +2894,12 @@
 					},
 					"defaultVariantId": {
 						"type": "number"
+					},
+					"productMedia": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/SortableMediaDto"
+						}
 					}
 				},
 				"required": [
@@ -2797,25 +2925,8 @@
 					"productTypeId",
 					"categoryId",
 					"attributes",
-					"defaultVariantId"
-				]
-			},
-			"ProductQueryFilterDto": {
-				"type": "object",
-				"properties": {
-					"attributeSlug": {
-						"type": "string"
-					},
-					"values": {
-						"type": "array",
-						"items": {
-							"type": "string"
-						}
-					}
-				},
-				"required": [
-					"attributeSlug",
-					"values"
+					"defaultVariantId",
+					"productMedia"
 				]
 			},
 			"ProductSorting": {
@@ -2872,7 +2983,10 @@
 						"type": "string"
 					},
 					"fieldValues": {
-						"$ref": "#/components/schemas/AttributeDrillDownValuesDto"
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/AttributeDrillDownValuesDto"
+						}
 					}
 				},
 				"required": [
@@ -3038,6 +3152,12 @@
 						"items": {
 							"$ref": "#/components/schemas/CreateAssignedProductVariantAttributeDto"
 						}
+					},
+					"productMedia": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CreateSortableMediaDto"
+						}
 					}
 				},
 				"required": [
@@ -3048,7 +3168,8 @@
 					"currency",
 					"stock",
 					"trackInventory",
-					"attributes"
+					"attributes",
+					"productMedia"
 				]
 			},
 			"ProductVariantDto": {
@@ -3140,6 +3261,12 @@
 					},
 					"product": {
 						"$ref": "#/components/schemas/ProductDto"
+					},
+					"productMedia": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/SortableMediaDto"
+						}
 					}
 				},
 				"required": [
@@ -3154,7 +3281,8 @@
 					"stock",
 					"trackInventory",
 					"attributes",
-					"product"
+					"product",
+					"productMedia"
 				]
 			},
 			"ProductTypeAttributeDto": {
@@ -3211,10 +3339,6 @@
 						"type": "string",
 						"example": "Product Type"
 					},
-					"hasVariants": {
-						"type": "boolean",
-						"example": false
-					},
 					"isShippingRequired": {
 						"type": "boolean",
 						"example": false
@@ -3254,7 +3378,6 @@
 				},
 				"required": [
 					"name",
-					"hasVariants",
 					"isShippingRequired",
 					"weight",
 					"isDigital",
@@ -3608,38 +3731,6 @@
 					"address"
 				]
 			},
-			"MediaDto": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "number",
-						"example": 1
-					},
-					"mimeType": {
-						"type": "string",
-						"example": "image/png"
-					},
-					"name": {
-						"type": "string",
-						"example": "Media Name"
-					},
-					"slug": {
-						"type": "string",
-						"example": "media-name"
-					},
-					"url": {
-						"type": "string",
-						"example": ""
-					}
-				},
-				"required": [
-					"id",
-					"mimeType",
-					"name",
-					"slug",
-					"url"
-				]
-			},
 			"SettingsDto": {
 				"type": "object",
 				"properties": {
@@ -3707,6 +3798,32 @@
 					"senderName",
 					"seoTitle",
 					"seoDescription"
+				]
+			},
+			"MediaListPaginated": {
+				"type": "object",
+				"properties": {
+					"items": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/MediaDto"
+						}
+					},
+					"pageNumber": {
+						"type": "number"
+					},
+					"pageSize": {
+						"type": "number"
+					},
+					"totalCount": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"items",
+					"pageNumber",
+					"pageSize",
+					"totalCount"
 				]
 			},
 			"CreateUserDto": {

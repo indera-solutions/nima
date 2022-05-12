@@ -4344,8 +4344,8 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 		},
 		/**
 		 *
-		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the root categories, leave empty
-		 *     for the full tree
+		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the root categories, -1 for flat
+		 *     array, leave empty for the full tree
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -4512,8 +4512,8 @@ export const CategoriesApiFp = function (configuration?: Configuration) {
 		},
 		/**
 		 *
-		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the root categories, leave empty
-		 *     for the full tree
+		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the root categories, -1 for flat
+		 *     array, leave empty for the full tree
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -4577,8 +4577,8 @@ export const CategoriesApiFactory = function (configuration?: Configuration, bas
 		},
 		/**
 		 *
-		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the root categories, leave empty
-		 *     for the full tree
+		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the root categories, -1 for flat
+		 *     array, leave empty for the full tree
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -4641,7 +4641,8 @@ export interface CategoriesApiCategoriesCreateRequest {
  */
 export interface CategoriesApiCategoriesFindAllRequest {
 	/**
-	 * The depth of children to retrieve. Set 0 for only the root categories, leave empty for the full tree
+	 * The depth of children to retrieve. Set 0 for only the root categories, -1 for flat array, leave empty for the
+	 * full tree
 	 * @type {number}
 	 * @memberof CategoriesApiCategoriesFindAll
 	 */

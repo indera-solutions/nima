@@ -55,13 +55,10 @@ export class FilteringService {
 
 			if ( result.length === 0 )
 				return emptyRes;
-			console.dir(result, { depth: 100 });
 			for ( const resultElement of result ) {
 				let underMax = true, overMin = true;
-				console.log(params.minPrice, resultElement.price, params.maxPrice);
 				if ( params.maxPrice ) underMax = resultElement.price <= params.maxPrice;
 				if ( params.minPrice ) overMin = resultElement.price >= params.minPrice;
-				console.log(underMax, overMin);
 				if ( underMax && overMin ) ids.push(resultElement.id);
 				if ( resultElement.price < minPrice ) minPrice = resultElement.price;
 				if ( resultElement.price > maxPrice ) maxPrice = resultElement.price;
@@ -147,7 +144,6 @@ export class FilteringService {
 				values: attributeMap[attributeSlug],
 			});
 		});
-		console.dir(filter, { depth: 100 });
 		return filter;
 	}
 }

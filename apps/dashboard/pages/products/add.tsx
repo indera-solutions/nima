@@ -31,7 +31,6 @@ import {
 	SelectEditingLanguage,
 	TranslatableInput,
 } from '../../components';
-import { PrintJson } from '../../components/utils/PrintJSON';
 import { NIMA_ROUTES } from '../../lib/routes';
 
 interface AddProps {
@@ -265,7 +264,6 @@ export default function Add(props: AddProps) {
 										   onChange={ (value) => onValueEdit('description', value) }
 						/>
 						<div className="form-control w-full max-w-xs">
-							<PrintJson obj={ existingProductVariants }/>
 							<label className="label">
 								<span className="label-text">Slug</span>
 								{ !isEditing &&
