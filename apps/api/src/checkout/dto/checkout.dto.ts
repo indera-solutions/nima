@@ -35,7 +35,7 @@ export class CheckoutDto extends OmitType(CheckoutEntity, ['lines']) {
 	}
 }
 
-export class CreateCheckoutDto extends PickType(CheckoutDto, ['email', 'note', 'shipping_method_id', 'voucherCode', 'metadata', 'privateMetadata', 'currency', 'languageCode']) {
+export class CreateCheckoutDto extends PickType(CheckoutDto, ['email', 'note', 'shipping_method_id', 'voucherCode', 'metadata', 'privateMetadata', 'currency', 'languageCode', 'country']) {
 	@ApiProperty({ type: Number, description: 'The id of the user for this checkout cart' })
 	@IsInt()
 	@IsOptional()

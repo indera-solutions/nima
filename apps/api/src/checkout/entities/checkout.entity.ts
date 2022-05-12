@@ -18,11 +18,11 @@ import { CheckoutLineEntity } from './checkout-line.entity';
 
 @Entity('checkout_checkout')
 export class CheckoutEntity {
-	@CreateDateColumn({ type: String })
+	@CreateDateColumn()
 	@ApiProperty({ type: String, example: '2022-01-01' })
 	created: string;
 
-	@UpdateDateColumn({ type: String })
+	@UpdateDateColumn()
 	@ApiProperty({ type: String, example: '2022-01-01' })
 	lastChange: string;
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AddressDto } from '../core/dto/address.dto';
 import { CheckoutService } from './checkout.service';
@@ -61,14 +61,6 @@ export class CheckoutController {
 	@ApiBody({ type: () => UpdateCheckoutVoucherDto })
 	async updateVoucher(@Param('token') token: string, @Body() dto: UpdateCheckoutVoucherDto) {
 		const res = await this.checkoutService.updateVoucher({ token: token, dto: dto });
-		return CheckoutDto.prepare(res);
-	}
-
-	@Delete(':token')
-	@ApiOkResponse({ type: () => CheckoutDto })
-	@ApiParam({ type: String, name: 'token' })
-	async remove(@Param('token') token: string) {
-		const res = await this.checkoutService.remove({ token });
 		return CheckoutDto.prepare(res);
 	}
 }

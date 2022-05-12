@@ -8,12 +8,12 @@ import { CheckoutService } from './checkout.service';
 import { CheckoutLineEntity } from './entities/checkout-line.entity';
 import { CheckoutLineRepository } from './entities/checkout-line.repository';
 import { CheckoutEntity } from './entities/checkout.entity';
-import { CheckoutRepository } from './entities/checkout.repository';
+import { CheckoutRepository, CheckoutSubscriber } from './entities/checkout.repository';
 
 @Module({
 	imports: [TypeOrmModule.forFeature([CheckoutRepository, CheckoutLineRepository]), CoreModule, UsersModule, ProductsModule],
 	controllers: [CheckoutController],
-	providers: [CheckoutService],
+	providers: [CheckoutService, CheckoutSubscriber],
 })
 export class CheckoutModule {
 }
