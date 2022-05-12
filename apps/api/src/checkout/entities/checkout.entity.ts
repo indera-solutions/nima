@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { LanguageCode, Metadata } from '@nima-cms/utils';
-import { IsEmail, IsInt, IsObject, IsString } from 'class-validator';
+import { IsEmail, IsInt, IsObject, IsOptional, IsString } from 'class-validator';
 import {
 	Column,
 	CreateDateColumn,
@@ -35,15 +35,15 @@ export class CheckoutEntity {
 	@ApiProperty({ type: String, example: '' })
 	token: string;
 
-	@ManyToOne(() => UserEntity, { nullable: true })
+	@ManyToOne(() => UserEntity, { nullable: true, eager: true })
 	@ApiProperty({ type: UserDto })
 	user?: UserEntity;
 
-	@ManyToOne(() => AddressEntity, { nullable: true })
+	@ManyToOne(() => AddressEntity, { nullable: true, eager: true })
 	@ApiProperty({ type: AddressDto })
 	billingAddress?: AddressEntity;
 
-	@Column({ type: 'float' })
+	@Column({ type: 'float', default: 0.0 })
 	@ApiProperty({ type: Number, example: 12.3 })
 	discountAmount: number;
 
@@ -56,7 +56,7 @@ export class CheckoutEntity {
 	@IsString()
 	note: string;
 
-	@ManyToOne(() => AddressEntity, { nullable: true })
+	@ManyToOne(() => AddressEntity, { nullable: true, eager: true })
 	@ApiProperty({ type: AddressDto })
 	shippingAddress?: AddressEntity;
 
@@ -67,6 +67,8 @@ export class CheckoutEntity {
 
 	@Column({ type: String, nullable: true })
 	@ApiProperty({ type: String, example: 'ASDF123', required: false })
+	@IsString()
+	@IsOptional()
 	voucherCode?: string;
 
 	@Column({ type: String, nullable: true })
@@ -76,11 +78,13 @@ export class CheckoutEntity {
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: Object, example: {} })
 	@IsObject()
+	@IsOptional()
 	metadata: Metadata;
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: Object, example: {} })
 	@IsObject()
+	@IsOptional()
 	privateMetadata: Metadata;
 
 	@Column({ type: String })
@@ -106,6 +110,6 @@ export class CheckoutEntity {
 	@IsString()
 	languageCode: LanguageCode;
 
-	@OneToMany(() => CheckoutLineEntity, line => line.checkout)
+	@OneToMany(() => CheckoutLineEntity, line => line.checkout, { eager: true })
 	lines: CheckoutLineEntity[];
 }

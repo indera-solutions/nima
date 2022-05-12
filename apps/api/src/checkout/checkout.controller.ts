@@ -50,7 +50,7 @@ export class CheckoutController {
 	@ApiCreatedResponse({ type: () => CheckoutDto })
 	@ApiBody({ type: () => AddressDto })
 	@ApiQuery({ type: Boolean, name: 'shipping', required: false })
-	@ApiQuery({ type: Boolean, name: 'boolean', required: false })
+	@ApiQuery({ type: Boolean, name: 'billing', required: false })
 	async updateAddress(@Param('token') token: string, @Body() address: AddressDto, @Query('shipping') shipping?: boolean, @Query('billing') billing?: boolean) {
 		const res = await this.checkoutService.updateAddress({ token: token, dto: address, billing: billing, shipping: shipping });
 		return CheckoutDto.prepare(res);
