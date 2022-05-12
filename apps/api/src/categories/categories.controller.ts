@@ -28,7 +28,7 @@ export class CategoriesController {
 	}
 
 	@Get()
-	@ApiQuery({ name: 'depth', description: 'The depth of children to retrieve. Set 0 for only the root categories, leave empty for the full tree', required: false })
+	@ApiQuery({ name: 'depth', description: 'The depth of children to retrieve. Set 0 for only the root categories, -1 for flat array, leave empty for the full tree', required: false })
 	@ApiOkResponse({ type: [CategoryDto] })
 	async findAll(@Query('depth') depth?: number): Promise<CategoryDto[]> {
 		const res = await this.categoriesService.findAll({ depth });

@@ -112,7 +112,6 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 			}
 		}
 
-		const res = await q.getMany();
-		return res;
+		return await q.getMany();
 	}
 }

@@ -29,7 +29,7 @@ export class ProductTypeDto extends OmitType(ProductTypeEntity, ['attributes', '
 	}
 }
 
-export class CreateProductTypeDto extends OmitType(ProductTypeDto, ['id']) {
+export class CreateProductTypeDto extends OmitType(ProductTypeDto, ['id', 'hasVariants']) {
 }
 
 export class UpdateProductTypeDto extends PartialType(CreateProductTypeDto) {

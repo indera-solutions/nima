@@ -23,6 +23,16 @@ export class AttributeValuesRepository extends Repository<AttributeValueEntity> 
 		return this.delete(id);
 	}
 
+	async getSlugAndAttributeSlugOfValues(ids: number[]) {
+		const res = await this.findByIds(ids, {
+			relations: ['attribute'],
+		});
+		return res.map(r => ({
+			attributeSlug: r.attribute.slug,
+			value: r.slug,
+		}));
+	}
+
 	async attributeDrillDown(ids: number[]): Promise<{ aSlug: string; aId: number; avSlug: string; avId: number; count: string }[]> {
 		const res = await this.createQueryBuilder('av')
 							  .leftJoin(AttributeEntity, 'a', 'av."attributeId" = a.id')

@@ -42,7 +42,13 @@ export class ProductTypesService {
 		if ( erroneousAttributeId ) {
 			throw new BadRequestException('NOT_EXCLUSIVE_ATTRIBUTES', `Attributes and Variant Attributes cannot contain the same Attribute ID. ID ${ erroneousAttributeId } appears twice`);
 		}
-		const pt = await this.productTypeRepository.save({ ...dto, id: productTypeId, attributes: undefined, variantAttributes: undefined });
+		const pt = await this.productTypeRepository.save({
+			...dto,
+			id: productTypeId,
+			hasVariants: ptva.length > 0,
+			attributes: undefined,
+			variantAttributes: undefined,
+		});
 
 		await Promise.all([
 			this.syncAttributes({ newAttributes: dto.attributes, oldAttributes: (oldPt?.attributes || []), ptId: pt.id }),

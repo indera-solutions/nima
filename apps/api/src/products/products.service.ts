@@ -113,6 +113,10 @@ export class ProductsService {
 		});
 	}
 
+	async setMinPrice(params: { productId: number, minPrice: number }) {
+		await this.productRepository.update(params.productId, { minPrice: params.minPrice });
+	}
+
 	private async syncProductMedia(params: { productMedia: CreateProductDto['productMedia'], oldProductMedia: ProductEntity['productMedia'], product: ProductEntity }) {
 		const { productMedia, oldProductMedia, product } = params;
 		const oldIds = oldProductMedia.map(pm => pm.media.id);

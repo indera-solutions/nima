@@ -1,7 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { LanguageCode, PaginatedResults } from '@nima-cms/utils';
-import { Expose, Transform, Type } from 'class-transformer';
-import { IsArray, IsBoolean, IsEnum, IsInt, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsBoolean, IsEnum, IsInt, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ProductDto } from './product.dto';
 
 export class AttributeDrillDownValuesDto {
@@ -26,7 +25,7 @@ export class ProductQueryFilterDto {
 	@ApiProperty()
 	attributeSlug: string;
 	@ApiProperty()
-	values: number[];
+	values: string[];
 }
 
 export class ProductFilterResultDto implements PaginatedResults<ProductDto> {
@@ -70,17 +69,18 @@ export enum ProductSorting {
 }
 
 export class ProductFilterParamsDto {
-	@ApiPropertyOptional({ type: () => ProductQueryFilterDto, isArray: true })
-	@Type(() => ProductQueryFilterDto)
-	@Transform(params => {
-		if ( !params.value ) return [];
-		return Array.isArray(params.value) ? params.value.map(v => JSON.parse(v)) : [JSON.parse(params.value)];
-	})
-	@ValidateNested()
-	@Expose()
-	@IsArray()
+	// @ApiPropertyOptional({ type: () => ProductQueryFilterDto, isArray: true })
+	// @Type(() => ProductQueryFilterDto)
+	// @Transform(params => {
+	// 	if ( !params.value ) return [];
+	// 	return Array.isArray(params.value) ? params.value.map(v => JSON.parse(v)) : [JSON.parse(params.value)];
+	// })
+	// @ValidateNested()
+	// @Expose()
+	@ApiProperty({ type: [Number], required: false })
+	@IsInt({ each: true })
 	@IsOptional()
-	filters?: ProductQueryFilterDto[];
+	attributeValueIds?: number[];
 
 	@ApiPropertyOptional({ type: Number, required: false })
 	@IsNumber()
@@ -112,15 +112,15 @@ export class ProductFilterParamsDto {
 	@IsOptional()
 	variants?: boolean;
 
-	@ApiProperty({ type: Number })
+	@ApiProperty({ type: Number, required: false })
 	@IsInt()
 	@IsOptional()
-	itemsPerPage: number;
+	itemsPerPage?: number;
 
-	@ApiProperty({ type: Number })
+	@ApiProperty({ type: Number, required: false })
 	@IsInt()
 	@IsOptional()
-	page: number;
+	page?: number;
 
 	@ApiPropertyOptional({ type: Number, required: false })
 	@IsInt()
