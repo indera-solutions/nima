@@ -46,6 +46,7 @@ export class CheckoutSubscriber implements EntitySubscriberInterface<CheckoutEnt
 	}
 
 	afterLoad(entity: CheckoutEntity, event?: LoadEvent<CheckoutEntity>): Promise<any> | void {
-		event.manager.getCustomRepository(CheckoutRepository).deleteExpired().then(value => console.dir(value, { depth: 100 }));
+		// event.manager.getCustomRepository(CheckoutRepository).deleteExpired().then(value => console.dir(value, {
+		// depth: 100 }));
 	}
 }

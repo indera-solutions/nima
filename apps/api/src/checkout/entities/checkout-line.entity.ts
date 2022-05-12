@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsInt } from 'class-validator';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { ProductVariantEntity } from '../../products/entities/product-variant.entity';
 import { CheckoutEntity } from './checkout.entity';
@@ -7,11 +8,12 @@ import { CheckoutEntity } from './checkout.entity';
 export class CheckoutLineEntity {
 	@Column({ type: Number })
 	@ApiProperty({ type: Number, example: 1 })
+	@IsInt()
 	quantity: number;
 
 	@ManyToOne(() => CheckoutEntity, checkout => checkout.lines, { primary: true })
 	checkout: CheckoutEntity;
 
-	@ManyToOne(() => ProductVariantEntity, { primary: true })
+	@ManyToOne(() => ProductVariantEntity, { primary: true, eager: true })
 	variant: ProductVariantEntity;
 }

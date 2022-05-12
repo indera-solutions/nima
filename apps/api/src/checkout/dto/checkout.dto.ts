@@ -1,5 +1,5 @@
 import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger';
-import { IsArray, IsInt, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsString } from 'class-validator';
 import { CheckoutEntity } from '../entities/checkout.entity';
 import { CheckoutLineDto } from './checkout-line.dto';
 
@@ -7,6 +7,7 @@ export class CheckoutDto extends OmitType(CheckoutEntity, ['lines']) {
 	@ApiProperty({ type: () => CheckoutLineDto, isArray: true })
 	@IsArray()
 	lines: CheckoutLineDto[];
+
 
 	static prepare(entity: CheckoutEntity, options?: { isAdmin: boolean }): CheckoutDto {
 		return {
@@ -35,27 +36,18 @@ export class CheckoutDto extends OmitType(CheckoutEntity, ['lines']) {
 	}
 }
 
-export class CreateCheckoutDto extends PickType(CheckoutDto, ['email', 'note', 'shipping_method_id', 'voucherCode', 'metadata', 'privateMetadata', 'currency', 'languageCode', 'country']) {
-	@ApiProperty({ type: Number, description: 'The id of the user for this checkout cart' })
-	@IsInt()
-	@IsOptional()
-	userId?: number;
+export class CreateCheckoutDto extends PickType(CheckoutDto, ['languageCode']) {
 
-	@ApiProperty({ type: Number })
-	@IsInt()
-	@IsOptional()
-	billingAddressId?: number;
-
-	@ApiProperty({ type: Number })
-	@IsInt()
-	@IsOptional()
-	shippingAddressId?: number;
 }
 
-class Test extends PickType(CreateCheckoutDto, ['email', 'note', 'languageCode']) {
-}
+// export class CreateCheckoutDto extends PickType(CheckoutDto, ['email', 'note', 'shipping_method_id', 'voucherCode',
+// 'metadata', 'privateMetadata', 'currency', 'languageCode', 'country']) { @ApiProperty({ type: Number, description:
+// 'The id of the user for this checkout cart' }) @IsInt() @IsOptional() userId?: number;  @ApiProperty({ type: Number
+// }) @IsInt() @IsOptional() billingAddressId?: number;  @ApiProperty({ type: Number }) @IsInt() @IsOptional()
+// shippingAddressId?: number; }
 
-export class UpdateCheckoutDto extends PartialType(Test) {
+
+export class UpdateCheckoutDto extends PartialType(PickType(CheckoutDto, ['email', 'note', 'languageCode'])) {
 }
 
 export class UpdateCheckoutVoucherDto {

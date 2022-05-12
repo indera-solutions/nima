@@ -9,8 +9,8 @@ export class AddressService {
 	constructor(@InjectRepository(AddressEntity) private addressRepository: Repository<AddressEntity>) {
 	}
 
-	async create(params: { dto: CreateAddressDto }): Promise<AddressEntity> {
-		return this.addressRepository.save(params.dto);
+	async create(params: { dto: CreateAddressDto, id?: number }): Promise<AddressEntity> {
+		return await this.addressRepository.save({ ...params.dto, id: params.id });
 	}
 
 	async findById(params: { id: number }): Promise<AddressEntity> {

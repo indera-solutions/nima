@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AddressDto } from '../core/dto/address.dto';
+import { CreateAddressDto } from '../core/entities/address.entity';
 import { CheckoutService } from './checkout.service';
 import { CheckoutLineDto } from './dto/checkout-line.dto';
 import { CheckoutDto, CreateCheckoutDto, UpdateCheckoutDto, UpdateCheckoutVoucherDto } from './dto/checkout.dto';
@@ -48,7 +49,7 @@ export class CheckoutController {
 
 	@Patch(':token/address')
 	@ApiCreatedResponse({ type: () => CheckoutDto })
-	@ApiBody({ type: () => AddressDto })
+	@ApiBody({ type: () => CreateAddressDto })
 	@ApiQuery({ type: Boolean, name: 'shipping', required: false })
 	@ApiQuery({ type: Boolean, name: 'billing', required: false })
 	async updateAddress(@Param('token') token: string, @Body() address: AddressDto, @Query('shipping') shipping?: boolean, @Query('billing') billing?: boolean) {

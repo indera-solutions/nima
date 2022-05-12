@@ -51,7 +51,7 @@ export class CheckoutEntity {
 	@ApiProperty({ type: String, example: 'discount-name', required: false })
 	discountName?: string;
 
-	@Column({ type: String })
+	@Column({ type: String, default: '' })
 	@ApiProperty({ type: String, example: 'checkout-note' })
 	@IsString()
 	note: string;
@@ -87,12 +87,12 @@ export class CheckoutEntity {
 	@IsOptional()
 	privateMetadata: Metadata;
 
-	@Column({ type: String })
+	@Column({ type: String, default: 'EUR' })
 	@ApiProperty({ type: String, example: 'EUR' })
 	@IsString()
 	currency: string;
 
-	@Column({ type: String })
+	@Column({ type: String, nullable: true })
 	@ApiProperty({ type: String, example: 'Greece' })
 	@IsString()
 	country: string;

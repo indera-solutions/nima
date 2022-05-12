@@ -362,6 +362,229 @@ export interface CategoryDto {
 	 */
 	'children': Array<CategoryDto>;
 }
+
+/**
+ *
+ * @export
+ * @interface CheckoutDto
+ */
+export interface CheckoutDto {
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CheckoutDto
+	 */
+	'created': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CheckoutDto
+	 */
+	'lastChange': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CheckoutDto
+	 */
+	'email'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CheckoutDto
+	 */
+	'token': string;
+	/**
+	 *
+	 * @type {UserDto}
+	 * @memberof CheckoutDto
+	 */
+	'user': UserDto;
+	/**
+	 *
+	 * @type {AddressDto}
+	 * @memberof CheckoutDto
+	 */
+	'billingAddress': AddressDto;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CheckoutDto
+	 */
+	'discountAmount': number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CheckoutDto
+	 */
+	'discountName'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CheckoutDto
+	 */
+	'note': string;
+	/**
+	 *
+	 * @type {AddressDto}
+	 * @memberof CheckoutDto
+	 */
+	'shippingAddress': AddressDto;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CheckoutDto
+	 */
+	'shipping_method_id': number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CheckoutDto
+	 */
+	'voucherCode'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CheckoutDto
+	 */
+	'translatedDiscountName'?: string;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof CheckoutDto
+	 */
+	'metadata': object;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof CheckoutDto
+	 */
+	'privateMetadata': object;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CheckoutDto
+	 */
+	'currency': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CheckoutDto
+	 */
+	'country': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CheckoutDto
+	 */
+	'redirectUrl'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CheckoutDto
+	 */
+	'trackingCode'?: string;
+	/**
+	 *
+	 * @type {LanguageCode}
+	 * @memberof CheckoutDto
+	 */
+	'languageCode': LanguageCode;
+	/**
+	 *
+	 * @type {Array<CheckoutLineDto>}
+	 * @memberof CheckoutDto
+	 */
+	'lines': Array<CheckoutLineDto>;
+}
+
+/**
+ *
+ * @export
+ * @interface CheckoutLineDto
+ */
+export interface CheckoutLineDto {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CheckoutLineDto
+	 */
+	'quantity': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CheckoutLineDto
+	 */
+	'variantId': number;
+}
+
+/**
+ *
+ * @export
+ * @interface CreateAddressDto
+ */
+export interface CreateAddressDto {
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateAddressDto
+	 */
+	'firstName'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateAddressDto
+	 */
+	'lastName'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateAddressDto
+	 */
+	'companyName'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateAddressDto
+	 */
+	'phone'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateAddressDto
+	 */
+	'country': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateAddressDto
+	 */
+	'state': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateAddressDto
+	 */
+	'city': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateAddressDto
+	 */
+	'zip': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateAddressDto
+	 */
+	'address': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateAddressDto
+	 */
+	'address2'?: string;
+}
+
 /**
  *
  * @export
@@ -633,102 +856,6 @@ export interface CreateCategoryDto {
  * @interface CreateCheckoutDto
  */
 export interface CreateCheckoutDto {
-	/**
-	 *
-	 * @type {string}
-	 * @memberof CreateCheckoutDto
-	 */
-	'email'?: string;
-	/**
-	 *
-	 * @type {UserDto}
-	 * @memberof CreateCheckoutDto
-	 */
-	'user': UserDto;
-	/**
-	 *
-	 * @type {AddressDto}
-	 * @memberof CreateCheckoutDto
-	 */
-	'billingAddress': AddressDto;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof CreateCheckoutDto
-	 */
-	'discountAmount': number;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof CreateCheckoutDto
-	 */
-	'discountName'?: string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof CreateCheckoutDto
-	 */
-	'note': string;
-	/**
-	 *
-	 * @type {AddressDto}
-	 * @memberof CreateCheckoutDto
-	 */
-	'shippingAddress': AddressDto;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof CreateCheckoutDto
-	 */
-	'shipping_method_id': number;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof CreateCheckoutDto
-	 */
-	'voucherCode'?: string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof CreateCheckoutDto
-	 */
-	'translatedDiscountName'?: string;
-	/**
-	 *
-	 * @type {object}
-	 * @memberof CreateCheckoutDto
-	 */
-	'metadata': object;
-	/**
-	 *
-	 * @type {object}
-	 * @memberof CreateCheckoutDto
-	 */
-	'privateMetadata': object;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof CreateCheckoutDto
-	 */
-	'currency': string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof CreateCheckoutDto
-	 */
-	'country': string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof CreateCheckoutDto
-	 */
-	'redirectUrl'?: string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof CreateCheckoutDto
-	 */
-	'trackingCode'?: string;
 	/**
 	 *
 	 * @type {LanguageCode}
@@ -2469,94 +2596,10 @@ export interface UpdateCheckoutDto {
 	'email'?: string;
 	/**
 	 *
-	 * @type {UserDto}
-	 * @memberof UpdateCheckoutDto
-	 */
-	'user'?: UserDto;
-	/**
-	 *
-	 * @type {AddressDto}
-	 * @memberof UpdateCheckoutDto
-	 */
-	'billingAddress'?: AddressDto;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof UpdateCheckoutDto
-	 */
-	'discountAmount'?: number;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof UpdateCheckoutDto
-	 */
-	'discountName'?: string;
-	/**
-	 *
 	 * @type {string}
 	 * @memberof UpdateCheckoutDto
 	 */
 	'note'?: string;
-	/**
-	 *
-	 * @type {AddressDto}
-	 * @memberof UpdateCheckoutDto
-	 */
-	'shippingAddress'?: AddressDto;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof UpdateCheckoutDto
-	 */
-	'shipping_method_id'?: number;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof UpdateCheckoutDto
-	 */
-	'voucherCode'?: string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof UpdateCheckoutDto
-	 */
-	'translatedDiscountName'?: string;
-	/**
-	 *
-	 * @type {object}
-	 * @memberof UpdateCheckoutDto
-	 */
-	'metadata'?: object;
-	/**
-	 *
-	 * @type {object}
-	 * @memberof UpdateCheckoutDto
-	 */
-	'privateMetadata'?: object;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof UpdateCheckoutDto
-	 */
-	'currency'?: string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof UpdateCheckoutDto
-	 */
-	'country'?: string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof UpdateCheckoutDto
-	 */
-	'redirectUrl'?: string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof UpdateCheckoutDto
-	 */
-	'trackingCode'?: string;
 	/**
 	 *
 	 * @type {LanguageCode}
@@ -2564,6 +2607,21 @@ export interface UpdateCheckoutDto {
 	 */
 	'languageCode'?: LanguageCode;
 }
+
+/**
+ *
+ * @export
+ * @interface UpdateCheckoutVoucherDto
+ */
+export interface UpdateCheckoutVoucherDto {
+	/**
+	 *
+	 * @type {string}
+	 * @memberof UpdateCheckoutVoucherDto
+	 */
+	'voucherCode': string;
+}
+
 /**
  *
  * @export
@@ -4819,11 +4877,15 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 		},
 		/**
 		 *
+		 * @param {string} token
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		checkoutFindAll: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-			const localVarPath = `/api/v1/checkout`;
+		checkoutFindOne: async (token: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'token' is not null or undefined
+			assertParamExists('checkoutFindOne', 'token', token)
+			const localVarPath = `/api/v1/checkout/{token}`
+				.replace(`{${ "token" }}`, encodeURIComponent(String(token)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -4847,82 +4909,18 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 		},
 		/**
 		 *
-		 * @param {string} id
-		 * @param {*} [options] Override http request option.
-		 * @throws {RequiredError}
-		 */
-		checkoutFindOne: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-			// verify required parameter 'id' is not null or undefined
-			assertParamExists('checkoutFindOne', 'id', id)
-			const localVarPath = `/api/v1/checkout/{id}`
-				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
-			// use dummy base URL string because the URL constructor only accepts absolute URLs.
-			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-			let baseOptions;
-			if ( configuration ) {
-				baseOptions = configuration.baseOptions;
-			}
-
-			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
-			const localVarHeaderParameter = {} as any;
-			const localVarQueryParameter = {} as any;
-
-
-			setSearchParams(localVarUrlObj, localVarQueryParameter);
-			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-
-			return {
-				url: toPathString(localVarUrlObj),
-				options: localVarRequestOptions,
-			};
-		},
-		/**
-		 *
-		 * @param {string} id
-		 * @param {*} [options] Override http request option.
-		 * @throws {RequiredError}
-		 */
-		checkoutRemove: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-			// verify required parameter 'id' is not null or undefined
-			assertParamExists('checkoutRemove', 'id', id)
-			const localVarPath = `/api/v1/checkout/{id}`
-				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
-			// use dummy base URL string because the URL constructor only accepts absolute URLs.
-			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-			let baseOptions;
-			if ( configuration ) {
-				baseOptions = configuration.baseOptions;
-			}
-
-			const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
-			const localVarHeaderParameter = {} as any;
-			const localVarQueryParameter = {} as any;
-
-
-			setSearchParams(localVarUrlObj, localVarQueryParameter);
-			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-
-			return {
-				url: toPathString(localVarUrlObj),
-				options: localVarRequestOptions,
-			};
-		},
-		/**
-		 *
-		 * @param {string} id
+		 * @param {string} token
 		 * @param {UpdateCheckoutDto} updateCheckoutDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		checkoutUpdate: async (id: string, updateCheckoutDto: UpdateCheckoutDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-			// verify required parameter 'id' is not null or undefined
-			assertParamExists('checkoutUpdate', 'id', id)
+		checkoutUpdate: async (token: string, updateCheckoutDto: UpdateCheckoutDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'token' is not null or undefined
+			assertParamExists('checkoutUpdate', 'token', token)
 			// verify required parameter 'updateCheckoutDto' is not null or undefined
 			assertParamExists('checkoutUpdate', 'updateCheckoutDto', updateCheckoutDto)
-			const localVarPath = `/api/v1/checkout/{id}`
-				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
+			const localVarPath = `/api/v1/checkout/{token}`
+				.replace(`{${ "token" }}`, encodeURIComponent(String(token)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -4947,6 +4945,130 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 				options: localVarRequestOptions,
 			};
 		},
+		/**
+		 *
+		 * @param {string} token
+		 * @param {CreateAddressDto} createAddressDto
+		 * @param {boolean} [shipping]
+		 * @param {boolean} [billing]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		checkoutUpdateAddress: async (token: string, createAddressDto: CreateAddressDto, shipping?: boolean, billing?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'token' is not null or undefined
+			assertParamExists('checkoutUpdateAddress', 'token', token)
+			// verify required parameter 'createAddressDto' is not null or undefined
+			assertParamExists('checkoutUpdateAddress', 'createAddressDto', createAddressDto)
+			const localVarPath = `/api/v1/checkout/{token}/address`
+				.replace(`{${ "token" }}`, encodeURIComponent(String(token)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			if ( shipping !== undefined ) {
+				localVarQueryParameter['shipping'] = shipping;
+			}
+
+			if ( billing !== undefined ) {
+				localVarQueryParameter['billing'] = billing;
+			}
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(createAddressDto, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {string} token
+		 * @param {CheckoutLineDto} checkoutLineDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		checkoutUpdateLines: async (token: string, checkoutLineDto: CheckoutLineDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'token' is not null or undefined
+			assertParamExists('checkoutUpdateLines', 'token', token)
+			// verify required parameter 'checkoutLineDto' is not null or undefined
+			assertParamExists('checkoutUpdateLines', 'checkoutLineDto', checkoutLineDto)
+			const localVarPath = `/api/v1/checkout/{token}/lines`
+				.replace(`{${ "token" }}`, encodeURIComponent(String(token)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(checkoutLineDto, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {string} token
+		 * @param {UpdateCheckoutVoucherDto} updateCheckoutVoucherDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		checkoutUpdateVoucher: async (token: string, updateCheckoutVoucherDto: UpdateCheckoutVoucherDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'token' is not null or undefined
+			assertParamExists('checkoutUpdateVoucher', 'token', token)
+			// verify required parameter 'updateCheckoutVoucherDto' is not null or undefined
+			assertParamExists('checkoutUpdateVoucher', 'updateCheckoutVoucherDto', updateCheckoutVoucherDto)
+			const localVarPath = `/api/v1/checkout/{token}/voucher`
+				.replace(`{${ "token" }}`, encodeURIComponent(String(token)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(updateCheckoutVoucherDto, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
 	}
 };
 
@@ -4963,48 +5085,64 @@ export const CheckoutApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async checkoutCreate(createCheckoutDto: CreateCheckoutDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async checkoutCreate(createCheckoutDto: CreateCheckoutDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckoutDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.checkoutCreate(createCheckoutDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
+		 * @param {string} token
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async checkoutFindAll(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.checkoutFindAll(options);
+		async checkoutFindOne(token: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckoutDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.checkoutFindOne(token, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
-		 * @param {string} id
-		 * @param {*} [options] Override http request option.
-		 * @throws {RequiredError}
-		 */
-		async checkoutFindOne(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.checkoutFindOne(id, options);
-			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-		},
-		/**
-		 *
-		 * @param {string} id
-		 * @param {*} [options] Override http request option.
-		 * @throws {RequiredError}
-		 */
-		async checkoutRemove(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.checkoutRemove(id, options);
-			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-		},
-		/**
-		 *
-		 * @param {string} id
+		 * @param {string} token
 		 * @param {UpdateCheckoutDto} updateCheckoutDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async checkoutUpdate(id: string, updateCheckoutDto: UpdateCheckoutDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.checkoutUpdate(id, updateCheckoutDto, options);
+		async checkoutUpdate(token: string, updateCheckoutDto: UpdateCheckoutDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckoutDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.checkoutUpdate(token, updateCheckoutDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {string} token
+		 * @param {CreateAddressDto} createAddressDto
+		 * @param {boolean} [shipping]
+		 * @param {boolean} [billing]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async checkoutUpdateAddress(token: string, createAddressDto: CreateAddressDto, shipping?: boolean, billing?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckoutDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.checkoutUpdateAddress(token, createAddressDto, shipping, billing, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {string} token
+		 * @param {CheckoutLineDto} checkoutLineDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async checkoutUpdateLines(token: string, checkoutLineDto: CheckoutLineDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckoutDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.checkoutUpdateLines(token, checkoutLineDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {string} token
+		 * @param {UpdateCheckoutVoucherDto} updateCheckoutVoucherDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async checkoutUpdateVoucher(token: string, updateCheckoutVoucherDto: UpdateCheckoutVoucherDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckoutDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.checkoutUpdateVoucher(token, updateCheckoutVoucherDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 	};
@@ -5023,44 +5161,59 @@ export const CheckoutApiFactory = function (configuration?: Configuration, baseP
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		checkoutCreate(createCheckoutDto: CreateCheckoutDto, options?: any): AxiosPromise<void> {
+		checkoutCreate(createCheckoutDto: CreateCheckoutDto, options?: any): AxiosPromise<CheckoutDto> {
 			return localVarFp.checkoutCreate(createCheckoutDto, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
+		 * @param {string} token
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		checkoutFindAll(options?: any): AxiosPromise<void> {
-			return localVarFp.checkoutFindAll(options).then((request) => request(axios, basePath));
+		checkoutFindOne(token: string, options?: any): AxiosPromise<CheckoutDto> {
+			return localVarFp.checkoutFindOne(token, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
-		 * @param {string} id
-		 * @param {*} [options] Override http request option.
-		 * @throws {RequiredError}
-		 */
-		checkoutFindOne(id: string, options?: any): AxiosPromise<void> {
-			return localVarFp.checkoutFindOne(id, options).then((request) => request(axios, basePath));
-		},
-		/**
-		 *
-		 * @param {string} id
-		 * @param {*} [options] Override http request option.
-		 * @throws {RequiredError}
-		 */
-		checkoutRemove(id: string, options?: any): AxiosPromise<void> {
-			return localVarFp.checkoutRemove(id, options).then((request) => request(axios, basePath));
-		},
-		/**
-		 *
-		 * @param {string} id
+		 * @param {string} token
 		 * @param {UpdateCheckoutDto} updateCheckoutDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		checkoutUpdate(id: string, updateCheckoutDto: UpdateCheckoutDto, options?: any): AxiosPromise<void> {
-			return localVarFp.checkoutUpdate(id, updateCheckoutDto, options).then((request) => request(axios, basePath));
+		checkoutUpdate(token: string, updateCheckoutDto: UpdateCheckoutDto, options?: any): AxiosPromise<CheckoutDto> {
+			return localVarFp.checkoutUpdate(token, updateCheckoutDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {string} token
+		 * @param {CreateAddressDto} createAddressDto
+		 * @param {boolean} [shipping]
+		 * @param {boolean} [billing]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		checkoutUpdateAddress(token: string, createAddressDto: CreateAddressDto, shipping?: boolean, billing?: boolean, options?: any): AxiosPromise<CheckoutDto> {
+			return localVarFp.checkoutUpdateAddress(token, createAddressDto, shipping, billing, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {string} token
+		 * @param {CheckoutLineDto} checkoutLineDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		checkoutUpdateLines(token: string, checkoutLineDto: CheckoutLineDto, options?: any): AxiosPromise<CheckoutDto> {
+			return localVarFp.checkoutUpdateLines(token, checkoutLineDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {string} token
+		 * @param {UpdateCheckoutVoucherDto} updateCheckoutVoucherDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		checkoutUpdateVoucher(token: string, updateCheckoutVoucherDto: UpdateCheckoutVoucherDto, options?: any): AxiosPromise<CheckoutDto> {
+			return localVarFp.checkoutUpdateVoucher(token, updateCheckoutVoucherDto, options).then((request) => request(axios, basePath));
 		},
 	};
 };
@@ -5090,21 +5243,7 @@ export interface CheckoutApiCheckoutFindOneRequest {
 	 * @type {string}
 	 * @memberof CheckoutApiCheckoutFindOne
 	 */
-	readonly id: string;
-}
-
-/**
- * Request parameters for checkoutRemove operation in CheckoutApi.
- * @export
- * @interface CheckoutApiCheckoutRemoveRequest
- */
-export interface CheckoutApiCheckoutRemoveRequest {
-	/**
-	 *
-	 * @type {string}
-	 * @memberof CheckoutApiCheckoutRemove
-	 */
-	readonly id: string;
+	readonly token: string;
 }
 
 /**
@@ -5118,7 +5257,7 @@ export interface CheckoutApiCheckoutUpdateRequest {
 	 * @type {string}
 	 * @memberof CheckoutApiCheckoutUpdate
 	 */
-	readonly id: string;
+	readonly token: string;
 
 	/**
 	 *
@@ -5126,6 +5265,83 @@ export interface CheckoutApiCheckoutUpdateRequest {
 	 * @memberof CheckoutApiCheckoutUpdate
 	 */
 	readonly updateCheckoutDto: UpdateCheckoutDto;
+}
+
+/**
+ * Request parameters for checkoutUpdateAddress operation in CheckoutApi.
+ * @export
+ * @interface CheckoutApiCheckoutUpdateAddressRequest
+ */
+export interface CheckoutApiCheckoutUpdateAddressRequest {
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CheckoutApiCheckoutUpdateAddress
+	 */
+	readonly token: string;
+
+	/**
+	 *
+	 * @type {CreateAddressDto}
+	 * @memberof CheckoutApiCheckoutUpdateAddress
+	 */
+	readonly createAddressDto: CreateAddressDto;
+
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof CheckoutApiCheckoutUpdateAddress
+	 */
+	readonly shipping?: boolean;
+
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof CheckoutApiCheckoutUpdateAddress
+	 */
+	readonly billing?: boolean;
+}
+
+/**
+ * Request parameters for checkoutUpdateLines operation in CheckoutApi.
+ * @export
+ * @interface CheckoutApiCheckoutUpdateLinesRequest
+ */
+export interface CheckoutApiCheckoutUpdateLinesRequest {
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CheckoutApiCheckoutUpdateLines
+	 */
+	readonly token: string;
+
+	/**
+	 *
+	 * @type {CheckoutLineDto}
+	 * @memberof CheckoutApiCheckoutUpdateLines
+	 */
+	readonly checkoutLineDto: CheckoutLineDto;
+}
+
+/**
+ * Request parameters for checkoutUpdateVoucher operation in CheckoutApi.
+ * @export
+ * @interface CheckoutApiCheckoutUpdateVoucherRequest
+ */
+export interface CheckoutApiCheckoutUpdateVoucherRequest {
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CheckoutApiCheckoutUpdateVoucher
+	 */
+	readonly token: string;
+
+	/**
+	 *
+	 * @type {UpdateCheckoutVoucherDto}
+	 * @memberof CheckoutApiCheckoutUpdateVoucher
+	 */
+	readonly updateCheckoutVoucherDto: UpdateCheckoutVoucherDto;
 }
 
 /**
@@ -5148,34 +5364,13 @@ export class CheckoutApi extends BaseAPI {
 
 	/**
 	 *
-	 * @param {*} [options] Override http request option.
-	 * @throws {RequiredError}
-	 * @memberof CheckoutApi
-	 */
-	public checkoutFindAll(options?: AxiosRequestConfig) {
-		return CheckoutApiFp(this.configuration).checkoutFindAll(options).then((request) => request(this.axios, this.basePath));
-	}
-
-	/**
-	 *
 	 * @param {CheckoutApiCheckoutFindOneRequest} requestParameters Request parameters.
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}
 	 * @memberof CheckoutApi
 	 */
 	public checkoutFindOne(requestParameters: CheckoutApiCheckoutFindOneRequest, options?: AxiosRequestConfig) {
-		return CheckoutApiFp(this.configuration).checkoutFindOne(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-	}
-
-	/**
-	 *
-	 * @param {CheckoutApiCheckoutRemoveRequest} requestParameters Request parameters.
-	 * @param {*} [options] Override http request option.
-	 * @throws {RequiredError}
-	 * @memberof CheckoutApi
-	 */
-	public checkoutRemove(requestParameters: CheckoutApiCheckoutRemoveRequest, options?: AxiosRequestConfig) {
-		return CheckoutApiFp(this.configuration).checkoutRemove(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+		return CheckoutApiFp(this.configuration).checkoutFindOne(requestParameters.token, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -5186,7 +5381,40 @@ export class CheckoutApi extends BaseAPI {
 	 * @memberof CheckoutApi
 	 */
 	public checkoutUpdate(requestParameters: CheckoutApiCheckoutUpdateRequest, options?: AxiosRequestConfig) {
-		return CheckoutApiFp(this.configuration).checkoutUpdate(requestParameters.id, requestParameters.updateCheckoutDto, options).then((request) => request(this.axios, this.basePath));
+		return CheckoutApiFp(this.configuration).checkoutUpdate(requestParameters.token, requestParameters.updateCheckoutDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {CheckoutApiCheckoutUpdateAddressRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof CheckoutApi
+	 */
+	public checkoutUpdateAddress(requestParameters: CheckoutApiCheckoutUpdateAddressRequest, options?: AxiosRequestConfig) {
+		return CheckoutApiFp(this.configuration).checkoutUpdateAddress(requestParameters.token, requestParameters.createAddressDto, requestParameters.shipping, requestParameters.billing, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {CheckoutApiCheckoutUpdateLinesRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof CheckoutApi
+	 */
+	public checkoutUpdateLines(requestParameters: CheckoutApiCheckoutUpdateLinesRequest, options?: AxiosRequestConfig) {
+		return CheckoutApiFp(this.configuration).checkoutUpdateLines(requestParameters.token, requestParameters.checkoutLineDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {CheckoutApiCheckoutUpdateVoucherRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof CheckoutApi
+	 */
+	public checkoutUpdateVoucher(requestParameters: CheckoutApiCheckoutUpdateVoucherRequest, options?: AxiosRequestConfig) {
+		return CheckoutApiFp(this.configuration).checkoutUpdateVoucher(requestParameters.token, requestParameters.updateCheckoutVoucherDto, options).then((request) => request(this.axios, this.basePath));
 	}
 }
 
