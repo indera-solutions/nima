@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { AttributeValuesService } from '../attributes/attribute-values.service';
 import { CategoriesService } from '../categories/categories.service';
-import { AttributeDrillDownDto, ProductFilterParamsDto, ProductFilterResultDto } from './dto/product-filtering.dto';
+import {
+	AttributeDrillDownDto,
+	ProductFilterParamsDto,
+	ProductFilterResultDto,
+	ProductQueryFilterDto,
+} from './dto/product-filtering.dto';
 import { ProductDto } from './dto/product.dto';
 import { ProductVariantRepository } from './entities/product-variant.repository';
 import { ProductRepository } from './entities/product.repository';
@@ -29,9 +34,10 @@ export class FilteringService {
 	}
 
 	async productFilterQuery(params: ProductFilterParamsDto): Promise<ProductFilterResultDto> {
-		let categoryIdArray, collectionId, products = [], ids = [], attributeDrillDown = [];
+		let categoryIdArray, collectionId, products = [], attributeDrillDown = [];
+		const ids = [];
 		let minPrice = Number.MAX_SAFE_INTEGER, maxPrice = Number.MIN_SAFE_INTEGER;
-		const take = params.itemsPerPage;
+		const take = params.itemsPerPage || 20;
 		const skip = ((params.page || 1) - 1) * take;
 
 		if ( params.categoryId ) {
@@ -41,14 +47,14 @@ export class FilteringService {
 		if ( params.collectionId ) {
 			collectionId = params.collectionId;
 		}
+		const filters = await this.getFiltersFromValues(params.attributeValueIds);
 
 
 		if ( !params.variants ) {
-			const result = await this.productRepository.findFilteredProductIds(collectionId, categoryIdArray, params.filters);
+			const result = await this.productRepository.findFilteredProductIds(collectionId, categoryIdArray, filters);
 
 			if ( result.length === 0 )
 				return emptyRes;
-
 			for ( const resultElement of result ) {
 				let underMax = true, overMin = true;
 				if ( params.maxPrice ) underMax = resultElement.price <= params.maxPrice;
@@ -57,12 +63,11 @@ export class FilteringService {
 				if ( resultElement.price < minPrice ) minPrice = resultElement.price;
 				if ( resultElement.price > maxPrice ) maxPrice = resultElement.price;
 			}
-			ids = result.map(res => res.id);
 			products = await this.productRepository.findByIdsWithSorting(ids, skip, take, params.sorting, params.language);
 			const rawDrillDown = await this.attributeValuesService.attributeDrillDown({ ids: ids });
 			attributeDrillDown = this.attributeFilterRawArrayToDrillDownArray(rawDrillDown);
 		} else {
-			const result = await this.productVariantRepository.findFilteredVariantIds(collectionId, categoryIdArray, params.filters, params.search);
+			const result = await this.productVariantRepository.findFilteredVariantIds(collectionId, categoryIdArray, filters, params.search);
 
 			if ( result.length === 0 )
 				return emptyRes;
@@ -75,7 +80,6 @@ export class FilteringService {
 				if ( resultElement.price < minPrice ) minPrice = resultElement.price;
 				if ( resultElement.price > maxPrice ) maxPrice = resultElement.price;
 			}
-			ids = result.map(res => res.id);
 			products = await this.productVariantRepository.findByIdsWithSorting(ids, skip, take, params.sorting, params.language);
 			const rawDrillDown = await this.productVariantRepository.attributeDrillDown(ids);
 			attributeDrillDown = this.attributeFilterRawArrayToDrillDownArray(rawDrillDown);
@@ -119,5 +123,27 @@ export class FilteringService {
 			});
 		});
 		return Object.values(fieldMap);
+	}
+
+	private async getFiltersFromValues(attributeValueIds?: number[]): Promise<ProductQueryFilterDto[]> {
+		if ( !attributeValueIds || attributeValueIds.length === 0 ) return [];
+		const attributeMap: { [T: number]: string[] } = {};
+		const res = await this.attributeValuesService.getSlugAndAttributeSlugOfValues(attributeValueIds);
+		for ( const value of res ) {
+			if ( attributeMap[value.attributeSlug] ) {
+				attributeMap[value.attributeSlug].push(value.value);
+			} else {
+				attributeMap[value.attributeSlug] = [value.value];
+			}
+		}
+
+		const filter: ProductQueryFilterDto[] = [];
+		Object.keys(attributeMap).forEach(attributeSlug => {
+			filter.push({
+				attributeSlug: attributeSlug,
+				values: attributeMap[attributeSlug],
+			});
+		});
+		return filter;
 	}
 }

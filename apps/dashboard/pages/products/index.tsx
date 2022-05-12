@@ -1,4 +1,6 @@
-import { Trans } from '@nima-cms/react';
+import { Trans, useCategoryId, useProductTypeId } from '@nima-cms/react';
+import { ProductDto } from '@nima-cms/sdk';
+import { getEuroValue } from '@nima-cms/utils';
 import Link from 'next/link';
 import React from 'react';
 import { useProducts } from '../../../../libs/react/src/reactQuery/products.queries';
@@ -35,22 +37,17 @@ export default function ProductList(props: ProductListProps) {
 						<table className="table w-full">
 							<thead>
 							<tr>
+								<th></th>
 								<th>Name</th>
-								<th>Slug</th>
+								<th>Category</th>
+								<th>Product Type</th>
+								<th>Price</th>
 								<th>Actions</th>
 							</tr>
 							</thead>
 							<tbody>
-							{ (productsResponse?.items || []).map(product => <tr key={ product.id }
-																				 className={ 'hover' }>
-								<td><Trans>{ product.name }</Trans></td>
-								<td>{ product.slug }</td>
-								<td>
-									<Link href={ NIMA_ROUTES.products.edit(product.id) }>
-										<button className={ 'btn btn-primary' }>Edit</button>
-									</Link>
-								</td>
-							</tr>) }
+							{ (productsResponse?.items || []).map(product => <ProductRow key={ product.id }
+																						 product={ product }/>) }
 							</tbody>
 						</table>
 					</div>
@@ -60,3 +57,25 @@ export default function ProductList(props: ProductListProps) {
 		</AdminPage>
 	</>;
 };
+
+function ProductRow(props: { product: ProductDto }) {
+	const { product } = props;
+
+	const { data: category } = useCategoryId(product.categoryId);
+	const { data: productType } = useProductTypeId(product.productTypeId);
+
+	return <tr
+		className={ 'hover' }>
+		<td>{ props.product.productMedia[0] &&
+			<img width={ 50 } height={ 50 } src={ props.product.productMedia[0].media.thumbnailUrl } alt=""/> }</td>
+		<td><Trans>{ product.name }</Trans></td>
+		<td><Trans>{ category?.name }</Trans></td>
+		<td><Trans>{ productType?.name }</Trans></td>
+		<td>{ getEuroValue(product.minPrice) }</td>
+		<td>
+			<Link href={ NIMA_ROUTES.products.edit(product.id) }>
+				<button className={ 'btn btn-primary' }>Edit</button>
+			</Link>
+		</td>
+	</tr>;
+}

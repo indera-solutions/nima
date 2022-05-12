@@ -31,7 +31,6 @@ export default function AddProductType(props: AddProductTypeProps) {
 		privateMetadata: {},
 		attributes: [],
 		variantAttributes: [],
-		hasVariants: false,
 		isDigital: false,
 		isShippingRequired: false,
 		weight: 0,
@@ -45,11 +44,6 @@ export default function AddProductType(props: AddProductTypeProps) {
 		const existingIds = [...createProductTypeDto.attributes.map(a => a.attributeId), ...createProductTypeDto.variantAttributes.map(a => a.attributeId)];
 		return attributes.filter(a => !existingIds.includes(a.id));
 	}, [attributes, createProductTypeDto.attributes, createProductTypeDto.variantAttributes]);
-
-	useEffect(() => {
-		setCreateProductTypeDto(state => ({ ...state, hasVariants: createProductTypeDto.variantAttributes.length > 0 }));
-	}, [createProductTypeDto.variantAttributes]);
-
 
 	const createProductTypeMutation = useCreateProductTypeMutation();
 	const updateProductTypeMutation = useUpdateProductTypeMutation();

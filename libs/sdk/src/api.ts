@@ -1104,12 +1104,6 @@ export interface CreateProductTypeDto {
 	 * @type {boolean}
 	 * @memberof CreateProductTypeDto
 	 */
-	'hasVariants': boolean;
-	/**
-	 *
-	 * @type {boolean}
-	 * @memberof CreateProductTypeDto
-	 */
 	'isShippingRequired': boolean;
 	/**
 	 *
@@ -1764,25 +1758,6 @@ export interface ProductFilterResultDto {
 	 * @memberof ProductFilterResultDto
 	 */
 	'totalCount': number;
-}
-/**
- *
- * @export
- * @interface ProductQueryFilterDto
- */
-export interface ProductQueryFilterDto {
-	/**
-	 *
-	 * @type {string}
-	 * @memberof ProductQueryFilterDto
-	 */
-	'attributeSlug': string;
-	/**
-	 *
-	 * @type {Array<string>}
-	 * @memberof ProductQueryFilterDto
-	 */
-	'values': Array<string>;
 }
 
 /**
@@ -3007,10 +2982,6 @@ export const AttributeValuesApiAxiosParamCreator = function (configuration?: Con
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
-			// authentication bearer required
-			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -3042,10 +3013,6 @@ export const AttributeValuesApiAxiosParamCreator = function (configuration?: Con
 			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
-
-			// authentication bearer required
-			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -3612,10 +3579,6 @@ export const AttributesApiAxiosParamCreator = function (configuration?: Configur
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
-			// authentication bearer required
-			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -3647,10 +3610,6 @@ export const AttributesApiAxiosParamCreator = function (configuration?: Configur
 			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
-
-			// authentication bearer required
-			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -4385,8 +4344,8 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 		},
 		/**
 		 *
-		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the root categories, leave empty
-		 *     for the full tree
+		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the root categories, -1 for flat
+		 *     array, leave empty for the full tree
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -4553,8 +4512,8 @@ export const CategoriesApiFp = function (configuration?: Configuration) {
 		},
 		/**
 		 *
-		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the root categories, leave empty
-		 *     for the full tree
+		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the root categories, -1 for flat
+		 *     array, leave empty for the full tree
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -4618,8 +4577,8 @@ export const CategoriesApiFactory = function (configuration?: Configuration, bas
 		},
 		/**
 		 *
-		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the root categories, leave empty
-		 *     for the full tree
+		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the root categories, -1 for flat
+		 *     array, leave empty for the full tree
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -4682,7 +4641,8 @@ export interface CategoriesApiCategoriesCreateRequest {
  */
 export interface CategoriesApiCategoriesFindAllRequest {
 	/**
-	 * The depth of children to retrieve. Set 0 for only the root categories, leave empty for the full tree
+	 * The depth of children to retrieve. Set 0 for only the root categories, -1 for flat array, leave empty for the
+	 * full tree
 	 * @type {number}
 	 * @memberof CategoriesApiCategoriesFindAll
 	 */
@@ -7673,25 +7633,21 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 		},
 		/**
 		 *
-		 * @param {number} itemsPerPage
-		 * @param {number} page
-		 * @param {Array<ProductQueryFilterDto>} [filters]
+		 * @param {Array<number>} [attributeValueIds]
 		 * @param {number} [minPrice]
 		 * @param {number} [maxPrice]
 		 * @param {ProductSorting} [sorting]
 		 * @param {LanguageCode} [language]
 		 * @param {string} [search]
 		 * @param {boolean} [variants]
+		 * @param {number} [itemsPerPage]
+		 * @param {number} [page]
 		 * @param {number} [categoryId]
 		 * @param {number} [collectionId]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		productsFindAll: async (itemsPerPage: number, page: number, filters?: Array<ProductQueryFilterDto>, minPrice?: number, maxPrice?: number, sorting?: ProductSorting, language?: LanguageCode, search?: string, variants?: boolean, categoryId?: number, collectionId?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-			// verify required parameter 'itemsPerPage' is not null or undefined
-			assertParamExists('productsFindAll', 'itemsPerPage', itemsPerPage)
-			// verify required parameter 'page' is not null or undefined
-			assertParamExists('productsFindAll', 'page', page)
+		productsFindAll: async (attributeValueIds?: Array<number>, minPrice?: number, maxPrice?: number, sorting?: ProductSorting, language?: LanguageCode, search?: string, variants?: boolean, itemsPerPage?: number, page?: number, categoryId?: number, collectionId?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			const localVarPath = `/api/v1/products`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7704,8 +7660,8 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
-			if ( filters ) {
-				localVarQueryParameter['filters'] = filters;
+			if ( attributeValueIds ) {
+				localVarQueryParameter['attributeValueIds'] = attributeValueIds;
 			}
 
 			if ( minPrice !== undefined ) {
@@ -7890,22 +7846,22 @@ export const ProductsApiFp = function (configuration?: Configuration) {
 		},
 		/**
 		 *
-		 * @param {number} itemsPerPage
-		 * @param {number} page
-		 * @param {Array<ProductQueryFilterDto>} [filters]
+		 * @param {Array<number>} [attributeValueIds]
 		 * @param {number} [minPrice]
 		 * @param {number} [maxPrice]
 		 * @param {ProductSorting} [sorting]
 		 * @param {LanguageCode} [language]
 		 * @param {string} [search]
 		 * @param {boolean} [variants]
+		 * @param {number} [itemsPerPage]
+		 * @param {number} [page]
 		 * @param {number} [categoryId]
 		 * @param {number} [collectionId]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async productsFindAll(itemsPerPage: number, page: number, filters?: Array<ProductQueryFilterDto>, minPrice?: number, maxPrice?: number, sorting?: ProductSorting, language?: LanguageCode, search?: string, variants?: boolean, categoryId?: number, collectionId?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductFilterResultDto>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.productsFindAll(itemsPerPage, page, filters, minPrice, maxPrice, sorting, language, search, variants, categoryId, collectionId, options);
+		async productsFindAll(attributeValueIds?: Array<number>, minPrice?: number, maxPrice?: number, sorting?: ProductSorting, language?: LanguageCode, search?: string, variants?: boolean, itemsPerPage?: number, page?: number, categoryId?: number, collectionId?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductFilterResultDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.productsFindAll(attributeValueIds, minPrice, maxPrice, sorting, language, search, variants, itemsPerPage, page, categoryId, collectionId, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
@@ -7960,22 +7916,22 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
 		},
 		/**
 		 *
-		 * @param {number} itemsPerPage
-		 * @param {number} page
-		 * @param {Array<ProductQueryFilterDto>} [filters]
+		 * @param {Array<number>} [attributeValueIds]
 		 * @param {number} [minPrice]
 		 * @param {number} [maxPrice]
 		 * @param {ProductSorting} [sorting]
 		 * @param {LanguageCode} [language]
 		 * @param {string} [search]
 		 * @param {boolean} [variants]
+		 * @param {number} [itemsPerPage]
+		 * @param {number} [page]
 		 * @param {number} [categoryId]
 		 * @param {number} [collectionId]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		productsFindAll(itemsPerPage: number, page: number, filters?: Array<ProductQueryFilterDto>, minPrice?: number, maxPrice?: number, sorting?: ProductSorting, language?: LanguageCode, search?: string, variants?: boolean, categoryId?: number, collectionId?: number, options?: any): AxiosPromise<ProductFilterResultDto> {
-			return localVarFp.productsFindAll(itemsPerPage, page, filters, minPrice, maxPrice, sorting, language, search, variants, categoryId, collectionId, options).then((request) => request(axios, basePath));
+		productsFindAll(attributeValueIds?: Array<number>, minPrice?: number, maxPrice?: number, sorting?: ProductSorting, language?: LanguageCode, search?: string, variants?: boolean, itemsPerPage?: number, page?: number, categoryId?: number, collectionId?: number, options?: any): AxiosPromise<ProductFilterResultDto> {
+			return localVarFp.productsFindAll(attributeValueIds, minPrice, maxPrice, sorting, language, search, variants, itemsPerPage, page, categoryId, collectionId, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -8030,24 +7986,10 @@ export interface ProductsApiProductsCreateRequest {
 export interface ProductsApiProductsFindAllRequest {
 	/**
 	 *
-	 * @type {number}
+	 * @type {Array<number>}
 	 * @memberof ProductsApiProductsFindAll
 	 */
-	readonly itemsPerPage: number;
-
-	/**
-	 *
-	 * @type {number}
-	 * @memberof ProductsApiProductsFindAll
-	 */
-	readonly page: number;
-
-	/**
-	 *
-	 * @type {Array<ProductQueryFilterDto>}
-	 * @memberof ProductsApiProductsFindAll
-	 */
-	readonly filters?: Array<ProductQueryFilterDto>;
+	readonly attributeValueIds?: Array<number>;
 
 	/**
 	 *
@@ -8090,6 +8032,20 @@ export interface ProductsApiProductsFindAllRequest {
 	 * @memberof ProductsApiProductsFindAll
 	 */
 	readonly variants?: boolean;
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ProductsApiProductsFindAll
+	 */
+	readonly itemsPerPage?: number;
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ProductsApiProductsFindAll
+	 */
+	readonly page?: number;
 
 	/**
 	 *
@@ -8180,8 +8136,8 @@ export class ProductsApi extends BaseAPI {
 	 * @throws {RequiredError}
 	 * @memberof ProductsApi
 	 */
-	public productsFindAll(requestParameters: ProductsApiProductsFindAllRequest, options?: AxiosRequestConfig) {
-		return ProductsApiFp(this.configuration).productsFindAll(requestParameters.itemsPerPage, requestParameters.page, requestParameters.filters, requestParameters.minPrice, requestParameters.maxPrice, requestParameters.sorting, requestParameters.language, requestParameters.search, requestParameters.variants, requestParameters.categoryId, requestParameters.collectionId, options).then((request) => request(this.axios, this.basePath));
+	public productsFindAll(requestParameters: ProductsApiProductsFindAllRequest = {}, options?: AxiosRequestConfig) {
+		return ProductsApiFp(this.configuration).productsFindAll(requestParameters.attributeValueIds, requestParameters.minPrice, requestParameters.maxPrice, requestParameters.sorting, requestParameters.language, requestParameters.search, requestParameters.variants, requestParameters.itemsPerPage, requestParameters.page, requestParameters.categoryId, requestParameters.collectionId, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**

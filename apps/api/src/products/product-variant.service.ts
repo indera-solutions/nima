@@ -54,6 +54,8 @@ export class ProductVariantService {
 		});
 
 		const allVariants = await this.findOfProduct({ productId });
+		const minPrice = Math.min(...allVariants.map(v => v.priceAmount || 0));
+		await this.productsService.setMinPrice({ productId, minPrice });
 		if ( allVariants.length === 1 ) {
 			await this.productsService.setDefaultVariant({
 				productId,

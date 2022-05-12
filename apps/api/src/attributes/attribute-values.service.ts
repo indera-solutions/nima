@@ -77,4 +77,8 @@ export class AttributeValuesService {
 	async attributeDrillDown(params: { ids: number[] }) {
 		return await this.attributeValueRepository.attributeDrillDown(params.ids);
 	}
+
+	async getSlugAndAttributeSlugOfValues(ids: number[]) {
+		return this.attributeValueRepository.getSlugAndAttributeSlugOfValues(ids);
+	}
 }

@@ -36,6 +36,10 @@ export class CategoriesService {
 	}
 
 	async findAll(params: { depth?: number }): Promise<CategoryEntity[]> {
+		if ( params.depth === -1 ) {
+			const allCategories = await this.categoryRepository.find();
+			return allCategories;
+		}
 		const roots = await this.categoryRepository.findTrees({ depth: params.depth });
 		return roots;
 
