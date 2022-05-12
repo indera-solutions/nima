@@ -1805,19 +1805,14 @@
 				},
 				"responses": {
 					"201": {
-						"description": ""
-					}
-				},
-				"tags": [
-					"Checkout"
-				]
-			},
-			"get": {
-				"operationId": "Checkout_findAll",
-				"parameters": [ ],
-				"responses": {
-					"200": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CheckoutDto"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -1825,12 +1820,12 @@
 				]
 			}
 		},
-		"/api/v1/checkout/{id}": {
+		"/api/v1/checkout/{token}": {
 			"get": {
 				"operationId": "Checkout_findOne",
 				"parameters": [
 					{
-						"name": "id",
+						"name": "token",
 						"required": true,
 						"in": "path",
 						"schema": {
@@ -1840,7 +1835,14 @@
 				],
 				"responses": {
 					"200": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CheckoutDto"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -1851,7 +1853,7 @@
 				"operationId": "Checkout_update",
 				"parameters": [
 					{
-						"name": "id",
+						"name": "token",
 						"required": true,
 						"in": "path",
 						"schema": {
@@ -1870,19 +1872,28 @@
 					}
 				},
 				"responses": {
-					"200": {
-						"description": ""
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CheckoutDto"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
 					"Checkout"
 				]
-			},
-			"delete": {
-				"operationId": "Checkout_remove",
+			}
+		},
+		"/api/v1/checkout/{token}/lines": {
+			"patch": {
+				"operationId": "Checkout_updateLines",
 				"parameters": [
 					{
-						"name": "id",
+						"name": "token",
 						"required": true,
 						"in": "path",
 						"schema": {
@@ -1890,9 +1901,122 @@
 						}
 					}
 				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CheckoutLineDto"
+							}
+						}
+					}
+				},
 				"responses": {
-					"200": {
-						"description": ""
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CheckoutDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Checkout"
+				]
+			}
+		},
+		"/api/v1/checkout/{token}/address": {
+			"patch": {
+				"operationId": "Checkout_updateAddress",
+				"parameters": [
+					{
+						"name": "token",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "shipping",
+						"required": false,
+						"in": "query",
+						"schema": {
+							"type": "boolean"
+						}
+					},
+					{
+						"name": "billing",
+						"required": false,
+						"in": "query",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateAddressDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CheckoutDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Checkout"
+				]
+			}
+		},
+		"/api/v1/checkout/{token}/voucher": {
+			"patch": {
+				"operationId": "Checkout_updateVoucher",
+				"parameters": [
+					{
+						"name": "token",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateCheckoutVoucherDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CheckoutDto"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -4249,9 +4373,48 @@
 			"CreateCheckoutDto": {
 				"type": "object",
 				"properties": {
+					"languageCode": {
+						"$ref": "#/components/schemas/LanguageCode"
+					}
+				},
+				"required": [
+					"languageCode"
+				]
+			},
+			"CheckoutLineDto": {
+				"type": "object",
+				"properties": {
+					"quantity": {
+						"type": "number",
+						"example": 1
+					},
+					"variantId": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"quantity",
+					"variantId"
+				]
+			},
+			"CheckoutDto": {
+				"type": "object",
+				"properties": {
+					"created": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"lastChange": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
 					"email": {
 						"type": "string",
 						"example": "test@example.com"
+					},
+					"token": {
+						"type": "string",
+						"example": ""
 					},
 					"user": {
 						"$ref": "#/components/schemas/UserDto"
@@ -4312,9 +4475,18 @@
 					},
 					"languageCode": {
 						"$ref": "#/components/schemas/LanguageCode"
+					},
+					"lines": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CheckoutLineDto"
+						}
 					}
 				},
 				"required": [
+					"created",
+					"lastChange",
+					"token",
 					"user",
 					"billingAddress",
 					"discountAmount",
@@ -4325,7 +4497,8 @@
 					"privateMetadata",
 					"currency",
 					"country",
-					"languageCode"
+					"languageCode",
+					"lines"
 				]
 			},
 			"UpdateCheckoutDto": {
@@ -4335,67 +4508,77 @@
 						"type": "string",
 						"example": "test@example.com"
 					},
-					"user": {
-						"$ref": "#/components/schemas/UserDto"
-					},
-					"billingAddress": {
-						"$ref": "#/components/schemas/AddressDto"
-					},
-					"discountAmount": {
-						"type": "number",
-						"example": 12.3
-					},
-					"discountName": {
-						"type": "string",
-						"example": "discount-name"
-					},
 					"note": {
 						"type": "string",
 						"example": "checkout-note"
-					},
-					"shippingAddress": {
-						"$ref": "#/components/schemas/AddressDto"
-					},
-					"shipping_method_id": {
-						"type": "number",
-						"example": 1
-					},
-					"voucherCode": {
-						"type": "string",
-						"example": "ASDF123"
-					},
-					"translatedDiscountName": {
-						"type": "string",
-						"example": "discount-name"
-					},
-					"metadata": {
-						"type": "object",
-						"example": {}
-					},
-					"privateMetadata": {
-						"type": "object",
-						"example": {}
-					},
-					"currency": {
-						"type": "string",
-						"example": "EUR"
-					},
-					"country": {
-						"type": "string",
-						"example": "Greece"
-					},
-					"redirectUrl": {
-						"type": "string",
-						"example": "http://www.example.com/redirect"
-					},
-					"trackingCode": {
-						"type": "string",
-						"example": "ASDF123"
 					},
 					"languageCode": {
 						"$ref": "#/components/schemas/LanguageCode"
 					}
 				}
+			},
+			"CreateAddressDto": {
+				"type": "object",
+				"properties": {
+					"firstName": {
+						"type": "string",
+						"example": "John"
+					},
+					"lastName": {
+						"type": "string",
+						"example": "Doe"
+					},
+					"companyName": {
+						"type": "string",
+						"example": "Indera Inc."
+					},
+					"phone": {
+						"type": "string",
+						"example": "+1 1234 567 890"
+					},
+					"country": {
+						"type": "string",
+						"example": "Greece"
+					},
+					"state": {
+						"type": "string",
+						"example": "Attica"
+					},
+					"city": {
+						"type": "string",
+						"example": "Athens"
+					},
+					"zip": {
+						"type": "string",
+						"example": "12345"
+					},
+					"address": {
+						"type": "string",
+						"example": "Example 123"
+					},
+					"address2": {
+						"type": "string",
+						"example": "Example 123"
+					}
+				},
+				"required": [
+					"country",
+					"state",
+					"city",
+					"zip",
+					"address"
+				]
+			},
+			"UpdateCheckoutVoucherDto": {
+				"type": "object",
+				"properties": {
+					"voucherCode": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"voucherCode"
+				]
 			},
 			"DiscountType": {
 				"type": "string",
