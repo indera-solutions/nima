@@ -6,6 +6,7 @@ import {
 	ProductFilterParamsDto,
 	ProductFilterResultDto,
 	ProductQueryFilterDto,
+	ProductSorting,
 } from './dto/product-filtering.dto';
 import { ProductDto } from './dto/product.dto';
 import { ProductVariantRepository } from './entities/product-variant.repository';
@@ -39,6 +40,9 @@ export class FilteringService {
 		let minPrice = Number.MAX_SAFE_INTEGER, maxPrice = Number.MIN_SAFE_INTEGER;
 		const take = params.itemsPerPage || 20;
 		const skip = ((params.page || 1) - 1) * take;
+		if ( !params.sorting ) {
+			params.sorting = ProductSorting.NAME_ASC;
+		}
 
 		if ( params.categoryId ) {
 			categoryIdArray = await this.findCategoryChildrenIds(params.categoryId);

@@ -93,24 +93,27 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 					  .leftJoinAndSelect('att.productTypeAttribute', 'pta')
 					  .leftJoinAndSelect('pta.attribute', 'attr')
 					  .leftJoinAndSelect('p.productMedia', 'pmedia')
-					  .leftJoinAndSelect('pmedia.media', 'pmediaMedia')
-					  .whereInIds(ids)
-			// .loadRelationIdAndMap('category', 'p.category')
-					  .skip(skip)
-					  .take(take);
+					  .leftJoinAndSelect('pmedia.media', 'pmediaMedia');
 
 
 		if ( sorting ) {
 			if ( sorting === ProductSorting.NAME_ASC || sorting === ProductSorting.NAME_DESC ) {
-				q.orderBy(`CASE WHEN products.name ? '${ language }' THEN products.name ->> '${ language }' ELSE products.name ->> 'en' END`, sorting === ProductSorting.NAME_ASC ? 'ASC' : 'DESC', 'NULLS LAST');
+				q.addSelect(`CASE WHEN "p".name ? '${ language }' THEN "p".name ->> '${ language }' ELSE "p".name ->> 'en' END`, 'sortcolumn');
 			} else if ( sorting === ProductSorting.PRICE_ASC || sorting === ProductSorting.PRICE_DESC ) {
-				q.orderBy('CASE WHEN products.salePrice IS NOT NULL THEN products.salePrice ELSE products.price END', sorting === ProductSorting.PRICE_ASC ? 'ASC' : 'DESC', 'NULLS LAST');
+				q.addSelect(`p."minPrice"`, 'sortcolumn');
 			} else if ( sorting === ProductSorting.DATE_CREATED_ASC || sorting === ProductSorting.DATE_CREATED_DESC ) {
-				q.orderBy(`products.createdAt`, sorting === ProductSorting.DATE_CREATED_ASC ? 'ASC' : 'DESC', 'NULLS LAST');
+				q.addSelect(`p."created"`, 'sortcolumn');
 			} else if ( sorting === ProductSorting.RATING_ASC || sorting === ProductSorting.RATING_DESC ) {
-				q.orderBy(`products.rating`, sorting === ProductSorting.RATING_ASC ? 'ASC' : 'DESC', 'NULLS LAST');
+				q.addSelect(`p."rating"`, 'sortcolumn');
 			}
+			const isAsc = sorting === ProductSorting.RATING_ASC || sorting === ProductSorting.NAME_ASC || sorting === ProductSorting.PRICE_ASC || sorting === ProductSorting.DATE_CREATED_ASC;
+			q.orderBy(`sortcolumn`, isAsc ? 'ASC' : 'DESC', 'NULLS LAST');
+
 		}
+		q.skip(skip)
+		 .take(take)
+		 .whereInIds(ids);
+
 
 		return await q.getMany();
 	}
