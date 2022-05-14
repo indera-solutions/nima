@@ -90,7 +90,20 @@ export class ProductVariantService {
 		const { id } = params;
 		if ( !id ) throw new BadRequestException('INVALID_PRODUCT_ID');
 		const variant = await this.productVariantRepository.findById(params.id);
-		if ( !variant ) throw new NotFoundException('PRODUCT_NOT_FOUND');
+		if ( !variant ) throw new NotFoundException('PRODUCT_VARIANT_NOT_FOUND');
+		return variant;
+	}
+
+	async getByIdWithoutEager(params: { id: number }): Promise<ProductVariantEntity> {
+		const { id } = params;
+		if ( !id ) throw new BadRequestException('INVALID_PRODUCT_ID');
+		const variant = await this.productVariantRepository.findOne({
+			where: {
+				id: params.id,
+			},
+			loadEagerRelations: false,
+		});
+		if ( !variant ) throw new NotFoundException('PRODUCT_VARIANT_NOT_FOUND');
 		return variant;
 	}
 

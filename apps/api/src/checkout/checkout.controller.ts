@@ -3,7 +3,7 @@ import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiQuery, ApiTags
 import { AddressDto } from '../core/dto/address.dto';
 import { CreateAddressDto } from '../core/entities/address.entity';
 import { CheckoutService } from './checkout.service';
-import { CheckoutLineDto } from './dto/checkout-line.dto';
+import { UpdateCheckoutLineDto } from './dto/checkout-line.dto';
 import { CheckoutDto, CreateCheckoutDto, UpdateCheckoutDto, UpdateCheckoutVoucherDto } from './dto/checkout.dto';
 
 @Controller('checkout')
@@ -41,8 +41,8 @@ export class CheckoutController {
 
 	@Patch(':token/lines')
 	@ApiCreatedResponse({ type: () => CheckoutDto })
-	@ApiBody({ type: () => CheckoutLineDto })
-	async updateLines(@Param('token') token: string, @Body() dto: CheckoutLineDto) {
+	@ApiBody({ type: () => UpdateCheckoutLineDto })
+	async updateLines(@Param('token') token: string, @Body() dto: UpdateCheckoutLineDto) {
 		const res = await this.checkoutService.updateLines({ token: token, dto: dto });
 		return CheckoutDto.prepare(res);
 	}

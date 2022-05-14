@@ -36,7 +36,7 @@ export class CheckoutEntity {
 	token: string;
 
 	@ManyToOne(() => UserEntity, { nullable: true, eager: true })
-	@ApiProperty({ type: UserDto })
+	@ApiProperty({ type: UserDto, required: false })
 	user?: UserEntity;
 
 	@ManyToOne(() => AddressEntity, { nullable: true, eager: true })
@@ -92,10 +92,6 @@ export class CheckoutEntity {
 	@IsString()
 	currency: string;
 
-	@Column({ type: String, nullable: true })
-	@ApiProperty({ type: String, example: 'Greece' })
-	@IsString()
-	country: string;
 
 	@Column({ type: String, nullable: true })
 	@ApiProperty({ type: String, example: 'http://www.example.com/redirect', required: false })

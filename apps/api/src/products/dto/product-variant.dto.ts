@@ -3,15 +3,12 @@ import { IsArray } from 'class-validator';
 import { CreateSortableMediaDto, SortableMediaDto } from '../../core/dto/media.dto';
 import { ProductVariantEntity } from '../entities/product-variant.entity';
 import { CreateAssignedProductVariantAttributeDto, ProductAttributeDto } from './product-attribute-assignment.dto';
-import { ProductDto } from './product.dto';
 
 export class ProductVariantDto extends OmitType(ProductVariantEntity, ['attributes', 'product', 'productMedia']) {
 	@ApiProperty({ type: [ProductAttributeDto] })
 	@IsArray()
 	attributes: ProductAttributeDto[];
 
-	@ApiProperty({ type: ProductDto })
-	product: ProductDto;
 
 	@ApiProperty({ type: () => SortableMediaDto, isArray: true })
 	productMedia: SortableMediaDto[];
@@ -28,7 +25,7 @@ export class ProductVariantDto extends OmitType(ProductVariantEntity, ['attribut
 			updatedAt: entity.updatedAt,
 			attributes: entity.attributes.map(attr => ProductAttributeDto.prepareVariant(attr)),
 			sortOrder: entity.sortOrder,
-			product: entity.product ? ProductDto.prepare(entity.product) : undefined,
+			productId: entity.productId,
 			costPriceAmount: entity.costPriceAmount,
 			isPreorder: entity.isPreorder,
 			preorderEndDate: entity.preorderEndDate,
@@ -43,7 +40,7 @@ export class ProductVariantDto extends OmitType(ProductVariantEntity, ['attribut
 	}
 }
 
-export class CreateProductVariantDto extends OmitType(ProductVariantDto, ['created', 'id', 'updatedAt', 'product', 'productMedia', 'attributes']) {
+export class CreateProductVariantDto extends OmitType(ProductVariantDto, ['created', 'id', 'updatedAt', 'productId', 'productMedia', 'attributes']) {
 	@ApiProperty({ type: [CreateAssignedProductVariantAttributeDto] })
 	@IsArray()
 	attributes: CreateAssignedProductVariantAttributeDto[];

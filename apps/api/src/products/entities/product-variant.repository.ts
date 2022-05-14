@@ -67,6 +67,14 @@ export class ProductVariantRepository extends BaseRepository<ProductVariantEntit
 		});
 	}
 
+	async getProductIdOfVariant(variantId: number): Promise<number | undefined> {
+		const res = await this.createQueryBuilder('v')
+							  .select('product.id')
+							  .where('v.id === :id', { id: variantId })
+							  .getRawOne<{ productId: number }>();
+		return res?.productId || undefined;
+	}
+
 	async findFilteredVariantIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string): Promise<{ id: number, price: number }[]> {
 		const caQb = this.createQueryBuilder('pv')
 						 .select('pv.id', 'id')

@@ -4,7 +4,7 @@ import { AddressService } from '../core/address/address.service';
 import { AddressDto } from '../core/dto/address.dto';
 import { ProductVariantService } from '../products/product-variant.service';
 import { UsersService } from '../users/users.service';
-import { CheckoutLineDto } from './dto/checkout-line.dto';
+import { UpdateCheckoutLineDto } from './dto/checkout-line.dto';
 import { CreateCheckoutDto, UpdateCheckoutDto, UpdateCheckoutVoucherDto } from './dto/checkout.dto';
 import { CheckoutLineRepository } from './entities/checkout-line.repository';
 import { CheckoutEntity } from './entities/checkout.entity';
@@ -47,8 +47,12 @@ export class CheckoutService {
 		return this.findOne({ token: co.identifiers[0].token });
 	}
 
-	async findOne(params: { token: string }) {
-		return this.checkoutRepository.findByToken(params.token);
+	async findOne(params: { token: string }): Promise<CheckoutEntity> {
+		const res = await this.checkoutRepository.findByToken(params.token);
+		if ( !res ) {
+			throw new NotFoundException('CHECKOUT_NOT_FOUND');
+		}
+		return res;
 	}
 
 	async updateInfo(params: { token: string, updateCheckoutDto: UpdateCheckoutDto }) {
@@ -68,11 +72,11 @@ export class CheckoutService {
 		return this.findOne({ token });
 	}
 
-	async updateLines(params: { token: string, dto: CheckoutLineDto }): Promise<CheckoutEntity> {
+	async updateLines(params: { token: string, dto: UpdateCheckoutLineDto }): Promise<CheckoutEntity> {
 		const { dto, token } = params;
 		const co = await this.findOne({ token: token });
-		const variant = await this.variantService.getById({ id: dto.variantId });
-		if ( dto.quantity > 0 ) await this.checkoutLineRepository.save({ checkout: co, variant: variant, quantity: dto.quantity });
+		const variant = await this.variantService.getByIdWithoutEager({ id: dto.variantId });
+		if ( dto.quantity > 0 ) await this.checkoutLineRepository.save({ checkout: co, variant: variant, quantity: dto.quantity, product: { id: variant.productId } });
 		if ( dto.quantity <= 0 ) await this.checkoutLineRepository.deleteByVariantAndToken(dto.variantId, token);
 		return this.findOne({ token: token });
 	}
@@ -81,7 +85,6 @@ export class CheckoutService {
 		const { dto, token } = params;
 		let { billing, shipping } = params;
 		const co = await this.findOne({ token: token });
-		if ( !co ) throw new NotFoundException('CHECKOUT_NOT_FOUND');
 		if ( !billing && !shipping ) {
 			billing = true;
 			shipping = true;
@@ -101,7 +104,6 @@ export class CheckoutService {
 	async remove(params: { token: string }) {
 		const { token } = params;
 		const co = await this.findOne({ token: token });
-		if ( !co ) throw new NotFoundException('CHECKOUT_NOT_FOUND');
 		await this.checkoutRepository.deleteByToken(token);
 		return co;
 	}

@@ -23,7 +23,6 @@ export class CheckoutDto extends OmitType(CheckoutEntity, ['lines']) {
 			metadata: entity.metadata,
 			privateMetadata: options?.isAdmin ? entity.privateMetadata : {},
 			currency: entity.currency,
-			country: entity.country,
 			discountAmount: entity.discountAmount,
 			discountName: entity.discountName,
 			languageCode: entity.languageCode,

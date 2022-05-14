@@ -362,7 +362,6 @@ export interface CategoryDto {
 	 */
 	'children': Array<CategoryDto>;
 }
-
 /**
  *
  * @export
@@ -398,7 +397,7 @@ export interface CheckoutDto {
 	 * @type {UserDto}
 	 * @memberof CheckoutDto
 	 */
-	'user': UserDto;
+	'user'?: UserDto;
 	/**
 	 *
 	 * @type {AddressDto}
@@ -470,12 +469,6 @@ export interface CheckoutDto {
 	 * @type {string}
 	 * @memberof CheckoutDto
 	 */
-	'country': string;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof CheckoutDto
-	 */
 	'redirectUrl'?: string;
 	/**
 	 *
@@ -496,7 +489,6 @@ export interface CheckoutDto {
 	 */
 	'lines': Array<CheckoutLineDto>;
 }
-
 /**
  *
  * @export
@@ -515,8 +507,13 @@ export interface CheckoutLineDto {
 	 * @memberof CheckoutLineDto
 	 */
 	'variantId': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CheckoutLineDto
+	 */
+	'productId': number;
 }
-
 /**
  *
  * @export
@@ -584,7 +581,6 @@ export interface CreateAddressDto {
 	 */
 	'address2'?: string;
 }
-
 /**
  *
  * @export
@@ -1403,7 +1399,6 @@ export interface CreateSortableMediaDto {
 	 */
 	'mediaId': number;
 }
-
 /**
  *
  * @export
@@ -1564,7 +1559,6 @@ export interface MediaListPaginated {
 	 */
 	'totalCount': number;
 }
-
 /**
  *
  * @export
@@ -1886,7 +1880,6 @@ export interface ProductFilterResultDto {
 	 */
 	'totalCount': number;
 }
-
 /**
  *
  * @export
@@ -2156,12 +2149,6 @@ export interface ProductVariantDto {
 	'attributes': Array<ProductAttributeDto>;
 	/**
 	 *
-	 * @type {ProductDto}
-	 * @memberof ProductVariantDto
-	 */
-	'product': ProductDto;
-	/**
-	 *
 	 * @type {Array<SortableMediaDto>}
 	 * @memberof ProductVariantDto
 	 */
@@ -2352,7 +2339,6 @@ export interface TranslatableDto {
 	 */
 	'en'?: string;
 }
-
 /**
  *
  * @export
@@ -2611,6 +2597,26 @@ export interface UpdateCheckoutDto {
 /**
  *
  * @export
+ * @interface UpdateCheckoutLineDto
+ */
+export interface UpdateCheckoutLineDto {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateCheckoutLineDto
+	 */
+	'quantity': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateCheckoutLineDto
+	 */
+	'variantId': number;
+}
+
+/**
+ *
+ * @export
  * @interface UpdateCheckoutVoucherDto
  */
 export interface UpdateCheckoutVoucherDto {
@@ -2621,7 +2627,6 @@ export interface UpdateCheckoutVoucherDto {
 	 */
 	'voucherCode': string;
 }
-
 /**
  *
  * @export
@@ -4996,15 +5001,15 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 		/**
 		 *
 		 * @param {string} token
-		 * @param {CheckoutLineDto} checkoutLineDto
+		 * @param {UpdateCheckoutLineDto} updateCheckoutLineDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		checkoutUpdateLines: async (token: string, checkoutLineDto: CheckoutLineDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		checkoutUpdateLines: async (token: string, updateCheckoutLineDto: UpdateCheckoutLineDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'token' is not null or undefined
 			assertParamExists('checkoutUpdateLines', 'token', token)
-			// verify required parameter 'checkoutLineDto' is not null or undefined
-			assertParamExists('checkoutUpdateLines', 'checkoutLineDto', checkoutLineDto)
+			// verify required parameter 'updateCheckoutLineDto' is not null or undefined
+			assertParamExists('checkoutUpdateLines', 'updateCheckoutLineDto', updateCheckoutLineDto)
 			const localVarPath = `/api/v1/checkout/{token}/lines`
 				.replace(`{${ "token" }}`, encodeURIComponent(String(token)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -5024,7 +5029,7 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(checkoutLineDto, localVarRequestOptions, configuration)
+			localVarRequestOptions.data = serializeDataIfNeeded(updateCheckoutLineDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -5126,12 +5131,12 @@ export const CheckoutApiFp = function (configuration?: Configuration) {
 		/**
 		 *
 		 * @param {string} token
-		 * @param {CheckoutLineDto} checkoutLineDto
+		 * @param {UpdateCheckoutLineDto} updateCheckoutLineDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async checkoutUpdateLines(token: string, checkoutLineDto: CheckoutLineDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckoutDto>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.checkoutUpdateLines(token, checkoutLineDto, options);
+		async checkoutUpdateLines(token: string, updateCheckoutLineDto: UpdateCheckoutLineDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckoutDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.checkoutUpdateLines(token, updateCheckoutLineDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
@@ -5198,12 +5203,12 @@ export const CheckoutApiFactory = function (configuration?: Configuration, baseP
 		/**
 		 *
 		 * @param {string} token
-		 * @param {CheckoutLineDto} checkoutLineDto
+		 * @param {UpdateCheckoutLineDto} updateCheckoutLineDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		checkoutUpdateLines(token: string, checkoutLineDto: CheckoutLineDto, options?: any): AxiosPromise<CheckoutDto> {
-			return localVarFp.checkoutUpdateLines(token, checkoutLineDto, options).then((request) => request(axios, basePath));
+		checkoutUpdateLines(token: string, updateCheckoutLineDto: UpdateCheckoutLineDto, options?: any): AxiosPromise<CheckoutDto> {
+			return localVarFp.checkoutUpdateLines(token, updateCheckoutLineDto, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -5317,10 +5322,10 @@ export interface CheckoutApiCheckoutUpdateLinesRequest {
 
 	/**
 	 *
-	 * @type {CheckoutLineDto}
+	 * @type {UpdateCheckoutLineDto}
 	 * @memberof CheckoutApiCheckoutUpdateLines
 	 */
-	readonly checkoutLineDto: CheckoutLineDto;
+	readonly updateCheckoutLineDto: UpdateCheckoutLineDto;
 }
 
 /**
@@ -5403,7 +5408,7 @@ export class CheckoutApi extends BaseAPI {
 	 * @memberof CheckoutApi
 	 */
 	public checkoutUpdateLines(requestParameters: CheckoutApiCheckoutUpdateLinesRequest, options?: AxiosRequestConfig) {
-		return CheckoutApiFp(this.configuration).checkoutUpdateLines(requestParameters.token, requestParameters.checkoutLineDto, options).then((request) => request(this.axios, this.basePath));
+		return CheckoutApiFp(this.configuration).checkoutUpdateLines(requestParameters.token, requestParameters.updateCheckoutLineDto, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**

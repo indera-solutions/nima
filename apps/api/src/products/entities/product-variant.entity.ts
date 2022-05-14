@@ -8,6 +8,7 @@ import {
 	ManyToOne,
 	OneToMany,
 	PrimaryGeneratedColumn,
+	RelationId,
 	UpdateDateColumn,
 } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
@@ -34,6 +35,9 @@ export class ProductVariantEntity {
 
 	@ManyToOne(() => ProductEntity, { deferrable: 'INITIALLY DEFERRED', onDelete: 'CASCADE' })
 	product: ProductEntity;
+
+	@RelationId((variant: ProductVariantEntity) => variant.product)
+	productId: number;
 
 	@Column({ nullable: true })
 	@ApiProperty({ type: Number, example: 1, required: false })

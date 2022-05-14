@@ -87,6 +87,7 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 		const q = this.createQueryBuilder('p')
 					  .leftJoinAndSelect('p.productType', 'pt')
 					  .leftJoinAndSelect('p.category', 'c')
+					  .leftJoinAndSelect('p.defaultVariant', 'dv')
 					  .leftJoinAndSelect('p.attributes', 'att')
 					  .leftJoinAndSelect('att.values', 'aval')
 					  .leftJoinAndSelect('aval.value', 'avalval')
