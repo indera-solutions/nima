@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { LanguageCode, Metadata } from '@nima-cms/utils';
-import { IsEmail, IsInt, IsObject, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEmail, IsInt, IsObject, IsOptional, IsString } from 'class-validator';
 import {
 	Column,
 	CreateDateColumn,
@@ -31,15 +31,21 @@ export class CheckoutEntity {
 	@IsEmail()
 	email?: string;
 
+	@Column({ type: Boolean, default: true })
+	@ApiProperty({ type: Boolean, example: true, required: false })
+	@IsBoolean()
+	useShippingAsBilling: string;
+
+
 	@PrimaryGeneratedColumn('uuid')
 	@ApiProperty({ type: String, example: '' })
 	token: string;
 
-	@ManyToOne(() => UserEntity, { nullable: true, eager: true })
+	@ManyToOne(() => UserEntity, { nullable: true })
 	@ApiProperty({ type: UserDto, required: false })
 	user?: UserEntity;
 
-	@ManyToOne(() => AddressEntity, { nullable: true, eager: true })
+	@ManyToOne(() => AddressEntity, { nullable: true })
 	@ApiProperty({ type: AddressDto })
 	billingAddress?: AddressEntity;
 
@@ -56,7 +62,7 @@ export class CheckoutEntity {
 	@IsString()
 	note: string;
 
-	@ManyToOne(() => AddressEntity, { nullable: true, eager: true })
+	@ManyToOne(() => AddressEntity, { nullable: true })
 	@ApiProperty({ type: AddressDto })
 	shippingAddress?: AddressEntity;
 
@@ -106,6 +112,6 @@ export class CheckoutEntity {
 	@IsString()
 	languageCode: LanguageCode;
 
-	@OneToMany(() => CheckoutLineEntity, line => line.checkout, { eager: true })
-	lines: CheckoutLineEntity[];
+	@OneToMany(() => CheckoutLineEntity, line => line.checkout)
+	lines?: CheckoutLineEntity[];
 }

@@ -12,6 +12,16 @@ export class CheckoutRepository extends BaseRepository<CheckoutEntity> {
 		});
 	}
 
+	getWholeObject(token: string) {
+		return this.findOne({
+			where: {
+				token: token,
+			},
+			relations: ['user', 'billingAddress', 'shippingAddress', 'lines', 'lines.variant'],
+
+		});
+	}
+
 	findByUserId(userId: number) {
 		return this.findOne({
 			where: {
