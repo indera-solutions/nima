@@ -3,7 +3,6 @@ import { Metadata } from '@nima-cms/utils';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserDto } from '../../users/dto/user.dto';
 import { UserEntity } from '../../users/entities/user.entity';
-import { OrderDto } from '../dto/order.dto';
 import { OrderEventsEnum } from '../dto/order.enum';
 import { OrderEntity } from './order.entity';
 
@@ -21,13 +20,12 @@ export class OrderEventEntity {
 	@ApiProperty({ enum: OrderEventsEnum, enumName: 'OrderEventsEnum' })
 	eventType: OrderEventsEnum;
 
-	@ManyToOne(() => OrderEntity)
-	@ApiProperty({ type: OrderDto })
-	order: OrderDto;
+	@ManyToOne(() => OrderEntity, order => order.events)
+	order: OrderEntity;
 
 	@ManyToOne(() => UserEntity)
 	@ApiProperty({ type: UserDto })
-	user: UserDto;
+	user: UserEntity;
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: Object, example: {} })

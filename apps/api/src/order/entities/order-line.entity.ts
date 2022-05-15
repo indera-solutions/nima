@@ -4,7 +4,6 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { ProductVariantDto } from '../../products/dto/product-variant.dto';
 import { ProductVariantEntity } from '../../products/entities/product-variant.entity';
-import { OrderDto } from '../dto/order.dto';
 import { OrderEntity } from './order.entity';
 
 @Entity('orders_order_lines')
@@ -37,9 +36,8 @@ export class OrderLineEntity {
 	@ApiProperty({ type: Boolean, example: true })
 	isShippingRequired: boolean;
 
-	@ManyToOne(() => OrderEntity)
-	@ApiProperty({ type: OrderDto })
-	order: OrderDto;
+	@ManyToOne(() => OrderEntity, order => order.lines)
+	order: OrderEntity;
 
 	@Column({ type: Number })
 	@ApiProperty({ type: Number, example: 1 })
@@ -47,7 +45,7 @@ export class OrderLineEntity {
 
 	@ManyToOne(() => ProductVariantEntity)
 	@ApiProperty({ type: ProductVariantDto })
-	variant: ProductVariantDto;
+	variant: ProductVariantEntity;
 
 	@Column({ type: 'float' })
 	@ApiProperty({ type: Number, example: 12.3 })
