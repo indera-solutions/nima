@@ -76,5 +76,5 @@ export class AttributeEntity {
 	unit?: Unit;
 
 	@OneToMany(() => AttributeValueEntity, (value) => value.attribute)
-	values: AttributeValueEntity;
+	values?: AttributeValueEntity;
 }

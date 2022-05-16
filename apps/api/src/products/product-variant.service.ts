@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { BasePaginatedRequest, PaginatedResults } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { AttributeValuesService } from '../attributes/services/attribute-values.service';
-import { ProductTypeVariantAttributesService } from '../product-types/product-type-variant-attributes.service';
+import { ProductTypeVariantAttributesService } from '../product-types/services/product-type-variant-attributes.service';
 import { CreateAssignedProductVariantAttributeDto } from './dto/product-attribute-assignment.dto';
 import { CreateAssignedProductVariantAttributeValueDto } from './dto/product-attribute-value-assignment.dto';
 import { CreateProductVariantDto } from './dto/product-variant.dto';
@@ -230,7 +230,7 @@ export class ProductVariantService {
 	}
 
 	private async createValue(dto: CreateAssignedProductVariantAttributeValueDto, assignment: AssignedProductVariantAttributeEntity) {
-		const value = await this.attributeValuesService.getById({ id: dto.valueId });
+		const value = await this.attributeValuesService.findById({ id: dto.valueId });
 		await this.assignedProductVariantAttributeValueRepository.save({ value: value, assignedProductVariantAttribute: assignment, sortOrder: dto.sortOrder });
 	}
 }

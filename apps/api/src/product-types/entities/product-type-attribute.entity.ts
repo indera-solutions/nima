@@ -10,7 +10,7 @@ export class ProductTypeAttributeEntity {
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
 
-	@ManyToOne(() => AttributeEntity, { eager: true, onDelete: 'CASCADE', orphanedRowAction: 'delete' })
+	@ManyToOne(() => AttributeEntity, { onDelete: 'CASCADE', orphanedRowAction: 'delete' })
 	attribute: AttributeEntity;
 
 	@ManyToOne(() => ProductTypeEntity, { onDelete: 'CASCADE', orphanedRowAction: 'delete' })

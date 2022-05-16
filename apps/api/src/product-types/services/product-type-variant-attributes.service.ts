@@ -1,12 +1,12 @@
 import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
-import { AttributesService } from '../attributes/services/attributes.service';
+import { AttributesService } from '../../attributes/services/attributes.service';
 import {
 	CreateProductTypeVariantAttributeDto,
 	UpdateProductTypeVariantAttributeDto,
-} from './dto/product-type-attribute.dto';
-import { ProductTypeVariantAttributeEntity } from './entities';
+} from '../dto/product-type-attribute.dto';
+import { ProductTypeVariantAttributeEntity } from '../entities';
+import { ProductTypeVariantAttributeRepository } from '../repositories';
 import { ProductTypesService } from './product-types.service';
-import { ProductTypeVariantAttributeRepository } from './repositories';
 
 @Injectable()
 export class ProductTypeVariantAttributesService {

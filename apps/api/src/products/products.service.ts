@@ -3,8 +3,8 @@ import { BasePaginatedRequest, getSlug, PaginatedResults } from '@nima-cms/utils
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { AttributeValuesService } from '../attributes/services/attribute-values.service';
 import { CategoriesService } from '../categories/categories.service';
-import { ProductTypeAttributesService } from '../product-types/product-type-attributes.service';
-import { ProductTypesService } from '../product-types/product-types.service';
+import { ProductTypeAttributesService } from '../product-types/services/product-type-attributes.service';
+import { ProductTypesService } from '../product-types/services/product-types.service';
 import { CreateAssignedProductAttributeDto } from './dto/product-attribute-assignment.dto';
 import { CreateAssignedProductAttributeValueDto } from './dto/product-attribute-value-assignment.dto';
 import { ProductQueryFilterDto } from './dto/product-filtering.dto';
@@ -230,7 +230,7 @@ export class ProductsService {
 	}
 
 	private async createValue(dto: CreateAssignedProductAttributeValueDto, assignment: AssignedProductAttributeEntity) {
-		const value = await this.attributeValuesService.getById({ id: dto.valueId });
+		const value = await this.attributeValuesService.findById({ id: dto.valueId });
 		await this.assignedProductAttributeValueRepository.save({ value: value, assignedProductAttribute: assignment, sortOrder: dto.sortOrder });
 	}
 

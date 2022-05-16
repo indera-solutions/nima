@@ -52,9 +52,9 @@ export class ProductTypeEntity {
 	@IsString()
 	slug: string;
 
-	@OneToMany(() => ProductTypeAttributeEntity, pta => pta.productType, { eager: true })
-	attributes: ProductTypeAttributeEntity[];
+	@OneToMany(() => ProductTypeAttributeEntity, pta => pta.productType)
+	attributes?: ProductTypeAttributeEntity[];
 
-	@OneToMany(() => ProductTypeVariantAttributeEntity, pta => pta.productType, { eager: true })
-	variantAttributes: ProductTypeVariantAttributeEntity[];
+	@OneToMany(() => ProductTypeVariantAttributeEntity, pta => pta.productType)
+	variantAttributes?: ProductTypeVariantAttributeEntity[];
 }

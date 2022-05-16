@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 import { AttributeDto, CreateAttributeDto, UpdateAttributeDto } from '../dto/attribute.dto';
@@ -15,22 +15,23 @@ export class AttributesController {
 	@ApiBody({ type: CreateAttributeDto })
 	@UseGuards(JwtAuthGuard)
 	@ApiBearerAuth()
-	create(@Body() createAttributeDto: CreateAttributeDto): Promise<AttributeDto> {
-		return this.service.save({ dto: createAttributeDto });
+	async create(@Body() createAttributeDto: CreateAttributeDto): Promise<AttributeDto> {
+		const res = await this.service.save({ dto: createAttributeDto });
+		return await this.service.getDto(res.id);
 	}
 
 	@Get()
 	@ApiOkResponse({ type: [AttributeDto] })
-	findAll(): Promise<AttributeDto[]> {
-		return this.service.findAll();
+	async findAll(): Promise<AttributeDto[]> {
+		return await this.service.getDtos(undefined);
 	}
 
 	@Get('/:attributeId')
 	@ApiParam({ type: Number, name: 'attributeId' })
 	@ApiNotFoundResponse({ description: 'ATTRIBUTE_NOT_FOUND' })
 	@ApiOkResponse({ type: AttributeDto })
-	getById(@Param('attributeId', ParseIntPipe) attributeId: number): Promise<AttributeDto> {
-		return this.service.getById({ id: attributeId });
+	async getById(@Param('attributeId') attributeId: number): Promise<AttributeDto> {
+		return await this.service.getDto(attributeId);
 	}
 
 	@Patch('/:attributeId')
@@ -39,8 +40,10 @@ export class AttributesController {
 	@ApiParam({ type: Number, name: 'attributeId' })
 	@UseGuards(JwtAuthGuard)
 	@ApiBearerAuth()
-	patch(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() updateAttributeDto: UpdateAttributeDto): Promise<AttributeDto> {
-		return this.service.update({ id: attributeId, dto: updateAttributeDto });
+	async patch(@Param('attributeId') attributeId: number, @Body() updateAttributeDto: UpdateAttributeDto): Promise<AttributeDto> {
+		await this.service.patch({ id: attributeId, dto: updateAttributeDto });
+		return await this.service.getDto(attributeId);
+
 	}
 
 	@Put('/:attributeId')
@@ -49,8 +52,9 @@ export class AttributesController {
 	@ApiParam({ type: Number, name: 'attributeId' })
 	@UseGuards(JwtAuthGuard)
 	@ApiBearerAuth()
-	update(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() createAttributeDto: CreateAttributeDto): Promise<AttributeDto> {
-		return this.service.save({ id: attributeId, dto: createAttributeDto });
+	async update(@Param('attributeId') attributeId: number, @Body() createAttributeDto: CreateAttributeDto): Promise<AttributeDto> {
+		await this.service.update({ id: attributeId, dto: createAttributeDto });
+		return await this.service.getDto(attributeId);
 	}
 
 	@Delete('/:attributeId')
@@ -59,7 +63,9 @@ export class AttributesController {
 	@ApiParam({ type: Number, name: 'attributeId' })
 	@UseGuards(JwtAuthGuard)
 	@ApiBearerAuth()
-	remove(@Param('attributeId', ParseIntPipe) attributeId: number): Promise<AttributeDto> {
-		return this.service.deleteById({ id: attributeId });
+	async remove(@Param('attributeId') attributeId: number): Promise<AttributeDto> {
+		const dto = await this.service.getDto(attributeId);
+		await this.service.deleteById({ id: attributeId });
+		return dto;
 	}
 }

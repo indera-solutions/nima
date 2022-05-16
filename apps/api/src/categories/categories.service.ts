@@ -6,16 +6,16 @@ import {
 	NotImplementedException,
 } from '@nestjs/common';
 import { getSlug } from '@nima-cms/utils';
-import { CreateCategoryDto, UpdateCategoryDto } from './dto/category.dto';
+import { CategoryDto, CreateCategoryDto, UpdateCategoryDto } from './dto/category.dto';
 import { CategoryEntity } from './entities/category.entity';
-import { CategoryRepository } from './entities/category.repository';
+import { CategoryRepository } from './repositories/category.repository';
 
 @Injectable()
 export class CategoriesService {
 	constructor(private categoryRepository: CategoryRepository) {
 	}
 
-	async create(params: { createCategoryDto: CreateCategoryDto }): Promise<CategoryEntity> {
+	async create(params: { createCategoryDto: CreateCategoryDto }): Promise<number> {
 		const { parentId, ...dto } = params.createCategoryDto;
 
 		if ( !dto.slug || dto.slug.length === 0 ) {
@@ -32,7 +32,7 @@ export class CategoriesService {
 			parent = await this.findOne({ id: parentId, depth: 0 });
 		}
 		const res = await this.categoryRepository.insert({ ...dto, parent: parent });
-		return await this.findOne({ id: res.identifiers[0].id, depth: 0 });
+		return res.identifiers[0].id;
 	}
 
 	async findAll(params: { depth?: number }): Promise<CategoryEntity[]> {
@@ -58,8 +58,7 @@ export class CategoriesService {
 			...params.updateCategoryDto,
 		};
 		delete partial.parentId;
-		await this.categoryRepository.update(params.id, partial);
-		return this.findOne({ id: params.id });
+		return await this.categoryRepository.update(params.id, partial);
 	}
 
 	async remove(params: { id: number, removeChildren?: boolean }) {
@@ -77,5 +76,30 @@ export class CategoriesService {
 
 	async listIdsOfChildren(params: { id: number }) {
 		return await this.categoryRepository.listIdsOfChildren(params.id);
+	}
+
+	async getDtos(ids?: number[]): Promise<CategoryDto[]> {
+		const attributes = ids ? await this.categoryRepository.findByIds(ids) : await this.categoryRepository.find();
+		return attributes.map(attributeValue => this.parseDto(attributeValue));
+	}
+
+	async getDto(id: number): Promise<CategoryDto> {
+		const dtos = await this.getDtos([id]);
+		if ( !dtos[0] ) throw new NotFoundException('CATEGORY_NOT_FOUND');
+		return dtos[0];
+	}
+
+	parseDto(entity: CategoryEntity): CategoryDto {
+		return {
+			id: entity.id,
+			name: entity.name,
+			slug: entity.slug,
+			children: entity.children?.map(c => this.parseDto(c)) || [],
+			privateMetadata: entity.privateMetadata,
+			metadata: entity.metadata,
+			description: entity.description,
+			seoTitle: entity.seoTitle,
+			seoDescription: entity.seoDescription,
+		};
 	}
 }

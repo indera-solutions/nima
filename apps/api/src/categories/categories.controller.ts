@@ -11,7 +11,6 @@ import {
 } from '@nestjs/swagger';
 import { CategoriesService } from './categories.service';
 import { CategoryDto, CreateCategoryDto, UpdateCategoryDto } from './dto/category.dto';
-import { CategoryEntity } from './entities/category.entity';
 
 @Controller('categories')
 @ApiTags('Categories')
@@ -23,8 +22,8 @@ export class CategoriesController {
 	@ApiBody({ type: CreateCategoryDto })
 	@ApiCreatedResponse({ type: CategoryDto })
 	async create(@Body() createCategoryDto: CreateCategoryDto): Promise<CategoryDto> {
-		const res: CategoryEntity = await this.categoriesService.create({ createCategoryDto });
-		return CategoryDto.prepare(res);
+		const id = await this.categoriesService.create({ createCategoryDto });
+		return await this.categoriesService.getDto(id);
 	}
 
 	@Get()
@@ -32,7 +31,7 @@ export class CategoriesController {
 	@ApiOkResponse({ type: [CategoryDto] })
 	async findAll(@Query('depth') depth?: number): Promise<CategoryDto[]> {
 		const res = await this.categoriesService.findAll({ depth });
-		return res.map(r => CategoryDto.prepare(r));
+		return res.map(r => this.categoriesService.parseDto(r));
 	}
 
 	@Get(':id')
@@ -43,18 +42,21 @@ export class CategoriesController {
 	@ApiNotFoundResponse({ description: 'The category does not exists' })
 	async findOne(@Param('id', ParseIntPipe) id: number, @Query('depth') depth?: number): Promise<CategoryDto> {
 		const res = await this.categoriesService.findOne({ id, depth });
-		return CategoryDto.prepare(res);
+		return this.categoriesService.parseDto(res);
 	}
 
 	@Put(':id')
 	@ApiOkResponse({ type: CategoryDto })
-	update(@Param('id') id: number, @Body() updateCategoryDto: UpdateCategoryDto) {
-		return this.categoriesService.update({ id, updateCategoryDto });
+	async update(@Param('id') id: number, @Body() updateCategoryDto: UpdateCategoryDto) {
+		await this.categoriesService.update({ id, updateCategoryDto });
+		return await this.categoriesService.getDto(id);
 	}
 
 	@Delete(':id')
 	@ApiQuery({ name: 'forceDelete', description: 'Deletes the children subcategories. Default to false.', required: false })
-	remove(@Param('id') id: number, @Query('forceDelete') forceDelete?: boolean) {
-		return this.categoriesService.remove({ id, removeChildren: forceDelete });
+	async remove(@Param('id') id: number, @Query('forceDelete') forceDelete?: boolean) {
+		const dto = await this.categoriesService.getDto(id);
+		await this.categoriesService.remove({ id, removeChildren: forceDelete });
+		return dto;
 	}
 }

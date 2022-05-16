@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ProductTypeVariantAttributesService } from '../product-type-variant-attributes.service';
+import { ProductTypeVariantAttributesService } from '../services/product-type-variant-attributes.service';
 
 describe('ProductTypeVariantAttributeService', () => {
 	let service: ProductTypeVariantAttributesService;

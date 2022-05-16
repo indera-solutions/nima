@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseGuard
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateProductTypeDto, ProductTypeDto } from './dto/product-type.dto';
-import { ProductTypesService } from './product-types.service';
+import { ProductTypesService } from './services/product-types.service';
 
 @Controller('product-types')
 @ApiTags('Product Types')
