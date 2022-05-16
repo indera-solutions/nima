@@ -13,6 +13,7 @@ import { OrderModule, OrderModuleEntities } from './order/order.module';
 import { PaymentsModule, PaymentsModuleEntities } from './payments/payments.module';
 import { ProductTypesModule, ProductTypesModuleEntities } from './product-types/product-types.module';
 import { ProductsModule, ProductsModuleEntities } from './products/products.module';
+import { ShippingModule, ShippingModuleEntities } from './shipping/shipping.module';
 import { UserEntity } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 
@@ -26,6 +27,7 @@ const ALL_ENTITIES = [
 	...OrderModuleEntities,
 	...CheckoutModuleEntities,
 	...PaymentsModuleEntities,
+	...ShippingModuleEntities,
 ];
 
 @Module({
@@ -54,6 +56,7 @@ const ALL_ENTITIES = [
 		CheckoutModule,
 		DiscountsModule,
 		PaymentsModule,
+		ShippingModule,
 	],
 	controllers: [AppController],
 	providers: [
