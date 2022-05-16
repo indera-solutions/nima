@@ -17,15 +17,14 @@ export class CheckoutController {
 	@ApiBody({ type: () => CreateCheckoutDto })
 	async create(@Body() createCheckoutDto: CreateCheckoutDto) {
 		const res = await this.checkoutService.create({ createCheckoutDto: createCheckoutDto });
-		return CheckoutDto.prepare(res);
+		return await this.checkoutService.getDto(res);
 	}
 
 	@Get(':token')
 	@ApiOkResponse({ type: () => CheckoutDto })
 	@ApiParam({ type: String, name: 'token' })
 	async findOne(@Param('token') token: string) {
-		const res = await this.checkoutService.findOne({ token: token });
-		return CheckoutDto.prepare(res);
+		return await this.checkoutService.getDto(token);
 	}
 
 	@Patch(':token')
@@ -33,18 +32,18 @@ export class CheckoutController {
 	@ApiBody({ type: () => UpdateCheckoutDto })
 	@ApiParam({ type: String, name: 'token' })
 	async update(@Param('token') token: string, @Body() updateCheckoutDto: UpdateCheckoutDto) {
-		const res = await this.checkoutService.updateInfo({
+		await this.checkoutService.updateInfo({
 			token: token, updateCheckoutDto,
 		});
-		return CheckoutDto.prepare(res);
+		return await this.checkoutService.getDto(token);
 	}
 
 	@Patch(':token/lines')
 	@ApiCreatedResponse({ type: () => CheckoutDto })
 	@ApiBody({ type: () => UpdateCheckoutLineDto })
 	async updateLines(@Param('token') token: string, @Body() dto: UpdateCheckoutLineDto) {
-		const res = await this.checkoutService.updateLines({ token: token, dto: dto });
-		return CheckoutDto.prepare(res);
+		await this.checkoutService.updateLines({ token: token, dto: dto });
+		return await this.checkoutService.getDto(token);
 	}
 
 	@Patch(':token/address')
@@ -53,15 +52,15 @@ export class CheckoutController {
 	@ApiQuery({ type: Boolean, name: 'shipping', required: false })
 	@ApiQuery({ type: Boolean, name: 'billing', required: false })
 	async updateAddress(@Param('token') token: string, @Body() address: AddressDto, @Query('shipping') shipping?: boolean, @Query('billing') billing?: boolean) {
-		const res = await this.checkoutService.updateAddress({ token: token, dto: address, billing: billing, shipping: shipping });
-		return CheckoutDto.prepare(res);
+		await this.checkoutService.updateAddress({ token: token, dto: address, billing: billing, shipping: shipping });
+		return await this.checkoutService.getDto(token);
 	}
 
 	@Patch(':token/voucher')
 	@ApiCreatedResponse({ type: () => CheckoutDto })
 	@ApiBody({ type: () => UpdateCheckoutVoucherDto })
 	async updateVoucher(@Param('token') token: string, @Body() dto: UpdateCheckoutVoucherDto) {
-		const res = await this.checkoutService.updateVoucher({ token: token, dto: dto });
-		return CheckoutDto.prepare(res);
+		await this.checkoutService.updateVoucher({ token: token, dto: dto });
+		return await this.checkoutService.getDto(token);
 	}
 }

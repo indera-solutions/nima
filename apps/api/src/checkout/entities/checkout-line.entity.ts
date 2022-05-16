@@ -13,10 +13,10 @@ export class CheckoutLineEntity {
 	quantity: number;
 
 	@ManyToOne(() => CheckoutEntity, checkout => checkout.lines, { primary: true })
-	checkout: CheckoutEntity;
+	checkout?: CheckoutEntity;
 
 	@ManyToOne(() => ProductVariantEntity, { primary: true })
-	variant: ProductVariantEntity;
+	variant?: ProductVariantEntity;
 
 	@RelationId((post: CheckoutLineEntity) => post.variant)
 	@ApiProperty()
@@ -24,7 +24,7 @@ export class CheckoutLineEntity {
 	variantId: number;
 
 	@ManyToOne(() => ProductEntity, { eager: false })
-	product: ProductEntity;
+	product?: ProductEntity;
 
 	@RelationId((post: CheckoutLineEntity) => post.product)
 	@ApiProperty()

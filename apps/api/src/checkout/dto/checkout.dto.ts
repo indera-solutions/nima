@@ -8,31 +8,21 @@ export class CheckoutDto extends OmitType(CheckoutEntity, ['lines']) {
 	@IsArray()
 	lines: CheckoutLineDto[];
 
+	@ApiProperty()
+	subtotalPrice: number;
 
-	static prepare(entity: CheckoutEntity, options?: { isAdmin: boolean }): CheckoutDto {
-		return {
-			token: entity.token,
-			user: undefined,
-			created: entity.created,
-			shippingAddress: entity.shippingAddress,
-			billingAddress: entity.billingAddress,
-			lines: entity.lines.map(l => CheckoutLineDto.prepare(l)),
-			note: entity.note,
-			email: entity.email,
-			voucherCode: entity.voucherCode,
-			metadata: entity.metadata,
-			privateMetadata: options?.isAdmin ? entity.privateMetadata : {},
-			currency: entity.currency,
-			discountAmount: entity.discountAmount,
-			discountName: entity.discountName,
-			languageCode: entity.languageCode,
-			lastChange: entity.lastChange,
-			redirectUrl: entity.redirectUrl,
-			shipping_method_id: entity.shipping_method_id,
-			trackingCode: entity.trackingCode,
-			translatedDiscountName: entity.translatedDiscountName,
-		};
-	}
+	@ApiProperty()
+	shippingCost: number;
+
+	@ApiProperty()
+	quantity: number;
+
+	@ApiProperty()
+	discount: number;
+
+	@ApiProperty()
+	totalCost: number;
+
 }
 
 export class CreateCheckoutDto extends PickType(CheckoutDto, ['languageCode']) {
@@ -46,7 +36,7 @@ export class CreateCheckoutDto extends PickType(CheckoutDto, ['languageCode']) {
 // shippingAddressId?: number; }
 
 
-export class UpdateCheckoutDto extends PartialType(PickType(CheckoutDto, ['email', 'note', 'languageCode'])) {
+export class UpdateCheckoutDto extends PartialType(PickType(CheckoutDto, ['email', 'note', 'languageCode', 'useShippingAsBilling'])) {
 }
 
 export class UpdateCheckoutVoucherDto {

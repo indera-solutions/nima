@@ -388,6 +388,12 @@ export interface CheckoutDto {
 	'email'?: string;
 	/**
 	 *
+	 * @type {boolean}
+	 * @memberof CheckoutDto
+	 */
+	'useShippingAsBilling'?: boolean;
+	/**
+	 *
 	 * @type {string}
 	 * @memberof CheckoutDto
 	 */
@@ -488,6 +494,36 @@ export interface CheckoutDto {
 	 * @memberof CheckoutDto
 	 */
 	'lines': Array<CheckoutLineDto>;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CheckoutDto
+	 */
+	'subtotalPrice': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CheckoutDto
+	 */
+	'shippingCost': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CheckoutDto
+	 */
+	'quantity': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CheckoutDto
+	 */
+	'discount': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CheckoutDto
+	 */
+	'totalCost': number;
 }
 /**
  *
@@ -513,6 +549,12 @@ export interface CheckoutLineDto {
 	 * @memberof CheckoutLineDto
 	 */
 	'productId': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CheckoutLineDto
+	 */
+	'totalCost': number;
 }
 /**
  *
@@ -2582,6 +2624,12 @@ export interface UpdateCheckoutDto {
 	'email'?: string;
 	/**
 	 *
+	 * @type {boolean}
+	 * @memberof UpdateCheckoutDto
+	 */
+	'useShippingAsBilling'?: boolean;
+	/**
+	 *
 	 * @type {string}
 	 * @memberof UpdateCheckoutDto
 	 */
@@ -2593,7 +2641,6 @@ export interface UpdateCheckoutDto {
 	 */
 	'languageCode'?: LanguageCode;
 }
-
 /**
  *
  * @export
@@ -2613,7 +2660,6 @@ export interface UpdateCheckoutLineDto {
 	 */
 	'variantId': number;
 }
-
 /**
  *
  * @export
