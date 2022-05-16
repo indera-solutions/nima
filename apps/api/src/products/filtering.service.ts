@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AttributeValuesService } from '../attributes/attribute-values.service';
+import { AttributeValuesService } from '../attributes/services/attribute-values.service';
 import { CategoriesService } from '../categories/categories.service';
 import {
 	AttributeDrillDownDto,

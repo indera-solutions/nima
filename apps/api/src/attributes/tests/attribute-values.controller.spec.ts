@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AttributeValuesService } from '../../attribute-values/attribute-values.service';
-import { AttributeValuesController } from '../attribute-values.controller';
+import { AttributeValuesController } from '../controllers/attribute-values.controller';
 
 describe('AttributeValuesController', () => {
 	let controller: AttributeValuesController;

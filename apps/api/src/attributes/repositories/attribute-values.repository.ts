@@ -9,8 +9,8 @@ import {
 } from '../../products/entities/product-attribute-value-assignment.entity';
 import { ProductVariantEntity } from '../../products/entities/product-variant.entity';
 import { ProductEntity } from '../../products/entities/product.entity';
-import { AttributeValueEntity } from './attribute-value.entity';
-import { AttributeEntity } from './attribute.entity';
+import { AttributeValueEntity } from '../entities/attribute-value.entity';
+import { AttributeEntity } from '../entities/attribute.entity';
 
 @EntityRepository(AttributeValueEntity)
 export class AttributeValuesRepository extends Repository<AttributeValueEntity> {

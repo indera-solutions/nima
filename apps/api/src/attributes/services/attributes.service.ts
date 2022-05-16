@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { AttributeDto, CreateAttributeDto, UpdateAttributeDto } from './dto/attribute.dto';
-import { AttributeEntity } from './entities/attribute.entity';
-import { AttributeRepository } from './entities/attribute.repository';
+import { AttributeDto, CreateAttributeDto, UpdateAttributeDto } from '../dto/attribute.dto';
+import { AttributeEntity } from '../entities/attribute.entity';
+import { AttributeRepository } from '../repositories/attribute.repository';
 
 @Injectable()
 export class AttributesService {

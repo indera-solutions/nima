@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { BasePaginatedRequest, PaginatedResults } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
-import { AttributeValuesService } from '../attributes/attribute-values.service';
+import { AttributeValuesService } from '../attributes/services/attribute-values.service';
 import { ProductTypeVariantAttributesService } from '../product-types/product-type-variant-attributes.service';
 import { CreateAssignedProductVariantAttributeDto } from './dto/product-attribute-assignment.dto';
 import { CreateAssignedProductVariantAttributeValueDto } from './dto/product-attribute-value-assignment.dto';

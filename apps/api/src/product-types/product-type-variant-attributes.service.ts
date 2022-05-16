@@ -1,5 +1,5 @@
 import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
-import { AttributesService } from '../attributes/attributes.service';
+import { AttributesService } from '../attributes/services/attributes.service';
 import {
 	CreateProductTypeVariantAttributeDto,
 	UpdateProductTypeVariantAttributeDto,

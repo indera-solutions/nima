@@ -1,6 +1,6 @@
 import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
-import { AttributesService } from '../attributes/attributes.service';
+import { AttributesService } from '../attributes/services/attributes.service';
 import { CreateProductTypeAttributeDto, UpdateProductTypeAttributeDto } from './dto/product-type-attribute.dto';
 import { ProductTypeAttributeEntity } from './entities';
 import { ProductTypesService } from './product-types.service';
