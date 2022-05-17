@@ -1,9 +1,8 @@
-import { Trans, useCategoryId, useProductTypeId } from '@nima-cms/react';
+import { Trans, useCategoryId, useProducts, useProductTypeId } from '@nima-cms/react';
 import { ProductDto } from '@nima-cms/sdk';
 import { getEuroValue } from '@nima-cms/utils';
 import Link from 'next/link';
 import React from 'react';
-import { useProducts } from '../../../../libs/react/src/reactQuery/products.queries';
 import { AdminColumn, AdminPage, AdminSection, NimaTitle } from '../../components';
 import { NIMA_ROUTES } from '../../lib/routes';
 
