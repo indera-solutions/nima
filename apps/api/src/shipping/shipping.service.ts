@@ -1,11 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { continents, countries, ICountry, states } from '@nima-cms/utils';
 import { AddressService } from '../core/address/address.service';
 import { AddressDto } from '../core/dto/address.dto';
-import { CreateShippingMethodDto, ShippingMethodDto, UpdateShippingMethodDto } from './dto/shipping-method.dto';
+import { CreateShippingMethodDto, UpdateShippingMethodDto } from './dto/shipping-method.dto';
 import { ShippingZoneDto, UpdateShippingZoneDto } from './dto/shipping-zone.dto';
-import { ShippingMethodType } from './entities/shipping-method.entity';
-import { ShippingZoneLocationType } from './entities/shipping-zone.entity';
+import { ShippingMethodEntity, ShippingMethodType } from './entities/shipping-method.entity';
+import { ShippingZoneEntity, ShippingZoneLocationType } from './entities/shipping-zone.entity';
 import { ShippingMethodRepository } from './repositories/shipping-method.repository';
 import { ShippingZoneRepository } from './repositories/shipping-zone.repository';
 
@@ -85,7 +85,7 @@ export class ShippingService {
 		throw new Error('SHIPPING_UNAVAILABLE_FOR_THAT_LOCATION');
 	}
 
-	async createMethod(params: { dto: CreateShippingMethodDto }) {
+	async createMethod(params: { dto: CreateShippingMethodDto }): Promise<ShippingMethodEntity> {
 		const { dto } = params;
 
 		ShippingService.validateOptions(dto);
@@ -96,9 +96,10 @@ export class ShippingService {
 			const res = await this.zoneRepository.save({ ...shippingZone, shippingMethod: method });
 			zones.push(res);
 		}
+		return this.getById({ id: method.id });
 	}
 
-	async getAll(): Promise<ShippingMethodDto[]> {
+	async getAll(): Promise<ShippingMethodEntity[]> {
 		return this.methodRepository.getFullObjects();
 	}
 
@@ -115,19 +116,19 @@ export class ShippingService {
 		return this.getValidZonesOfAddress(address);
 	}
 
-	async updateMethod(params: { id: number, dto: UpdateShippingMethodDto }) {
+	async updateMethod(params: { id: number, dto: UpdateShippingMethodDto }): Promise<ShippingMethodEntity> {
 		const { id, dto } = params;
 		await this.methodRepository.update(id, dto);
 		return await this.methodRepository.getFullObject(id);
 	}
 
-	async updateZone(params: { id: number, dto: UpdateShippingZoneDto }) {
+	async updateZone(params: { id: number, dto: UpdateShippingZoneDto }): Promise<ShippingZoneEntity> {
 		const { id, dto } = params;
 		await this.zoneRepository.update(id, dto);
 		return await this.zoneRepository.getFullObject(id);
 	}
 
-	private async getValidZonesOfAddress(address: Partial<AddressDto>): Promise<ShippingMethodDto[]> {
+	private async getValidZonesOfAddress(address: Partial<AddressDto>): Promise<ShippingMethodEntity[]> {
 		const options = await this.getAll();
 		return options.filter(option => {
 			for ( const location of option.shippingZones ) {
@@ -135,5 +136,11 @@ export class ShippingService {
 			}
 			return false;
 		});
+	}
+
+	private getById(params: { id: number }): Promise<ShippingMethodEntity> {
+		const res = this.methodRepository.getFullObject(params.id);
+		if ( !res ) throw new NotFoundException('SHIPPING_METHOD_NOT_FOUND');
+		return res;
 	}
 }
