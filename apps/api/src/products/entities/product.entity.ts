@@ -10,6 +10,7 @@ import {
 	OneToMany,
 	OneToOne,
 	PrimaryGeneratedColumn,
+	RelationId,
 	UpdateDateColumn,
 } from 'typeorm';
 import { CategoryEntity } from '../../categories/entities/category.entity';
@@ -86,6 +87,10 @@ export class ProductEntity {
 	@OneToOne(() => ProductVariantEntity, { deferrable: 'INITIALLY DEFERRED', onDelete: 'CASCADE' })
 	@JoinColumn()
 	defaultVariant: ProductVariantEntity;
+
+	@RelationId((product: ProductEntity) => product.defaultVariant)
+	@ApiProperty()
+	defaultVariantId: number;
 
 	@Column({ type: String })
 	@ApiProperty({ type: String, example: 'Product Description' })

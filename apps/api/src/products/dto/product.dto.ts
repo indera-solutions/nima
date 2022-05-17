@@ -17,9 +17,6 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'product
 	@IsArray()
 	attributes: ProductAttributeDto[];
 
-	@ApiProperty()
-	defaultVariantId: number;
-
 	@ApiProperty({ type: () => SortableMediaDto, isArray: true })
 	productMedia: SortableMediaDto[];
 
@@ -34,7 +31,7 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'product
 			created: entity.created,
 			currency: entity.currency,
 			weight: entity.weight,
-			defaultVariantId: entity.defaultVariant?.id,
+			defaultVariantId: entity.defaultVariantId || entity.defaultVariant?.id,
 			description: entity.description,
 			descriptionPlaintext: entity.descriptionPlaintext,
 			metadata: entity.metadata,
