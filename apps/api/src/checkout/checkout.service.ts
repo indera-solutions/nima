@@ -155,6 +155,7 @@ export class CheckoutService {
 			redirectUrl: entity.redirectUrl,
 			shipping_method_id: entity.shipping_method_id,
 			trackingCode: entity.trackingCode,
+			paymentMethod: entity.paymentMethod,
 			translatedDiscountName: entity.translatedDiscountName,
 			totalCost,
 			shippingCost,

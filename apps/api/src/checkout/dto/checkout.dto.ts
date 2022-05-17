@@ -36,7 +36,7 @@ export class CreateCheckoutDto extends PickType(CheckoutDto, ['languageCode']) {
 // shippingAddressId?: number; }
 
 
-export class UpdateCheckoutDto extends PartialType(PickType(CheckoutDto, ['email', 'note', 'languageCode', 'useShippingAsBilling'])) {
+export class UpdateCheckoutDto extends PartialType(PickType(CheckoutDto, ['email', 'note', 'languageCode', 'useShippingAsBilling', 'paymentMethod'])) {
 }
 
 export class UpdateCheckoutVoucherDto {
