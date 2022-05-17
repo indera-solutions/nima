@@ -29,7 +29,7 @@ export class ShippingZoneEntity {
 	locationType: ShippingZoneLocationType;
 
 	@Column({ type: String, default: [], array: true })
-	@ApiProperty({ type: String })
+	@ApiProperty({ type: String, isArray: true })
 	@IsString({ each: true })
 	locationCodes: string[];
 

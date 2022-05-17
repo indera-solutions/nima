@@ -25,14 +25,14 @@ export class ShippingMethodEntity {
 	@IsString()
 	name: string;
 
-	@Column()
-	@ApiProperty({ type: 'float' })
+	@Column({ type: 'float', default: 0.0 })
+	@ApiProperty()
 	@IsNumber()
 	@IsOptional()
 	maximumOrderWeight?: number;
 
-	@Column()
-	@ApiProperty({ type: 'float', default: 0.0 })
+	@Column({ type: 'float', default: 0.0 })
+	@ApiProperty()
 	@IsNumber()
 	@IsOptional()
 	minimumOrderWeight?: number;
@@ -64,21 +64,22 @@ export class ShippingMethodEntity {
 	@IsOptional()
 	minimumDeliveryDays?: number;
 
-	@Column()
-	@ApiProperty({ type: 'float', default: 0.0 })
+	@Column({ type: 'float', default: 0.0 })
+	@ApiProperty()
 	@IsNumber()
 	@IsOptional()
 	threshold?: number;
 
-	@Column()
-	@ApiProperty({ type: 'float', default: 0.0 })
+	@Column({ type: 'float', default: 0.0 })
+	@ApiProperty()
 	@IsNumber()
 	@IsOptional()
 	rate?: number;
 
 	@Column({ type: 'jsonb', default: {} })
-	@ApiProperty({ type: TranslatableDto, example: { en: 'Product Description' } })
+	@ApiProperty({ type: TranslatableDto, example: { en: 'Shipping Method Description' } })
 	@IsObject()
+	@IsOptional()
 	description: Translatable;
 
 	@OneToMany(() => ShippingZoneEntity, zone => zone.shippingMethod)

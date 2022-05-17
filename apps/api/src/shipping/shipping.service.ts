@@ -1,18 +1,51 @@
-import { Injectable } from '@nestjs/common';
-import { continents, countries, ICountry } from '@nima-cms/utils';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { continents, countries, ICountry, states } from '@nima-cms/utils';
+import { AddressService } from '../core/address/address.service';
 import { AddressDto } from '../core/dto/address.dto';
-import { ShippingMethodEntity, ShippingMethodType } from './entities/shipping-method.entity';
-import { ShippingZoneEntity, ShippingZoneLocationType } from './entities/shipping-zone.entity';
+import { CreateShippingMethodDto, ShippingMethodDto, UpdateShippingMethodDto } from './dto/shipping-method.dto';
+import { ShippingZoneDto, UpdateShippingZoneDto } from './dto/shipping-zone.dto';
+import { ShippingMethodType } from './entities/shipping-method.entity';
+import { ShippingZoneLocationType } from './entities/shipping-zone.entity';
 import { ShippingMethodRepository } from './repositories/shipping-method.repository';
+import { ShippingZoneRepository } from './repositories/shipping-zone.repository';
 
 @Injectable()
 export class ShippingService {
 	constructor(
 		private methodRepository: ShippingMethodRepository,
+		private zoneRepository: ShippingZoneRepository,
+		private addressService: AddressService,
 	) {
 	}
 
-	private static isAddressInZone(zone: ShippingZoneEntity, address: Partial<AddressDto>): boolean {
+	private static validateOptions(option: CreateShippingMethodDto): void {
+		for ( const location of option.shippingZones ) {
+			if ( location.locationType === ShippingZoneLocationType.POSTAL ) {
+				//Maybe validate that the zip code is correct ?
+			} else if ( location.locationType === ShippingZoneLocationType.STATE ) {
+				for ( const stateCode of location.locationCodes ) {
+					let flag = false;
+					for ( const statesKey in states ) {
+						if ( Object.keys(states[statesKey]).includes(stateCode) ) {
+							flag = true;
+						}
+					}
+					if ( !flag ) throw new BadRequestException('INVALID_STATE_CODE');
+				}
+			} else if ( location.locationType === ShippingZoneLocationType.COUNTRY ) {
+				for ( const countryCode of location.locationCodes ) {
+					if ( !Object.keys(countries).includes(countryCode) ) throw new BadRequestException('INVALID_COUNTRY_CODE');
+				}
+			} else if ( location.locationType === ShippingZoneLocationType.CONTINENT ) {
+				for ( const continentCode of location.locationCodes ) {
+					if ( !Object.keys(continents).includes(continentCode) ) throw new BadRequestException('INVALID_CONTINENT_CODE');
+				}
+			}
+		}
+		return;
+	}
+
+	private static isAddressInZone(zone: ShippingZoneDto, address: Partial<AddressDto>): boolean {
 		if ( zone.locationType === ShippingZoneLocationType.POSTAL ) {
 			if ( !address.zip || address.zip === '' ) throw new Error('ADDRESS_REQUIRED');
 			return zone.locationCodes.includes(address.zip);
@@ -35,7 +68,6 @@ export class ShippingService {
 	}
 
 	async calculateCost(params: { totalCost: number, shippingAddress: Partial<AddressDto> }): Promise<number> {
-
 		const validZones = await this.getValidZonesOfAddress(params.shippingAddress);
 		for ( const zone of validZones ) {
 			if ( zone.shippingType === ShippingMethodType.FREE_SHIPPING ) {
@@ -53,8 +85,50 @@ export class ShippingService {
 		throw new Error('SHIPPING_UNAVAILABLE_FOR_THAT_LOCATION');
 	}
 
-	private async getValidZonesOfAddress(address: Partial<AddressDto>): Promise<ShippingMethodEntity[]> {
-		const options = await this.methodRepository.find();
+	async createMethod(params: { dto: CreateShippingMethodDto }) {
+		const { dto } = params;
+
+		ShippingService.validateOptions(dto);
+
+		const method = await this.methodRepository.save(dto);
+		const zones = [];
+		for ( const shippingZone of dto.shippingZones ) {
+			const res = await this.zoneRepository.save({ ...shippingZone, shippingMethod: method });
+			zones.push(res);
+		}
+	}
+
+	async getAll(): Promise<ShippingMethodDto[]> {
+		return this.methodRepository.getFullObjects();
+	}
+
+	// async createZone(params: { dto: CreateShippingZoneDto }): Promise<ShippingMethodDto> {
+	// 	const { dto } = params;
+	// 	return this.zoneRepository.save(dto);
+	// }
+
+	async getOfAddress(params: { addressId: number }) {
+		const { addressId } = params;
+
+		const address = await this.addressService.findById({ id: addressId });
+
+		return this.getValidZonesOfAddress(address);
+	}
+
+	async updateMethod(params: { id: number, dto: UpdateShippingMethodDto }) {
+		const { id, dto } = params;
+		await this.methodRepository.update(id, dto);
+		return await this.methodRepository.getFullObject(id);
+	}
+
+	async updateZone(params: { id: number, dto: UpdateShippingZoneDto }) {
+		const { id, dto } = params;
+		await this.zoneRepository.update(id, dto);
+		return await this.zoneRepository.getFullObject(id);
+	}
+
+	private async getValidZonesOfAddress(address: Partial<AddressDto>): Promise<ShippingMethodDto[]> {
+		const options = await this.getAll();
 		return options.filter(option => {
 			for ( const location of option.shippingZones ) {
 				if ( ShippingService.isAddressInZone(location, address) ) return true;
@@ -62,5 +136,4 @@ export class ShippingService {
 			return false;
 		});
 	}
-
 }
