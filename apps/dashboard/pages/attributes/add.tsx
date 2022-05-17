@@ -203,6 +203,15 @@ export default function AddAttribute(props: AddAttributeProps) {
 					<AdminSection title={ 'Configurations' }>
 						<div className="form-control w-full max-w-xs">
 							<label className="label cursor-pointer justify-start gap-4">
+								<input type="checkbox" checked={ createAttributeDto.visibleInStorefront }
+									   className="checkbox"
+									   onChange={ e => onValueEdit('visibleInStorefront', e.target.checked) }
+								/>
+								<span className="label-text">Visible In Storefront</span>
+							</label>
+						</div>
+						<div className="form-control w-full max-w-xs">
+							<label className="label cursor-pointer justify-start gap-4">
 								<input type="checkbox" checked={ createAttributeDto.filterableInDashboard }
 									   className="checkbox"
 									   onChange={ e => onValueEdit('filterableInDashboard', e.target.checked) }
