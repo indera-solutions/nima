@@ -60,7 +60,7 @@ export class OrderEntity {
 	@ApiProperty({ type: Number, example: 12.3 })
 	totalNetAmount: number;
 
-	@Column({ type: Number })
+	@Column({ type: Number, nullable: true })
 	@ApiProperty({ type: Number, example: 1 })
 	@IsOptional()
 	voucher_id?: number;
@@ -169,7 +169,7 @@ export class OrderEntity {
 	@IsOptional()
 	original?: OrderEntity;
 
-	@Column({ type: String })
+	@Column({ type: String, nullable: true })
 	searchDocument: string;
 
 	@OneToMany(() => OrderLineEntity, line => line.order, { eager: true })

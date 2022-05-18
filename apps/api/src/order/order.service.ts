@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { CheckoutService } from '../checkout/checkout.service';
 import { ProductVariantService } from '../products/product-variant.service';
 import { ProductsService } from '../products/products.service';
@@ -31,6 +32,7 @@ export class OrderService {
 		return this.findOne(res.identifiers[0].id);
 	}
 
+	@Transactional()
 	async createFromCheckout(params: { token: string }) {
 		const checkoutDto = await this.checkoutService.getDto(params.token);
 		if ( !checkoutDto.shippingMethod ) throw new BadRequestException('CHECKOUT_NO_SELECTED_SHIPPING_METHOD');

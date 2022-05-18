@@ -1061,12 +1061,6 @@ export interface CreateOrderDto {
 	'shippingMethodName'?: string;
 	/**
 	 *
-	 * @type {number}
-	 * @memberof CreateOrderDto
-	 */
-	'shippingMethodId'?: number;
-	/**
-	 *
 	 * @type {boolean}
 	 * @memberof CreateOrderDto
 	 */
@@ -1150,6 +1144,21 @@ export interface CreateOrderDto {
 	 */
 	'userId'?: number;
 }
+
+/**
+ *
+ * @export
+ * @interface CreateOrderFromCheckoutDto
+ */
+export interface CreateOrderFromCheckoutDto {
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateOrderFromCheckoutDto
+	 */
+	'token': string;
+}
+
 /**
  *
  * @export
@@ -1844,12 +1853,6 @@ export interface OrderDto {
 	 * @memberof OrderDto
 	 */
 	'shippingMethodName'?: string;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof OrderDto
-	 */
-	'shippingMethodId'?: number;
 	/**
 	 *
 	 * @type {boolean}
@@ -3417,12 +3420,6 @@ export interface UpdateOrderDto {
 	 * @memberof UpdateOrderDto
 	 */
 	'shippingMethodName'?: string;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof UpdateOrderDto
-	 */
-	'shippingMethodId'?: number;
 	/**
 	 *
 	 * @type {boolean}
@@ -7405,6 +7402,40 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 		},
 		/**
 		 *
+		 * @param {CreateOrderFromCheckoutDto} createOrderFromCheckoutDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		orderCreateFromCheckout: async (createOrderFromCheckoutDto: CreateOrderFromCheckoutDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'createOrderFromCheckoutDto' is not null or undefined
+			assertParamExists('orderCreateFromCheckout', 'createOrderFromCheckoutDto', createOrderFromCheckoutDto)
+			const localVarPath = `/api/v1/order/token`;
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(createOrderFromCheckoutDto, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -7555,6 +7586,16 @@ export const OrdersApiFp = function (configuration?: Configuration) {
 		},
 		/**
 		 *
+		 * @param {CreateOrderFromCheckoutDto} createOrderFromCheckoutDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async orderCreateFromCheckout(createOrderFromCheckoutDto: CreateOrderFromCheckoutDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.orderCreateFromCheckout(createOrderFromCheckoutDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -7614,6 +7655,15 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
 		},
 		/**
 		 *
+		 * @param {CreateOrderFromCheckoutDto} createOrderFromCheckoutDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		orderCreateFromCheckout(createOrderFromCheckoutDto: CreateOrderFromCheckoutDto, options?: any): AxiosPromise<OrderDto> {
+			return localVarFp.orderCreateFromCheckout(createOrderFromCheckoutDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -7663,6 +7713,20 @@ export interface OrdersApiOrderCreateRequest {
 	 * @memberof OrdersApiOrderCreate
 	 */
 	readonly createOrderDto: CreateOrderDto;
+}
+
+/**
+ * Request parameters for orderCreateFromCheckout operation in OrdersApi.
+ * @export
+ * @interface OrdersApiOrderCreateFromCheckoutRequest
+ */
+export interface OrdersApiOrderCreateFromCheckoutRequest {
+	/**
+	 *
+	 * @type {CreateOrderFromCheckoutDto}
+	 * @memberof OrdersApiOrderCreateFromCheckout
+	 */
+	readonly createOrderFromCheckoutDto: CreateOrderFromCheckoutDto;
 }
 
 /**
@@ -7730,6 +7794,17 @@ export class OrdersApi extends BaseAPI {
 	 */
 	public orderCreate(requestParameters: OrdersApiOrderCreateRequest, options?: AxiosRequestConfig) {
 		return OrdersApiFp(this.configuration).orderCreate(requestParameters.createOrderDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {OrdersApiOrderCreateFromCheckoutRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof OrdersApi
+	 */
+	public orderCreateFromCheckout(requestParameters: OrdersApiOrderCreateFromCheckoutRequest, options?: AxiosRequestConfig) {
+		return OrdersApiFp(this.configuration).orderCreateFromCheckout(requestParameters.createOrderFromCheckoutDto, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -9666,9 +9741,9 @@ export const ShippingApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		shippingGetOne: async (methodId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'methodId' is not null or undefined
-			assertParamExists('shippingGetOne', 'methodId', methodId);
+			assertParamExists('shippingGetOne', 'methodId', methodId)
 			const localVarPath = `/api/v1/shipping/{methodId}`
-				.replace(`{${ 'methodId' }}`, encodeURIComponent(String(methodId)));
+				.replace(`{${ "methodId" }}`, encodeURIComponent(String(methodId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;

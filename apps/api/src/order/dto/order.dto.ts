@@ -1,5 +1,5 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
-import { IsOptional } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { OrderEntity } from '../entities/order.entity';
 
 export class OrderDto extends OmitType(OrderEntity, ['lines', 'events', 'searchDocument']) {
@@ -49,6 +49,7 @@ export class CreateOrderDto extends OmitType(OrderDto, ['id', 'created', 'update
 
 export class CreateOrderFromCheckoutDto {
 	@ApiProperty({ type: String })
+	@IsString()
 	token: string;
 }
 
