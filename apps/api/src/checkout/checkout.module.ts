@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CoreModule } from '../core/core.module';
 import { ProductsModule } from '../products/products.module';
+import { ShippingModule } from '../shipping/shipping.module';
 import { UsersModule } from '../users/users.module';
 import { CheckoutController } from './checkout.controller';
 import { CheckoutService } from './checkout.service';
@@ -11,7 +12,7 @@ import { CheckoutEntity } from './entities/checkout.entity';
 import { CheckoutRepository, CheckoutSubscriber } from './entities/checkout.repository';
 
 @Module({
-	imports: [TypeOrmModule.forFeature([CheckoutRepository, CheckoutLineRepository]), CoreModule, UsersModule, ProductsModule],
+	imports: [TypeOrmModule.forFeature([CheckoutRepository, CheckoutLineRepository]), CoreModule, UsersModule, ProductsModule, ShippingModule],
 	controllers: [CheckoutController],
 	providers: [CheckoutService, CheckoutSubscriber],
 })
