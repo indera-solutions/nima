@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
 import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
-import { CreateOrderDto, OrderDto, UpdateOrderDto } from './dto/order.dto';
+import { CreateOrderDto, CreateOrderFromCheckoutDto, OrderDto, UpdateOrderDto } from './dto/order.dto';
 import { OrderService } from './order.service';
 
 @Controller('order')
@@ -14,6 +14,13 @@ export class OrderController {
 	@ApiBody({ type: CreateOrderDto })
 	create(@Body() createOrderDto: CreateOrderDto): Promise<OrderDto> {
 		return this.orderService.create({ createOrderDto });
+	}
+
+	@Post('/token')
+	@ApiCreatedResponse({ type: OrderDto })
+	@ApiBody({ type: CreateOrderFromCheckoutDto })
+	createFromCheckout(@Body() createOrderDto: CreateOrderFromCheckoutDto): Promise<OrderDto> {
+		return this.orderService.createFromCheckout(createOrderDto);
 	}
 
 	@Get()

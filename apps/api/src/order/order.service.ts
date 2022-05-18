@@ -1,17 +1,27 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CheckoutService } from '../checkout/checkout.service';
-import { CheckoutLineEntity } from '../checkout/entities/checkout-line.entity';
+import { ProductVariantService } from '../products/product-variant.service';
+import { ProductsService } from '../products/products.service';
+import { ShippingService } from '../shipping/shipping.service';
+import { InternalCreateOrderLineDto } from './dto/order-line.dto';
 import { CreateOrderDto, UpdateOrderDto } from './dto/order.dto';
-import { OrderStatus } from './dto/order.enum';
+import { OrderEventsEnum, OrderStatus } from './dto/order.enum';
 import { OrderEntity } from './entities/order.entity';
-import { OrderRepository } from './entities/order.repository';
+import { OrderEventRepository } from './repositories/order-event.repository';
+import { OrderLineRepository } from './repositories/order-line.repository';
+import { OrderRepository } from './repositories/order.repository';
 
 @Injectable()
 export class OrderService {
 
 	constructor(
 		private orderRepository: OrderRepository,
+		private orderLineRepository: OrderLineRepository,
+		private orderEventRepository: OrderEventRepository,
 		private checkoutService: CheckoutService,
+		private shippingService: ShippingService,
+		private productService: ProductsService,
+		private variantService: ProductVariantService,
 	) {
 	}
 
@@ -22,39 +32,103 @@ export class OrderService {
 	}
 
 	async createFromCheckout(params: { token: string }) {
-		const co = await this.checkoutService.findOne({ token: params.token });
+		const checkoutDto = await this.checkoutService.getDto(params.token);
+		if ( !checkoutDto.shippingMethod ) throw new BadRequestException('CHECKOUT_NO_SELECTED_SHIPPING_METHOD');
+		const shippingMethod = await this.shippingService.getById({ id: checkoutDto.shippingMethod.id });
+
 		const dto: CreateOrderDto = {
-			languageCode: co.languageCode,
-			currency: co.currency,
-			privateMetadata: co.privateMetadata,
-			metadata: co.metadata,
-			redirectUrl: co.redirectUrl,
-			user: co.user,
-			billingAddress: co.billingAddress,
-			checkoutToken: co.token,
-			customerNote: co.note,
-			userEmail: co.email,
+			languageCode: checkoutDto.languageCode,
+			currency: checkoutDto.currency,
+			privateMetadata: checkoutDto.privateMetadata,
+			metadata: checkoutDto.metadata,
+			redirectUrl: checkoutDto.redirectUrl,
+			user: checkoutDto.user,
+			billingAddress: checkoutDto.billingAddress,
+			checkoutToken: checkoutDto.token,
+			customerNote: checkoutDto.note,
+			userEmail: checkoutDto.email,
 			status: OrderStatus.DRAFT,
-			shippingAddress: co.shippingAddress,
+			shippingAddress: checkoutDto.shippingAddress,
 			weight: 0,
 
 			displayGrossPrices: true,
 			origin: '',
 			original: undefined,
 
-			shippingMethodId: 0,
-			shippingMethodName: '',
-			shippingPriceGrossAmount: 0,
+			shippingMethod: shippingMethod,
+			shippingMethodName: shippingMethod.name || '',
+			shippingPriceGrossAmount: checkoutDto.shippingCost,
+			/*Shipping without taxes*/
 			shippingPriceNetAmount: 0,
+			/*Shipping Tax Rate (Not yet implemented in the Shipping Method Entities)*/
 			shippingTaxRate: 0,
+			/*Shipment Tracking token. Should be received from the shipping managers*/
 			trackingClientId: '0',
 
-			totalGrossAmount: 0,
+			totalGrossAmount: checkoutDto.totalCost,
 			totalNetAmount: 0,
 			totalPaidAmount: 0,
-			undiscountedTotalGrossAmount: 0,
+			undiscountedTotalGrossAmount: checkoutDto.subtotalPrice,
 			undiscountedTotalNetAmount: 0,
 		};
+
+		const order = await this.orderRepository.save(dto);
+
+		await this.orderEventRepository.save({
+			order: order,
+			eventType: OrderEventsEnum.DRAFT_CREATED,
+			parameters: {},
+		});
+
+		for ( const line of checkoutDto.lines ) {
+			const product = await this.productService.getById({ id: line.productId });
+			const variant = await this.variantService.getById({ id: line.variantId });
+			const dto: InternalCreateOrderLineDto = {
+				variant: variant,
+				order: order,
+
+				currency: checkoutDto.currency,
+				quantity: line.quantity,
+				quantityFulfilled: line.quantity,
+
+				variantName: variant.name,
+				productName: product.name,
+				productSku: variant.sku,
+
+				/*TODO: Implement Sales and Vouchers*/
+				saleId: '',
+				voucherCode: checkoutDto.voucherCode,
+				unitDiscountAmount: 0,
+				unitDiscountReason: '',
+				unitDiscountType: '',
+				unitDiscountValue: 0,
+
+				/*Tax Rate handling not implemented yet*/
+				taxRate: 0,
+
+				/*Quantity Cost*/
+				isShippingRequired: product.productType.isDigital,
+				totalPriceGrossAmount: line.totalCost,
+				totalPriceNetAmount: 0,
+				undiscountedTotalPriceGrossAmount: line.totalCost,
+				undiscountedTotalPriceNetAmount: 0,
+
+				/*Unit Costs*/
+				unitPriceGrossAmount: 0,
+				unitPriceNetAmount: 0,
+				undiscountedUnitPriceGrossAmount: variant.priceAmount || 0,
+				undiscountedUnitPriceNetAmount: 0,
+			};
+			await this.orderLineRepository.insert(dto);
+		}
+
+		await this.orderEventRepository.save({
+			order: order,
+			eventType: OrderEventsEnum.ADDED_PRODUCTS,
+			parameters: {},
+		});
+
+		return this.findOne({ id: order.id });
 	}
 
 	async findOne(params: { id: number }): Promise<OrderEntity> {
@@ -79,18 +153,5 @@ export class OrderService {
 		const res = await this.findOne({ id });
 		await this.orderRepository.deleteById(id);
 		return res;
-	}
-
-	private async calculateCosts(lines: CheckoutLineEntity[]) {
-		const res = {
-			gross: 0,
-			net: 0,
-			undiscountedGross: 0,
-			undiscountedNet: 0,
-			weight: 0,
-		};
-		for ( const line of lines ) {
-			res.net += line.variant.priceAmount;
-		}
 	}
 }

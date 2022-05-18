@@ -22,7 +22,7 @@ export class OrderDto extends OmitType(OrderEntity, ['lines', 'events', 'searchD
 			shippingPriceNetAmount: entity.shippingPriceNetAmount,
 			status: entity.status,
 			shippingMethodName: entity.shippingMethodName,
-			shippingMethodId: entity.shippingMethodId,
+			shippingMethod: entity.shippingMethod,
 			displayGrossPrices: entity.displayGrossPrices,
 			customerNote: entity.customerNote,
 			weight: entity.weight,
@@ -45,6 +45,11 @@ export class CreateOrderDto extends OmitType(OrderDto, ['id', 'created', 'update
 	@ApiProperty({ type: Number, required: false })
 	@IsOptional()
 	userId?: number;
+}
+
+export class CreateOrderFromCheckoutDto {
+	@ApiProperty({ type: String })
+	token: string;
 }
 
 export class UpdateOrderDto extends PartialType(CreateOrderDto) {

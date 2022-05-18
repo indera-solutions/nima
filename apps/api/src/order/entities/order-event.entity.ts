@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Metadata } from '@nima-cms/utils';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserDto } from '../../users/dto/user.dto';
 import { UserEntity } from '../../users/entities/user.entity';
 import { OrderEventsEnum } from '../dto/order.enum';
@@ -12,7 +12,7 @@ export class OrderEventEntity {
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
 
-	@Column({ type: String })
+	@CreateDateColumn()
 	@ApiProperty({ type: String, example: '' })
 	date: string;
 

@@ -125,6 +125,14 @@ export class CheckoutService {
 		return co;
 	}
 
+	async getWholeObject(token: string): Promise<CheckoutEntity> {
+		const entity = await this.checkoutRepository.getWholeObject(token);
+		if ( !entity ) {
+			throw new NotFoundException('CHECKOUT_NOT_FOUND');
+		}
+		return entity;
+	}
+
 	async getDto(token: string): Promise<CheckoutDto> {
 		const entity = await this.checkoutRepository.getWholeObject(token);
 		if ( !entity ) {

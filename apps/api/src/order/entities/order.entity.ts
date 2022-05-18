@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 import { AddressDto } from '../../core/dto/address.dto';
 import { AddressEntity } from '../../core/entities/address.entity';
+import { ShippingMethodEntity } from '../../shipping/entities/shipping-method.entity';
 import { UserEntity } from '../../users/entities/user.entity';
 import { OrderStatus } from '../dto/order.enum';
 import { OrderEventEntity } from './order-event.entity';
@@ -95,10 +96,8 @@ export class OrderEntity {
 	@IsOptional()
 	shippingMethodName?: string;
 
-	@Column({ type: Number, nullable: true })
-	@ApiProperty({ type: Number, example: 'Same Day Delivery', required: false })
-	@IsOptional()
-	shippingMethodId?: number;
+	@ManyToOne(() => ShippingMethodEntity, { nullable: true })
+	shippingMethod?: ShippingMethodEntity;
 
 	@Column({ type: Boolean })
 	@ApiProperty({ type: Boolean, example: true })

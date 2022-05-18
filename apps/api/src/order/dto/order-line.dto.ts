@@ -12,5 +12,8 @@ export class CreateOrderLineDto extends OmitType(OrderLineDto, ['id', 'variant',
 	orderId: number;
 }
 
-export class UpdateOrderLinteDto extends PartialType(CreateOrderLineDto) {
+export class InternalCreateOrderLineDto extends OmitType(OrderLineDto, ['id']) {
+}
+
+export class UpdateOrderLineDto extends PartialType(CreateOrderLineDto) {
 }
