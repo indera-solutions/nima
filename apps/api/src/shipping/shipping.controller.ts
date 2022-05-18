@@ -51,6 +51,14 @@ export class ShippingController {
 		return res.map(r => ShippingMethodDto.prepare(r));
 	}
 
+	@Get('/:methodId')
+	@ApiParam({ type: Number, name: 'methodId' })
+	@ApiOkResponse({ type: () => ShippingMethodDto })
+	async getOne(@Param('methodId') methodId?: number) {
+		const res = await this.shippingService.getById({ id: methodId });
+		return ShippingMethodDto.prepare(res);
+	}
+
 	@Patch('/:methodId')
 	@ApiParam({ type: Number, name: 'methodId' })
 	@ApiCreatedResponse({ type: () => ShippingMethodDto })

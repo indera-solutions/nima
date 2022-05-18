@@ -23,9 +23,14 @@ export const adminRoutes: NavigationItem[] = [
 		link: NIMA_ROUTES.media.index,
 	},
 	{
+		name: 'Shipping',
+		link: NIMA_ROUTES.shipping.list,
+	},
+	{
 		name: 'Settings',
 		link: NIMA_ROUTES.settings.index,
 	},
+
 	// {
 	// 	name: 'Orders',
 	// 	link: '/admin/orders',

@@ -6,3 +6,4 @@ export * from './categories.queries';
 export * from './products.queries';
 export * from './media.queries';
 export * from './checkout.queries';
+export * from './shipping.queries';

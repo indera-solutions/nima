@@ -125,7 +125,8 @@ export class ShippingService {
 
 	async updateMethod(params: { id: number, dto: UpdateShippingMethodDto }): Promise<ShippingMethodEntity> {
 		const { id, dto } = params;
-		await this.methodRepository.update(id, dto);
+		const { shippingZones, ...rest } = dto;
+		await this.methodRepository.update(id, rest);
 		return await this.methodRepository.getFullObject(id);
 	}
 

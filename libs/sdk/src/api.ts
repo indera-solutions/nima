@@ -368,7 +368,6 @@ export interface CategoryDto {
 	 */
 	'parent'?: CategoryDto;
 }
-
 /**
  *
  * @export
@@ -388,7 +387,6 @@ export interface CheckoutAvailableShippingDto {
 	 */
 	'rate': number;
 }
-
 /**
  *
  * @export
@@ -1449,7 +1447,6 @@ export interface CreateProductVariantDto {
 	 */
 	'productMedia': Array<CreateSortableMediaDto>;
 }
-
 /**
  *
  * @export
@@ -1529,7 +1526,6 @@ export interface CreateShippingMethodDto {
 	 */
 	'shippingZones': Array<CreateShippingZoneDto>;
 }
-
 /**
  *
  * @export
@@ -1573,7 +1569,6 @@ export interface CreateShippingZoneDto {
 	 */
 	'description': TranslatableDto;
 }
-
 /**
  *
  * @export
@@ -1753,7 +1748,6 @@ export interface MediaListPaginated {
 	 */
 	'totalCount': number;
 }
-
 /**
  *
  * @export
@@ -1935,7 +1929,6 @@ export interface OrderDto {
 	 */
 	'origin': string;
 }
-
 /**
  *
  * @export
@@ -2761,7 +2754,6 @@ export interface SettingsDto {
 	 */
 	'siteLogo'?: MediaDto;
 }
-
 /**
  *
  * @export
@@ -2847,7 +2839,6 @@ export interface ShippingMethodDto {
 	 */
 	'shippingZones': Array<ShippingZoneDto>;
 }
-
 /**
  *
  * @export
@@ -2897,7 +2888,6 @@ export interface ShippingZoneDto {
 	 */
 	'description': TranslatableDto;
 }
-
 /**
  *
  * @export
@@ -3549,7 +3539,6 @@ export interface UpdatePaymentDto {
 	 */
 	'transactionTicket'?: string;
 }
-
 /**
  *
  * @export
@@ -3629,7 +3618,6 @@ export interface UpdateShippingMethodDto {
 	 */
 	'shippingZones'?: Array<CreateShippingZoneDto>;
 }
-
 /**
  *
  * @export
@@ -3673,7 +3661,6 @@ export interface UpdateShippingZoneDto {
 	 */
 	'description'?: TranslatableDto;
 }
-
 /**
  *
  * @export
@@ -9674,6 +9661,38 @@ export const ShippingApiAxiosParamCreator = function (configuration?: Configurat
 		/**
 		 *
 		 * @param {number} methodId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		shippingGetOne: async (methodId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'methodId' is not null or undefined
+			assertParamExists('shippingGetOne', 'methodId', methodId);
+			const localVarPath = `/api/v1/shipping/{methodId}`
+				.replace(`{${ 'methodId' }}`, encodeURIComponent(String(methodId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} methodId
 		 * @param {UpdateShippingMethodDto} updateShippingMethodDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -9767,7 +9786,7 @@ export const ShippingApiAxiosParamCreator = function (configuration?: Configurat
  * @export
  */
 export const ShippingApiFp = function (configuration?: Configuration) {
-	const localVarAxiosParamCreator = ShippingApiAxiosParamCreator(configuration)
+	const localVarAxiosParamCreator = ShippingApiAxiosParamCreator(configuration);
 	return {
 		/**
 		 *
@@ -9813,6 +9832,16 @@ export const ShippingApiFp = function (configuration?: Configuration) {
 		/**
 		 *
 		 * @param {number} methodId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async shippingGetOne(methodId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShippingMethodDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.shippingGetOne(methodId, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} methodId
 		 * @param {UpdateShippingMethodDto} updateShippingMethodDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -9833,7 +9862,7 @@ export const ShippingApiFp = function (configuration?: Configuration) {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.shippingUpdateZone(id, methodId, updateShippingZoneDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
-	}
+	};
 };
 
 /**
@@ -9841,7 +9870,7 @@ export const ShippingApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const ShippingApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = ShippingApiFp(configuration)
+	const localVarFp = ShippingApiFp(configuration);
 	return {
 		/**
 		 *
@@ -9883,6 +9912,15 @@ export const ShippingApiFactory = function (configuration?: Configuration, baseP
 		/**
 		 *
 		 * @param {number} methodId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		shippingGetOne(methodId: number, options?: any): AxiosPromise<ShippingMethodDto> {
+			return localVarFp.shippingGetOne(methodId, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} methodId
 		 * @param {UpdateShippingMethodDto} updateShippingMethodDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -9915,7 +9953,7 @@ export interface ShippingApiShippingCreateRequest {
 	 * @type {CreateShippingMethodDto}
 	 * @memberof ShippingApiShippingCreate
 	 */
-	readonly createShippingMethodDto: CreateShippingMethodDto
+	readonly createShippingMethodDto: CreateShippingMethodDto;
 }
 
 /**
@@ -9929,14 +9967,14 @@ export interface ShippingApiShippingCreateZoneRequest {
 	 * @type {number}
 	 * @memberof ShippingApiShippingCreateZone
 	 */
-	readonly methodId: number
+	readonly methodId: number;
 
 	/**
 	 *
 	 * @type {CreateShippingZoneDto}
 	 * @memberof ShippingApiShippingCreateZone
 	 */
-	readonly createShippingZoneDto: CreateShippingZoneDto
+	readonly createShippingZoneDto: CreateShippingZoneDto;
 }
 
 /**
@@ -9950,7 +9988,7 @@ export interface ShippingApiShippingDeleteByIdRequest {
 	 * @type {number}
 	 * @memberof ShippingApiShippingDeleteById
 	 */
-	readonly id: number
+	readonly id: number;
 }
 
 /**
@@ -9964,7 +10002,21 @@ export interface ShippingApiShippingGetAllRequest {
 	 * @type {number}
 	 * @memberof ShippingApiShippingGetAll
 	 */
-	readonly addressId?: number
+	readonly addressId?: number;
+}
+
+/**
+ * Request parameters for shippingGetOne operation in ShippingApi.
+ * @export
+ * @interface ShippingApiShippingGetOneRequest
+ */
+export interface ShippingApiShippingGetOneRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ShippingApiShippingGetOne
+	 */
+	readonly methodId: number;
 }
 
 /**
@@ -9978,14 +10030,14 @@ export interface ShippingApiShippingUpdateMethodRequest {
 	 * @type {number}
 	 * @memberof ShippingApiShippingUpdateMethod
 	 */
-	readonly methodId: number
+	readonly methodId: number;
 
 	/**
 	 *
 	 * @type {UpdateShippingMethodDto}
 	 * @memberof ShippingApiShippingUpdateMethod
 	 */
-	readonly updateShippingMethodDto: UpdateShippingMethodDto
+	readonly updateShippingMethodDto: UpdateShippingMethodDto;
 }
 
 /**
@@ -9999,21 +10051,21 @@ export interface ShippingApiShippingUpdateZoneRequest {
 	 * @type {number}
 	 * @memberof ShippingApiShippingUpdateZone
 	 */
-	readonly id: number
+	readonly id: number;
 
 	/**
 	 *
 	 * @type {number}
 	 * @memberof ShippingApiShippingUpdateZone
 	 */
-	readonly methodId: number
+	readonly methodId: number;
 
 	/**
 	 *
 	 * @type {UpdateShippingZoneDto}
 	 * @memberof ShippingApiShippingUpdateZone
 	 */
-	readonly updateShippingZoneDto: UpdateShippingZoneDto
+	readonly updateShippingZoneDto: UpdateShippingZoneDto;
 }
 
 /**
@@ -10065,6 +10117,17 @@ export class ShippingApi extends BaseAPI {
 	 */
 	public shippingGetAll(requestParameters: ShippingApiShippingGetAllRequest = {}, options?: AxiosRequestConfig) {
 		return ShippingApiFp(this.configuration).shippingGetAll(requestParameters.addressId, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {ShippingApiShippingGetOneRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof ShippingApi
+	 */
+	public shippingGetOne(requestParameters: ShippingApiShippingGetOneRequest, options?: AxiosRequestConfig) {
+		return ShippingApiFp(this.configuration).shippingGetOne(requestParameters.methodId, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**

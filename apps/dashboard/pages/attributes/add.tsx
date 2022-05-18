@@ -157,7 +157,6 @@ export default function AddAttribute(props: AddAttributeProps) {
 							<TranslatableInput
 								value={ createAttributeDto.name }
 								onChange={ (str => onValueEdit('name', str)) }
-								className={ 'input input-bordered' }
 							/>
 						</div>
 						<div className="form-control w-full max-w-xs">
