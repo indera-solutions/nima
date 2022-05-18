@@ -12,11 +12,17 @@ import {
 	useUpdateProductMutation,
 	useUpdateProductVariationMutation,
 } from '@nima-cms/react';
-import { CreateAssignedProductAttributeDto, CreateProductDto, CreateProductVariantDto } from '@nima-cms/sdk';
+import {
+	CategoryDto,
+	CreateAssignedProductAttributeDto,
+	CreateProductDto,
+	CreateProductVariantDto,
+} from '@nima-cms/sdk';
 import { getSlug, Metadata, parseIdStr } from '@nima-cms/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
+import Select from 'react-select';
 import { toast } from 'react-toastify';
 import {
 	AdminColumn,
@@ -103,6 +109,33 @@ export default function Add(props: AddProps) {
 	const { data: productTypes } = useProductTypes();
 	const { data: categories } = useCategories();
 	const { data: productType } = useProductTypeId(createProductDto.productTypeId);
+
+	const categoriesOptions = useMemo<{ label: string, value: number }[]>(() => {
+		if ( !categories ) return [];
+		const temp: { label: string, value: number }[] = [];
+
+		function getChildren(category: CategoryDto, depth = 0): { label: string, value: number }[] {
+			const t = category.children.map(c => ({
+				label: ('—'.repeat(depth)) + ' ' + getTranslation(c.name, languages.adminLanguage),
+				value: c.id,
+			}));
+			return [...t, ...(category.children.map(c => getChildren(c, depth + 1))).flat()];
+		}
+
+		categories.forEach(c => {
+			temp.push({
+				label: getTranslation(c.name, languages.adminLanguage),
+				value: c.id,
+			});
+			temp.push(...getChildren(c, 1));
+		});
+		return temp;
+	}, [categories]);
+
+	const selectedCategoryOption = useMemo<{ label: string, value: number } | undefined>(() => {
+		if ( !createProductDto.categoryId ) return undefined;
+		return categoriesOptions.find(co => co.value === createProductDto.categoryId);
+	}, [categoriesOptions, createProductDto.categoryId]);
 
 	useEffect(() => {
 		if ( isEditing ) return;
@@ -381,23 +414,11 @@ export default function Add(props: AddProps) {
 							<label className="label">
 								<span className="label-text">Categories</span>
 							</label>
-							<select className="select select-bordered w-full max-w-xs"
-									onChange={ (e) => {
-										onValueEdit('categoryId', +e.target.value);
-									} }
-									value={ createProductDto.categoryId }
-
-							>
-								<option disabled value={ 0 }>Select Category</option>
-								{ categories && categories.map((category) => {
-									return <option
-										key={ category.id }
-										value={ category.id }
-									>
-										{ getTranslation(category.name, languages.adminLanguage) }
-									</option>;
-								}) }
-							</select>
+							<Select options={ categoriesOptions }
+									value={ selectedCategoryOption }
+									onChange={ (newValue) => {
+										onValueEdit('categoryId', newValue.value);
+									} }/>
 						</div>
 					</AdminSection>
 				</AdminColumn>
