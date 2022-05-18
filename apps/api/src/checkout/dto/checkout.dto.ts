@@ -1,5 +1,5 @@
 import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger';
-import { IsArray, IsString } from 'class-validator';
+import { IsArray, IsInt, IsOptional, IsString } from 'class-validator';
 import { ShippingMethodDto } from '../../shipping/dto/shipping-method.dto';
 import { CheckoutEntity } from '../entities/checkout.entity';
 import { CheckoutLineDto } from './checkout-line.dto';
@@ -24,7 +24,7 @@ export class CheckoutDto extends OmitType(CheckoutEntity, ['lines', 'shippingMet
 	@ApiProperty()
 	totalCost: number;
 
-	@ApiProperty({ type: () => ShippingMethodDto })
+	@ApiProperty({ type: () => ShippingMethodDto, required: false })
 	shippingMethod?: ShippingMethodDto;
 
 	@ApiProperty({ type: () => CheckoutAvailableShippingDto, isArray: true })
@@ -52,6 +52,10 @@ export class CreateCheckoutDto extends PickType(CheckoutDto, ['languageCode']) {
 
 
 export class UpdateCheckoutDto extends PartialType(PickType(CheckoutDto, ['email', 'note', 'languageCode', 'useShippingAsBilling', 'paymentMethod'])) {
+	@ApiProperty({ required: false, type: Number })
+	@IsInt()
+	@IsOptional()
+	shippingMethodId?: number;
 }
 
 export class UpdateCheckoutVoucherDto {

@@ -51,7 +51,7 @@ export default function AddProductType(props: AddProductTypeProps) {
 
 	useEffect(() => {
 		if ( !existingProductType ) return;
-		const { id, ...rest } = existingProductType;
+		const { id, hasVariants, ...rest } = existingProductType;
 		setCreateProductTypeDto(rest);
 	}, [existingProductType]);
 

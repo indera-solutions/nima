@@ -155,7 +155,7 @@ export default function Add(props: AddProps) {
 
 	useEffect(() => {
 		if ( !existingProduct ) return;
-		const { id, attributes, productMedia, updatedAt, created, ...rest } = existingProduct;
+		const { id, attributes, productMedia, defaultVariantId, updatedAt, created, ...rest } = existingProduct;
 		setCreateProductDto({
 			...rest,
 			productMedia: productMedia.map(pm => ({ mediaId: pm.media.id, sortOrder: pm.sortOrder })),
@@ -178,7 +178,7 @@ export default function Add(props: AddProps) {
 		if ( productType.hasVariants ) return;
 		if ( !existingProductVariants[0] ) return;
 		const { id, attributes, updatedAt, created, ...rest } = existingProductVariants[0];
-
+		delete rest['productId'];
 		setDefaultVariant({
 			...rest,
 			attributes: [],

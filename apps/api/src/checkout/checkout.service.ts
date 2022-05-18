@@ -65,7 +65,13 @@ export class CheckoutService {
 
 	async updateInfo(params: { token: string, updateCheckoutDto: UpdateCheckoutDto }): Promise<void> {
 		const { updateCheckoutDto, token } = params;
-		await this.checkoutRepository.update(token, updateCheckoutDto);
+		const { shippingMethodId, ...rest } = updateCheckoutDto;
+		if ( shippingMethodId ) {
+			rest.shippingMethod = await this.shippingService.getById({
+				id: shippingMethodId,
+			});
+		}
+		await this.checkoutRepository.update(token, rest);
 		if ( updateCheckoutDto.useShippingAsBilling ) {
 			await this.setShippingAsBilling(token);
 		}

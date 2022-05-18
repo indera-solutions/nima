@@ -368,6 +368,27 @@ export interface CategoryDto {
 	 */
 	'parent'?: CategoryDto;
 }
+
+/**
+ *
+ * @export
+ * @interface CheckoutAvailableShippingDto
+ */
+export interface CheckoutAvailableShippingDto {
+	/**
+	 *
+	 * @type {ShippingMethodDto}
+	 * @memberof CheckoutAvailableShippingDto
+	 */
+	'shippingMethod': ShippingMethodDto;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CheckoutAvailableShippingDto
+	 */
+	'rate': number;
+}
+
 /**
  *
  * @export
@@ -440,12 +461,6 @@ export interface CheckoutDto {
 	 * @memberof CheckoutDto
 	 */
 	'shippingAddress': AddressDto;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof CheckoutDto
-	 */
-	'shipping_method_id': number;
 	/**
 	 *
 	 * @type {string}
@@ -536,6 +551,18 @@ export interface CheckoutDto {
 	 * @memberof CheckoutDto
 	 */
 	'totalCost': number;
+	/**
+	 *
+	 * @type {ShippingMethodDto}
+	 * @memberof CheckoutDto
+	 */
+	'shippingMethod'?: ShippingMethodDto;
+	/**
+	 *
+	 * @type {Array<CheckoutAvailableShippingDto>}
+	 * @memberof CheckoutDto
+	 */
+	'availableShippingMethods': Array<CheckoutAvailableShippingDto>;
 }
 /**
  *
@@ -988,12 +1015,6 @@ export interface CreateOrderDto {
 	'shippingAddress'?: AddressDto;
 	/**
 	 *
-	 * @type {UserDto}
-	 * @memberof CreateOrderDto
-	 */
-	'user'?: UserDto;
-	/**
-	 *
 	 * @type {number}
 	 * @memberof CreateOrderDto
 	 */
@@ -1126,16 +1147,10 @@ export interface CreateOrderDto {
 	'origin': string;
 	/**
 	 *
-	 * @type {object}
+	 * @type {number}
 	 * @memberof CreateOrderDto
 	 */
-	'original'?: object;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof CreateOrderDto
-	 */
-	'searchDocument': string;
+	'userId'?: number;
 }
 /**
  *
@@ -1434,6 +1449,131 @@ export interface CreateProductVariantDto {
 	 */
 	'productMedia': Array<CreateSortableMediaDto>;
 }
+
+/**
+ *
+ * @export
+ * @interface CreateShippingMethodDto
+ */
+export interface CreateShippingMethodDto {
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateShippingMethodDto
+	 */
+	'name': string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateShippingMethodDto
+	 */
+	'maximumOrderWeight': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateShippingMethodDto
+	 */
+	'minimumOrderWeight': number;
+	/**
+	 *
+	 * @type {ShippingZoneMethodType}
+	 * @memberof CreateShippingMethodDto
+	 */
+	'shippingType': ShippingZoneMethodType;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof CreateShippingMethodDto
+	 */
+	'metadata': object;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof CreateShippingMethodDto
+	 */
+	'privateMetadata': object;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateShippingMethodDto
+	 */
+	'maximumDeliveryDays': number | null;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateShippingMethodDto
+	 */
+	'minimumDeliveryDays': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateShippingMethodDto
+	 */
+	'threshold': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateShippingMethodDto
+	 */
+	'rate': number;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof CreateShippingMethodDto
+	 */
+	'description': TranslatableDto;
+	/**
+	 *
+	 * @type {Array<CreateShippingZoneDto>}
+	 * @memberof CreateShippingMethodDto
+	 */
+	'shippingZones': Array<CreateShippingZoneDto>;
+}
+
+/**
+ *
+ * @export
+ * @interface CreateShippingZoneDto
+ */
+export interface CreateShippingZoneDto {
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateShippingZoneDto
+	 */
+	'name': string;
+	/**
+	 *
+	 * @type {ShippingZoneLocationType}
+	 * @memberof CreateShippingZoneDto
+	 */
+	'locationType': ShippingZoneLocationType;
+	/**
+	 *
+	 * @type {Array<string>}
+	 * @memberof CreateShippingZoneDto
+	 */
+	'locationCodes': Array<string>;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof CreateShippingZoneDto
+	 */
+	'metadata': object;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof CreateShippingZoneDto
+	 */
+	'privateMetadata': object;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof CreateShippingZoneDto
+	 */
+	'description': TranslatableDto;
+}
+
 /**
  *
  * @export
@@ -1613,6 +1753,189 @@ export interface MediaListPaginated {
 	 */
 	'totalCount': number;
 }
+
+/**
+ *
+ * @export
+ * @interface OrderDto
+ */
+export interface OrderDto {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderDto
+	 */
+	'id': number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrderDto
+	 */
+	'created': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrderDto
+	 */
+	'updatedAt': string;
+	/**
+	 * shipping tracking id
+	 * @type {string}
+	 * @memberof OrderDto
+	 */
+	'trackingClientId': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrderDto
+	 */
+	'userEmail': string;
+	/**
+	 *
+	 * @type {AddressDto}
+	 * @memberof OrderDto
+	 */
+	'billingAddress'?: AddressDto;
+	/**
+	 *
+	 * @type {AddressDto}
+	 * @memberof OrderDto
+	 */
+	'shippingAddress'?: AddressDto;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderDto
+	 */
+	'totalNetAmount': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderDto
+	 */
+	'voucher_id': number;
+	/**
+	 *
+	 * @type {LanguageCode}
+	 * @memberof OrderDto
+	 */
+	'languageCode': LanguageCode;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderDto
+	 */
+	'shippingPriceGrossAmount': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderDto
+	 */
+	'totalGrossAmount': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderDto
+	 */
+	'shippingPriceNetAmount': number;
+	/**
+	 *
+	 * @type {OrderStatus}
+	 * @memberof OrderDto
+	 */
+	'status': OrderStatus;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrderDto
+	 */
+	'shippingMethodName'?: string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderDto
+	 */
+	'shippingMethodId'?: number;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof OrderDto
+	 */
+	'displayGrossPrices': boolean;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrderDto
+	 */
+	'customerNote': string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderDto
+	 */
+	'weight': number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrderDto
+	 */
+	'checkoutToken': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrderDto
+	 */
+	'currency': string;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof OrderDto
+	 */
+	'metadata': object;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof OrderDto
+	 */
+	'privateMetadata': object;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrderDto
+	 */
+	'redirectUrl'?: string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderDto
+	 */
+	'shippingTaxRate': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderDto
+	 */
+	'undiscountedTotalGrossAmount': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderDto
+	 */
+	'undiscountedTotalNetAmount': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderDto
+	 */
+	'totalPaidAmount': number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrderDto
+	 */
+	'origin': string;
+}
+
 /**
  *
  * @export
@@ -1722,7 +2045,6 @@ export interface PaymentDto {
 	 */
 	'shipping': AddressDto;
 }
-
 /**
  *
  * @export
@@ -2439,6 +2761,172 @@ export interface SettingsDto {
 	 */
 	'siteLogo'?: MediaDto;
 }
+
+/**
+ *
+ * @export
+ * @interface ShippingMethodDto
+ */
+export interface ShippingMethodDto {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ShippingMethodDto
+	 */
+	'id': number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof ShippingMethodDto
+	 */
+	'name': string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ShippingMethodDto
+	 */
+	'maximumOrderWeight': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ShippingMethodDto
+	 */
+	'minimumOrderWeight': number;
+	/**
+	 *
+	 * @type {ShippingZoneMethodType}
+	 * @memberof ShippingMethodDto
+	 */
+	'shippingType': ShippingZoneMethodType;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof ShippingMethodDto
+	 */
+	'metadata': object;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof ShippingMethodDto
+	 */
+	'privateMetadata': object;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ShippingMethodDto
+	 */
+	'maximumDeliveryDays': number | null;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ShippingMethodDto
+	 */
+	'minimumDeliveryDays': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ShippingMethodDto
+	 */
+	'threshold': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ShippingMethodDto
+	 */
+	'rate': number;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof ShippingMethodDto
+	 */
+	'description': TranslatableDto;
+	/**
+	 *
+	 * @type {Array<ShippingZoneDto>}
+	 * @memberof ShippingMethodDto
+	 */
+	'shippingZones': Array<ShippingZoneDto>;
+}
+
+/**
+ *
+ * @export
+ * @interface ShippingZoneDto
+ */
+export interface ShippingZoneDto {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ShippingZoneDto
+	 */
+	'id': number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof ShippingZoneDto
+	 */
+	'name': string;
+	/**
+	 *
+	 * @type {ShippingZoneLocationType}
+	 * @memberof ShippingZoneDto
+	 */
+	'locationType': ShippingZoneLocationType;
+	/**
+	 *
+	 * @type {Array<string>}
+	 * @memberof ShippingZoneDto
+	 */
+	'locationCodes': Array<string>;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof ShippingZoneDto
+	 */
+	'metadata': object;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof ShippingZoneDto
+	 */
+	'privateMetadata': object;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof ShippingZoneDto
+	 */
+	'description': TranslatableDto;
+}
+
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+
+export enum ShippingZoneLocationType {
+	COUNTRY = 'COUNTRY',
+	STATE = 'STATE',
+	CONTINENT = 'CONTINENT',
+	POSTAL = 'POSTAL'
+}
+
+
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+
+export enum ShippingZoneMethodType {
+	FLAT_RATE = 'FLAT_RATE',
+	FREE_SHIPPING = 'FREE_SHIPPING',
+	LOCAL_PICKUP = 'LOCAL_PICKUP',
+	BY_WEIGHT = 'BY_WEIGHT',
+	BY_PRICE = 'BY_PRICE'
+}
+
+
 /**
  *
  * @export
@@ -2779,6 +3267,12 @@ export interface UpdateCheckoutDto {
 	 * @memberof UpdateCheckoutDto
 	 */
 	'paymentMethod'?: PaymentMethod;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateCheckoutDto
+	 */
+	'shippingMethodId'?: number;
 }
 /**
  *
@@ -2885,12 +3379,6 @@ export interface UpdateOrderDto {
 	 * @memberof UpdateOrderDto
 	 */
 	'shippingAddress'?: AddressDto;
-	/**
-	 *
-	 * @type {UserDto}
-	 * @memberof UpdateOrderDto
-	 */
-	'user'?: UserDto;
 	/**
 	 *
 	 * @type {number}
@@ -3025,18 +3513,11 @@ export interface UpdateOrderDto {
 	'origin'?: string;
 	/**
 	 *
-	 * @type {object}
+	 * @type {number}
 	 * @memberof UpdateOrderDto
 	 */
-	'original'?: object;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof UpdateOrderDto
-	 */
-	'searchDocument'?: string;
+	'userId'?: number;
 }
-
 /**
  *
  * @export
@@ -3067,6 +3548,130 @@ export interface UpdatePaymentDto {
 	 * @memberof UpdatePaymentDto
 	 */
 	'transactionTicket'?: string;
+}
+
+/**
+ *
+ * @export
+ * @interface UpdateShippingMethodDto
+ */
+export interface UpdateShippingMethodDto {
+	/**
+	 *
+	 * @type {string}
+	 * @memberof UpdateShippingMethodDto
+	 */
+	'name'?: string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateShippingMethodDto
+	 */
+	'maximumOrderWeight'?: number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateShippingMethodDto
+	 */
+	'minimumOrderWeight'?: number;
+	/**
+	 *
+	 * @type {ShippingZoneMethodType}
+	 * @memberof UpdateShippingMethodDto
+	 */
+	'shippingType'?: ShippingZoneMethodType;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof UpdateShippingMethodDto
+	 */
+	'metadata'?: object;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof UpdateShippingMethodDto
+	 */
+	'privateMetadata'?: object;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateShippingMethodDto
+	 */
+	'maximumDeliveryDays'?: number | null;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateShippingMethodDto
+	 */
+	'minimumDeliveryDays'?: number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateShippingMethodDto
+	 */
+	'threshold'?: number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateShippingMethodDto
+	 */
+	'rate'?: number;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof UpdateShippingMethodDto
+	 */
+	'description'?: TranslatableDto;
+	/**
+	 *
+	 * @type {Array<CreateShippingZoneDto>}
+	 * @memberof UpdateShippingMethodDto
+	 */
+	'shippingZones'?: Array<CreateShippingZoneDto>;
+}
+
+/**
+ *
+ * @export
+ * @interface UpdateShippingZoneDto
+ */
+export interface UpdateShippingZoneDto {
+	/**
+	 *
+	 * @type {string}
+	 * @memberof UpdateShippingZoneDto
+	 */
+	'name'?: string;
+	/**
+	 *
+	 * @type {ShippingZoneLocationType}
+	 * @memberof UpdateShippingZoneDto
+	 */
+	'locationType'?: ShippingZoneLocationType;
+	/**
+	 *
+	 * @type {Array<string>}
+	 * @memberof UpdateShippingZoneDto
+	 */
+	'locationCodes'?: Array<string>;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof UpdateShippingZoneDto
+	 */
+	'metadata'?: object;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof UpdateShippingZoneDto
+	 */
+	'privateMetadata'?: object;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof UpdateShippingZoneDto
+	 */
+	'description'?: TranslatableDto;
 }
 
 /**
@@ -4666,9 +5271,9 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 		 */
 		categoriesFindAncestorsById: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('categoriesFindAncestorsById', 'id', id);
+			assertParamExists('categoriesFindAncestorsById', 'id', id)
 			const localVarPath = `/api/v1/categories/{id}/ancestors`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -6841,11 +7446,11 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		orderFindOne: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		orderFindOne: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('orderFindOne', 'id', id)
 			const localVarPath = `/api/v1/order/{id}`
@@ -6873,11 +7478,11 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		orderRemove: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		orderRemove: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('orderRemove', 'id', id)
 			const localVarPath = `/api/v1/order/{id}`
@@ -6905,12 +7510,12 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {UpdateOrderDto} updateOrderDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		orderUpdate: async (id: string, updateOrderDto: UpdateOrderDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		orderUpdate: async (id: number, updateOrderDto: UpdateOrderDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('orderUpdate', 'id', id)
 			// verify required parameter 'updateOrderDto' is not null or undefined
@@ -6957,7 +7562,7 @@ export const OrdersApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async orderCreate(createOrderDto: CreateOrderDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async orderCreate(createOrderDto: CreateOrderDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.orderCreate(createOrderDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -6972,32 +7577,32 @@ export const OrdersApiFp = function (configuration?: Configuration) {
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async orderFindOne(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async orderFindOne(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.orderFindOne(id, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async orderRemove(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async orderRemove(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.orderRemove(id, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {UpdateOrderDto} updateOrderDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async orderUpdate(id: string, updateOrderDto: UpdateOrderDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async orderUpdate(id: number, updateOrderDto: UpdateOrderDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.orderUpdate(id, updateOrderDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -7017,7 +7622,7 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		orderCreate(createOrderDto: CreateOrderDto, options?: any): AxiosPromise<void> {
+		orderCreate(createOrderDto: CreateOrderDto, options?: any): AxiosPromise<OrderDto> {
 			return localVarFp.orderCreate(createOrderDto, options).then((request) => request(axios, basePath));
 		},
 		/**
@@ -7030,30 +7635,30 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		orderFindOne(id: string, options?: any): AxiosPromise<void> {
+		orderFindOne(id: number, options?: any): AxiosPromise<OrderDto> {
 			return localVarFp.orderFindOne(id, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		orderRemove(id: string, options?: any): AxiosPromise<void> {
+		orderRemove(id: number, options?: any): AxiosPromise<OrderDto> {
 			return localVarFp.orderRemove(id, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {UpdateOrderDto} updateOrderDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		orderUpdate(id: string, updateOrderDto: UpdateOrderDto, options?: any): AxiosPromise<void> {
+		orderUpdate(id: number, updateOrderDto: UpdateOrderDto, options?: any): AxiosPromise<OrderDto> {
 			return localVarFp.orderUpdate(id, updateOrderDto, options).then((request) => request(axios, basePath));
 		},
 	};
@@ -7081,10 +7686,10 @@ export interface OrdersApiOrderCreateRequest {
 export interface OrdersApiOrderFindOneRequest {
 	/**
 	 *
-	 * @type {string}
+	 * @type {number}
 	 * @memberof OrdersApiOrderFindOne
 	 */
-	readonly id: string;
+	readonly id: number;
 }
 
 /**
@@ -7095,10 +7700,10 @@ export interface OrdersApiOrderFindOneRequest {
 export interface OrdersApiOrderRemoveRequest {
 	/**
 	 *
-	 * @type {string}
+	 * @type {number}
 	 * @memberof OrdersApiOrderRemove
 	 */
-	readonly id: string;
+	readonly id: number;
 }
 
 /**
@@ -7109,10 +7714,10 @@ export interface OrdersApiOrderRemoveRequest {
 export interface OrdersApiOrderUpdateRequest {
 	/**
 	 *
-	 * @type {string}
+	 * @type {number}
 	 * @memberof OrdersApiOrderUpdate
 	 */
-	readonly id: string;
+	readonly id: number;
 
 	/**
 	 *
@@ -7269,7 +7874,7 @@ export const PaymentsApiAxiosParamCreator = function (configuration?: Configurat
  * @export
  */
 export const PaymentsApiFp = function (configuration?: Configuration) {
-	const localVarAxiosParamCreator = PaymentsApiAxiosParamCreator(configuration)
+	const localVarAxiosParamCreator = PaymentsApiAxiosParamCreator(configuration);
 	return {
 		/**
 		 *
@@ -7292,7 +7897,7 @@ export const PaymentsApiFp = function (configuration?: Configuration) {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.paymentsPatch(id, updatePaymentDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
-	}
+	};
 };
 
 /**
@@ -7300,7 +7905,7 @@ export const PaymentsApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const PaymentsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = PaymentsApiFp(configuration)
+	const localVarFp = PaymentsApiFp(configuration);
 	return {
 		/**
 		 *
@@ -7335,7 +7940,7 @@ export interface PaymentsApiPaymentsGetByIdRequest {
 	 * @type {number}
 	 * @memberof PaymentsApiPaymentsGetById
 	 */
-	readonly id: number
+	readonly id: number;
 }
 
 /**
@@ -7349,14 +7954,14 @@ export interface PaymentsApiPaymentsPatchRequest {
 	 * @type {number}
 	 * @memberof PaymentsApiPaymentsPatch
 	 */
-	readonly id: number
+	readonly id: number;
 
 	/**
 	 *
 	 * @type {UpdatePaymentDto}
 	 * @memberof PaymentsApiPaymentsPatch
 	 */
-	readonly updatePaymentDto: UpdatePaymentDto
+	readonly updatePaymentDto: UpdatePaymentDto;
 }
 
 /**
@@ -8907,6 +9512,581 @@ export class ProductsApi extends BaseAPI {
 	 */
 	public productsUpdate(requestParameters: ProductsApiProductsUpdateRequest, options?: AxiosRequestConfig) {
 		return ProductsApiFp(this.configuration).productsUpdate(requestParameters.id, requestParameters.createProductDto, options).then((request) => request(this.axios, this.basePath));
+	}
+}
+
+
+/**
+ * ShippingApi - axios parameter creator
+ * @export
+ */
+export const ShippingApiAxiosParamCreator = function (configuration?: Configuration) {
+	return {
+		/**
+		 *
+		 * @param {CreateShippingMethodDto} createShippingMethodDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		shippingCreate: async (createShippingMethodDto: CreateShippingMethodDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'createShippingMethodDto' is not null or undefined
+			assertParamExists('shippingCreate', 'createShippingMethodDto', createShippingMethodDto)
+			const localVarPath = `/api/v1/shipping`;
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(createShippingMethodDto, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} methodId
+		 * @param {CreateShippingZoneDto} createShippingZoneDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		shippingCreateZone: async (methodId: number, createShippingZoneDto: CreateShippingZoneDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'methodId' is not null or undefined
+			assertParamExists('shippingCreateZone', 'methodId', methodId)
+			// verify required parameter 'createShippingZoneDto' is not null or undefined
+			assertParamExists('shippingCreateZone', 'createShippingZoneDto', createShippingZoneDto)
+			const localVarPath = `/api/v1/shipping/{methodId}/zones`
+				.replace(`{${ "methodId" }}`, encodeURIComponent(String(methodId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(createShippingZoneDto, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		shippingDeleteById: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('shippingDeleteById', 'id', id)
+			const localVarPath = `/api/v1/shipping/{id}`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} [addressId]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		shippingGetAll: async (addressId?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			const localVarPath = `/api/v1/shipping`;
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			if ( addressId !== undefined ) {
+				localVarQueryParameter['addressId'] = addressId;
+			}
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} methodId
+		 * @param {UpdateShippingMethodDto} updateShippingMethodDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		shippingUpdateMethod: async (methodId: number, updateShippingMethodDto: UpdateShippingMethodDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'methodId' is not null or undefined
+			assertParamExists('shippingUpdateMethod', 'methodId', methodId)
+			// verify required parameter 'updateShippingMethodDto' is not null or undefined
+			assertParamExists('shippingUpdateMethod', 'updateShippingMethodDto', updateShippingMethodDto)
+			const localVarPath = `/api/v1/shipping/{methodId}`
+				.replace(`{${ "methodId" }}`, encodeURIComponent(String(methodId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(updateShippingMethodDto, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} methodId
+		 * @param {UpdateShippingZoneDto} updateShippingZoneDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		shippingUpdateZone: async (id: number, methodId: number, updateShippingZoneDto: UpdateShippingZoneDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('shippingUpdateZone', 'id', id)
+			// verify required parameter 'methodId' is not null or undefined
+			assertParamExists('shippingUpdateZone', 'methodId', methodId)
+			// verify required parameter 'updateShippingZoneDto' is not null or undefined
+			assertParamExists('shippingUpdateZone', 'updateShippingZoneDto', updateShippingZoneDto)
+			const localVarPath = `/api/v1/shipping/{methodId}/zones/{id}`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)))
+				.replace(`{${ "methodId" }}`, encodeURIComponent(String(methodId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(updateShippingZoneDto, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+	}
+};
+
+/**
+ * ShippingApi - functional programming interface
+ * @export
+ */
+export const ShippingApiFp = function (configuration?: Configuration) {
+	const localVarAxiosParamCreator = ShippingApiAxiosParamCreator(configuration)
+	return {
+		/**
+		 *
+		 * @param {CreateShippingMethodDto} createShippingMethodDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async shippingCreate(createShippingMethodDto: CreateShippingMethodDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShippingMethodDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.shippingCreate(createShippingMethodDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} methodId
+		 * @param {CreateShippingZoneDto} createShippingZoneDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async shippingCreateZone(methodId: number, createShippingZoneDto: CreateShippingZoneDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShippingZoneDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.shippingCreateZone(methodId, createShippingZoneDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async shippingDeleteById(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShippingMethodDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.shippingDeleteById(id, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} [addressId]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async shippingGetAll(addressId?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ShippingMethodDto>>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.shippingGetAll(addressId, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} methodId
+		 * @param {UpdateShippingMethodDto} updateShippingMethodDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async shippingUpdateMethod(methodId: number, updateShippingMethodDto: UpdateShippingMethodDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShippingMethodDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.shippingUpdateMethod(methodId, updateShippingMethodDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} methodId
+		 * @param {UpdateShippingZoneDto} updateShippingZoneDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async shippingUpdateZone(id: number, methodId: number, updateShippingZoneDto: UpdateShippingZoneDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShippingZoneDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.shippingUpdateZone(id, methodId, updateShippingZoneDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+	}
+};
+
+/**
+ * ShippingApi - factory interface
+ * @export
+ */
+export const ShippingApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+	const localVarFp = ShippingApiFp(configuration)
+	return {
+		/**
+		 *
+		 * @param {CreateShippingMethodDto} createShippingMethodDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		shippingCreate(createShippingMethodDto: CreateShippingMethodDto, options?: any): AxiosPromise<ShippingMethodDto> {
+			return localVarFp.shippingCreate(createShippingMethodDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} methodId
+		 * @param {CreateShippingZoneDto} createShippingZoneDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		shippingCreateZone(methodId: number, createShippingZoneDto: CreateShippingZoneDto, options?: any): AxiosPromise<ShippingZoneDto> {
+			return localVarFp.shippingCreateZone(methodId, createShippingZoneDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		shippingDeleteById(id: number, options?: any): AxiosPromise<ShippingMethodDto> {
+			return localVarFp.shippingDeleteById(id, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} [addressId]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		shippingGetAll(addressId?: number, options?: any): AxiosPromise<Array<ShippingMethodDto>> {
+			return localVarFp.shippingGetAll(addressId, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} methodId
+		 * @param {UpdateShippingMethodDto} updateShippingMethodDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		shippingUpdateMethod(methodId: number, updateShippingMethodDto: UpdateShippingMethodDto, options?: any): AxiosPromise<ShippingMethodDto> {
+			return localVarFp.shippingUpdateMethod(methodId, updateShippingMethodDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} methodId
+		 * @param {UpdateShippingZoneDto} updateShippingZoneDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		shippingUpdateZone(id: number, methodId: number, updateShippingZoneDto: UpdateShippingZoneDto, options?: any): AxiosPromise<ShippingZoneDto> {
+			return localVarFp.shippingUpdateZone(id, methodId, updateShippingZoneDto, options).then((request) => request(axios, basePath));
+		},
+	};
+};
+
+/**
+ * Request parameters for shippingCreate operation in ShippingApi.
+ * @export
+ * @interface ShippingApiShippingCreateRequest
+ */
+export interface ShippingApiShippingCreateRequest {
+	/**
+	 *
+	 * @type {CreateShippingMethodDto}
+	 * @memberof ShippingApiShippingCreate
+	 */
+	readonly createShippingMethodDto: CreateShippingMethodDto
+}
+
+/**
+ * Request parameters for shippingCreateZone operation in ShippingApi.
+ * @export
+ * @interface ShippingApiShippingCreateZoneRequest
+ */
+export interface ShippingApiShippingCreateZoneRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ShippingApiShippingCreateZone
+	 */
+	readonly methodId: number
+
+	/**
+	 *
+	 * @type {CreateShippingZoneDto}
+	 * @memberof ShippingApiShippingCreateZone
+	 */
+	readonly createShippingZoneDto: CreateShippingZoneDto
+}
+
+/**
+ * Request parameters for shippingDeleteById operation in ShippingApi.
+ * @export
+ * @interface ShippingApiShippingDeleteByIdRequest
+ */
+export interface ShippingApiShippingDeleteByIdRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ShippingApiShippingDeleteById
+	 */
+	readonly id: number
+}
+
+/**
+ * Request parameters for shippingGetAll operation in ShippingApi.
+ * @export
+ * @interface ShippingApiShippingGetAllRequest
+ */
+export interface ShippingApiShippingGetAllRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ShippingApiShippingGetAll
+	 */
+	readonly addressId?: number
+}
+
+/**
+ * Request parameters for shippingUpdateMethod operation in ShippingApi.
+ * @export
+ * @interface ShippingApiShippingUpdateMethodRequest
+ */
+export interface ShippingApiShippingUpdateMethodRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ShippingApiShippingUpdateMethod
+	 */
+	readonly methodId: number
+
+	/**
+	 *
+	 * @type {UpdateShippingMethodDto}
+	 * @memberof ShippingApiShippingUpdateMethod
+	 */
+	readonly updateShippingMethodDto: UpdateShippingMethodDto
+}
+
+/**
+ * Request parameters for shippingUpdateZone operation in ShippingApi.
+ * @export
+ * @interface ShippingApiShippingUpdateZoneRequest
+ */
+export interface ShippingApiShippingUpdateZoneRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ShippingApiShippingUpdateZone
+	 */
+	readonly id: number
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ShippingApiShippingUpdateZone
+	 */
+	readonly methodId: number
+
+	/**
+	 *
+	 * @type {UpdateShippingZoneDto}
+	 * @memberof ShippingApiShippingUpdateZone
+	 */
+	readonly updateShippingZoneDto: UpdateShippingZoneDto
+}
+
+/**
+ * ShippingApi - object-oriented interface
+ * @export
+ * @class ShippingApi
+ * @extends {BaseAPI}
+ */
+export class ShippingApi extends BaseAPI {
+	/**
+	 *
+	 * @param {ShippingApiShippingCreateRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof ShippingApi
+	 */
+	public shippingCreate(requestParameters: ShippingApiShippingCreateRequest, options?: AxiosRequestConfig) {
+		return ShippingApiFp(this.configuration).shippingCreate(requestParameters.createShippingMethodDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {ShippingApiShippingCreateZoneRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof ShippingApi
+	 */
+	public shippingCreateZone(requestParameters: ShippingApiShippingCreateZoneRequest, options?: AxiosRequestConfig) {
+		return ShippingApiFp(this.configuration).shippingCreateZone(requestParameters.methodId, requestParameters.createShippingZoneDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {ShippingApiShippingDeleteByIdRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof ShippingApi
+	 */
+	public shippingDeleteById(requestParameters: ShippingApiShippingDeleteByIdRequest, options?: AxiosRequestConfig) {
+		return ShippingApiFp(this.configuration).shippingDeleteById(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {ShippingApiShippingGetAllRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof ShippingApi
+	 */
+	public shippingGetAll(requestParameters: ShippingApiShippingGetAllRequest = {}, options?: AxiosRequestConfig) {
+		return ShippingApiFp(this.configuration).shippingGetAll(requestParameters.addressId, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {ShippingApiShippingUpdateMethodRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof ShippingApi
+	 */
+	public shippingUpdateMethod(requestParameters: ShippingApiShippingUpdateMethodRequest, options?: AxiosRequestConfig) {
+		return ShippingApiFp(this.configuration).shippingUpdateMethod(requestParameters.methodId, requestParameters.updateShippingMethodDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {ShippingApiShippingUpdateZoneRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof ShippingApi
+	 */
+	public shippingUpdateZone(requestParameters: ShippingApiShippingUpdateZoneRequest, options?: AxiosRequestConfig) {
+		return ShippingApiFp(this.configuration).shippingUpdateZone(requestParameters.id, requestParameters.methodId, requestParameters.updateShippingZoneDto, options).then((request) => request(this.axios, this.basePath));
 	}
 }
 

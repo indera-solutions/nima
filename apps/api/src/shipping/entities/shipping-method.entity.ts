@@ -25,7 +25,7 @@ export class ShippingMethodEntity {
 	@IsString()
 	name: string;
 
-	@Column({ type: 'float' })
+	@Column({ type: 'float', nullable: true })
 	@ApiProperty()
 	@IsNumber()
 	@IsOptional()
@@ -53,7 +53,7 @@ export class ShippingMethodEntity {
 	privateMetadata: Metadata;
 
 	@Column()
-	@ApiProperty({ type: Number })
+	@ApiProperty({ type: Number, nullable: true })
 	@IsInt()
 	@IsOptional()
 	maximumDeliveryDays?: number;

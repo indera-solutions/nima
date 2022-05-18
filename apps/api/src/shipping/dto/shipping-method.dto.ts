@@ -22,7 +22,7 @@ export class ShippingMethodDto extends OmitType(ShippingMethodEntity, ['shipping
 			minimumDeliveryDays: entity.minimumDeliveryDays,
 			minimumOrderWeight: entity.minimumOrderWeight,
 			threshold: entity.threshold,
-			shippingZones: entity.shippingZones.map(zone => ShippingZoneDto.prepare(zone, options)),
+			shippingZones: entity.shippingZones?.map(zone => ShippingZoneDto.prepare(zone, options)) || [],
 		};
 	}
 
