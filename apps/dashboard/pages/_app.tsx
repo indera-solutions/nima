@@ -1,5 +1,5 @@
 import { LanguageContextProvider, SessionProvider } from '@nima-cms/react';
-import { AppProps } from 'next/app';
+import App, { AppProps } from 'next/app';
 import Head from 'next/head';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { toast, ToastContainer } from 'react-toastify';
@@ -61,5 +61,13 @@ function CustomApp({ Component, pageProps }: AppProps) {
 		</>
 	);
 }
+
+// We use getInitialProps here to be able to use dynamic env from runtime
+CustomApp.getInitialProps = async (appContext) => {
+	// calls page's `getInitialProps` and fills `appProps.pageProps`
+	const appProps = await App.getInitialProps(appContext);
+
+	return { ...appProps };
+};
 
 export default CustomApp;
