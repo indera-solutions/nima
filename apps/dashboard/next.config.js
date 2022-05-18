@@ -21,6 +21,9 @@ const nextConfig = {
 	images: {
 		domains: ['loom-cdn.indera.gr'],
 	},
+	publicRuntimeConfig: {
+		basePath: process.env.BASE_PATH,
+	},
 };
 
 module.exports = withNx(nextConfig);
