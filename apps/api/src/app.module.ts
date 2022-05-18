@@ -10,6 +10,7 @@ import { CheckoutModule, CheckoutModuleEntities } from './checkout/checkout.modu
 import { CoreModule, CoreModuleEntities } from './core/core.module';
 import { DiscountsModule } from './discounts/discounts.module';
 import { OrderModule, OrderModuleEntities } from './order/order.module';
+import { PaymentsModule, PaymentsModuleEntities } from './payments/payments.module';
 import { ProductTypesModule, ProductTypesModuleEntities } from './product-types/product-types.module';
 import { ProductsModule, ProductsModuleEntities } from './products/products.module';
 import { UserEntity } from './users/entities/user.entity';
@@ -24,6 +25,7 @@ const ALL_ENTITIES = [
 	...ProductsModuleEntities,
 	...OrderModuleEntities,
 	...CheckoutModuleEntities,
+	...PaymentsModuleEntities,
 ];
 
 @Module({
@@ -51,6 +53,7 @@ const ALL_ENTITIES = [
 		OrderModule,
 		CheckoutModule,
 		DiscountsModule,
+		PaymentsModule,
 	],
 	controllers: [AppController],
 	providers: [

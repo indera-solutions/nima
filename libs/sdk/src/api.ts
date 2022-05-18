@@ -496,6 +496,12 @@ export interface CheckoutDto {
 	'languageCode': LanguageCode;
 	/**
 	 *
+	 * @type {PaymentMethod}
+	 * @memberof CheckoutDto
+	 */
+	'paymentMethod': PaymentMethod;
+	/**
+	 *
 	 * @type {Array<CheckoutLineDto>}
 	 * @memberof CheckoutDto
 	 */
@@ -1628,6 +1634,127 @@ export enum OrderStatus {
 /**
  *
  * @export
+ * @interface PaymentDto
+ */
+export interface PaymentDto {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof PaymentDto
+	 */
+	'id': number;
+	/**
+	 *
+	 * @type {PaymentMethod}
+	 * @memberof PaymentDto
+	 */
+	'method': PaymentMethod;
+	/**
+	 *
+	 * @type {PaymentStatus}
+	 * @memberof PaymentDto
+	 */
+	'status': PaymentStatus;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof PaymentDto
+	 */
+	'dateCreated': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof PaymentDto
+	 */
+	'dateUpdated': string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof PaymentDto
+	 */
+	'supportRefId': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof PaymentDto
+	 */
+	'amount': number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof PaymentDto
+	 */
+	'customerId': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof PaymentDto
+	 */
+	'description': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof PaymentDto
+	 */
+	'currency': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof PaymentDto
+	 */
+	'referenceId': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof PaymentDto
+	 */
+	'transactionTicket': string;
+	/**
+	 *
+	 * @type {AddressDto}
+	 * @memberof PaymentDto
+	 */
+	'billing': AddressDto;
+	/**
+	 *
+	 * @type {AddressDto}
+	 * @memberof PaymentDto
+	 */
+	'shipping': AddressDto;
+}
+
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+
+export enum PaymentMethod {
+	CARD = 'CARD',
+	CASH_ON_DELIVERY = 'CASH_ON_DELIVERY',
+	BANK_TRANSFER = 'BANK_TRANSFER'
+}
+
+
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+
+export enum PaymentStatus {
+	PROCESSING = 'PROCESSING',
+	CAPTURED = 'CAPTURED',
+	ERROR = 'ERROR',
+	PENDING = 'PENDING',
+	CANCELED = 'CANCELED',
+	REFUSED = 'REFUSED'
+}
+
+
+/**
+ *
+ * @export
  * @interface ProductAttributeDto
  */
 export interface ProductAttributeDto {
@@ -2646,6 +2773,12 @@ export interface UpdateCheckoutDto {
 	 * @memberof UpdateCheckoutDto
 	 */
 	'languageCode'?: LanguageCode;
+	/**
+	 *
+	 * @type {PaymentMethod}
+	 * @memberof UpdateCheckoutDto
+	 */
+	'paymentMethod'?: PaymentMethod;
 }
 /**
  *
@@ -2903,6 +3036,39 @@ export interface UpdateOrderDto {
 	 */
 	'searchDocument'?: string;
 }
+
+/**
+ *
+ * @export
+ * @interface UpdatePaymentDto
+ */
+export interface UpdatePaymentDto {
+	/**
+	 *
+	 * @type {PaymentStatus}
+	 * @memberof UpdatePaymentDto
+	 */
+	'status'?: PaymentStatus;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdatePaymentDto
+	 */
+	'supportRefId'?: number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof UpdatePaymentDto
+	 */
+	'referenceId'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof UpdatePaymentDto
+	 */
+	'transactionTicket'?: string;
+}
+
 /**
  *
  * @export
@@ -7015,6 +7181,211 @@ export class OrdersApi extends BaseAPI {
 	 */
 	public orderUpdate(requestParameters: OrdersApiOrderUpdateRequest, options?: AxiosRequestConfig) {
 		return OrdersApiFp(this.configuration).orderUpdate(requestParameters.id, requestParameters.updateOrderDto, options).then((request) => request(this.axios, this.basePath));
+	}
+}
+
+
+/**
+ * PaymentsApi - axios parameter creator
+ * @export
+ */
+export const PaymentsApiAxiosParamCreator = function (configuration?: Configuration) {
+	return {
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		paymentsGetById: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('paymentsGetById', 'id', id)
+			const localVarPath = `/api/v1/payments/{id}`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {UpdatePaymentDto} updatePaymentDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		paymentsPatch: async (id: number, updatePaymentDto: UpdatePaymentDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('paymentsPatch', 'id', id)
+			// verify required parameter 'updatePaymentDto' is not null or undefined
+			assertParamExists('paymentsPatch', 'updatePaymentDto', updatePaymentDto)
+			const localVarPath = `/api/v1/payments/{id}`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(updatePaymentDto, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+	}
+};
+
+/**
+ * PaymentsApi - functional programming interface
+ * @export
+ */
+export const PaymentsApiFp = function (configuration?: Configuration) {
+	const localVarAxiosParamCreator = PaymentsApiAxiosParamCreator(configuration)
+	return {
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async paymentsGetById(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.paymentsGetById(id, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {UpdatePaymentDto} updatePaymentDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async paymentsPatch(id: number, updatePaymentDto: UpdatePaymentDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.paymentsPatch(id, updatePaymentDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+	}
+};
+
+/**
+ * PaymentsApi - factory interface
+ * @export
+ */
+export const PaymentsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+	const localVarFp = PaymentsApiFp(configuration)
+	return {
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		paymentsGetById(id: number, options?: any): AxiosPromise<PaymentDto> {
+			return localVarFp.paymentsGetById(id, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {UpdatePaymentDto} updatePaymentDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		paymentsPatch(id: number, updatePaymentDto: UpdatePaymentDto, options?: any): AxiosPromise<PaymentDto> {
+			return localVarFp.paymentsPatch(id, updatePaymentDto, options).then((request) => request(axios, basePath));
+		},
+	};
+};
+
+/**
+ * Request parameters for paymentsGetById operation in PaymentsApi.
+ * @export
+ * @interface PaymentsApiPaymentsGetByIdRequest
+ */
+export interface PaymentsApiPaymentsGetByIdRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof PaymentsApiPaymentsGetById
+	 */
+	readonly id: number
+}
+
+/**
+ * Request parameters for paymentsPatch operation in PaymentsApi.
+ * @export
+ * @interface PaymentsApiPaymentsPatchRequest
+ */
+export interface PaymentsApiPaymentsPatchRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof PaymentsApiPaymentsPatch
+	 */
+	readonly id: number
+
+	/**
+	 *
+	 * @type {UpdatePaymentDto}
+	 * @memberof PaymentsApiPaymentsPatch
+	 */
+	readonly updatePaymentDto: UpdatePaymentDto
+}
+
+/**
+ * PaymentsApi - object-oriented interface
+ * @export
+ * @class PaymentsApi
+ * @extends {BaseAPI}
+ */
+export class PaymentsApi extends BaseAPI {
+	/**
+	 *
+	 * @param {PaymentsApiPaymentsGetByIdRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof PaymentsApi
+	 */
+	public paymentsGetById(requestParameters: PaymentsApiPaymentsGetByIdRequest, options?: AxiosRequestConfig) {
+		return PaymentsApiFp(this.configuration).paymentsGetById(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {PaymentsApiPaymentsPatchRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof PaymentsApi
+	 */
+	public paymentsPatch(requestParameters: PaymentsApiPaymentsPatchRequest, options?: AxiosRequestConfig) {
+		return PaymentsApiFp(this.configuration).paymentsPatch(requestParameters.id, requestParameters.updatePaymentDto, options).then((request) => request(this.axios, this.basePath));
 	}
 }
 

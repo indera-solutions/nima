@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 import { AddressDto } from '../../core/dto/address.dto';
 import { AddressEntity } from '../../core/entities/address.entity';
+import { PaymentMethod } from '../../payments/entities/payment.entity';
 import { UserDto } from '../../users/dto/user.dto';
 import { UserEntity } from '../../users/entities/user.entity';
 import { CheckoutLineEntity } from './checkout-line.entity';
@@ -111,6 +112,11 @@ export class CheckoutEntity {
 	@ApiProperty({ enum: LanguageCode, enumName: 'LanguageCode' })
 	@IsString()
 	languageCode: LanguageCode;
+
+	@Column({ enum: PaymentMethod, type: 'enum', default: PaymentMethod.CASH_ON_DELIVERY })
+	@ApiProperty({ enum: PaymentMethod, enumName: 'PaymentMethod' })
+	@IsString()
+	paymentMethod: PaymentMethod;
 
 	@OneToMany(() => CheckoutLineEntity, line => line.checkout)
 	lines?: CheckoutLineEntity[];
