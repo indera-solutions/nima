@@ -53,6 +53,11 @@ export class CategoriesService {
 		return await this.categoryRepository.findDescendantsTree(root, { depth: params.depth });
 	}
 
+	async findAncestors(params: { id: number }): Promise<any> {
+		const root = await this.categoryRepository.findOne({ where: { id: params.id } });
+		return await this.categoryRepository.findAncestorsTree(root);
+	}
+
 	async update(params: { id: number, updateCategoryDto: UpdateCategoryDto }) {
 		const existing = this.findOne({ id: params.id, depth: 0 });
 		const partial = {

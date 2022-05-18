@@ -34,6 +34,23 @@ export function useCategoryId(id?: number, options?: { refetchInterval: number |
 	);
 }
 
+export function useCategoryAncestorsById(id?: number, options?: { refetchInterval: number | false }) {
+	return useQuery<CategoryDto>(
+		NimaQueryCacheKeys.categories.ancestors(id),
+		async () => {
+			if ( !id ) throw new Error('Invalid id');
+			const res = await categoriesSDK.categoriesFindAncestorsById({
+				id: id,
+			});
+			return res.data;
+		},
+		{
+			enabled: !!id,
+			refetchInterval: options?.refetchInterval,
+		},
+	);
+}
+
 
 export function useCreateCategoryMutation() {
 	const client = useQueryClient();

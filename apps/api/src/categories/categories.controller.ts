@@ -46,6 +46,16 @@ export class CategoriesController {
 		return CategoryDto.prepare(res);
 	}
 
+	@Get(':id/ancestors')
+	@ApiOperation({ description: 'Gets all the ancestors of a category. Useful for breadcrumbs', summary: 'Get ancestors of category by id' })
+	@ApiParam({ name: 'id', description: 'The id of the category to get' })
+	@ApiOkResponse({ type: CategoryDto })
+	@ApiNotFoundResponse({ description: 'The category does not exists' })
+	async findAncestorsById(@Param('id', ParseIntPipe) id: number): Promise<CategoryDto> {
+		const res = await this.categoriesService.findAncestors({ id });
+		return CategoryDto.prepare(res);
+	}
+
 	@Put(':id')
 	@ApiOkResponse({ type: CategoryDto })
 	update(@Param('id') id: number, @Body() updateCategoryDto: UpdateCategoryDto) {

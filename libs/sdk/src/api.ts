@@ -361,6 +361,12 @@ export interface CategoryDto {
 	 * @memberof CategoryDto
 	 */
 	'children': Array<CategoryDto>;
+	/**
+	 * Only for ancestors query
+	 * @type {CategoryDto}
+	 * @memberof CategoryDto
+	 */
+	'parent'?: CategoryDto;
 }
 /**
  *
@@ -4486,6 +4492,39 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 			};
 		},
 		/**
+		 * Gets all the ancestors of a category. Useful for breadcrumbs
+		 * @summary Get ancestors of category by id
+		 * @param {number} id The id of the category to get
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		categoriesFindAncestorsById: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('categoriesFindAncestorsById', 'id', id);
+			const localVarPath = `/api/v1/categories/{id}/ancestors`
+				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
 		 * Gets a category. Use depth query to control the level of children to retrieve
 		 * @summary Get a category by id
 		 * @param {number} id The id of the category to get
@@ -4631,6 +4670,17 @@ export const CategoriesApiFp = function (configuration?: Configuration) {
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
+		 * Gets all the ancestors of a category. Useful for breadcrumbs
+		 * @summary Get ancestors of category by id
+		 * @param {number} id The id of the category to get
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async categoriesFindAncestorsById(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CategoryDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.categoriesFindAncestorsById(id, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
 		 * Gets a category. Use depth query to control the level of children to retrieve
 		 * @summary Get a category by id
 		 * @param {number} id The id of the category to get
@@ -4695,6 +4745,16 @@ export const CategoriesApiFactory = function (configuration?: Configuration, bas
 			return localVarFp.categoriesFindAll(depth, options).then((request) => request(axios, basePath));
 		},
 		/**
+		 * Gets all the ancestors of a category. Useful for breadcrumbs
+		 * @summary Get ancestors of category by id
+		 * @param {number} id The id of the category to get
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		categoriesFindAncestorsById(id: number, options?: any): AxiosPromise<CategoryDto> {
+			return localVarFp.categoriesFindAncestorsById(id, options).then((request) => request(axios, basePath));
+		},
+		/**
 		 * Gets a category. Use depth query to control the level of children to retrieve
 		 * @summary Get a category by id
 		 * @param {number} id The id of the category to get
@@ -4756,6 +4816,20 @@ export interface CategoriesApiCategoriesFindAllRequest {
 	 * @memberof CategoriesApiCategoriesFindAll
 	 */
 	readonly depth?: number;
+}
+
+/**
+ * Request parameters for categoriesFindAncestorsById operation in CategoriesApi.
+ * @export
+ * @interface CategoriesApiCategoriesFindAncestorsByIdRequest
+ */
+export interface CategoriesApiCategoriesFindAncestorsByIdRequest {
+	/**
+	 * The id of the category to get
+	 * @type {number}
+	 * @memberof CategoriesApiCategoriesFindAncestorsById
+	 */
+	readonly id: number;
 }
 
 /**
@@ -4848,6 +4922,18 @@ export class CategoriesApi extends BaseAPI {
 	 */
 	public categoriesFindAll(requestParameters: CategoriesApiCategoriesFindAllRequest = {}, options?: AxiosRequestConfig) {
 		return CategoriesApiFp(this.configuration).categoriesFindAll(requestParameters.depth, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 * Gets all the ancestors of a category. Useful for breadcrumbs
+	 * @summary Get ancestors of category by id
+	 * @param {CategoriesApiCategoriesFindAncestorsByIdRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof CategoriesApi
+	 */
+	public categoriesFindAncestorsById(requestParameters: CategoriesApiCategoriesFindAncestorsByIdRequest, options?: AxiosRequestConfig) {
+		return CategoriesApiFp(this.configuration).categoriesFindAncestorsById(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**

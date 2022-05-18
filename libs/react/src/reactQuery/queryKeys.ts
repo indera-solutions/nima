@@ -30,6 +30,7 @@ export const NimaQueryCacheKeys = {
 		all: [NIMA_QUERY_PREFIX, CATEGORIES_QUERY_PREFIX] as const,
 		list: () => [...NimaQueryCacheKeys.categories.all, 'LIST'] as const,
 		id: (id?: number) => [...NimaQueryCacheKeys.categories.all, 'ID', id] as const,
+		ancestors: (id?: number) => [...NimaQueryCacheKeys.categories.all, 'ANCESTORS', id] as const,
 	},
 	products: {
 		all: [NIMA_QUERY_PREFIX, PRODUCTS_QUERY_PREFIX] as const,
