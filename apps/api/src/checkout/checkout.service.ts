@@ -3,9 +3,17 @@ import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { AddressService } from '../core/address/address.service';
 import { AddressDto } from '../core/dto/address.dto';
 import { ProductVariantService } from '../products/product-variant.service';
+import { ShippingMethodDto } from '../shipping/dto/shipping-method.dto';
+import { ShippingService } from '../shipping/shipping.service';
 import { UsersService } from '../users/users.service';
 import { CheckoutLineDto, UpdateCheckoutLineDto } from './dto/checkout-line.dto';
-import { CheckoutDto, CreateCheckoutDto, UpdateCheckoutDto, UpdateCheckoutVoucherDto } from './dto/checkout.dto';
+import {
+	CheckoutAvailableShippingDto,
+	CheckoutDto,
+	CreateCheckoutDto,
+	UpdateCheckoutDto,
+	UpdateCheckoutVoucherDto,
+} from './dto/checkout.dto';
 import { CheckoutLineRepository } from './entities/checkout-line.repository';
 import { CheckoutEntity } from './entities/checkout.entity';
 import { CheckoutRepository } from './entities/checkout.repository';
@@ -18,6 +26,7 @@ export class CheckoutService {
 		private addressService: AddressService,
 		private usersService: UsersService,
 		private variantService: ProductVariantService,
+		private shippingService: ShippingService,
 	) {
 	}
 
@@ -117,9 +126,12 @@ export class CheckoutService {
 		}
 		if ( !entity.lines ) throw new Error('MISSING_CHECKOUT_LINES');
 
+		let weight = 0;
+
 		const lines: CheckoutLineDto[] = entity.lines.map(line => {
 			if ( !line.variant ) throw new Error('MISSING_VARIANT');
 			const totalCost = line.quantity * line.variant.priceAmount;
+			weight += line.variant.weight || 0;
 			return {
 				quantity: line.quantity,
 				variantId: line.variantId,
@@ -131,10 +143,26 @@ export class CheckoutService {
 		const subtotalPrice = lines.reduce((previousValue, currentValue) => previousValue + currentValue.totalCost, 0);
 		const quantity = lines.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0);
 
-		const shippingCost = entity.shippingAddress.zip === '12345' ? 15 : 0;
+		let shippingCost = 0;
 		const discount = subtotalPrice > 50 ? 4 : 0; // TODO connect real discount calculation here
 
+		const availableShippingMethods: CheckoutAvailableShippingDto[] = [];
+
+		if ( entity.shippingAddress ) {
+
+			const validMethods = await this.shippingService.getValidMethodsOfAddress(entity.shippingAddress, weight, subtotalPrice);
+			for ( const validMethod of validMethods ) {
+				const shippingMethod = ShippingMethodDto.prepare(validMethod);
+				const rate = ShippingMethodDto.calculateCost({ method: shippingMethod, totalCost: subtotalPrice });
+				availableShippingMethods.push({ shippingMethod: shippingMethod, rate: rate });
+			}
+			if ( entity.shippingMethod ) {
+				shippingCost = ShippingMethodDto.calculateCost({ method: entity.shippingMethod, totalCost: subtotalPrice });
+			}
+		}
+
 		const totalCost = subtotalPrice + shippingCost - discount;
+
 		return {
 			token: entity.token,
 			user: undefined,
@@ -153,7 +181,7 @@ export class CheckoutService {
 			languageCode: entity.languageCode,
 			lastChange: entity.lastChange,
 			redirectUrl: entity.redirectUrl,
-			shipping_method_id: entity.shipping_method_id,
+			shippingMethod: entity.shippingMethod ? ShippingMethodDto.prepare(entity.shippingMethod) : undefined,
 			trackingCode: entity.trackingCode,
 			paymentMethod: entity.paymentMethod,
 			translatedDiscountName: entity.translatedDiscountName,
@@ -163,6 +191,7 @@ export class CheckoutService {
 			discount,
 			subtotalPrice,
 			useShippingAsBilling: entity.useShippingAsBilling,
+			availableShippingMethods: availableShippingMethods,
 		};
 	}
 

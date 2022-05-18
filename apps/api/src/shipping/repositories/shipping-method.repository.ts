@@ -12,7 +12,14 @@ export class ShippingMethodRepository extends BaseRepository<ShippingMethodEntit
 
 	getFullObject(id: number): Promise<ShippingMethodEntity> {
 		return this.findOne({
+			relations: ['shippingZones'],
 			where: { id: id },
+		});
+	}
+
+	deleteById(id: number) {
+		return this.delete({
+			id: id,
 		});
 	}
 }

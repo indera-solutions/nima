@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { LanguageCode, Metadata } from '@nima-cms/utils';
-import { IsBoolean, IsEmail, IsInt, IsObject, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEmail, IsObject, IsOptional, IsString } from 'class-validator';
 import {
 	Column,
 	CreateDateColumn,
@@ -13,6 +13,7 @@ import {
 import { AddressDto } from '../../core/dto/address.dto';
 import { AddressEntity } from '../../core/entities/address.entity';
 import { PaymentMethod } from '../../payments/entities/payment.entity';
+import { ShippingMethodEntity } from '../../shipping/entities/shipping-method.entity';
 import { UserDto } from '../../users/dto/user.dto';
 import { UserEntity } from '../../users/entities/user.entity';
 import { CheckoutLineEntity } from './checkout-line.entity';
@@ -35,8 +36,7 @@ export class CheckoutEntity {
 	@Column({ type: Boolean, default: true })
 	@ApiProperty({ type: Boolean, example: true, required: false })
 	@IsBoolean()
-	useShippingAsBilling: string;
-
+	useShippingAsBilling: boolean;
 
 	@PrimaryGeneratedColumn('uuid')
 	@ApiProperty({ type: String, example: '' })
@@ -67,10 +67,8 @@ export class CheckoutEntity {
 	@ApiProperty({ type: AddressDto })
 	shippingAddress?: AddressEntity;
 
-	@Column({ type: Number, nullable: true })
-	@ApiProperty({ type: Number, example: 1 })
-	@IsInt()
-	shipping_method_id?;
+	@ManyToOne(() => ShippingMethodEntity, { nullable: true })
+	shippingMethod?: ShippingMethodEntity;
 
 	@Column({ type: String, nullable: true })
 	@ApiProperty({ type: String, example: 'ASDF123', required: false })

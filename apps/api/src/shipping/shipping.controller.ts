@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreateShippingMethodDto, ShippingMethodDto, UpdateShippingMethodDto } from './dto/shipping-method.dto';
+import { CreateShippingZoneDto, ShippingZoneDto, UpdateShippingZoneDto } from './dto/shipping-zone.dto';
 import { ShippingMethodEntity } from './entities/shipping-method.entity';
 import { ShippingService } from './shipping.service';
 
@@ -18,6 +19,15 @@ export class ShippingController {
 		return ShippingMethodDto.prepare(res);
 	}
 
+	@Post('/:methodId/zones')
+	@ApiParam({ type: Number, name: 'methodId' })
+	@ApiCreatedResponse({ type: () => ShippingZoneDto })
+	@ApiBody({ type: () => CreateShippingZoneDto })
+	async createZone(@Param('methodId', ParseIntPipe) methodId: number, @Body() dto: CreateShippingZoneDto) {
+		const res = await this.shippingService.createZone({ dto: dto, methodId: methodId });
+		return ShippingZoneDto.prepare(res);
+	}
+
 	@Get()
 	@ApiOkResponse({ type: () => ShippingMethodDto, isArray: true })
 	@ApiQuery({ type: Number, required: false, name: 'addressId' })
@@ -28,11 +38,30 @@ export class ShippingController {
 		return res.map(r => ShippingMethodDto.prepare(r));
 	}
 
-	@Patch('/:id')
-	@ApiParam({ type: Number, name: 'id' })
+	@Patch('/:methodId')
+	@ApiParam({ type: Number, name: 'methodId' })
 	@ApiCreatedResponse({ type: () => ShippingMethodDto })
-	async updateMethod(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateShippingMethodDto) {
-		const res = await this.shippingService.updateMethod({ dto: dto, id: id });
+	@ApiBody({ type: () => UpdateShippingMethodDto })
+	async updateMethod(@Param('methodId', ParseIntPipe) methodId: number, @Body() dto: UpdateShippingMethodDto) {
+		const res = await this.shippingService.updateMethod({ dto: dto, id: methodId });
+		return ShippingMethodDto.prepare(res);
+	}
+
+	@Patch('/:methodId/zones/:id')
+	@ApiParam({ type: Number, name: 'methodId' })
+	@ApiParam({ type: Number, name: 'id' })
+	@ApiCreatedResponse({ type: () => ShippingZoneDto })
+	@ApiBody({ type: () => UpdateShippingZoneDto })
+	async updateZone(@Param('id', ParseIntPipe) zoneId: number, @Body() dto: UpdateShippingZoneDto) {
+		const res = await this.shippingService.updateZone({ dto: dto, id: zoneId });
+		return ShippingZoneDto.prepare(res);
+	}
+
+	@Delete('/:id')
+	@ApiParam({ type: Number, name: 'id' })
+	@ApiOkResponse({ type: () => ShippingMethodDto })
+	async deleteById(@Param('id', ParseIntPipe) id: number) {
+		const res = await this.shippingService.deleteById({ id: id });
 		return ShippingMethodDto.prepare(res);
 	}
 }

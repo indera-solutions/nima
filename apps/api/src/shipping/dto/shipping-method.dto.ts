@@ -1,6 +1,6 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { IsObject } from 'class-validator';
-import { ShippingMethodEntity } from '../entities/shipping-method.entity';
+import { ShippingMethodEntity, ShippingMethodType } from '../entities/shipping-method.entity';
 import { CreateShippingZoneDto, ShippingZoneDto } from './shipping-zone.dto';
 
 
@@ -24,6 +24,20 @@ export class ShippingMethodDto extends OmitType(ShippingMethodEntity, ['shipping
 			threshold: entity.threshold,
 			shippingZones: entity.shippingZones.map(zone => ShippingZoneDto.prepare(zone, options)),
 		};
+	}
+
+	static calculateCost(params: { method: ShippingMethodDto, totalCost: number }): number {
+		const { method, totalCost } = params;
+		if ( method.shippingType === ShippingMethodType.FREE_SHIPPING ) {
+			if ( method.threshold && method.threshold <= totalCost ) {
+				return 0;
+			}
+		} else if ( method.shippingType === ShippingMethodType.FLAT_RATE ) {
+			if ( !method.rate ) {
+				console.error('Flat Rate Shipping Type has no rate.');
+			}
+			return method.rate;
+		}
 	}
 }
 

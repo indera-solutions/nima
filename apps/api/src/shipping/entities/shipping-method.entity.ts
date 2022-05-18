@@ -25,7 +25,7 @@ export class ShippingMethodEntity {
 	@IsString()
 	name: string;
 
-	@Column({ type: 'float', default: 0.0 })
+	@Column({ type: 'float' })
 	@ApiProperty()
 	@IsNumber()
 	@IsOptional()

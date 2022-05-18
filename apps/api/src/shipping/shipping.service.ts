@@ -3,7 +3,7 @@ import { continents, countries, ICountry, states } from '@nima-cms/utils';
 import { AddressService } from '../core/address/address.service';
 import { AddressDto } from '../core/dto/address.dto';
 import { CreateShippingMethodDto, UpdateShippingMethodDto } from './dto/shipping-method.dto';
-import { ShippingZoneDto, UpdateShippingZoneDto } from './dto/shipping-zone.dto';
+import { CreateShippingZoneDto, ShippingZoneDto, UpdateShippingZoneDto } from './dto/shipping-zone.dto';
 import { ShippingMethodEntity, ShippingMethodType } from './entities/shipping-method.entity';
 import { ShippingZoneEntity, ShippingZoneLocationType } from './entities/shipping-zone.entity';
 import { ShippingMethodRepository } from './repositories/shipping-method.repository';
@@ -20,26 +20,31 @@ export class ShippingService {
 
 	private static validateOptions(option: CreateShippingMethodDto): void {
 		for ( const location of option.shippingZones ) {
-			if ( location.locationType === ShippingZoneLocationType.POSTAL ) {
-				//Maybe validate that the zip code is correct ?
-			} else if ( location.locationType === ShippingZoneLocationType.STATE ) {
-				for ( const stateCode of location.locationCodes ) {
-					let flag = false;
-					for ( const statesKey in states ) {
-						if ( Object.keys(states[statesKey]).includes(stateCode) ) {
-							flag = true;
-						}
+			ShippingService.validateZone(location);
+		}
+		return;
+	}
+
+	private static validateZone(zone: CreateShippingZoneDto): void {
+		if ( zone.locationType === ShippingZoneLocationType.POSTAL ) {
+			//Maybe validate that the zip code is correct ?
+		} else if ( zone.locationType === ShippingZoneLocationType.STATE ) {
+			for ( const stateCode of zone.locationCodes ) {
+				let flag = false;
+				for ( const statesKey in states ) {
+					if ( Object.keys(states[statesKey]).includes(stateCode) ) {
+						flag = true;
 					}
-					if ( !flag ) throw new BadRequestException('INVALID_STATE_CODE');
 				}
-			} else if ( location.locationType === ShippingZoneLocationType.COUNTRY ) {
-				for ( const countryCode of location.locationCodes ) {
-					if ( !Object.keys(countries).includes(countryCode) ) throw new BadRequestException('INVALID_COUNTRY_CODE');
-				}
-			} else if ( location.locationType === ShippingZoneLocationType.CONTINENT ) {
-				for ( const continentCode of location.locationCodes ) {
-					if ( !Object.keys(continents).includes(continentCode) ) throw new BadRequestException('INVALID_CONTINENT_CODE');
-				}
+				if ( !flag ) throw new BadRequestException('INVALID_STATE_CODE');
+			}
+		} else if ( zone.locationType === ShippingZoneLocationType.COUNTRY ) {
+			for ( const countryCode of zone.locationCodes ) {
+				if ( !Object.keys(countries).includes(countryCode) ) throw new BadRequestException('INVALID_COUNTRY_CODE');
+			}
+		} else if ( zone.locationType === ShippingZoneLocationType.CONTINENT ) {
+			for ( const continentCode of zone.locationCodes ) {
+				if ( !Object.keys(continents).includes(continentCode) ) throw new BadRequestException('INVALID_CONTINENT_CODE');
 			}
 		}
 		return;
@@ -68,7 +73,7 @@ export class ShippingService {
 	}
 
 	async calculateCost(params: { totalCost: number, shippingAddress: Partial<AddressDto> }): Promise<number> {
-		const validZones = await this.getValidZonesOfAddress(params.shippingAddress);
+		const validZones = await this.getValidMethodsOfAddress(params.shippingAddress);
 		for ( const zone of validZones ) {
 			if ( zone.shippingType === ShippingMethodType.FREE_SHIPPING ) {
 				if ( zone.threshold && zone.threshold <= params.totalCost ) {
@@ -103,17 +108,19 @@ export class ShippingService {
 		return this.methodRepository.getFullObjects();
 	}
 
-	// async createZone(params: { dto: CreateShippingZoneDto }): Promise<ShippingMethodDto> {
-	// 	const { dto } = params;
-	// 	return this.zoneRepository.save(dto);
-	// }
+	async createZone(params: { methodId: number, dto: CreateShippingZoneDto }): Promise<ShippingZoneEntity> {
+		const { methodId, dto } = params;
+		ShippingService.validateZone(dto);
+		const method = await this.getById({ id: methodId });
+		return this.zoneRepository.save({ ...dto, shippingMethod: method });
+	}
 
 	async getOfAddress(params: { addressId: number }) {
 		const { addressId } = params;
 
 		const address = await this.addressService.findById({ id: addressId });
 
-		return this.getValidZonesOfAddress(address);
+		return this.getValidMethodsOfAddress(address);
 	}
 
 	async updateMethod(params: { id: number, dto: UpdateShippingMethodDto }): Promise<ShippingMethodEntity> {
@@ -128,9 +135,16 @@ export class ShippingService {
 		return await this.zoneRepository.getFullObject(id);
 	}
 
-	private async getValidZonesOfAddress(address: Partial<AddressDto>): Promise<ShippingMethodEntity[]> {
+	async getValidMethodsOfAddress(address: Partial<AddressDto>, weight?: number, subTotal?: number): Promise<ShippingMethodEntity[]> {
 		const options = await this.getAll();
+
+
 		return options.filter(option => {
+			const isInWeightLimits = option.minimumOrderWeight < weight && (option.maximumOrderWeight !== undefined ? option.maximumOrderWeight < weight : true);
+			const weightFlag = weight !== undefined && !isInWeightLimits;
+			const isAboveThreshold = (option.threshold !== undefined ? option.threshold <= subTotal : true);
+			const totalFlag = subTotal !== undefined && !isAboveThreshold;
+			if ( weightFlag && totalFlag ) return false;
 			for ( const location of option.shippingZones ) {
 				if ( ShippingService.isAddressInZone(location, address) ) return true;
 			}
@@ -138,7 +152,14 @@ export class ShippingService {
 		});
 	}
 
-	private getById(params: { id: number }): Promise<ShippingMethodEntity> {
+	async deleteById(params: { id: number }): Promise<ShippingMethodEntity> {
+		const { id } = params;
+		const res = await this.getById({ id: id });
+		await this.methodRepository.deleteById(id);
+		return res;
+	}
+
+	async getById(params: { id: number }): Promise<ShippingMethodEntity> {
 		const res = this.methodRepository.getFullObject(params.id);
 		if ( !res ) throw new NotFoundException('SHIPPING_METHOD_NOT_FOUND');
 		return res;

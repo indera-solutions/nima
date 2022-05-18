@@ -12,6 +12,7 @@ import { ShippingService } from './shipping.service';
 	imports: [TypeOrmModule.forFeature([ShippingMethodRepository, ShippingZoneRepository]), CoreModule],
 	controllers: [ShippingController],
 	providers: [ShippingService],
+	exports: [ShippingService],
 })
 export class ShippingModule {
 }
