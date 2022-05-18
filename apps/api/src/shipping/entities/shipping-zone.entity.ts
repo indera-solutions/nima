@@ -33,7 +33,7 @@ export class ShippingZoneEntity {
 	@IsString({ each: true })
 	locationCodes: string[];
 
-	@ManyToOne(() => ShippingMethodEntity, method => method.shippingZones)
+	@ManyToOne(() => ShippingMethodEntity, method => method.shippingZones, { onDelete: 'CASCADE' })
 	shippingMethod: ShippingMethodEntity;
 
 	@Column({ type: 'jsonb', default: {} })

@@ -82,6 +82,6 @@ export class ShippingMethodEntity {
 	@IsOptional()
 	description: Translatable;
 
-	@OneToMany(() => ShippingZoneEntity, zone => zone.shippingMethod)
+	@OneToMany(() => ShippingZoneEntity, zone => zone.shippingMethod, { onDelete: 'CASCADE' })
 	shippingZones: ShippingZoneEntity[];
 }
