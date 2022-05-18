@@ -886,7 +886,7 @@ export interface CreateCategoryDto {
 	 * @type {number}
 	 * @memberof CreateCategoryDto
 	 */
-	'parentId': number;
+	'parentId'?: number;
 }
 /**
  *
@@ -1784,6 +1784,12 @@ export interface ProductDto {
 	'slug': string;
 	/**
 	 *
+	 * @type {number}
+	 * @memberof ProductDto
+	 */
+	'defaultVariantId': number;
+	/**
+	 *
 	 * @type {string}
 	 * @memberof ProductDto
 	 */
@@ -1848,12 +1854,6 @@ export interface ProductDto {
 	 * @memberof ProductDto
 	 */
 	'attributes': Array<ProductAttributeDto>;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof ProductDto
-	 */
-	'defaultVariantId': number;
 	/**
 	 *
 	 * @type {Array<SortableMediaDto>}
@@ -2608,7 +2608,7 @@ export interface UpdateCategoryDto {
 	 * @type {number}
 	 * @memberof UpdateCategoryDto
 	 */
-	'parentId': number;
+	'parentId'?: number;
 }
 /**
  *

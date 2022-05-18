@@ -24,7 +24,7 @@ export class CategoryDto extends OmitType(CategoryEntity, ['parent', 'children']
 }
 
 export class CreateCategoryDto extends OmitType(CategoryDto, ['id', 'children']) {
-	@ApiProperty({ type: Number, example: 1 })
+	@ApiProperty({ type: Number, example: 1, required: false })
 	@IsNumber()
 	@IsOptional()
 	parentId?: number;

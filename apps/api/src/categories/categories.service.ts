@@ -1,11 +1,6 @@
-import {
-	BadRequestException,
-	ConflictException,
-	Injectable,
-	NotFoundException,
-	NotImplementedException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, NotImplementedException } from '@nestjs/common';
 import { getSlug } from '@nima-cms/utils';
+import { Like } from 'typeorm';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto/category.dto';
 import { CategoryEntity } from './entities/category.entity';
 import { CategoryRepository } from './entities/category.repository';
@@ -24,15 +19,21 @@ export class CategoriesService {
 
 		const existingSlug = await this.categoryRepository.getBySlug(dto.slug);
 		if ( existingSlug ) {
-			throw new ConflictException('EXISTING_SLUG', 'This slug already exists. Try another one');
+			const similarSlugCount = await this.categoryRepository.count({
+				loadEagerRelations: false,
+				where: {
+					slug: Like(`${ dto.slug }%`),
+				},
+			});
+			dto.slug = dto.slug + '-' + similarSlugCount;
 		}
 
 		let parent: CategoryEntity = undefined;
 		if ( parentId ) {
 			parent = await this.findOne({ id: parentId, depth: 0 });
 		}
-		const res = await this.categoryRepository.insert({ ...dto, parent: parent });
-		return await this.findOne({ id: res.identifiers[0].id, depth: 0 });
+		const res = await this.categoryRepository.save({ ...dto, parent: parent });
+		return await this.findOne({ id: res.id });
 	}
 
 	async findAll(params: { depth?: number }): Promise<CategoryEntity[]> {
