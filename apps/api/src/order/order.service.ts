@@ -130,6 +130,8 @@ export class OrderService {
 			parameters: {},
 		});
 
+		await this.checkoutService.remove({ token: params.token });
+
 		return this.findOne({ id: order.id });
 	}
 

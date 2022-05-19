@@ -12,7 +12,7 @@ export class CheckoutLineEntity {
 	@IsInt()
 	quantity: number;
 
-	@ManyToOne(() => CheckoutEntity, checkout => checkout.lines, { primary: true })
+	@ManyToOne(() => CheckoutEntity, checkout => checkout.lines, { primary: true, onDelete: 'CASCADE' })
 	checkout?: CheckoutEntity;
 
 	@ManyToOne(() => ProductVariantEntity, { primary: true })
