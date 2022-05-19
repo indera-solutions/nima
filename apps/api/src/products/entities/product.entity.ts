@@ -14,6 +14,7 @@ import {
 	UpdateDateColumn,
 } from 'typeorm';
 import { CategoryEntity } from '../../categories/entities/category.entity';
+import { CollectionProductsEntity } from '../../collections/entities/collection-products.entity';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { ProductTypeDto } from '../../product-types/dto/product-type.dto';
 import { ProductTypeEntity } from '../../product-types/entities';
@@ -141,4 +142,7 @@ export class ProductEntity {
 
 	@OneToMany(() => AssignedProductAttributeEntity, assignedAttr => assignedAttr.product, { eager: true, onUpdate: 'NO ACTION' })
 	attributes: AssignedProductAttributeEntity[];
+
+	@OneToMany(() => CollectionProductsEntity, collection => collection.product)
+	collections: CollectionProductsEntity[];
 }

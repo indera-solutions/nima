@@ -4,7 +4,7 @@ import { CreateSortableMediaDto, SortableMediaDto } from '../../core/dto/media.d
 import { ProductEntity } from '../entities/product.entity';
 import { CreateAssignedProductAttributeDto, ProductAttributeDto } from './product-attribute-assignment.dto';
 
-export class ProductDto extends OmitType(ProductEntity, ['productType', 'productMedia', 'attributes', 'category', 'defaultVariant', 'searchDocument']) {
+export class ProductDto extends OmitType(ProductEntity, ['productType', 'productMedia', 'attributes', 'category', 'defaultVariant', 'searchDocument', 'collections']) {
 	@ApiProperty()
 	@IsInt()
 	productTypeId: number;

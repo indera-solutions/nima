@@ -7,6 +7,7 @@ import { AdminGuard, LoggedInGuard, StaffGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
 import { CategoriesModule, CategoriesModuleEntities } from './categories/categories.module';
 import { CheckoutModule, CheckoutModuleEntities } from './checkout/checkout.module';
+import { CollectionsModule, CollectionsModuleEntities } from './collections/collections.module';
 import { CoreModule, CoreModuleEntities } from './core/core.module';
 import { DiscountsModule } from './discounts/discounts.module';
 import { OrderModule, OrderModuleEntities } from './order/order.module';
@@ -28,11 +29,11 @@ const ALL_ENTITIES = [
 	...CheckoutModuleEntities,
 	...PaymentsModuleEntities,
 	...ShippingModuleEntities,
+	...CollectionsModuleEntities,
 ];
 
 @Module({
 	imports: [
-		AttributesModule,
 		TypeOrmModule.forRoot({
 			name: 'default',
 			type: 'postgres',
@@ -46,6 +47,7 @@ const ALL_ENTITIES = [
 			// logging: isDev ? ['error', 'query'] : ['error'],
 			synchronize: true,
 		}),
+		AttributesModule,
 		ProductsModule,
 		ProductTypesModule,
 		CategoriesModule,
@@ -57,6 +59,7 @@ const ALL_ENTITIES = [
 		DiscountsModule,
 		PaymentsModule,
 		ShippingModule,
+		CollectionsModule,
 	],
 	controllers: [AppController],
 	providers: [
