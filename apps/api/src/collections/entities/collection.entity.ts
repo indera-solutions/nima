@@ -14,12 +14,12 @@ export class CollectionEntity {
 	id: number;
 
 	@Column({ type: 'jsonb', default: {} })
-	@ApiProperty({ type: TranslatableDto, example: { en: 'Product Name' } })
+	@ApiProperty({ type: TranslatableDto, example: { en: 'Collection Name' } })
 	@IsNotEmptyObject()
 	name: Translatable;
 
 	@Column({ type: String, unique: true })
-	@ApiProperty({ type: String, example: 'product-name' })
+	@ApiProperty({ type: String, example: 'collection-name' })
 	@IsString()
 	slug: string;
 
@@ -37,7 +37,7 @@ export class CollectionEntity {
 	seoTitle?: string;
 
 	@Column({ type: 'jsonb', default: {} })
-	@ApiProperty({ type: TranslatableDto, example: { en: 'Product Description' } })
+	@ApiProperty({ type: TranslatableDto, example: { en: 'Collection Description' } })
 	@IsObject()
 	description: Translatable;
 

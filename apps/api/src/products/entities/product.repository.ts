@@ -1,5 +1,5 @@
 import { LanguageCode } from '@nima-cms/utils';
-import { EntityRepository } from 'typeorm';
+import { EntityRepository, In } from 'typeorm';
 import { BaseRepository } from 'typeorm-transactional-cls-hooked';
 import { AttributeValueEntity } from '../../attributes/entities/attribute-value.entity';
 import { ProductQueryFilterDto, ProductSorting } from '../dto/product-filtering.dto';
@@ -30,6 +30,7 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 
 	async findById(id: number): Promise<ProductEntity> {
 		return await this.findOne({
+			relations: ['productMedia', 'attributes', 'productType', 'category'],
 			where: {
 				id: id,
 			},
@@ -117,5 +118,17 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 
 
 		return await q.getMany();
+	}
+
+	findByCategoryIds(categoryIds: number[]) {
+		return this.find({
+			relations: ['productMedia'],
+			where: {
+				category: {
+					id: In(categoryIds),
+				},
+			},
+			loadEagerRelations: false,
+		});
 	}
 }

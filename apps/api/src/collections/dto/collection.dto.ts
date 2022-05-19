@@ -1,5 +1,8 @@
 import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+import { IsInt, IsOptional, ValidateNested } from 'class-validator';
 import { MediaDto } from '../../core/dto/media.dto';
+import { MutuallyExclusive } from '../../core/MutuallyExclusive.decorator';
 import { ProductDto } from '../../products/dto/product.dto';
 import { CollectionProductsEntity } from '../entities/collection-products.entity';
 import { CollectionEntity } from '../entities/collection.entity';
@@ -16,7 +19,7 @@ export class CollectionDto extends OmitType(CollectionEntity, ['backgroundImage'
 			id: entity.id,
 			name: entity.name,
 			slug: entity.slug,
-			backgroundImage: MediaDto.prepare(entity.backgroundImage),
+			backgroundImage: entity.backgroundImage ? MediaDto.prepare(entity.backgroundImage) : undefined,
 			seoDescription: entity.seoDescription,
 			seoTitle: entity.seoTitle,
 			metadata: entity.metadata,
@@ -27,10 +30,19 @@ export class CollectionDto extends OmitType(CollectionEntity, ['backgroundImage'
 	}
 }
 
-export class CreateCollectionDto {
+export class CreateCollectionDto extends OmitType(CollectionDto, ['id', 'products', 'backgroundImage']) {
+	@ApiProperty({ type: () => CreateCollectionProductDto, isArray: true })
+	@ValidateNested()
+	@Type(() => CreateCollectionProductDto)
+	products: CreateCollectionProductDto[];
+
+	@ApiProperty()
+	@IsInt()
+	@IsOptional()
+	backgroundImageId?: number;
 }
 
-export class UpdateCollectionDto extends PartialType(CreateCollectionDto) {
+export class UpdateCollectionDto extends PartialType(OmitType(CreateCollectionDto, ['products'])) {
 }
 
 export class CollectionProductsDto extends PickType(CollectionProductsEntity, ['sortOrder']) {
@@ -43,4 +55,22 @@ export class CollectionProductsDto extends PickType(CollectionProductsEntity, ['
 			sortOrder: entity.sortOrder,
 		};
 	}
+}
+
+export class CreateCollectionProductDto {
+	@ApiProperty()
+	@MutuallyExclusive('product')
+	@IsInt()
+	@IsOptional()
+	productId?: number;
+
+	@ApiProperty()
+	@MutuallyExclusive('product')
+	@IsInt()
+	@IsOptional()
+	categoryId?: number;
+
+	@ApiProperty()
+	@IsInt()
+	sortOrder: number;
 }
