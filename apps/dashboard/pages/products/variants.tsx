@@ -78,6 +78,8 @@ export default function Variants(props: VariantsProps) {
 	useEffect(() => {
 		if ( !existingVariation ) return;
 		const { id, attributes, updatedAt, productMedia, created, ...rest } = existingVariation;
+		delete rest['productId'];
+
 		setCreateProductVariation({
 			...rest,
 			productMedia: productMedia.map(pm => ({ mediaId: pm.media.id, sortOrder: pm.sortOrder })),

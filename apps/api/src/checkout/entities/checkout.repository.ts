@@ -17,7 +17,7 @@ export class CheckoutRepository extends BaseRepository<CheckoutEntity> {
 			where: {
 				token: token,
 			},
-			relations: ['user', 'billingAddress', 'shippingAddress', 'lines', 'lines.variant'],
+			relations: ['user', 'billingAddress', 'shippingAddress', 'lines', 'lines.variant', 'shippingMethod'],
 
 		});
 	}

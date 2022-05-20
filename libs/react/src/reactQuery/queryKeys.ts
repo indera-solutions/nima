@@ -8,8 +8,9 @@ const PRODUCT_TYPES_QUERY_PREFIX = 'PRODUCT_TYPES';
 const PRODUCTS_QUERY_PREFIX = 'PRODUCTS';
 const MEDIA_QUERY_PREFIX = 'MEDIA';
 const ORDERS_QUERY_PREFIX = 'ORDERS';
-const CART_QUERY_PREFIX = 'CART';
+const ADDRESS_QUERY_PREFIX = 'ADDRESS';
 const CHECKOUT_QUERY_PREFIX = 'CHECKOUT';
+const SHIPPING_ZONES_QUERY_PREFIX = 'SHIPPING_ZONES';
 
 export const NimaQueryCacheKeys = {
 	settings: [SETTINGS_QUERY_PREFIX],
@@ -49,14 +50,21 @@ export const NimaQueryCacheKeys = {
 		all: [NIMA_QUERY_PREFIX, CHECKOUT_QUERY_PREFIX] as const,
 		current: () => [...NimaQueryCacheKeys.checkout.all] as const,
 	},
-	// orders: { all:
-	// [NIMA_QUERY_PREFIX, ORDERS_QUERY_PREFIX] as const, list: (pageSize: number, pageNumber: number) =>
-	// [...NimaQueryCacheKeys.orders.all, 'LIST', pageSize, pageNumber] as const, id: (id?: string) =>
-	// [...NimaQueryCacheKeys.orders.all, 'ID', id] as const, // number: (id?: number) =>
-	// [...NimaQueryCacheKeys.orders.all, 'NUMBER', id] as const, }, cart: { all: [NIMA_QUERY_PREFIX,
-	// CART_QUERY_PREFIX] as const, uuid: (uuid?: string) => [...NimaQueryCacheKeys.cart.all, 'LIST', 'UUID', uuid]
-	// as const, }, checkout: { all: [NIMA_QUERY_PREFIX, CHECKOUT_QUERY_PREFIX] as const, cost: (params:
-	// Partial<Address> & { total: number }) => [...NimaQueryCacheKeys.checkout.all, 'SHIPPING_COST', params] as
-	// const, },
+	shipping: {
+		all: [NIMA_QUERY_PREFIX, SHIPPING_ZONES_QUERY_PREFIX] as const,
+		list: () => [...NimaQueryCacheKeys.shipping.all, 'LIST'] as const,
+		id: (id?: number) => [...NimaQueryCacheKeys.shipping.all, 'ID', id] as const,
+		zones: (id?: number) => [...NimaQueryCacheKeys.shipping.all, 'ID', id, 'ZONES'] as const,
+	},
+	orders: {
+		all: [NIMA_QUERY_PREFIX, ORDERS_QUERY_PREFIX] as const,
+		list: () => [...NimaQueryCacheKeys.orders.all, 'LIST'] as const,
+		id: (id?: number) => [...NimaQueryCacheKeys.orders.all, 'ID', id] as const,
+	},
+	address: {
+		all: [NIMA_QUERY_PREFIX, ADDRESS_QUERY_PREFIX] as const,
+		list: () => [...NimaQueryCacheKeys.address.all, 'LIST'] as const,
+		id: (id?: number) => [...NimaQueryCacheKeys.address.all, 'ID', id] as const,
+	},
 };
 

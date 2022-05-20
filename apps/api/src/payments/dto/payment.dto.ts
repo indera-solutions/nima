@@ -1,7 +1,6 @@
 import { OmitType, PartialType, PickType } from '@nestjs/swagger';
 import { PaymentEntity } from '../entities/payment.entity';
 
-// export class PaymentDto extends OmitType(PaymentEntity, []) {
 export class PaymentDto extends PaymentEntity {
 	static prepare(entity: PaymentEntity, options?: { isAdmin?: boolean }): PaymentDto {
 		return {
@@ -15,10 +14,9 @@ export class PaymentDto extends PaymentEntity {
 			description: entity.description,
 			amount: entity.amount,
 			currency: entity.currency,
-			billing: entity.billing,
-			shipping: entity.shipping,
 			referenceId: entity.referenceId,
 			transactionTicket: entity.transactionTicket,
+
 		};
 	}
 }

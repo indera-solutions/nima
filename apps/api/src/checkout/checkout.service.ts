@@ -65,7 +65,13 @@ export class CheckoutService {
 
 	async updateInfo(params: { token: string, updateCheckoutDto: UpdateCheckoutDto }): Promise<void> {
 		const { updateCheckoutDto, token } = params;
-		await this.checkoutRepository.update(token, updateCheckoutDto);
+		const { shippingMethodId, ...rest } = updateCheckoutDto;
+		if ( shippingMethodId ) {
+			rest.shippingMethod = await this.shippingService.getById({
+				id: shippingMethodId,
+			});
+		}
+		await this.checkoutRepository.update(token, rest);
 		if ( updateCheckoutDto.useShippingAsBilling ) {
 			await this.setShippingAsBilling(token);
 		}
@@ -109,7 +115,10 @@ export class CheckoutService {
 		if ( shipping ) {
 			co.shippingAddress = await this.addressService.create({ dto, id: co.shippingAddress?.id });
 		}
+
+
 		await this.checkoutRepository.save(co);
+
 	}
 
 	async remove(params: { token: string }) {
@@ -117,6 +126,14 @@ export class CheckoutService {
 		const co = await this.findOne({ token: token });
 		await this.checkoutRepository.deleteByToken(token);
 		return co;
+	}
+
+	async getWholeObject(token: string): Promise<CheckoutEntity> {
+		const entity = await this.checkoutRepository.getWholeObject(token);
+		if ( !entity ) {
+			throw new NotFoundException('CHECKOUT_NOT_FOUND');
+		}
+		return entity;
 	}
 
 	async getDto(token: string): Promise<CheckoutDto> {
@@ -151,15 +168,28 @@ export class CheckoutService {
 		if ( entity.shippingAddress ) {
 
 			const validMethods = await this.shippingService.getValidMethodsOfAddress(entity.shippingAddress, weight, subtotalPrice);
+			console.log(validMethods);
 			for ( const validMethod of validMethods ) {
 				const shippingMethod = ShippingMethodDto.prepare(validMethod);
-				const rate = ShippingMethodDto.calculateCost({ method: shippingMethod, totalCost: subtotalPrice });
+				const rate = ShippingMethodDto.calculateCost(shippingMethod);
 				availableShippingMethods.push({ shippingMethod: shippingMethod, rate: rate });
 			}
-			if ( entity.shippingMethod ) {
-				shippingCost = ShippingMethodDto.calculateCost({ method: entity.shippingMethod, totalCost: subtotalPrice });
+			let activeShipping = entity.shippingMethod ? validMethods.find(e => e.id === entity.shippingMethod.id) : undefined;
+
+			if ( !activeShipping && validMethods.length > 0 ) {
+				await this.updateInfo({
+					token: token,
+					updateCheckoutDto: {
+						shippingMethodId: validMethods[0]?.id,
+					},
+				});
+				entity.shippingMethod = validMethods[0];
+				activeShipping = validMethods[0];
+
 			}
+			shippingCost = ShippingMethodDto.calculateCost(activeShipping);
 		}
+
 
 		const totalCost = subtotalPrice + shippingCost - discount;
 

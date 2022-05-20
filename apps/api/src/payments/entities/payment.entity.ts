@@ -1,17 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInt } from 'class-validator';
-import {
-	Column,
-	CreateDateColumn,
-	Entity,
-	JoinColumn,
-	OneToOne,
-	PrimaryGeneratedColumn,
-	UpdateDateColumn,
-} from 'typeorm';
-import { AddressDto } from '../../core/dto/address.dto';
-import { AddressEntity } from '../../core/entities/address.entity';
-
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 export enum PaymentMethod {
 	CARD = 'CARD',
@@ -61,7 +50,7 @@ export class PaymentEntity {
 	@ApiProperty()
 	amount: number;
 
-	@Column({ type: Number, nullable: true })
+	@Column({ type: String, nullable: true })
 	@ApiProperty()
 	customerId: string;
 	@Column({ type: String, nullable: true })
@@ -77,13 +66,4 @@ export class PaymentEntity {
 	@ApiProperty()
 	transactionTicket?: string;
 
-	@OneToOne(() => AddressEntity, { eager: true })
-	@ApiProperty({ type: AddressDto })
-	@JoinColumn()
-	billing: AddressEntity;
-
-	@OneToOne(() => AddressEntity, { eager: true })
-	@ApiProperty({ type: AddressDto })
-	@JoinColumn()
-	shipping?: AddressEntity;
 }

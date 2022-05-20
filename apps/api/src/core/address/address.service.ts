@@ -20,4 +20,12 @@ export class AddressService {
 			},
 		});
 	}
+
+
+	async updateById(params: { id: number, dto: CreateAddressDto }): Promise<AddressEntity> {
+		return this.addressRepository.save({
+			...params.dto,
+			id: params.id,
+		});
+	}
 }

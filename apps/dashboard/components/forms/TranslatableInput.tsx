@@ -19,10 +19,13 @@ export function TranslatableInput(props: TranslatableInputProps) {
 		});
 	}
 
-	return <input
-		{ ...rest }
-		type={ 'text' }
-		value={ value[languages.currentEditingLanguage] || '' }
-		placeholder={ value[languages.defaultLanguage] }
-		onChange={ onChange }/>;
+	return <label className="input-group">
+		<input
+			className={ 'input input-bordered w-full ' + (props.className || '') }
+			type={ 'text' }
+			value={ value[languages.currentEditingLanguage] || '' }
+			placeholder={ value[languages.defaultLanguage] }
+			onChange={ onChange }/>
+		<span>{ languages.currentEditingLanguage.toUpperCase() }</span>
+	</label>;
 }

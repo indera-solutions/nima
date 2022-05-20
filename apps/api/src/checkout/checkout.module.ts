@@ -15,6 +15,7 @@ import { CheckoutRepository, CheckoutSubscriber } from './entities/checkout.repo
 	imports: [TypeOrmModule.forFeature([CheckoutRepository, CheckoutLineRepository]), CoreModule, UsersModule, ProductsModule, ShippingModule],
 	controllers: [CheckoutController],
 	providers: [CheckoutService, CheckoutSubscriber],
+	exports: [CheckoutService],
 })
 export class CheckoutModule {
 }

@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Metadata, Translatable } from '@nima-cms/utils';
+import { Metadata } from '@nima-cms/utils';
 import { IsEnum, IsObject, IsString } from 'class-validator';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { TranslatableDto } from '../../core/dto/translatable.dto';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ShippingMethodEntity } from './shipping-method.entity';
+import { ShippingRateEntity } from './shipping-rate.entity';
 
 export enum ShippingZoneLocationType {
 	COUNTRY = 'COUNTRY',
@@ -46,8 +46,7 @@ export class ShippingZoneEntity {
 	@IsObject()
 	privateMetadata: Metadata;
 
-	@Column({ type: 'jsonb', default: {} })
-	@ApiProperty({ type: TranslatableDto, example: { en: 'Product Description' } })
-	@IsObject()
-	description: Translatable;
+	@OneToMany(() => ShippingRateEntity, rate => rate.shippingZone, { eager: true })
+	shippingRates: ShippingRateEntity[];
+
 }
