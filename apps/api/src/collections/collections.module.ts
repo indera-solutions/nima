@@ -13,6 +13,7 @@ import { CollectionRepository } from './repositories/collection.repository';
 	imports: [TypeOrmModule.forFeature([CollectionRepository, CollectionProductsRepository]), ProductsModule, CoreModule],
 	controllers: [CollectionsController],
 	providers: [CollectionsService],
+	exports: [CollectionsService],
 })
 export class CollectionsModule {
 }
