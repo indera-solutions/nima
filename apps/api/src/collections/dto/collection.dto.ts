@@ -2,7 +2,6 @@ import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsInt, IsOptional, ValidateNested } from 'class-validator';
 import { MediaDto } from '../../core/dto/media.dto';
-import { MutuallyExclusive } from '../../core/MutuallyExclusive.decorator';
 import { ProductDto } from '../../products/dto/product.dto';
 import { CollectionProductsEntity } from '../entities/collection-products.entity';
 import { CollectionEntity } from '../entities/collection.entity';
@@ -59,16 +58,8 @@ export class CollectionProductsDto extends PickType(CollectionProductsEntity, ['
 
 export class CreateCollectionProductDto {
 	@ApiProperty()
-	@MutuallyExclusive('product')
 	@IsInt()
-	@IsOptional()
-	productId?: number;
-
-	@ApiProperty()
-	@MutuallyExclusive('product')
-	@IsInt()
-	@IsOptional()
-	categoryId?: number;
+	productId: number;
 
 	@ApiProperty()
 	@IsInt()

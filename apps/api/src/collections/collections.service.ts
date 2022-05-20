@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { MediaEntity } from '../core/entities/media.entity';
 import { MediaService } from '../core/media/media.service';
@@ -76,17 +76,8 @@ export class CollectionsService {
 
 	private async addProductsToCollection(collection: CollectionEntity, products: CreateCollectionProductDto[]) {
 		for ( const product of products ) {
-			if ( product.productId ) {
-				const productEntity = await this.productsService.getById({ id: product.productId });
-				await this.collectionProductsRepository.insert({ collection: collection, sortOrder: product.sortOrder, product: productEntity });
-			} else if ( product.categoryId ) {
-				const productEntities = await this.productsService.getOfCategory({ categoryId: product.categoryId });
-				for ( const productEntity of productEntities ) {
-					await this.collectionProductsRepository.insert({ collection: collection, sortOrder: product.sortOrder, product: productEntity });
-				}
-			} else {
-				throw new BadRequestException('NO_PRODUCT_ID_OR_CATEGORY_ID_PROVIDED');
-			}
+			const productEntity = await this.productsService.getById({ id: product.productId });
+			await this.collectionProductsRepository.insert({ collection: collection, sortOrder: product.sortOrder, product: productEntity });
 		}
 	}
 }
