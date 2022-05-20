@@ -115,7 +115,10 @@ export class CheckoutService {
 		if ( shipping ) {
 			co.shippingAddress = await this.addressService.create({ dto, id: co.shippingAddress?.id });
 		}
+
+
 		await this.checkoutRepository.save(co);
+
 	}
 
 	async remove(params: { token: string }) {
@@ -165,15 +168,28 @@ export class CheckoutService {
 		if ( entity.shippingAddress ) {
 
 			const validMethods = await this.shippingService.getValidMethodsOfAddress(entity.shippingAddress, weight, subtotalPrice);
+			console.log(validMethods);
 			for ( const validMethod of validMethods ) {
 				const shippingMethod = ShippingMethodDto.prepare(validMethod);
-				const rate = ShippingMethodDto.calculateCost({ method: shippingMethod, totalCost: subtotalPrice });
+				const rate = ShippingMethodDto.calculateCost(shippingMethod);
 				availableShippingMethods.push({ shippingMethod: shippingMethod, rate: rate });
 			}
-			if ( entity.shippingMethod ) {
-				shippingCost = ShippingMethodDto.calculateCost({ method: entity.shippingMethod, totalCost: subtotalPrice });
+			let activeShipping = entity.shippingMethod ? validMethods.find(e => e.id === entity.shippingMethod.id) : undefined;
+
+			if ( !activeShipping && validMethods.length > 0 ) {
+				await this.updateInfo({
+					token: token,
+					updateCheckoutDto: {
+						shippingMethodId: validMethods[0]?.id,
+					},
+				});
+				entity.shippingMethod = validMethods[0];
+				activeShipping = validMethods[0];
+
 			}
+			shippingCost = ShippingMethodDto.calculateCost(activeShipping);
 		}
+
 
 		const totalCost = subtotalPrice + shippingCost - discount;
 

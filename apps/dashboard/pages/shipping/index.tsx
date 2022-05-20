@@ -1,15 +1,14 @@
 import { Trans, useShippingMethods } from '@nima-cms/react';
-import { toTitleCase } from '@nima-cms/utils';
 import Link from 'next/link';
 import React from 'react';
 import { AdminColumn, AdminPage, AdminSection, NimaTitle } from '../../components';
 import { NIMA_ROUTES } from '../../lib/routes';
 
-interface SettingsProps {
+interface ShippingPageProps {
 
 }
 
-export default function SettingsPage(props: SettingsProps) {
+export default function ShippingPage(props: ShippingPageProps) {
 
 	const { data: methods } = useShippingMethods();
 
@@ -33,9 +32,6 @@ export default function SettingsPage(props: SettingsProps) {
 								<thead>
 								<tr>
 									<th>Name</th>
-									<th>Shipping Type</th>
-									<th>Threshold</th>
-									<th>Rate</th>
 									<th>Zones</th>
 									<th>Actions</th>
 								</tr>
@@ -43,9 +39,6 @@ export default function SettingsPage(props: SettingsProps) {
 								<tbody>
 								{ (methods || []).map(attribute => <tr key={ attribute.id } className={ 'hover' }>
 									<td><Trans useEditingLanguage>{ attribute.name }</Trans></td>
-									<td>{ toTitleCase(attribute.shippingType) }</td>
-									<td>{ attribute.threshold }</td>
-									<td>{ attribute.rate }</td>
 									<td>{ attribute.shippingZones.length }</td>
 									<td>
 										<Link href={ NIMA_ROUTES.shipping.edit(attribute.id) }>

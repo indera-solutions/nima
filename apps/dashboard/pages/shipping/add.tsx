@@ -3,12 +3,11 @@ import {
 	useShippingMethodById,
 	useUpdateShippingMethodMutation,
 } from '@nima-cms/react';
-import { CreateAttributeValueDto, CreateShippingMethodDto, ShippingZoneMethodType } from '@nima-cms/sdk';
-import { enumToArray, Metadata, parseIdStr, toTitleCase } from '@nima-cms/utils';
+import { CreateAttributeValueDto, CreateShippingMethodDto } from '@nima-cms/sdk';
+import { Metadata, parseIdStr } from '@nima-cms/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import Select from 'react-select';
 import { toast } from 'react-toastify';
 import {
 	AdminColumn,
@@ -27,8 +26,6 @@ interface AddAttributeProps {
 
 }
 
-const types = enumToArray(ShippingZoneMethodType);
-const typesDropdown = types.map(type => ({ label: toTitleCase(type), value: type as string }));
 
 export default function AddShippingMethod(props: AddAttributeProps) {
 
@@ -44,14 +41,7 @@ export default function AddShippingMethod(props: AddAttributeProps) {
 	const [createShippingMethod, setCreateShippingMethod] = useState<CreateShippingMethodDto>({
 		name: '',
 		description: {},
-		maximumDeliveryDays: 0,
-		maximumOrderWeight: 0,
-		minimumDeliveryDays: 0,
-		minimumOrderWeight: 0,
-		rate: 0,
-		shippingType: ShippingZoneMethodType.FREE_SHIPPING,
 		shippingZones: [],
-		threshold: 0,
 		metadata: {},
 		privateMetadata: {},
 	});
@@ -127,18 +117,18 @@ export default function AddShippingMethod(props: AddAttributeProps) {
 								className={ 'input input-bordered' }
 							/>
 						</div>
-						<div className="form-control w-full max-w-xs">
-							<label className="label">
-								<span className="label-text">Input Type</span>
-							</label>
-							<Select
-								value={ typesDropdown.find(td => td.value === createShippingMethod.shippingType) }
-								options={ typesDropdown }
-								onChange={ (e) => {
-									onValueEdit('shippingType', e.value);
-								} }
-							/>
-						</div>
+						{/*<div className="form-control w-full max-w-xs">*/ }
+						{/*	<label className="label">*/ }
+						{/*		<span className="label-text">Input Type</span>*/ }
+						{/*	</label>*/ }
+						{/*	<Select*/ }
+						{/*		value={ typesDropdown.find(td => td.value === createShippingMethod.shippingType) }*/ }
+						{/*		options={ typesDropdown }*/ }
+						{/*		onChange={ (e) => {*/ }
+						{/*			onValueEdit('shippingType', e.value);*/ }
+						{/*		} }*/ }
+						{/*	/>*/ }
+						{/*</div>*/ }
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
 								<span className="label-text">Description</span>
@@ -149,101 +139,77 @@ export default function AddShippingMethod(props: AddAttributeProps) {
 								className={ 'input input-bordered w-full' }
 							/>
 						</div>
-						<div className="form-control w-full max-w-xs">
-							<label className="label">
-								<span className="label-text">Rate</span>
-							</label>
-							<input
-								value={ createShippingMethod.rate }
-								onChange={ (e => onValueEdit('rate', +e.target.value)) }
-								type={ 'number' }
-								className={ 'input input-bordered ' }
-							/>
-						</div>
 
-						<div className="form-control w-full max-w-xs">
-							<label className="label">
-								<span className="label-text">Delivery days</span>
-							</label>
-							<div className="w-full flex gap-4">
-								<div>
-									<label className="label">
-										<span className="label-text">Min</span>
-									</label>
-									<input
-										value={ createShippingMethod.minimumDeliveryDays }
-										onChange={ (e => onValueEdit('minimumDeliveryDays', +e.target.value)) }
-										type={ 'number' }
-										className={ 'input input-bordered' }
-									/>
-								</div>
-								<div>
 
-									<label className="label">
-										<span className="label-text">Max</span>
-									</label>
-									<input
-										value={ createShippingMethod.maximumDeliveryDays }
-										onChange={ (e => onValueEdit('maximumDeliveryDays', +e.target.value)) }
-										type={ 'number' }
-										className={ 'input input-bordered' }
-									/>
-								</div>
-							</div>
-						</div>
+						{/*<div className="form-control w-full max-w-xs">*/ }
+						{/*	<label className="label">*/ }
+						{/*		<span className="label-text">Delivery days</span>*/ }
+						{/*	</label>*/ }
+						{/*	<div className="w-full flex gap-4">*/ }
+						{/*		<div>*/ }
+						{/*			<label className="label">*/ }
+						{/*				<span className="label-text">Min</span>*/ }
+						{/*			</label>*/ }
+						{/*			<input*/ }
+						{/*				value={ createShippingMethod.minimumDeliveryDays }*/ }
+						{/*				onChange={ (e => onValueEdit('minimumDeliveryDays', +e.target.value)) }*/ }
+						{/*				type={ 'number' }*/ }
+						{/*				className={ 'input input-bordered' }*/ }
+						{/*			/>*/ }
+						{/*		</div>*/ }
+						{/*		<div>*/ }
+
+						{/*			<label className="label">*/ }
+						{/*				<span className="label-text">Max</span>*/ }
+						{/*			</label>*/ }
+						{/*			<input*/ }
+						{/*				value={ createShippingMethod.maximumDeliveryDays }*/ }
+						{/*				onChange={ (e => onValueEdit('maximumDeliveryDays', +e.target.value)) }*/ }
+						{/*				type={ 'number' }*/ }
+						{/*				className={ 'input input-bordered' }*/ }
+						{/*			/>*/ }
+						{/*		</div>*/ }
+						{/*	</div>*/ }
+						{/*</div>*/ }
 
 
 					</AdminSection>
 
 					<AdminSection title={ 'Restrictions' }>
-						<div className="form-control w-full max-w-xs">
-							<label className="label">
-								<span className="label-text">Threshold</span>
-							</label>
-							<input
-								value={ createShippingMethod.threshold }
-								onChange={ (e => onValueEdit('threshold', +e.target.value)) }
-								type={ 'number' }
-								className={ 'input input-bordered' }
-							/>
-							<label className="label">
-								<span className="label-text-alt">Minimum total of cart in order to be active</span>
-							</label>
-						</div>
 
-						<div className="form-control w-full max-w-xs">
-							<label className="label">
-								<span className="label-text">Weight Restriction</span>
-							</label>
-							<div className="w-full flex gap-4">
-								<div>
-									<label className="label">
-										<span className="label-text">Min</span>
-									</label>
-									<input
-										value={ createShippingMethod.minimumOrderWeight }
-										onChange={ (e => onValueEdit('minimumOrderWeight', +e.target.value)) }
-										type={ 'number' }
-										className={ 'input input-bordered' }
-									/>
-								</div>
-								<div>
+						{/*<div className="form-control w-full max-w-xs">*/ }
+						{/*	<label className="label">*/ }
+						{/*		<span className="label-text">Weight Restriction</span>*/ }
+						{/*	</label>*/ }
+						{/*	<div className="w-full flex gap-4">*/ }
+						{/*		<div>*/ }
+						{/*			<label className="label">*/ }
+						{/*				<span className="label-text">Min</span>*/ }
+						{/*			</label>*/ }
+						{/*			<input*/ }
+						{/*				value={ createShippingMethod.minimumOrderWeight }*/ }
+						{/*				onChange={ (e => onValueEdit('minimumOrderWeight', +e.target.value)) }*/ }
+						{/*				type={ 'number' }*/ }
+						{/*				className={ 'input input-bordered' }*/ }
+						{/*			/>*/ }
+						{/*		</div>*/ }
+						{/*		<div>*/ }
 
-									<label className="label">
-										<span className="label-text">Max</span>
-									</label>
-									<input
-										value={ createShippingMethod.maximumOrderWeight }
-										onChange={ (e => onValueEdit('maximumOrderWeight', +e.target.value)) }
-										type={ 'number' }
-										className={ 'input input-bordered' }
-									/>
-								</div>
-							</div>
-							<label className="label">
-								<span className="label-text-alt">Min/max total weight of cart to be active. Type 0 for no restriction</span>
-							</label>
-						</div>
+						{/*			<label className="label">*/ }
+						{/*				<span className="label-text">Max</span>*/ }
+						{/*			</label>*/ }
+						{/*			<input*/ }
+						{/*				value={ createShippingMethod.maximumOrderWeight }*/ }
+						{/*				onChange={ (e => onValueEdit('maximumOrderWeight', +e.target.value)) }*/ }
+						{/*				type={ 'number' }*/ }
+						{/*				className={ 'input input-bordered' }*/ }
+						{/*			/>*/ }
+						{/*		</div>*/ }
+						{/*	</div>*/ }
+						{/*	<label className="label">*/ }
+						{/*		<span className="label-text-alt">Min/max total weight of cart to be active. Type 0 for no restriction</span>*/ }
+						{/*	</label>*/ }
+						{/*</div>*/ }
 					</AdminSection>
 
 					{ existingMethod && <ZoneTable methodId={ id } shippingZones={ existingMethod.shippingZones }/> }

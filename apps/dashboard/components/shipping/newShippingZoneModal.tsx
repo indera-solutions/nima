@@ -4,7 +4,6 @@ import { continents, countries, enumToArray, getStatesOfCountryByAlpha2, toTitle
 import React, { useEffect, useMemo, useState } from 'react';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
-import { SelectEditingLanguage, TranslatableInput } from '../forms';
 
 interface NewShippingZoneModalProps {
 	init?: ShippingZoneDto;
@@ -37,9 +36,9 @@ export function NewShippingZoneModal(props: NewShippingZoneModalProps) {
 		name: '',
 		locationCodes: [],
 		locationType: ShippingZoneLocationType.COUNTRY,
-		description: {},
 		privateMetadata: {},
 		metadata: {},
+		shippingRates: [],
 	});
 
 	useEffect(() => {
@@ -49,9 +48,9 @@ export function NewShippingZoneModal(props: NewShippingZoneModalProps) {
 			name: props.init.name,
 			locationCodes: Array.from(props.init.locationCodes),
 			locationType: props.init.locationType,
-			description: props.init.description,
 			privateMetadata: props.init.privateMetadata,
 			metadata: props.init.metadata,
+			shippingRates: props.init.shippingRates || [],
 		});
 	}, [props.init]);
 
@@ -126,19 +125,6 @@ export function NewShippingZoneModal(props: NewShippingZoneModalProps) {
 								className={ 'input input-bordered' }
 							/>
 						</div>
-
-						<div className="form-control w-full max-w-xs">
-							<label className="label">
-								<span className="label-text">Description</span>
-								<SelectEditingLanguage/>
-							</label>
-							<TranslatableInput
-								value={ createShippingZoneDto.description }
-								onChange={ (str => onValueEdit('description', str)) }
-								className={ 'input input-bordered w-full' }
-							/>
-						</div>
-
 
 						<div className="form-control w-full max-w-xs">
 							<label className="label">

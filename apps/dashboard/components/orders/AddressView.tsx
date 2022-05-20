@@ -1,5 +1,5 @@
 import { useAddressById } from '@nima-cms/react';
-import { getCountryByCode, getCountryName, getState, getStateName } from '@nima-cms/utils';
+import { getCountryByCode, getCountryName, getStateAndCountry, getStateName } from '@nima-cms/utils';
 import React, { useState } from 'react';
 import { AdminSection } from '../AdminLayout';
 import { EditAddressModal } from '../forms';
@@ -31,7 +31,7 @@ export function AddressView(props: AddressViewProps) {
 					<h4>{ address.address2 }</h4>
 					<h4>{ address.city }</h4>
 					<h4>{ address.zip }</h4>
-					<h4>{ getStateName(getState(address.country, address.state)) }</h4>
+					<h4>{ getStateName(getStateAndCountry(address.country, address.state)) }</h4>
 					<h4>{ getCountryName(getCountryByCode(address.country)) }</h4>
 				</div>
 			</AdminSection>

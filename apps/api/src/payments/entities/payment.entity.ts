@@ -50,7 +50,7 @@ export class PaymentEntity {
 	@ApiProperty()
 	amount: number;
 
-	@Column({ type: Number, nullable: true })
+	@Column({ type: String, nullable: true })
 	@ApiProperty()
 	customerId: string;
 	@Column({ type: String, nullable: true })

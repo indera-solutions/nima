@@ -41,7 +41,7 @@ const ALL_ENTITIES = [
 			password: process.env['DB_PASSWORD'] || 'nima',
 			database: process.env['DB_DATABASE'] || 'nima',
 			entities: ALL_ENTITIES,
-			logging: 'all',
+			logging: ['error'],
 			// logging: isDev ? ['error', 'query'] : ['error'],
 			synchronize: true,
 		}),

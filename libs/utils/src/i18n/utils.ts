@@ -1,3 +1,4 @@
+import { continents, IContinent } from './continents';
 import { countries, ICountry } from './countries';
 import { IState, states } from './states';
 
@@ -27,6 +28,20 @@ export function getStateName(state: IState, locale?: string): string {
 	return state.locale[locale];
 }
 
-export function getState(countryCode: string, stateCode: string): IState {
+export function getStateAndCountry(countryCode: string, stateCode: string): IState {
 	return states[countryCode][stateCode];
+}
+
+export function getStateByCode(stateCode: string): IState {
+	for ( const country in states ) {
+		if ( states[country][stateCode] ) {
+			console.log(states[country][stateCode]);
+			return states[country][stateCode];
+		}
+	}
+	return undefined;
+}
+
+export function getContinentByCode(code: string): IContinent {
+	return continents[code];
 }
