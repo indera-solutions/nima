@@ -1,6 +1,9 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { PaginatedResults } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { CheckoutService } from '../checkout/checkout.service';
+import { PaymentStatus } from '../payments/entities/payment.entity';
+import { PaymentsService } from '../payments/payments.service';
 import { ProductVariantService } from '../products/product-variant.service';
 import { ProductsService } from '../products/products.service';
 import { ShippingService } from '../shipping/shipping.service';
@@ -23,6 +26,7 @@ export class OrderService {
 		private shippingService: ShippingService,
 		private productService: ProductsService,
 		private variantService: ProductVariantService,
+		private paymentService: PaymentsService,
 	) {
 	}
 
@@ -37,6 +41,17 @@ export class OrderService {
 		const checkoutDto = await this.checkoutService.getDto(params.token);
 		if ( !checkoutDto.shippingMethod ) throw new BadRequestException('CHECKOUT_NO_SELECTED_SHIPPING_METHOD');
 		const shippingMethod = await this.shippingService.getById({ id: checkoutDto.shippingMethod.id });
+
+		const payment = await this.paymentService.save({
+			dto: {
+				currency: checkoutDto.currency,
+				status: PaymentStatus.PENDING,
+				amount: checkoutDto.totalCost,
+				customerId: checkoutDto.email,
+				description: '',
+				method: checkoutDto.paymentMethod,
+			},
+		});
 
 		const dto: CreateOrderDto = {
 			languageCode: checkoutDto.languageCode,
@@ -72,6 +87,10 @@ export class OrderService {
 			totalPaidAmount: 0,
 			undiscountedTotalGrossAmount: checkoutDto.subtotalPrice,
 			undiscountedTotalNetAmount: 0,
+
+			lines: [],
+
+			payment: payment,
 		};
 
 		const order = await this.orderRepository.save(dto);
@@ -96,6 +115,7 @@ export class OrderService {
 				variantName: variant.name,
 				productName: product.name,
 				productSku: variant.sku,
+
 
 				/*TODO: Implement Sales and Vouchers*/
 				saleId: '',
@@ -142,8 +162,20 @@ export class OrderService {
 		return res;
 	}
 
-	findAll() {
-		return `This action returns all order`;
+	async findAll(params: { page?: number, itemsPerPage?: number }): Promise<PaginatedResults<OrderEntity>> {
+		const page = params.page || 1;
+		const itemsPerPage = params.itemsPerPage || 20;
+
+		const take = itemsPerPage;
+		const skip = (page - 1) * itemsPerPage;
+
+		const itemsAndCount = await this.orderRepository.findPaginated(take, skip);
+		return {
+			totalCount: itemsAndCount[1],
+			items: itemsAndCount[0],
+			pageSize: itemsPerPage,
+			pageNumber: page,
+		};
 	}
 
 	async update(params: { id: number, updateOrderDto: UpdateOrderDto }): Promise<OrderEntity> {

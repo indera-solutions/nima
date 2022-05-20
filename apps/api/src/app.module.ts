@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app/app.controller';
 import { AttributesModule, AttributesModuleEntities } from './attributes/attributes.module';
 import { AdminGuard, LoggedInGuard, StaffGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
@@ -58,7 +57,6 @@ const ALL_ENTITIES = [
 		PaymentsModule,
 		ShippingModule,
 	],
-	controllers: [AppController],
 	providers: [
 		{
 			provide: APP_GUARD,

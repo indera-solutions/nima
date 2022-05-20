@@ -5,13 +5,16 @@ import {
 	Column,
 	CreateDateColumn,
 	Entity,
+	JoinColumn,
 	ManyToOne,
 	OneToMany,
+	OneToOne,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
 import { AddressDto } from '../../core/dto/address.dto';
 import { AddressEntity } from '../../core/entities/address.entity';
+import { PaymentEntity } from '../../payments/entities/payment.entity';
 import { ShippingMethodEntity } from '../../shipping/entities/shipping-method.entity';
 import { UserEntity } from '../../users/entities/user.entity';
 import { OrderStatus } from '../dto/order.enum';
@@ -41,13 +44,13 @@ export class OrderEntity {
 	@IsEmail()
 	userEmail: string;
 
-	@ManyToOne(() => AddressEntity, { nullable: true })
+	@ManyToOne(() => AddressEntity, { nullable: true, eager: true })
 	@ApiProperty({ type: AddressDto, required: false })
 	@IsObject()
 	@IsOptional()
 	billingAddress?: AddressEntity;
 
-	@ManyToOne(() => AddressEntity, { nullable: true })
+	@ManyToOne(() => AddressEntity, { nullable: true, eager: true })
 	@ApiProperty({ type: AddressDto, required: false })
 	@IsObject()
 	@IsOptional()
@@ -96,7 +99,13 @@ export class OrderEntity {
 	@IsOptional()
 	shippingMethodName?: string;
 
-	@ManyToOne(() => ShippingMethodEntity, { nullable: true })
+	// @Column({ type: 'enum', enum: PaymentMethod, default: PaymentMethod.CASH_ON_DELIVERY })
+	// @ApiProperty({ type: 'enum', enum: PaymentMethod, enumName: 'PaymentMethod', required: false })
+	// @IsEnum(PaymentMethod)
+	// @IsOptional()
+	// paymentMethod?: PaymentMethod;
+
+	@ManyToOne(() => ShippingMethodEntity, { nullable: true, eager: true })
 	shippingMethod?: ShippingMethodEntity;
 
 	@Column({ type: Boolean })
@@ -177,4 +186,10 @@ export class OrderEntity {
 
 	@OneToMany(() => OrderEventEntity, event => event.order)
 	events: OrderEventEntity[];
+
+	@OneToOne(() => PaymentEntity)
+	@JoinColumn()
+	payment: PaymentEntity;
+
+
 }

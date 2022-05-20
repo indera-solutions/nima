@@ -1061,6 +1061,12 @@ export interface CreateOrderDto {
 	'shippingMethodName'?: string;
 	/**
 	 *
+	 * @type {PaymentMethod}
+	 * @memberof CreateOrderDto
+	 */
+	'paymentMethod'?: PaymentMethod;
+	/**
+	 *
 	 * @type {boolean}
 	 * @memberof CreateOrderDto
 	 */
@@ -1139,12 +1145,17 @@ export interface CreateOrderDto {
 	'origin': string;
 	/**
 	 *
+	 * @type {Array<OrderLineDto>}
+	 * @memberof CreateOrderDto
+	 */
+	'lines': Array<OrderLineDto>;
+	/**
+	 *
 	 * @type {number}
 	 * @memberof CreateOrderDto
 	 */
 	'userId'?: number;
 }
-
 /**
  *
  * @export
@@ -1158,7 +1169,6 @@ export interface CreateOrderFromCheckoutDto {
 	 */
 	'token': string;
 }
-
 /**
  *
  * @export
@@ -1757,6 +1767,7 @@ export interface MediaListPaginated {
 	 */
 	'totalCount': number;
 }
+
 /**
  *
  * @export
@@ -1855,6 +1866,12 @@ export interface OrderDto {
 	'shippingMethodName'?: string;
 	/**
 	 *
+	 * @type {PaymentMethod}
+	 * @memberof OrderDto
+	 */
+	'paymentMethod'?: PaymentMethod;
+	/**
+	 *
 	 * @type {boolean}
 	 * @memberof OrderDto
 	 */
@@ -1931,7 +1948,192 @@ export interface OrderDto {
 	 * @memberof OrderDto
 	 */
 	'origin': string;
+	/**
+	 *
+	 * @type {Array<OrderLineDto>}
+	 * @memberof OrderDto
+	 */
+	'lines': Array<OrderLineDto>;
 }
+
+/**
+ *
+ * @export
+ * @interface OrderLineDto
+ */
+export interface OrderLineDto {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderLineDto
+	 */
+	'id': number;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof OrderLineDto
+	 */
+	'productName': TranslatableDto;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrderLineDto
+	 */
+	'productSku'?: string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderLineDto
+	 */
+	'quantity': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderLineDto
+	 */
+	'unitPriceNetAmount': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderLineDto
+	 */
+	'unitPriceGrossAmount': number;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof OrderLineDto
+	 */
+	'isShippingRequired': boolean;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderLineDto
+	 */
+	'quantityFulfilled': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderLineDto
+	 */
+	'taxRate': number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrderLineDto
+	 */
+	'currency': string;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof OrderLineDto
+	 */
+	'variantName': TranslatableDto;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderLineDto
+	 */
+	'totalPriceGrossAmount': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderLineDto
+	 */
+	'totalPriceNetAmount': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderLineDto
+	 */
+	'unitDiscountAmount': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderLineDto
+	 */
+	'unitDiscountValue': number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrderLineDto
+	 */
+	'unitDiscountReason'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrderLineDto
+	 */
+	'unitDiscountType': string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderLineDto
+	 */
+	'undiscountedTotalPriceGrossAmount': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderLineDto
+	 */
+	'undiscountedTotalPriceNetAmount': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderLineDto
+	 */
+	'undiscountedUnitPriceGrossAmount': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderLineDto
+	 */
+	'undiscountedUnitPriceNetAmount': number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrderLineDto
+	 */
+	'saleId'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrderLineDto
+	 */
+	'voucherCode'?: string;
+}
+
+/**
+ *
+ * @export
+ * @interface OrderListPaginated
+ */
+export interface OrderListPaginated {
+	/**
+	 *
+	 * @type {Array<OrderDto>}
+	 * @memberof OrderListPaginated
+	 */
+	'items': Array<OrderDto>;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderListPaginated
+	 */
+	'pageNumber': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderListPaginated
+	 */
+	'pageSize': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrderListPaginated
+	 */
+	'totalCount': number;
+}
+
 /**
  *
  * @export
@@ -3422,6 +3624,12 @@ export interface UpdateOrderDto {
 	'shippingMethodName'?: string;
 	/**
 	 *
+	 * @type {PaymentMethod}
+	 * @memberof UpdateOrderDto
+	 */
+	'paymentMethod'?: PaymentMethod;
+	/**
+	 *
 	 * @type {boolean}
 	 * @memberof UpdateOrderDto
 	 */
@@ -3498,6 +3706,12 @@ export interface UpdateOrderDto {
 	 * @memberof UpdateOrderDto
 	 */
 	'origin'?: string;
+	/**
+	 *
+	 * @type {Array<OrderLineDto>}
+	 * @memberof UpdateOrderDto
+	 */
+	'lines'?: Array<OrderLineDto>;
 	/**
 	 *
 	 * @type {number}
@@ -3779,6 +3993,219 @@ export interface UserDto {
 	 */
 	'password': string;
 }
+
+/**
+ * AddressApi - axios parameter creator
+ * @export
+ */
+export const AddressApiAxiosParamCreator = function (configuration?: Configuration) {
+	return {
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		addressGetById: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('addressGetById', 'id', id)
+			const localVarPath = `/api/v1/address/{id}`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {CreateAddressDto} createAddressDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		addressUpdateById: async (id: number, createAddressDto: CreateAddressDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('addressUpdateById', 'id', id)
+			// verify required parameter 'createAddressDto' is not null or undefined
+			assertParamExists('addressUpdateById', 'createAddressDto', createAddressDto)
+			const localVarPath = `/api/v1/address/{id}`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(createAddressDto, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+	}
+};
+
+/**
+ * AddressApi - functional programming interface
+ * @export
+ */
+export const AddressApiFp = function (configuration?: Configuration) {
+	const localVarAxiosParamCreator = AddressApiAxiosParamCreator(configuration)
+	return {
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async addressGetById(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddressDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.addressGetById(id, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {CreateAddressDto} createAddressDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async addressUpdateById(id: number, createAddressDto: CreateAddressDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddressDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.addressUpdateById(id, createAddressDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+	}
+};
+
+/**
+ * AddressApi - factory interface
+ * @export
+ */
+export const AddressApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+	const localVarFp = AddressApiFp(configuration)
+	return {
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		addressGetById(id: number, options?: any): AxiosPromise<AddressDto> {
+			return localVarFp.addressGetById(id, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {CreateAddressDto} createAddressDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		addressUpdateById(id: number, createAddressDto: CreateAddressDto, options?: any): AxiosPromise<AddressDto> {
+			return localVarFp.addressUpdateById(id, createAddressDto, options).then((request) => request(axios, basePath));
+		},
+	};
+};
+
+/**
+ * Request parameters for addressGetById operation in AddressApi.
+ * @export
+ * @interface AddressApiAddressGetByIdRequest
+ */
+export interface AddressApiAddressGetByIdRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AddressApiAddressGetById
+	 */
+	readonly id: number
+}
+
+/**
+ * Request parameters for addressUpdateById operation in AddressApi.
+ * @export
+ * @interface AddressApiAddressUpdateByIdRequest
+ */
+export interface AddressApiAddressUpdateByIdRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof AddressApiAddressUpdateById
+	 */
+	readonly id: number
+
+	/**
+	 *
+	 * @type {CreateAddressDto}
+	 * @memberof AddressApiAddressUpdateById
+	 */
+	readonly createAddressDto: CreateAddressDto
+}
+
+/**
+ * AddressApi - object-oriented interface
+ * @export
+ * @class AddressApi
+ * @extends {BaseAPI}
+ */
+export class AddressApi extends BaseAPI {
+	/**
+	 *
+	 * @param {AddressApiAddressGetByIdRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof AddressApi
+	 */
+	public addressGetById(requestParameters: AddressApiAddressGetByIdRequest, options?: AxiosRequestConfig) {
+		return AddressApiFp(this.configuration).addressGetById(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {AddressApiAddressUpdateByIdRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof AddressApi
+	 */
+	public addressUpdateById(requestParameters: AddressApiAddressUpdateByIdRequest, options?: AxiosRequestConfig) {
+		return AddressApiFp(this.configuration).addressUpdateById(requestParameters.id, requestParameters.createAddressDto, options).then((request) => request(this.axios, this.basePath));
+	}
+}
+
 
 /**
  * AttributeValuesApi - axios parameter creator
@@ -6491,99 +6918,6 @@ export class CoreApi extends BaseAPI {
 
 
 /**
- * DefaultApi - axios parameter creator
- * @export
- */
-export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
-	return {
-		/**
-		 *
-		 * @param {*} [options] Override http request option.
-		 * @throws {RequiredError}
-		 */
-		appGetData: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-			const localVarPath = `/api/v1/app`;
-			// use dummy base URL string because the URL constructor only accepts absolute URLs.
-			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-			let baseOptions;
-			if ( configuration ) {
-				baseOptions = configuration.baseOptions;
-			}
-
-			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
-			const localVarHeaderParameter = {} as any;
-			const localVarQueryParameter = {} as any;
-
-
-			setSearchParams(localVarUrlObj, localVarQueryParameter);
-			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-
-			return {
-				url: toPathString(localVarUrlObj),
-				options: localVarRequestOptions,
-			};
-		},
-	}
-};
-
-/**
- * DefaultApi - functional programming interface
- * @export
- */
-export const DefaultApiFp = function (configuration?: Configuration) {
-	const localVarAxiosParamCreator = DefaultApiAxiosParamCreator(configuration);
-	return {
-		/**
-		 *
-		 * @param {*} [options] Override http request option.
-		 * @throws {RequiredError}
-		 */
-		async appGetData(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.appGetData(options);
-			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-		},
-	};
-};
-
-/**
- * DefaultApi - factory interface
- * @export
- */
-export const DefaultApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = DefaultApiFp(configuration);
-	return {
-		/**
-		 *
-		 * @param {*} [options] Override http request option.
-		 * @throws {RequiredError}
-		 */
-		appGetData(options?: any): AxiosPromise<void> {
-			return localVarFp.appGetData(options).then((request) => request(axios, basePath));
-		},
-	};
-};
-
-/**
- * DefaultApi - object-oriented interface
- * @export
- * @class DefaultApi
- * @extends {BaseAPI}
- */
-export class DefaultApi extends BaseAPI {
-	/**
-	 *
-	 * @param {*} [options] Override http request option.
-	 * @throws {RequiredError}
-	 * @memberof DefaultApi
-	 */
-	public appGetData(options?: AxiosRequestConfig) {
-		return DefaultApiFp(this.configuration).appGetData(options).then((request) => request(this.axios, this.basePath));
-	}
-}
-
-
-/**
  * DiscountApi - axios parameter creator
  * @export
  */
@@ -7436,10 +7770,12 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 		},
 		/**
 		 *
+		 * @param {number} [page]
+		 * @param {number} [itemsPerPage]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		orderFindAll: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		orderFindAll: async (page?: number, itemsPerPage?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			const localVarPath = `/api/v1/order`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7451,6 +7787,14 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
+
+			if ( page !== undefined ) {
+				localVarQueryParameter['page'] = page;
+			}
+
+			if ( itemsPerPage !== undefined ) {
+				localVarQueryParameter['itemsPerPage'] = itemsPerPage;
+			}
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -7596,11 +7940,13 @@ export const OrdersApiFp = function (configuration?: Configuration) {
 		},
 		/**
 		 *
+		 * @param {number} [page]
+		 * @param {number} [itemsPerPage]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async orderFindAll(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.orderFindAll(options);
+		async orderFindAll(page?: number, itemsPerPage?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderListPaginated>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.orderFindAll(page, itemsPerPage, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
@@ -7664,11 +8010,13 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
 		},
 		/**
 		 *
+		 * @param {number} [page]
+		 * @param {number} [itemsPerPage]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		orderFindAll(options?: any): AxiosPromise<void> {
-			return localVarFp.orderFindAll(options).then((request) => request(axios, basePath));
+		orderFindAll(page?: number, itemsPerPage?: number, options?: any): AxiosPromise<OrderListPaginated> {
+			return localVarFp.orderFindAll(page, itemsPerPage, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -7727,6 +8075,27 @@ export interface OrdersApiOrderCreateFromCheckoutRequest {
 	 * @memberof OrdersApiOrderCreateFromCheckout
 	 */
 	readonly createOrderFromCheckoutDto: CreateOrderFromCheckoutDto;
+}
+
+/**
+ * Request parameters for orderFindAll operation in OrdersApi.
+ * @export
+ * @interface OrdersApiOrderFindAllRequest
+ */
+export interface OrdersApiOrderFindAllRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrdersApiOrderFindAll
+	 */
+	readonly page?: number;
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrdersApiOrderFindAll
+	 */
+	readonly itemsPerPage?: number;
 }
 
 /**
@@ -7809,12 +8178,13 @@ export class OrdersApi extends BaseAPI {
 
 	/**
 	 *
+	 * @param {OrdersApiOrderFindAllRequest} requestParameters Request parameters.
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}
 	 * @memberof OrdersApi
 	 */
-	public orderFindAll(options?: AxiosRequestConfig) {
-		return OrdersApiFp(this.configuration).orderFindAll(options).then((request) => request(this.axios, this.basePath));
+	public orderFindAll(requestParameters: OrdersApiOrderFindAllRequest = {}, options?: AxiosRequestConfig) {
+		return OrdersApiFp(this.configuration).orderFindAll(requestParameters.page, requestParameters.itemsPerPage, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**

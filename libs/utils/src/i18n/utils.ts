@@ -13,6 +13,10 @@ export function getStatesOfCountryByAlpha2(alpha2: string): IState[] {
 	return Object.values(states[alpha2]);
 }
 
+export function getCountryByCode(countryCode: string): ICountry {
+	return countries[countryCode];
+}
+
 export function getCountryName(country: ICountry, locale?: string): string {
 	if ( !locale || !country.locale || !country.locale[locale] ) return country.name;
 	return country.locale[locale];
@@ -21,4 +25,8 @@ export function getCountryName(country: ICountry, locale?: string): string {
 export function getStateName(state: IState, locale?: string): string {
 	if ( !locale || !state.locale || !state.locale[locale] ) return state.name;
 	return state.locale[locale];
+}
+
+export function getState(countryCode: string, stateCode: string): IState {
+	return states[countryCode][stateCode];
 }

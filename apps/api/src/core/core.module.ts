@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AddressController } from './address/address.controller';
 import { AddressService } from './address/address.service';
 import { CoreController } from './core.controller';
 import { CoreService } from './core.service';
@@ -14,7 +15,7 @@ import { SettingsService } from './settings/settings.service';
 
 @Module({
 	imports: [TypeOrmModule.forFeature([AddressEntity, MediaRepository, SettingsEntity])],
-	controllers: [CoreController, SettingsController, MediaController],
+	controllers: [CoreController, SettingsController, MediaController, AddressController],
 	providers: [CoreService, SettingsService, MediaService, AddressService],
 	exports: [MediaService, AddressService],
 })

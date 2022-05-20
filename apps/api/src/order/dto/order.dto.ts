@@ -1,8 +1,17 @@
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
+import { PaginatedResults } from '@nima-cms/utils';
 import { IsOptional, IsString } from 'class-validator';
+import { PaymentDto } from '../../payments/dto/payment.dto';
 import { OrderEntity } from '../entities/order.entity';
+import { OrderLineDto } from './order-line.dto';
 
-export class OrderDto extends OmitType(OrderEntity, ['lines', 'events', 'searchDocument']) {
+export class OrderDto extends OmitType(OrderEntity, ['lines', 'events', 'searchDocument', 'payment']) {
+
+	@ApiProperty({ type: () => OrderLineDto, isArray: true })
+	lines: OrderLineDto[];
+
+	@ApiProperty({ type: () => PaymentDto })
+	payment: PaymentDto;
 
 	static prepare(entity: OrderEntity): OrderDto {
 		return {
@@ -37,6 +46,8 @@ export class OrderDto extends OmitType(OrderEntity, ['lines', 'events', 'searchD
 			totalPaidAmount: entity.totalPaidAmount,
 			origin: entity.origin,
 			original: entity.original,
+			lines: entity.lines?.map(OrderLineDto.prepare) || [],
+			payment: entity.payment ? PaymentDto.prepare(entity.payment) : undefined,
 		};
 	}
 }
@@ -54,4 +65,16 @@ export class CreateOrderFromCheckoutDto {
 }
 
 export class UpdateOrderDto extends PartialType(CreateOrderDto) {
+}
+
+
+export class OrderListPaginated implements PaginatedResults<OrderDto> {
+	@ApiProperty({ type: [OrderDto] })
+	items: OrderDto[];
+	@ApiProperty()
+	pageNumber: number;
+	@ApiProperty()
+	pageSize: number;
+	@ApiProperty()
+	totalCount: number;
 }

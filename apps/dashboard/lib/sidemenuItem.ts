@@ -27,6 +27,10 @@ export const adminRoutes: NavigationItem[] = [
 		link: NIMA_ROUTES.shipping.list,
 	},
 	{
+		name: 'Orders',
+		link: NIMA_ROUTES.orders.list,
+	},
+	{
 		name: 'Settings',
 		link: NIMA_ROUTES.settings.index,
 	},

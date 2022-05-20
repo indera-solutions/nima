@@ -1,6 +1,12 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
-import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
-import { CreateOrderDto, CreateOrderFromCheckoutDto, OrderDto, UpdateOrderDto } from './dto/order.dto';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
+import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+	CreateOrderDto,
+	CreateOrderFromCheckoutDto,
+	OrderDto,
+	OrderListPaginated,
+	UpdateOrderDto,
+} from './dto/order.dto';
 import { OrderService } from './order.service';
 
 @Controller('order')
@@ -24,15 +30,26 @@ export class OrderController {
 	}
 
 	@Get()
-	findAll() {
-		return this.orderService.findAll();
+	@ApiQuery({ type: Number, required: false, name: 'page' })
+	@ApiQuery({ type: Number, required: false, name: 'itemsPerPage' })
+	@ApiOkResponse({ type: OrderListPaginated })
+	async findAll(@Query('page') page?: number, @Query('itemsPerPage') itemsPerPage?: number): Promise<OrderListPaginated> {
+		const res = await this.orderService.findAll({ page, itemsPerPage });
+		return {
+			items: res.items.map(OrderDto.prepare),
+			pageNumber: res.pageNumber,
+			pageSize: res.pageSize,
+			totalCount: res.totalCount,
+		};
+
 	}
 
 	@Get(':id')
 	@ApiOkResponse({ type: OrderDto })
 	@ApiParam({ type: Number, name: 'id' })
-	findOne(@Param('id', ParseIntPipe) id: number) {
-		return this.orderService.findOne({ id });
+	async findOne(@Param('id', ParseIntPipe) id: number) {
+		const res = await this.orderService.findOne({ id });
+		return OrderDto.prepare(res);
 	}
 
 	@Patch(':id')
