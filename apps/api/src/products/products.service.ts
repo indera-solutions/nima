@@ -96,6 +96,12 @@ export class ProductsService {
 		return await this.productRepository.findByIds(params.ids);
 	}
 
+	async getOfCategory(params: { categoryId: number }): Promise<ProductEntity[]> {
+		const { categoryId } = params;
+		const categoryChildren = await this.categoryService.listIdsOfChildren({ id: categoryId });
+		return this.productRepository.findByCategoryIds([categoryId, ...categoryChildren]);
+	}
+
 	async remove(params: { id: number }): Promise<ProductEntity> {
 		const { id } = params;
 		const product = await this.getById({ id: id });

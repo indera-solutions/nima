@@ -4,7 +4,7 @@ import { CreateSortableMediaDto, SortableMediaDto } from '../../core/dto/media.d
 import { ProductEntity } from '../entities/product.entity';
 import { CreateAssignedProductAttributeDto, ProductAttributeDto } from './product-attribute-assignment.dto';
 
-export class ProductDto extends OmitType(ProductEntity, ['productType', 'productMedia', 'attributes', 'category', 'defaultVariant', 'searchDocument']) {
+export class ProductDto extends OmitType(ProductEntity, ['productType', 'productMedia', 'attributes', 'category', 'defaultVariant', 'searchDocument', 'collections']) {
 	@ApiProperty()
 	@IsInt()
 	productTypeId: number;
@@ -25,8 +25,8 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'product
 			id: entity.id,
 			name: entity.name,
 			slug: entity.slug,
-			productTypeId: entity.productType.id,
-			categoryId: entity.category.id,
+			productTypeId: entity.productType ? entity.productType.id : undefined,
+			categoryId: entity.category ? entity.category.id : undefined,
 			chargeTaxes: entity.chargeTaxes,
 			created: entity.created,
 			currency: entity.currency,
@@ -42,10 +42,10 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'product
 			minPrice: entity.minPrice,
 			rating: entity.rating,
 			seoDescription: entity.seoDescription,
-			productMedia: entity.productMedia.map(pm => SortableMediaDto.prepare(pm)),
+			productMedia: entity.productMedia ? entity.productMedia.map(pm => SortableMediaDto.prepare(pm)) : undefined,
 			seoTitle: entity.seoTitle,
 			updatedAt: entity.updatedAt,
-			attributes: entity.attributes.map(attr => ProductAttributeDto.prepare(attr)),
+			attributes: entity.attributes ? entity.attributes.map(attr => ProductAttributeDto.prepare(attr)) : undefined,
 		};
 	}
 }

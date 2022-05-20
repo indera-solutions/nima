@@ -14,6 +14,7 @@ import {
 	UpdateDateColumn,
 } from 'typeorm';
 import { CategoryEntity } from '../../categories/entities/category.entity';
+import { CollectionProductsEntity } from '../../collections/entities/collection-products.entity';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { ProductTypeDto } from '../../product-types/dto/product-type.dto';
 import { ProductTypeEntity } from '../../product-types/entities';
@@ -42,11 +43,11 @@ export class ProductEntity {
 	@ApiProperty({ type: String, example: '' })
 	updatedAt: string;
 
-	@ManyToOne(() => ProductTypeEntity /*,object => object.products*/, { eager: true })
+	@ManyToOne(() => ProductTypeEntity /*,object => object.products*/)
 	@ApiProperty({ type: ProductTypeDto })
 	productType: ProductTypeEntity;
 
-	@ManyToOne(() => CategoryEntity /*,object => object.products*/, { eager: true })
+	@ManyToOne(() => CategoryEntity /*,object => object.products*/)
 	category: CategoryEntity;
 
 	@Column({ type: String })
@@ -135,10 +136,13 @@ export class ProductEntity {
 	@IsNumber()
 	minPrice: number;
 
-	@OneToMany(() => ProductMediaEntity, pm => pm.product, { eager: true })
+	@OneToMany(() => ProductMediaEntity, pm => pm.product)
 	productMedia: ProductMediaEntity[];
 
 
-	@OneToMany(() => AssignedProductAttributeEntity, assignedAttr => assignedAttr.product, { eager: true, onUpdate: 'NO ACTION' })
+	@OneToMany(() => AssignedProductAttributeEntity, assignedAttr => assignedAttr.product, { onUpdate: 'NO ACTION' })
 	attributes: AssignedProductAttributeEntity[];
+
+	@OneToMany(() => CollectionProductsEntity, collection => collection.product)
+	collections: CollectionProductsEntity[];
 }
