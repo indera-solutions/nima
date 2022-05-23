@@ -3,6 +3,7 @@ import { EntityRepository } from 'typeorm';
 import { BaseRepository } from 'typeorm-transactional-cls-hooked';
 import { AttributeValueEntity } from '../../attributes/entities/attribute-value.entity';
 import { AttributeEntity } from '../../attributes/entities/attribute.entity';
+import { CollectionProductsEntity } from '../../collections/entities/collection-products.entity';
 import { ProductQueryFilterDto, ProductSorting } from '../dto/product-filtering.dto';
 import {
 	AssignedProductAttributeEntity,
@@ -99,8 +100,9 @@ export class ProductVariantRepository extends BaseRepository<ProductVariantEntit
 	async findFilteredVariantIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string): Promise<{ id: number, price: number }[]> {
 		const caQb = this.createQueryBuilder('pv')
 						 .select('pv.id', 'id')
-						 .addSelect('pv."priceAmount"')
+						 .addSelect('pv."priceAmount"', 'price')
 						 .distinctOn(['pv.id'])
+						 .leftJoin(ProductEntity, 'p', 'pv."productId" = p.id')
 						 .where('pv.id IS NOT NULL');
 		if ( search ) {
 			const query = `'"${ search.trim().replace(' ', '+') }":*'`;
@@ -115,12 +117,12 @@ export class ProductVariantRepository extends BaseRepository<ProductVariantEntit
 		}
 
 		if ( collectionId ) {
-			//TODO: Collection Handling
+			caQb.leftJoin(CollectionProductsEntity, 'copr', `p.id = copr."productId"`)
+				.andWhere(`copr."collectionId" = :collectionId`, { collectionId: collectionId });
 		}
 
 		if ( filters && filters.length > 0 ) {
 			caQb
-				.leftJoin(ProductEntity, 'p', 'pv."productId" = p.id')
 				.leftJoin(AssignedProductAttributeEntity, `apa`, `p.id = apa."productId"`);
 
 			filters.forEach((value, index) => {
@@ -150,22 +152,25 @@ export class ProductVariantRepository extends BaseRepository<ProductVariantEntit
 					  .leftJoinAndSelect('att.productTypeAttribute', 'pta')
 					  .leftJoinAndSelect('pta.attribute', 'attr')
 					  .leftJoinAndSelect('pv.productMedia', 'pmedia')
-					  .leftJoinAndSelect('pmedia.media', 'pmediaMedia')
-					  .whereInIds(ids)
-					  .skip(skip)
-					  .take(take);
+					  .leftJoinAndSelect('pmedia.media', 'pmediaMedia');
 
 		if ( sorting ) {
 			if ( sorting === ProductSorting.NAME_ASC || sorting === ProductSorting.NAME_DESC ) {
-				q.orderBy(`CASE WHEN products.name ? '${ language }' THEN products.name ->> '${ language }' ELSE products.name ->> 'en' END`, sorting === ProductSorting.NAME_ASC ? 'ASC' : 'DESC', 'NULLS LAST');
+				q.addSelect(`CASE WHEN "p".name ? '${ language }' THEN "p".name ->> '${ language }' ELSE "p".name ->> 'en' END`, 'sortcolumn');
 			} else if ( sorting === ProductSorting.PRICE_ASC || sorting === ProductSorting.PRICE_DESC ) {
-				q.orderBy('CASE WHEN products.salePrice IS NOT NULL THEN products.salePrice ELSE products.price END', sorting === ProductSorting.PRICE_ASC ? 'ASC' : 'DESC', 'NULLS LAST');
+				q.addSelect(`p."minPrice"`, 'sortcolumn');
 			} else if ( sorting === ProductSorting.DATE_CREATED_ASC || sorting === ProductSorting.DATE_CREATED_DESC ) {
-				q.orderBy(`products.createdAt`, sorting === ProductSorting.DATE_CREATED_ASC ? 'ASC' : 'DESC', 'NULLS LAST');
+				q.addSelect(`p."created"`, 'sortcolumn');
 			} else if ( sorting === ProductSorting.RATING_ASC || sorting === ProductSorting.RATING_DESC ) {
-				q.orderBy(`products.rating`, sorting === ProductSorting.RATING_ASC ? 'ASC' : 'DESC', 'NULLS LAST');
+				q.addSelect(`p."rating"`, 'sortcolumn');
 			}
+			const isAsc = sorting === ProductSorting.RATING_ASC || sorting === ProductSorting.NAME_ASC || sorting === ProductSorting.PRICE_ASC || sorting === ProductSorting.DATE_CREATED_ASC;
+			q.orderBy(`sortcolumn`, isAsc ? 'ASC' : 'DESC', 'NULLS LAST');
+
 		}
+		q.skip(skip)
+		 .take(take)
+		 .whereInIds(ids);
 
 		return await q.getMany();
 	}

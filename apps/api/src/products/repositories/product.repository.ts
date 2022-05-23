@@ -2,6 +2,7 @@ import { LanguageCode } from '@nima-cms/utils';
 import { EntityRepository, In } from 'typeorm';
 import { BaseRepository } from 'typeorm-transactional-cls-hooked';
 import { AttributeValueEntity } from '../../attributes/entities/attribute-value.entity';
+import { CollectionProductsEntity } from '../../collections/entities/collection-products.entity';
 import { ProductQueryFilterDto, ProductSorting } from '../dto/product-filtering.dto';
 import {
 	AssignedProductAttributeEntity,
@@ -61,7 +62,8 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 		}
 
 		if ( collectionId ) {
-			//TODO: Collection Handling
+			caQb.leftJoin(CollectionProductsEntity, 'copr', `p.id = copr."productId"`)
+				.andWhere(`copr."collectionId" = :collectionId`, { collectionId: collectionId });
 		}
 
 		if ( filters && filters.length > 0 ) {

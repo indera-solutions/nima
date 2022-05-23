@@ -32,8 +32,8 @@ export class ProductsController {
 	@Post()
 	@ApiCreatedResponse({ type: ProductDto })
 	@ApiBody({ type: CreateProductDto })
-	@UseGuards(JwtAuthGuard)
-	@ApiBearerAuth()
+	// @UseGuards(JwtAuthGuard)
+	// @ApiBearerAuth()
 	async create(@Body() createProductDto: CreateProductDto) {
 		const product = await this.productsService.save({ dto: createProductDto });
 		return ProductDto.prepare(product);
@@ -45,8 +45,7 @@ export class ProductsController {
 	async findAll(@Req() request: Request, @Query(new ValidationPipe({})) query, @Query('filters') filters) {
 		const filterObj = plainToInstance(ProductFilterParamsDto, query, { enableImplicitConversion: true });
 		// if (Array.isArray(filterObj.filters))
-		const res = await this.filteringService.productFilterQuery(filterObj);
-		return res;
+		return await this.filteringService.productFilterQuery(filterObj);
 	}
 
 	@Get(':id')
