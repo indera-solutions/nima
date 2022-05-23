@@ -9,8 +9,8 @@ import {
 	ProductSorting,
 } from './dto/product-filtering.dto';
 import { ProductDto } from './dto/product.dto';
-import { ProductVariantRepository } from './entities/product-variant.repository';
-import { ProductRepository } from './entities/product.repository';
+import { ProductVariantRepository } from './repositories/product-variant.repository';
+import { ProductRepository } from './repositories/product.repository';
 
 const emptyRes: ProductFilterResultDto = {
 	items: [],

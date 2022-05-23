@@ -19,6 +19,11 @@ export class DiscountSaleRepository extends BaseRepository<DiscountSaleEntity> {
 		});
 	}
 
+	async getAllIds() {
+		const res = await this.find({ select: ['id'] });
+		return res.map(r => r.id);
+	}
+
 	async deleteById(id: number) {
 		return this.delete({
 			id: id,

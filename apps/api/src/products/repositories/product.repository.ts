@@ -6,13 +6,13 @@ import { ProductQueryFilterDto, ProductSorting } from '../dto/product-filtering.
 import {
 	AssignedProductAttributeEntity,
 	AssignedProductVariantAttributeEntity,
-} from './product-attribute-assignment.entity';
+} from '../entities/product-attribute-assignment.entity';
 import {
 	AssignedProductAttributeValueEntity,
 	AssignedProductVariantAttributeValueEntity,
-} from './product-attribute-value-assignment.entity';
-import { ProductVariantEntity } from './product-variant.entity';
-import { ProductEntity } from './product.entity';
+} from '../entities/product-attribute-value-assignment.entity';
+import { ProductVariantEntity } from '../entities/product-variant.entity';
+import { ProductEntity } from '../entities/product.entity';
 
 @EntityRepository(ProductEntity)
 export class ProductRepository extends BaseRepository<ProductEntity> {

@@ -3,7 +3,7 @@ import { BaseRepository } from 'typeorm-transactional-cls-hooked';
 import {
 	AssignedProductAttributeValueEntity,
 	AssignedProductVariantAttributeValueEntity,
-} from './product-attribute-value-assignment.entity';
+} from '../entities/product-attribute-value-assignment.entity';
 
 @EntityRepository(AssignedProductAttributeValueEntity)
 export class AssignedProductAttributeValueRepository extends BaseRepository<AssignedProductAttributeValueEntity> {

@@ -7,16 +7,25 @@ import { ProductQueryFilterDto, ProductSorting } from '../dto/product-filtering.
 import {
 	AssignedProductAttributeEntity,
 	AssignedProductVariantAttributeEntity,
-} from './product-attribute-assignment.entity';
+} from '../entities/product-attribute-assignment.entity';
 import {
 	AssignedProductAttributeValueEntity,
 	AssignedProductVariantAttributeValueEntity,
-} from './product-attribute-value-assignment.entity';
-import { ProductVariantEntity } from './product-variant.entity';
-import { ProductEntity } from './product.entity';
+} from '../entities/product-attribute-value-assignment.entity';
+import { ProductVariantEntity } from '../entities/product-variant.entity';
+import { ProductEntity } from '../entities/product.entity';
 
 @EntityRepository(ProductVariantEntity)
 export class ProductVariantRepository extends BaseRepository<ProductVariantEntity> {
+	async getFullObject(variantId: number) {
+		return this.findOne({
+			where: {
+				id: variantId,
+			},
+			relations: ['product', 'product.category', 'product.collections'],
+		});
+	}
+
 	async listProductsAndCounts(productId: number, take: number, skip: number): Promise<{ items: ProductVariantEntity[], count: number }> {
 		const res = await this.findAndCount({
 			take: take,
@@ -65,6 +74,18 @@ export class ProductVariantRepository extends BaseRepository<ProductVariantEntit
 				},
 			},
 		});
+	}
+
+	async findIdsByProductId(productId: number): Promise<number[]> {
+		const res = await this.find({
+			where: {
+				product: {
+					id: productId,
+				},
+			},
+			select: ['id'],
+		});
+		return res.map(r => r.id);
 	}
 
 	async getProductIdOfVariant(variantId: number): Promise<number | undefined> {

@@ -18,25 +18,6 @@ export class DiscountSaleDto extends OmitType(DiscountSaleEntity, ['categories',
 
 	@ApiProperty({ type: [CollectionDto] })
 	collections: CollectionDto[];
-
-	static prepare(entity: DiscountSaleEntity, options?: { isAdmin?: boolean }): DiscountSaleDto {
-		return {
-			name: entity.name,
-			id: entity.id,
-			products: entity.products.map(p => ProductDto.prepare(p)),
-			categories: entity.categories.map(c => CategoryDto.prepare(c)),
-			variants: entity.variants.map(v => ProductVariantDto.prepare(v)),
-			collections: entity.collections.map(c => CollectionDto.prepare(c)),
-			updatedAt: entity.updatedAt,
-			metadata: entity.metadata,
-			privateMetadata: options?.isAdmin ? entity.privateMetadata : {},
-			discountType: entity.discountType,
-			created: entity.created,
-			endDate: entity.endDate,
-			startDate: entity.startDate,
-			discountValue: entity.discountValue,
-		};
-	}
 }
 
 export class CreateDiscountSaleDto extends OmitType(DiscountSaleDto, ['id', 'created', 'updatedAt', 'categories', 'products', 'collections', 'variants']) {

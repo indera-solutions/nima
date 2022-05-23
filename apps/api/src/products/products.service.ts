@@ -10,12 +10,12 @@ import { CreateAssignedProductAttributeValueDto } from './dto/product-attribute-
 import { ProductQueryFilterDto } from './dto/product-filtering.dto';
 import { CreateProductDto } from './dto/product.dto';
 import { AssignedProductAttributeEntity } from './entities/product-attribute-assignment.entity';
-import { AssignedProductAttributeRepository } from './entities/product-attribute-assignment.repository';
 import { AssignedProductAttributeValueEntity } from './entities/product-attribute-value-assignment.entity';
-import { AssignedProductAttributeValueRepository } from './entities/product-attribute-value-assignment.repository';
-import { ProductMediaRepository } from './entities/product-media.repository';
 import { ProductEntity } from './entities/product.entity';
-import { ProductRepository } from './entities/product.repository';
+import { AssignedProductAttributeRepository } from './repositories/product-attribute-assignment.repository';
+import { AssignedProductAttributeValueRepository } from './repositories/product-attribute-value-assignment.repository';
+import { ProductMediaRepository } from './repositories/product-media.repository';
+import { ProductRepository } from './repositories/product.repository';
 
 @Injectable()
 export class ProductsService {
