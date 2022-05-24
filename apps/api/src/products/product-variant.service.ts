@@ -125,6 +125,38 @@ export class ProductVariantService {
 		await this.productVariantRepository.deleteById(id);
 	}
 
+	async getLowestPrices(ids?: number[]): Promise<{ id: number, lowestPrice: number }[]> {
+		let entities: ProductVariantEntity[];
+		if ( ids ) {
+			entities = await this.productVariantRepository.findByIds(ids);
+		} else {
+			entities = await this.productVariantRepository.find();
+		}
+		console.log({ entities });
+		const res: { id: number, lowestPrice: number }[] = [];
+		const discountMap = await this.salesService.getVariantDiscountMap();
+		console.log(discountMap);
+		for ( const entity of entities ) {
+			const discounts = discountMap[entity.id];
+			const basePrice = entity.priceAmount || 0;
+			let lowestPrice = basePrice;
+			if ( discounts && discounts.length > 0 ) {
+				for ( const discount of discounts ) {
+					let temp = Number.MAX_SAFE_INTEGER;
+					if ( discount.discountType === DiscountType.PERCENTAGE ) {
+						temp = basePrice - (discount.discountValue * basePrice);
+					} else if ( discount.discountType === DiscountType.FLAT ) {
+						temp = Math.max(basePrice - discount.discountValue, 0);
+					}
+					if ( temp < lowestPrice ) lowestPrice = temp;
+				}
+			}
+			res.push({ id: entity.id, lowestPrice: lowestPrice });
+		}
+		console.log({ res });
+		return res;
+	}
+
 	async getDto(id: number, options?: { isAdmin?: boolean }): Promise<ProductVariantDto> {
 		const entity = await this.productVariantRepository.getFullObject(id);
 		const discountedPrice = await this.calculateDiscountedPrice(entity);

@@ -9,6 +9,7 @@ import {
 	ProductSorting,
 } from './dto/product-filtering.dto';
 import { ProductDto } from './dto/product.dto';
+import { ProductVariantService } from './product-variant.service';
 import { ProductVariantRepository } from './repositories/product-variant.repository';
 import { ProductRepository } from './repositories/product.repository';
 
@@ -29,6 +30,7 @@ export class FilteringService {
 	constructor(
 		private productRepository: ProductRepository,
 		private productVariantRepository: ProductVariantRepository,
+		private productVariantService: ProductVariantService,
 		private categoriesService: CategoriesService,
 		private attributeValuesService: AttributeValuesService,
 	) {
@@ -67,6 +69,7 @@ export class FilteringService {
 				if ( resultElement.price < minPrice ) minPrice = resultElement.price;
 				if ( resultElement.price > maxPrice ) maxPrice = resultElement.price;
 			}
+			if ( ids.length === 0 ) return emptyRes;
 			products = await this.productRepository.findByIdsWithSorting(ids, skip, take, params.sorting, params.language);
 			const rawDrillDown = await this.attributeValuesService.attributeDrillDown({ ids: ids });
 			attributeDrillDown = this.attributeFilterRawArrayToDrillDownArray(rawDrillDown);
@@ -76,14 +79,17 @@ export class FilteringService {
 			if ( result.length === 0 )
 				return emptyRes;
 
-			for ( const resultElement of result ) {
+			const lowestPrices = await this.productVariantService.getLowestPrices(result.map(r => r.id));
+
+			for ( const resultElement of lowestPrices ) {
 				let underMax = true, overMin = true;
-				if ( params.maxPrice ) underMax = resultElement.price <= params.maxPrice;
-				if ( params.minPrice ) overMin = resultElement.price >= params.minPrice;
+				if ( params.maxPrice ) underMax = resultElement.lowestPrice <= params.maxPrice;
+				if ( params.minPrice ) overMin = resultElement.lowestPrice >= params.minPrice;
 				if ( underMax && overMin ) ids.push(resultElement.id);
-				if ( resultElement.price < minPrice ) minPrice = resultElement.price;
-				if ( resultElement.price > maxPrice ) maxPrice = resultElement.price;
+				if ( resultElement.lowestPrice < minPrice ) minPrice = resultElement.lowestPrice;
+				if ( resultElement.lowestPrice > maxPrice ) maxPrice = resultElement.lowestPrice;
 			}
+			if ( ids.length === 0 ) return emptyRes;
 			products = await this.productVariantRepository.findByIdsWithSorting(ids, skip, take, params.sorting, params.language);
 			const rawDrillDown = await this.productVariantRepository.attributeDrillDown(ids);
 			attributeDrillDown = this.attributeFilterRawArrayToDrillDownArray(rawDrillDown);

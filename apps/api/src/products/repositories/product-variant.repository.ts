@@ -103,7 +103,7 @@ export class ProductVariantRepository extends BaseRepository<ProductVariantEntit
 						 .addSelect('pv."priceAmount"', 'price')
 						 .distinctOn(['pv.id'])
 						 .leftJoin(ProductEntity, 'p', 'pv."productId" = p.id')
-						 .where('pv.id IS NOT NULL');
+						 .where('p."isPublished" = true');
 		if ( search ) {
 			const query = `'"${ search.trim().replace(' ', '+') }":*'`;
 			caQb.andWhere(`to_tsvector(pp.searchDocument) @@ to_tsquery(${ query })`);

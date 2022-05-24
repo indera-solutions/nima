@@ -74,6 +74,39 @@ export class DiscountSalesService {
 		return discounts;
 	}
 
+	async getVariantDiscountMap() {
+		const discounts = await this.findAll();
+		const map: { [variantId: number]: DiscountSaleEntity[] } = {};
+		for ( const discount of discounts ) {
+			const variantIds = discount.variants.map(v => v.id);
+			const productIds = discount.products.map(p => p.id);
+			const categoryIds = discount.categories.map(c => c.id);
+			const collectionIds = discount.collections.map(c => c.id);
+			for ( const collectionId of collectionIds ) {
+				const collection = await this.collectionsService.getOne({ id: collectionId });
+				for ( const product of collection.products ) {
+					if ( !productIds.includes(product.product.id) ) productIds.push(product.product.id);
+				}
+			}
+			for ( const categoryId of categoryIds ) {
+				const children = await this.categoriesService.listIdsOfChildren({ id: categoryId });
+				for ( const id of [...children, categoryId] ) {
+					const products = await this.productsService.getOfCategory({ categoryId: id });
+					products.forEach(p => productIds.includes(p.id) ? undefined : productIds.push(p.id));
+				}
+			}
+			for ( const productId of productIds ) {
+				const variants = await this.variantService.findOfProduct({ productId: productId });
+				variants.forEach(v => variantIds.includes(v.id) ? undefined : variantIds.push(v.id));
+			}
+			for ( const variantId of variantIds ) {
+				if ( !map[variantId] ) map[variantId] = [];
+				map[variantId].push(discount);
+			}
+		}
+		return map;
+	}
+
 	async update(params: { id: number, updateDiscountDto: UpdateDiscountDto }): Promise<void> {
 		const { id, updateDiscountDto } = params;
 		await this.discountSaleRepository.update(id, updateDiscountDto);

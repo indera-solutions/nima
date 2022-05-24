@@ -49,7 +49,7 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 						 .select('p.id', 'id')
 						 .addSelect('p."minPrice"', 'price')
 						 .distinctOn(['p.id'])
-						 .where('p.id IS NOT NULL');
+						 .where('p."isPublished" = true');
 		if ( search ) {
 			const query = `'"${ search.trim().replace(' ', '+') }":*'`;
 			caQb.andWhere(`to_tsvector(pp.searchDocument) @@ to_tsquery(${ query })`);
