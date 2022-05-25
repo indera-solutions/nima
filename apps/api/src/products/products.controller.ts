@@ -32,8 +32,8 @@ export class ProductsController {
 	@Post()
 	@ApiCreatedResponse({ type: ProductDto })
 	@ApiBody({ type: CreateProductDto })
-	// @UseGuards(JwtAuthGuard)
-	// @ApiBearerAuth()
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
 	async create(@Body() createProductDto: CreateProductDto) {
 		const product = await this.productsService.save({ dto: createProductDto });
 		return ProductDto.prepare(product);
