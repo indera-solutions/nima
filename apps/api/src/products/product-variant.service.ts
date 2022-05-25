@@ -21,6 +21,7 @@ import { ProductVariantRepository } from './repositories/product-variant.reposit
 @Injectable()
 export class ProductVariantService {
 	constructor(
+		@Inject(forwardRef(() => ProductsService))
 		private productsService: ProductsService,
 		private productVariantRepository: ProductVariantRepository,
 		private productTypeVariantAttributesService: ProductTypeVariantAttributesService,
@@ -132,10 +133,8 @@ export class ProductVariantService {
 		} else {
 			entities = await this.productVariantRepository.find();
 		}
-		console.log({ entities });
 		const res: { id: number, lowestPrice: number }[] = [];
 		const discountMap = await this.salesService.getVariantDiscountMap();
-		console.log(discountMap);
 		for ( const entity of entities ) {
 			const discounts = discountMap[entity.id];
 			const basePrice = entity.priceAmount || 0;
@@ -153,7 +152,6 @@ export class ProductVariantService {
 			}
 			res.push({ id: entity.id, lowestPrice: lowestPrice });
 		}
-		console.log({ res });
 		return res;
 	}
 

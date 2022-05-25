@@ -97,10 +97,9 @@ export class ProductVariantRepository extends BaseRepository<ProductVariantEntit
 		return res?.productId || undefined;
 	}
 
-	async findFilteredVariantIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string): Promise<{ id: number, price: number }[]> {
+	async findFilteredVariantIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string): Promise<number[]> {
 		const caQb = this.createQueryBuilder('pv')
 						 .select('pv.id', 'id')
-						 .addSelect('pv."priceAmount"', 'price')
 						 .distinctOn(['pv.id'])
 						 .leftJoin(ProductEntity, 'p', 'pv."productId" = p.id')
 						 .where('p."isPublished" = true');
@@ -138,7 +137,7 @@ export class ProductVariantRepository extends BaseRepository<ProductVariantEntit
 		}
 
 		const res = await caQb.getRawMany();
-		return res.map(r => ({ id: Number(r.id), price: Number(r.price) }));
+		return res.map(r => Number(r.id));
 	}
 
 	async findByIdsWithSorting(ids: number[], skip?: number, take?: number, sorting?: ProductSorting, language: LanguageCode = LanguageCode.en): Promise<ProductVariantEntity[]> {

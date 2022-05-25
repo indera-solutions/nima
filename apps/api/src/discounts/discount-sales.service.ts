@@ -24,10 +24,12 @@ import dayjs = require('dayjs');
 export class DiscountSalesService {
 	constructor(
 		private discountSaleRepository: DiscountSaleRepository,
+		@Inject(forwardRef(() => ProductsService))
 		private productsService: ProductsService,
 		@Inject(forwardRef(() => ProductVariantService))
 		private variantService: ProductVariantService,
 		private categoriesService: CategoriesService,
+		@Inject(forwardRef(() => CollectionsService))
 		private collectionsService: CollectionsService,
 	) {
 	}

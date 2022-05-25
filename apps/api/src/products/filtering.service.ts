@@ -10,6 +10,7 @@ import {
 } from './dto/product-filtering.dto';
 import { ProductDto } from './dto/product.dto';
 import { ProductVariantService } from './product-variant.service';
+import { ProductsService } from './products.service';
 import { ProductVariantRepository } from './repositories/product-variant.repository';
 import { ProductRepository } from './repositories/product.repository';
 
@@ -29,6 +30,7 @@ const emptyRes: ProductFilterResultDto = {
 export class FilteringService {
 	constructor(
 		private productRepository: ProductRepository,
+		private productService: ProductsService,
 		private productVariantRepository: ProductVariantRepository,
 		private productVariantService: ProductVariantService,
 		private categoriesService: CategoriesService,
@@ -61,13 +63,16 @@ export class FilteringService {
 
 			if ( result.length === 0 )
 				return emptyRes;
-			for ( const resultElement of result ) {
+
+			const lowestPrices = await this.productService.getLowestPrices(result);
+
+			for ( const lowestPrice of lowestPrices ) {
 				let underMax = true, overMin = true;
-				if ( params.maxPrice ) underMax = resultElement.price <= params.maxPrice;
-				if ( params.minPrice ) overMin = resultElement.price >= params.minPrice;
-				if ( underMax && overMin ) ids.push(resultElement.id);
-				if ( resultElement.price < minPrice ) minPrice = resultElement.price;
-				if ( resultElement.price > maxPrice ) maxPrice = resultElement.price;
+				if ( params.maxPrice ) underMax = lowestPrice.lowestPrice <= params.maxPrice;
+				if ( params.minPrice ) overMin = lowestPrice.lowestPrice >= params.minPrice;
+				if ( underMax && overMin ) ids.push(lowestPrice.id);
+				if ( lowestPrice.lowestPrice < minPrice ) minPrice = lowestPrice.lowestPrice;
+				if ( lowestPrice.lowestPrice > maxPrice ) maxPrice = lowestPrice.lowestPrice;
 			}
 			if ( ids.length === 0 ) return emptyRes;
 			products = await this.productRepository.findByIdsWithSorting(ids, skip, take, params.sorting, params.language);
@@ -79,7 +84,7 @@ export class FilteringService {
 			if ( result.length === 0 )
 				return emptyRes;
 
-			const lowestPrices = await this.productVariantService.getLowestPrices(result.map(r => r.id));
+			const lowestPrices = await this.productVariantService.getLowestPrices(result);
 
 			for ( const resultElement of lowestPrices ) {
 				let underMax = true, overMin = true;

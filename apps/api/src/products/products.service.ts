@@ -1,8 +1,10 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { BasePaginatedRequest, getSlug, PaginatedResults } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { AttributeValuesService } from '../attributes/attribute-values.service';
 import { CategoriesService } from '../categories/categories.service';
+import { DiscountSalesService } from '../discounts/discount-sales.service';
+import { DiscountType } from '../discounts/dto/discount.enum';
 import { ProductTypeAttributesService } from '../product-types/product-type-attributes.service';
 import { ProductTypesService } from '../product-types/product-types.service';
 import { CreateAssignedProductAttributeDto } from './dto/product-attribute-assignment.dto';
@@ -15,12 +17,14 @@ import { ProductEntity } from './entities/product.entity';
 import { AssignedProductAttributeRepository } from './repositories/product-attribute-assignment.repository';
 import { AssignedProductAttributeValueRepository } from './repositories/product-attribute-value-assignment.repository';
 import { ProductMediaRepository } from './repositories/product-media.repository';
+import { ProductVariantRepository } from './repositories/product-variant.repository';
 import { ProductRepository } from './repositories/product.repository';
 
 @Injectable()
 export class ProductsService {
 	constructor(
 		private productRepository: ProductRepository,
+		private productVariantRepository: ProductVariantRepository,
 		private productTypesService: ProductTypesService,
 		private categoryService: CategoriesService,
 		private productTypeAttributesService: ProductTypeAttributesService,
@@ -28,6 +32,8 @@ export class ProductsService {
 		private assignedProductAttributeValueRepository: AssignedProductAttributeValueRepository,
 		private productMediaRepository: ProductMediaRepository,
 		private attributeValuesService: AttributeValuesService,
+		@Inject(forwardRef(() => DiscountSalesService))
+		private salesService: DiscountSalesService,
 	) {
 	}
 
@@ -109,7 +115,7 @@ export class ProductsService {
 		return product;
 	}
 
-	async findFilteredProductIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string): Promise<{ id: number, price: number }[]> {
+	async findFilteredProductIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string): Promise<number[]> {
 		return await this.productRepository.findFilteredProductIds(collectionId, categoryIds, filters, search);
 	}
 
@@ -117,6 +123,38 @@ export class ProductsService {
 		await this.productRepository.update(params.productId, {
 			defaultVariant: { id: params.variantId },
 		});
+	}
+
+	async getLowestPrices(ids?: number[]): Promise<{ id: number, lowestPrice: number }[]> {
+		const discountMap = await this.salesService.getVariantDiscountMap();
+		if ( !ids ) {
+			ids = await this.productRepository.findAllIds();
+		}
+		const res: { id: number, lowestPrice: number }[] = [];
+		for ( const id of ids ) {
+			const variants = await this.productVariantRepository.findByProductId(id);
+			const lowestPrices: number[] = [];
+			for ( const variant of variants ) {
+				const discounts = discountMap[variant.id];
+				const basePrice = variant.priceAmount || 0;
+				let lowestPrice = basePrice;
+				if ( discounts && discounts.length > 0 ) {
+					for ( const discount of discounts ) {
+						let temp = Number.MAX_SAFE_INTEGER;
+						if ( discount.discountType === DiscountType.PERCENTAGE ) {
+							temp = basePrice - (discount.discountValue * basePrice);
+						} else if ( discount.discountType === DiscountType.FLAT ) {
+							temp = Math.max(basePrice - discount.discountValue, 0);
+						}
+						if ( temp < lowestPrice ) lowestPrice = temp;
+					}
+				}
+				lowestPrices.push(lowestPrice);
+			}
+
+			res.push({ id: id, lowestPrice: Math.min(...lowestPrices) });
+		}
+		return res;
 	}
 
 	async setMinPrice(params: { productId: number, minPrice: number }) {
