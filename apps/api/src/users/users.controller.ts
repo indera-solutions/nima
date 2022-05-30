@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RegisterUserDto, UpdateUserDto } from './dto/user.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -10,27 +11,37 @@ export class UsersController {
 	}
 
 	@Post()
-	create(@Body() createUserDto: CreateUserDto) {
-		return this.usersService.create(createUserDto);
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
+	create(@Body() createUserDto: RegisterUserDto) {
+		return this.usersService.create({ registerUserDto: createUserDto });
 	}
 
 	@Get()
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
 	findAll() {
 		return this.usersService.findAll();
 	}
 
 	@Get(':id')
-	findOne(@Param('id') id: string) {
-		return this.usersService.findOne(+id);
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
+	findOne(@Param('id', ParseIntPipe) id: number) {
+		return this.usersService.getById({ id: id });
 	}
 
 	@Patch(':id')
-	update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-		return this.usersService.update(+id, updateUserDto);
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
+	update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
+		return this.usersService.update({ id, updateUserDto });
 	}
 
 	@Delete(':id')
-	remove(@Param('id') id: string) {
-		return this.usersService.remove(+id);
+	@UseGuards(JwtAuthGuard)
+	@ApiBearerAuth()
+	remove(@Param('id', ParseIntPipe) id: number) {
+		return this.usersService.remove({ id: id });
 	}
 }

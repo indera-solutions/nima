@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AttributesModule, AttributesModuleEntities } from './attributes/attributes.module';
 import { AdminGuard, LoggedInGuard, StaffGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
+import { AuthActionEntity } from './auth/entities/AuthAction.entity';
 import { CategoriesModule, CategoriesModuleEntities } from './categories/categories.module';
 import { CheckoutModule, CheckoutModuleEntities } from './checkout/checkout.module';
 import { CollectionsModule, CollectionsModuleEntities } from './collections/collections.module';
@@ -20,6 +21,7 @@ import { UsersModule } from './users/users.module';
 const ALL_ENTITIES = [
 	...AttributesModuleEntities,
 	UserEntity,
+	AuthActionEntity,
 	...CoreModuleEntities,
 	...ProductTypesModuleEntities,
 	...CategoriesModuleEntities,
