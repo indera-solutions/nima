@@ -1,17 +1,6 @@
 {
 	"openapi": "3.0.0",
 	"paths": {
-		"/api/v1/app": {
-			"get": {
-				"operationId": "App_getData",
-				"parameters": [ ],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				}
-			}
-		},
 		"/api/v1/attributes": {
 			"post": {
 				"operationId": "Attributes_create",
@@ -1307,6 +1296,733 @@
 				]
 			}
 		},
+		"/api/v1/categories/{id}/ancestors": {
+			"get": {
+				"operationId": "Categories_findAncestorsById",
+				"summary": "Get ancestors of category by id",
+				"description": "Gets all the ancestors of a category. Useful for breadcrumbs",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"description": "The id of the category to get",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CategoryDto"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The category does not exists"
+					}
+				},
+				"tags": [
+					"Categories"
+				]
+			}
+		},
+		"/api/v1/discounts": {
+			"post": {
+				"operationId": "DiscountSales_create",
+				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateDiscountSaleDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountSaleDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			},
+			"get": {
+				"operationId": "DiscountSales_findAll",
+				"parameters": [ ],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountSaleDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			}
+		},
+		"/api/v1/discounts/{id}": {
+			"get": {
+				"operationId": "DiscountSales_findOne",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/DiscountSaleDto"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			},
+			"patch": {
+				"operationId": "DiscountSales_update",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateDiscountDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountSaleDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			},
+			"delete": {
+				"operationId": "DiscountSales_remove",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountSaleDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			}
+		},
+		"/api/v1/discounts/{id}/products": {
+			"put": {
+				"operationId": "DiscountSales_addProducts",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DiscountSaleAddProductsDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountSaleDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			}
+		},
+		"/api/v1/discounts/{id}/categories": {
+			"put": {
+				"operationId": "DiscountSales_addCategories",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DiscountSaleAddCategoriesDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountSaleDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			}
+		},
+		"/api/v1/discounts/{id}/variants": {
+			"put": {
+				"operationId": "DiscountSales_addVariants",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DiscountSaleAddVariantsDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountSaleDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			}
+		},
+		"/api/v1/discounts/{id}/collections": {
+			"put": {
+				"operationId": "DiscountSales_addCollections",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DiscountSaleAddCollectionsDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountSaleDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			}
+		},
+		"/api/v1/discounts/{id}/products/{productId}": {
+			"delete": {
+				"operationId": "DiscountSales_removeProduct",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "productId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountSaleDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			}
+		},
+		"/api/v1/discounts/{id}/variants/{variantId}": {
+			"delete": {
+				"operationId": "DiscountSales_removeVariant",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "variantId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountSaleDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			}
+		},
+		"/api/v1/discounts/{id}/categories/{categoryId}": {
+			"delete": {
+				"operationId": "DiscountSales_removeCategory",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "categoryId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountSaleDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			}
+		},
+		"/api/v1/discounts/{id}/collections/{collectionId}": {
+			"delete": {
+				"operationId": "DiscountSales_removeCollection",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "collectionId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountSaleDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Discount"
+				]
+			}
+		},
+		"/api/v1/collections": {
+			"post": {
+				"operationId": "Collections_create",
+				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCollectionDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CollectionDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Collections"
+				]
+			},
+			"get": {
+				"operationId": "Collections_findAll",
+				"parameters": [ ],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/CollectionDto"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Collections"
+				]
+			}
+		},
+		"/api/v1/collections/{collectionId}": {
+			"get": {
+				"operationId": "Collections_findOne",
+				"parameters": [
+					{
+						"name": "collectionId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CollectionDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Collections"
+				]
+			},
+			"patch": {
+				"operationId": "Collections_update",
+				"parameters": [
+					{
+						"name": "collectionId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateCollectionDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CollectionDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Collections"
+				]
+			},
+			"delete": {
+				"operationId": "Collections_remove",
+				"parameters": [
+					{
+						"name": "collectionId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CollectionDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Collections"
+				]
+			}
+		},
+		"/api/v1/collections/{collectionId}/products": {
+			"patch": {
+				"operationId": "Collections_addProducts",
+				"parameters": [
+					{
+						"name": "collectionId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "array",
+								"items": {
+									"$ref": "#/components/schemas/CreateCollectionProductDto"
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CollectionDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Collections"
+				]
+			}
+		},
+		"/api/v1/collections/{collectionId}/products/{id}": {
+			"delete": {
+				"operationId": "Collections_removeProduct",
+				"parameters": [
+					{
+						"name": "collectionId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CollectionDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Collections"
+				]
+			}
+		},
 		"/api/v1/core/settings": {
 			"get": {
 				"operationId": "Settings_getSettings",
@@ -1495,6 +2211,84 @@
 				},
 				"tags": [
 					"Media"
+				]
+			}
+		},
+		"/api/v1/address/{id}": {
+			"get": {
+				"operationId": "Address_getById",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AddressDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Address"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			},
+			"put": {
+				"operationId": "Address_updateById",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateAddressDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AddressDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Address"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -1694,7 +2488,14 @@
 				},
 				"responses": {
 					"201": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OrderDto"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -1703,10 +2504,65 @@
 			},
 			"get": {
 				"operationId": "Order_findAll",
-				"parameters": [ ],
+				"parameters": [
+					{
+						"name": "page",
+						"required": false,
+						"in": "query",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "itemsPerPage",
+						"required": false,
+						"in": "query",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
 				"responses": {
 					"200": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OrderListPaginated"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Orders"
+				]
+			}
+		},
+		"/api/v1/order/token": {
+			"post": {
+				"operationId": "Order_createFromCheckout",
+				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOrderFromCheckoutDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OrderDto"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -1723,13 +2579,20 @@
 						"required": true,
 						"in": "path",
 						"schema": {
-							"type": "string"
+							"type": "number"
 						}
 					}
 				],
 				"responses": {
 					"200": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OrderDto"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -1744,7 +2607,7 @@
 						"required": true,
 						"in": "path",
 						"schema": {
-							"type": "string"
+							"type": "number"
 						}
 					}
 				],
@@ -1759,8 +2622,15 @@
 					}
 				},
 				"responses": {
-					"200": {
-						"description": ""
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OrderDto"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -1775,13 +2645,20 @@
 						"required": true,
 						"in": "path",
 						"schema": {
-							"type": "string"
+							"type": "number"
 						}
 					}
 				],
 				"responses": {
 					"200": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OrderDto"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -1906,7 +2783,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CheckoutLineDto"
+								"$ref": "#/components/schemas/UpdateCheckoutLineDto"
 							}
 						}
 					}
@@ -2024,73 +2901,111 @@
 				]
 			}
 		},
-		"/api/v1/discounts": {
+		"/api/v1/shipping": {
 			"post": {
-				"operationId": "DiscountSales_create",
+				"operationId": "ShippingMethod_create",
 				"parameters": [ ],
 				"requestBody": {
 					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CreateDiscountSaleDto"
+								"$ref": "#/components/schemas/CreateShippingMethodDto"
 							}
 						}
 					}
 				},
 				"responses": {
 					"201": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ShippingMethodDto"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
-					"Discount"
+					"Shipping"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"get": {
-				"operationId": "DiscountSales_findAll",
-				"parameters": [ ],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
-				"tags": [
-					"Discount"
-				]
-			}
-		},
-		"/api/v1/discounts/{id}": {
-			"get": {
-				"operationId": "DiscountSales_findOne",
+				"operationId": "ShippingMethod_getAll",
 				"parameters": [
 					{
-						"name": "id",
-						"required": true,
-						"in": "path",
+						"name": "addressId",
+						"required": false,
+						"in": "query",
 						"schema": {
-							"type": "string"
+							"type": "number"
 						}
 					}
 				],
 				"responses": {
 					"200": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/ShippingMethodDto"
+									}
+								}
+							}
+						}
 					}
 				},
 				"tags": [
-					"Discount"
+					"Shipping"
 				]
-			},
-			"patch": {
-				"operationId": "DiscountSales_update",
+			}
+		},
+		"/api/v1/shipping/{methodId}": {
+			"get": {
+				"operationId": "ShippingMethod_getOne",
 				"parameters": [
 					{
-						"name": "id",
+						"name": "methodId",
 						"required": true,
 						"in": "path",
 						"schema": {
-							"type": "string"
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ShippingMethodDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Shipping"
+				]
+			},
+			"patch": {
+				"operationId": "ShippingMethod_updateMethod",
+				"parameters": [
+					{
+						"name": "methodId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
 						}
 					}
 				],
@@ -2099,39 +3014,397 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/UpdateDiscountDto"
+								"$ref": "#/components/schemas/UpdateShippingMethodDto"
 							}
 						}
 					}
 				},
 				"responses": {
-					"200": {
-						"description": ""
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ShippingMethodDto"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
-					"Discount"
+					"Shipping"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
-			},
+			}
+		},
+		"/api/v1/shipping/{id}": {
 			"delete": {
-				"operationId": "DiscountSales_remove",
+				"operationId": "ShippingMethod_deleteById",
 				"parameters": [
 					{
 						"name": "id",
 						"required": true,
 						"in": "path",
 						"schema": {
-							"type": "string"
+							"type": "number"
 						}
 					}
 				],
 				"responses": {
 					"200": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ShippingMethodDto"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
-					"Discount"
+					"Shipping"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/shipping/{methodId}/zones": {
+			"post": {
+				"operationId": "ShippingZones_createZone",
+				"parameters": [
+					{
+						"name": "methodId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateShippingZoneDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ShippingZoneDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Shipping"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/shipping/{methodId}/zones/{id}": {
+			"patch": {
+				"operationId": "ShippingZones_updateZone",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "methodId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateShippingZoneDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ShippingZoneDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Shipping"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/shipping/{methodId}/zones/{zoneId}/rates": {
+			"post": {
+				"operationId": "ShippingRates_createRate",
+				"parameters": [
+					{
+						"name": "methodId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "zoneId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateShippingRateDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ShippingRateDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Shipping"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/shipping/{methodId}/zones/{zoneId}/rates/{id}": {
+			"patch": {
+				"operationId": "ShippingRates_updateRate",
+				"parameters": [
+					{
+						"name": "methodId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "zoneId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateShippingRateDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ShippingRateDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Shipping"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			},
+			"delete": {
+				"operationId": "ShippingRates_deleteRate",
+				"parameters": [
+					{
+						"name": "methodId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "zoneId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ShippingRateDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Shipping"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/payments/{id}": {
+			"get": {
+				"operationId": "Payments_getById",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PaymentDto"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "ATTRIBUTE_NOT_FOUND"
+					}
+				},
+				"tags": [
+					"Payments"
+				]
+			},
+			"patch": {
+				"operationId": "Payments_patch",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdatePaymentDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PaymentDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Payments"
 				]
 			}
 		}
@@ -2972,6 +4245,9 @@
 						"type": "string",
 						"example": "product-name"
 					},
+					"defaultVariantId": {
+						"type": "number"
+					},
 					"descriptionPlaintext": {
 						"type": "string",
 						"example": "Product Description"
@@ -3016,9 +4292,6 @@
 							"$ref": "#/components/schemas/ProductAttributeDto"
 						}
 					},
-					"defaultVariantId": {
-						"type": "number"
-					},
 					"productMedia": {
 						"type": "array",
 						"items": {
@@ -3038,6 +4311,7 @@
 					"metadata",
 					"privateMetadata",
 					"slug",
+					"defaultVariantId",
 					"descriptionPlaintext",
 					"rating",
 					"created",
@@ -3049,7 +4323,6 @@
 					"productTypeId",
 					"categoryId",
 					"attributes",
-					"defaultVariantId",
 					"productMedia"
 				]
 			},
@@ -3271,6 +4544,9 @@
 						"type": "boolean",
 						"example": true
 					},
+					"discountedPrice": {
+						"type": "number"
+					},
 					"attributes": {
 						"type": "array",
 						"items": {
@@ -3292,6 +4568,7 @@
 					"currency",
 					"stock",
 					"trackInventory",
+					"discountedPrice",
 					"attributes",
 					"productMedia"
 				]
@@ -3383,8 +4660,8 @@
 							"$ref": "#/components/schemas/ProductAttributeDto"
 						}
 					},
-					"product": {
-						"$ref": "#/components/schemas/ProductDto"
+					"discountedPrice": {
+						"type": "number"
 					},
 					"productMedia": {
 						"type": "array",
@@ -3405,7 +4682,7 @@
 					"stock",
 					"trackInventory",
 					"attributes",
-					"product",
+					"discountedPrice",
 					"productMedia"
 				]
 			},
@@ -3645,8 +4922,7 @@
 					"seoDescription",
 					"name",
 					"description",
-					"slug",
-					"parentId"
+					"slug"
 				]
 			},
 			"CategoryDto": {
@@ -3713,6 +4989,14 @@
 						"items": {
 							"$ref": "#/components/schemas/CategoryDto"
 						}
+					},
+					"parent": {
+						"description": "Only for ancestors query",
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/CategoryDto"
+							}
+						]
 					}
 				},
 				"required": [
@@ -3794,9 +5078,452 @@
 					"seoDescription",
 					"name",
 					"description",
-					"slug",
-					"parentId"
+					"slug"
 				]
+			},
+			"DiscountType": {
+				"type": "string",
+				"enum": [
+					"PERCENTAGE",
+					"FLAT"
+				]
+			},
+			"CreateDiscountSaleDto": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"example": {
+							"en": "Discount Sale Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"discountType": {
+						"$ref": "#/components/schemas/DiscountType"
+					},
+					"discountValue": {
+						"type": "number"
+					},
+					"endDate": {
+						"type": "string",
+						"example": "2022-12-31"
+					},
+					"startDate": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					}
+				},
+				"required": [
+					"name",
+					"discountType",
+					"discountValue",
+					"metadata",
+					"privateMetadata"
+				]
+			},
+			"CollectionProductsDto": {
+				"type": "object",
+				"properties": {
+					"sortOrder": {
+						"type": "number"
+					},
+					"product": {
+						"$ref": "#/components/schemas/ProductDto"
+					}
+				},
+				"required": [
+					"sortOrder",
+					"product"
+				]
+			},
+			"CollectionDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"example": 1
+					},
+					"name": {
+						"example": {
+							"en": "Collection Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"slug": {
+						"type": "string",
+						"example": "collection-name"
+					},
+					"seoDescription": {
+						"type": "string",
+						"example": "SEO Description"
+					},
+					"seoTitle": {
+						"type": "string",
+						"example": "SEO Title"
+					},
+					"description": {
+						"example": {
+							"en": "Collection Description"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"backgroundImage": {
+						"$ref": "#/components/schemas/MediaDto"
+					},
+					"products": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CollectionProductsDto"
+						}
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"slug",
+					"seoDescription",
+					"seoTitle",
+					"description",
+					"metadata",
+					"privateMetadata",
+					"backgroundImage",
+					"products"
+				]
+			},
+			"DiscountSaleDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"example": 1
+					},
+					"name": {
+						"example": {
+							"en": "Discount Sale Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"discountType": {
+						"$ref": "#/components/schemas/DiscountType"
+					},
+					"discountValue": {
+						"type": "number"
+					},
+					"endDate": {
+						"type": "string",
+						"example": "2022-12-31"
+					},
+					"startDate": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"created": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"updatedAt": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"categories": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CategoryDto"
+						}
+					},
+					"products": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ProductDto"
+						}
+					},
+					"variants": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ProductVariantDto"
+						}
+					},
+					"collections": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CollectionDto"
+						}
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"discountType",
+					"discountValue",
+					"metadata",
+					"privateMetadata",
+					"created",
+					"updatedAt",
+					"categories",
+					"products",
+					"variants",
+					"collections"
+				]
+			},
+			"UpdateDiscountDto": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"example": {
+							"en": "Discount Sale Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"discountType": {
+						"$ref": "#/components/schemas/DiscountType"
+					},
+					"discountValue": {
+						"type": "number"
+					},
+					"endDate": {
+						"type": "string",
+						"example": "2022-12-31"
+					},
+					"startDate": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					}
+				}
+			},
+			"DiscountSaleAddProductsDto": {
+				"type": "object",
+				"properties": {
+					"productIds": {
+						"type": "array",
+						"items": {
+							"type": "number"
+						}
+					}
+				},
+				"required": [
+					"productIds"
+				]
+			},
+			"DiscountSaleAddCategoriesDto": {
+				"type": "object",
+				"properties": {
+					"categoryIds": {
+						"type": "array",
+						"items": {
+							"type": "number"
+						}
+					}
+				},
+				"required": [
+					"categoryIds"
+				]
+			},
+			"DiscountSaleAddVariantsDto": {
+				"type": "object",
+				"properties": {
+					"variantIds": {
+						"type": "array",
+						"items": {
+							"type": "number"
+						}
+					}
+				},
+				"required": [
+					"variantIds"
+				]
+			},
+			"DiscountSaleAddCollectionsDto": {
+				"type": "object",
+				"properties": {
+					"collectionIds": {
+						"type": "array",
+						"items": {
+							"type": "number"
+						}
+					}
+				},
+				"required": [
+					"collectionIds"
+				]
+			},
+			"CreateCollectionProductDto": {
+				"type": "object",
+				"properties": {
+					"productId": {
+						"type": "number"
+					},
+					"sortOrder": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"productId",
+					"sortOrder"
+				]
+			},
+			"CreateCollectionDto": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"example": {
+							"en": "Collection Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"slug": {
+						"type": "string",
+						"example": "collection-name"
+					},
+					"seoDescription": {
+						"type": "string",
+						"example": "SEO Description"
+					},
+					"seoTitle": {
+						"type": "string",
+						"example": "SEO Title"
+					},
+					"description": {
+						"example": {
+							"en": "Collection Description"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"products": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CreateCollectionProductDto"
+						}
+					},
+					"backgroundImageId": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"name",
+					"slug",
+					"seoDescription",
+					"seoTitle",
+					"description",
+					"metadata",
+					"privateMetadata",
+					"products",
+					"backgroundImageId"
+				]
+			},
+			"UpdateCollectionDto": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"example": {
+							"en": "Collection Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"slug": {
+						"type": "string",
+						"example": "collection-name"
+					},
+					"seoDescription": {
+						"type": "string",
+						"example": "SEO Description"
+					},
+					"seoTitle": {
+						"type": "string",
+						"example": "SEO Title"
+					},
+					"description": {
+						"example": {
+							"en": "Collection Description"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"backgroundImageId": {
+						"type": "number"
+					}
+				}
 			},
 			"AddressDto": {
 				"type": "object",
@@ -3950,6 +5677,58 @@
 					"totalCount"
 				]
 			},
+			"CreateAddressDto": {
+				"type": "object",
+				"properties": {
+					"firstName": {
+						"type": "string",
+						"example": "John"
+					},
+					"lastName": {
+						"type": "string",
+						"example": "Doe"
+					},
+					"companyName": {
+						"type": "string",
+						"example": "Indera Inc."
+					},
+					"phone": {
+						"type": "string",
+						"example": "+1 1234 567 890"
+					},
+					"country": {
+						"type": "string",
+						"example": "Greece"
+					},
+					"state": {
+						"type": "string",
+						"example": "Attica"
+					},
+					"city": {
+						"type": "string",
+						"example": "Athens"
+					},
+					"zip": {
+						"type": "string",
+						"example": "12345"
+					},
+					"address": {
+						"type": "string",
+						"example": "Example 123"
+					},
+					"address2": {
+						"type": "string",
+						"example": "Example 123"
+					}
+				},
+				"required": [
+					"country",
+					"state",
+					"city",
+					"zip",
+					"address"
+				]
+			},
 			"CreateUserDto": {
 				"type": "object",
 				"properties": {}
@@ -4005,6 +5784,683 @@
 				},
 				"required": [
 					"access_token"
+				]
+			},
+			"OrderStatus": {
+				"type": "string",
+				"enum": [
+					"DRAFT",
+					"UNCONFIRMED",
+					"UNFULFILLED",
+					"PARTIALLY_FULFILLED",
+					"PARTIALLY_RETURNED",
+					"RETURNED",
+					"FULFILLED",
+					"CANCELED"
+				]
+			},
+			"OrderLineDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"example": 1
+					},
+					"productName": {
+						"example": {
+							"en": "Product Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"productSku": {
+						"type": "string",
+						"example": "product-name"
+					},
+					"quantity": {
+						"type": "number",
+						"example": 1
+					},
+					"unitPriceNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"unitPriceGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"isShippingRequired": {
+						"type": "boolean",
+						"example": true
+					},
+					"quantityFulfilled": {
+						"type": "number",
+						"example": 1
+					},
+					"taxRate": {
+						"type": "number",
+						"example": 12.3
+					},
+					"currency": {
+						"type": "string",
+						"example": "EUR"
+					},
+					"variantName": {
+						"example": {
+							"en": "Category Seo Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"totalPriceGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"totalPriceNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"unitDiscountAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"unitDiscountValue": {
+						"type": "number",
+						"example": 12.3
+					},
+					"unitDiscountReason": {
+						"type": "string",
+						"example": "discount-reason"
+					},
+					"unitDiscountType": {
+						"type": "string",
+						"example": ""
+					},
+					"undiscountedTotalPriceGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"undiscountedTotalPriceNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"undiscountedUnitPriceGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"undiscountedUnitPriceNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"saleId": {
+						"type": "string",
+						"example": "summer-sale-2022"
+					},
+					"voucherCode": {
+						"type": "string",
+						"example": "ASDF123"
+					}
+				},
+				"required": [
+					"id",
+					"productName",
+					"quantity",
+					"unitPriceNetAmount",
+					"unitPriceGrossAmount",
+					"isShippingRequired",
+					"quantityFulfilled",
+					"taxRate",
+					"currency",
+					"variantName",
+					"totalPriceGrossAmount",
+					"totalPriceNetAmount",
+					"unitDiscountAmount",
+					"unitDiscountValue",
+					"unitDiscountType",
+					"undiscountedTotalPriceGrossAmount",
+					"undiscountedTotalPriceNetAmount",
+					"undiscountedUnitPriceGrossAmount",
+					"undiscountedUnitPriceNetAmount"
+				]
+			},
+			"PaymentMethod": {
+				"type": "string",
+				"enum": [
+					"CARD",
+					"CASH_ON_DELIVERY",
+					"BANK_TRANSFER"
+				]
+			},
+			"PaymentStatus": {
+				"type": "string",
+				"enum": [
+					"PROCESSING",
+					"CAPTURED",
+					"ERROR",
+					"PENDING",
+					"CANCELED",
+					"REFUSED"
+				]
+			},
+			"PaymentDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"method": {
+						"$ref": "#/components/schemas/PaymentMethod"
+					},
+					"status": {
+						"$ref": "#/components/schemas/PaymentStatus"
+					},
+					"dateCreated": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"dateUpdated": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"supportRefId": {
+						"type": "number"
+					},
+					"amount": {
+						"type": "number"
+					},
+					"customerId": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"currency": {
+						"type": "string"
+					},
+					"referenceId": {
+						"type": "string"
+					},
+					"transactionTicket": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"method",
+					"status",
+					"dateCreated",
+					"dateUpdated",
+					"supportRefId",
+					"amount",
+					"customerId",
+					"description",
+					"currency",
+					"referenceId",
+					"transactionTicket"
+				]
+			},
+			"CreateOrderDto": {
+				"type": "object",
+				"properties": {
+					"trackingClientId": {
+						"type": "string",
+						"example": "123ABC456",
+						"description": "shipping tracking id"
+					},
+					"userEmail": {
+						"type": "string",
+						"example": "test@example.com"
+					},
+					"billingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"shippingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"totalNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"voucher_id": {
+						"type": "number",
+						"example": 1
+					},
+					"languageCode": {
+						"example": "en",
+						"$ref": "#/components/schemas/LanguageCode"
+					},
+					"shippingPriceGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"totalGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"shippingPriceNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"status": {
+						"example": "DRAFT",
+						"$ref": "#/components/schemas/OrderStatus"
+					},
+					"shippingMethodName": {
+						"type": "string",
+						"example": "Same Day Delivery"
+					},
+					"displayGrossPrices": {
+						"type": "boolean",
+						"example": true
+					},
+					"customerNote": {
+						"type": "string",
+						"example": ""
+					},
+					"weight": {
+						"type": "number",
+						"example": 12.3
+					},
+					"checkoutToken": {
+						"type": "string",
+						"example": ""
+					},
+					"currency": {
+						"type": "string",
+						"example": "EUR"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"redirectUrl": {
+						"type": "string",
+						"example": ""
+					},
+					"shippingTaxRate": {
+						"type": "number",
+						"example": 12.3
+					},
+					"undiscountedTotalGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"undiscountedTotalNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"totalPaidAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"origin": {
+						"type": "string",
+						"example": ""
+					},
+					"lines": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/OrderLineDto"
+						}
+					},
+					"payment": {
+						"$ref": "#/components/schemas/PaymentDto"
+					},
+					"userId": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"trackingClientId",
+					"userEmail",
+					"totalNetAmount",
+					"voucher_id",
+					"languageCode",
+					"shippingPriceGrossAmount",
+					"totalGrossAmount",
+					"shippingPriceNetAmount",
+					"status",
+					"displayGrossPrices",
+					"customerNote",
+					"weight",
+					"checkoutToken",
+					"currency",
+					"metadata",
+					"privateMetadata",
+					"shippingTaxRate",
+					"undiscountedTotalGrossAmount",
+					"undiscountedTotalNetAmount",
+					"totalPaidAmount",
+					"origin",
+					"lines",
+					"payment"
+				]
+			},
+			"OrderDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"example": 1
+					},
+					"created": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"updatedAt": {
+						"type": "string",
+						"example": ""
+					},
+					"trackingClientId": {
+						"type": "string",
+						"example": "123ABC456",
+						"description": "shipping tracking id"
+					},
+					"userEmail": {
+						"type": "string",
+						"example": "test@example.com"
+					},
+					"billingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"shippingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"totalNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"voucher_id": {
+						"type": "number",
+						"example": 1
+					},
+					"languageCode": {
+						"example": "en",
+						"$ref": "#/components/schemas/LanguageCode"
+					},
+					"shippingPriceGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"totalGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"shippingPriceNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"status": {
+						"example": "DRAFT",
+						"$ref": "#/components/schemas/OrderStatus"
+					},
+					"shippingMethodName": {
+						"type": "string",
+						"example": "Same Day Delivery"
+					},
+					"displayGrossPrices": {
+						"type": "boolean",
+						"example": true
+					},
+					"customerNote": {
+						"type": "string",
+						"example": ""
+					},
+					"weight": {
+						"type": "number",
+						"example": 12.3
+					},
+					"checkoutToken": {
+						"type": "string",
+						"example": ""
+					},
+					"currency": {
+						"type": "string",
+						"example": "EUR"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"redirectUrl": {
+						"type": "string",
+						"example": ""
+					},
+					"shippingTaxRate": {
+						"type": "number",
+						"example": 12.3
+					},
+					"undiscountedTotalGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"undiscountedTotalNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"totalPaidAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"origin": {
+						"type": "string",
+						"example": ""
+					},
+					"lines": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/OrderLineDto"
+						}
+					},
+					"payment": {
+						"$ref": "#/components/schemas/PaymentDto"
+					}
+				},
+				"required": [
+					"id",
+					"created",
+					"updatedAt",
+					"trackingClientId",
+					"userEmail",
+					"totalNetAmount",
+					"voucher_id",
+					"languageCode",
+					"shippingPriceGrossAmount",
+					"totalGrossAmount",
+					"shippingPriceNetAmount",
+					"status",
+					"displayGrossPrices",
+					"customerNote",
+					"weight",
+					"checkoutToken",
+					"currency",
+					"metadata",
+					"privateMetadata",
+					"shippingTaxRate",
+					"undiscountedTotalGrossAmount",
+					"undiscountedTotalNetAmount",
+					"totalPaidAmount",
+					"origin",
+					"lines",
+					"payment"
+				]
+			},
+			"CreateOrderFromCheckoutDto": {
+				"type": "object",
+				"properties": {
+					"token": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"token"
+				]
+			},
+			"OrderListPaginated": {
+				"type": "object",
+				"properties": {
+					"items": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/OrderDto"
+						}
+					},
+					"pageNumber": {
+						"type": "number"
+					},
+					"pageSize": {
+						"type": "number"
+					},
+					"totalCount": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"items",
+					"pageNumber",
+					"pageSize",
+					"totalCount"
+				]
+			},
+			"UpdateOrderDto": {
+				"type": "object",
+				"properties": {
+					"trackingClientId": {
+						"type": "string",
+						"example": "123ABC456",
+						"description": "shipping tracking id"
+					},
+					"userEmail": {
+						"type": "string",
+						"example": "test@example.com"
+					},
+					"billingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"shippingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"totalNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"voucher_id": {
+						"type": "number",
+						"example": 1
+					},
+					"languageCode": {
+						"example": "en",
+						"$ref": "#/components/schemas/LanguageCode"
+					},
+					"shippingPriceGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"totalGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"shippingPriceNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"status": {
+						"example": "DRAFT",
+						"$ref": "#/components/schemas/OrderStatus"
+					},
+					"shippingMethodName": {
+						"type": "string",
+						"example": "Same Day Delivery"
+					},
+					"displayGrossPrices": {
+						"type": "boolean",
+						"example": true
+					},
+					"customerNote": {
+						"type": "string",
+						"example": ""
+					},
+					"weight": {
+						"type": "number",
+						"example": 12.3
+					},
+					"checkoutToken": {
+						"type": "string",
+						"example": ""
+					},
+					"currency": {
+						"type": "string",
+						"example": "EUR"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"redirectUrl": {
+						"type": "string",
+						"example": ""
+					},
+					"shippingTaxRate": {
+						"type": "number",
+						"example": 12.3
+					},
+					"undiscountedTotalGrossAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"undiscountedTotalNetAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"totalPaidAmount": {
+						"type": "number",
+						"example": 12.3
+					},
+					"origin": {
+						"type": "string",
+						"example": ""
+					},
+					"lines": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/OrderLineDto"
+						}
+					},
+					"payment": {
+						"$ref": "#/components/schemas/PaymentDto"
+					},
+					"userId": {
+						"type": "number"
+					}
+				}
+			},
+			"CreateCheckoutDto": {
+				"type": "object",
+				"properties": {
+					"languageCode": {
+						"$ref": "#/components/schemas/LanguageCode"
+					}
+				},
+				"required": [
+					"languageCode"
 				]
 			},
 			"UserDto": {
@@ -4097,290 +6553,6 @@
 					"password"
 				]
 			},
-			"OrderStatus": {
-				"type": "string",
-				"enum": [
-					"DRAFT",
-					"UNCONFIRMED",
-					"UNFULFILLED",
-					"PARTIALLY_FULFILLED",
-					"PARTIALLY_RETURNED",
-					"RETURNED",
-					"FULFILLED",
-					"CANCELED"
-				]
-			},
-			"CreateOrderDto": {
-				"type": "object",
-				"properties": {
-					"trackingClientId": {
-						"type": "string",
-						"example": "123ABC456",
-						"description": "shipping tracking id"
-					},
-					"userEmail": {
-						"type": "string",
-						"example": "test@example.com"
-					},
-					"billingAddress": {
-						"$ref": "#/components/schemas/AddressDto"
-					},
-					"shippingAddress": {
-						"$ref": "#/components/schemas/AddressDto"
-					},
-					"user": {
-						"$ref": "#/components/schemas/UserDto"
-					},
-					"totalNetAmount": {
-						"type": "number",
-						"example": 12.3
-					},
-					"voucher_id": {
-						"type": "number",
-						"example": 1
-					},
-					"languageCode": {
-						"example": "en",
-						"$ref": "#/components/schemas/LanguageCode"
-					},
-					"shippingPriceGrossAmount": {
-						"type": "number",
-						"example": 12.3
-					},
-					"totalGrossAmount": {
-						"type": "number",
-						"example": 12.3
-					},
-					"shippingPriceNetAmount": {
-						"type": "number",
-						"example": 12.3
-					},
-					"status": {
-						"example": "DRAFT",
-						"$ref": "#/components/schemas/OrderStatus"
-					},
-					"shippingMethodName": {
-						"type": "string",
-						"example": "Same Day Delivery"
-					},
-					"shippingMethodId": {
-						"type": "number",
-						"example": "Same Day Delivery"
-					},
-					"displayGrossPrices": {
-						"type": "boolean",
-						"example": true
-					},
-					"customerNote": {
-						"type": "string",
-						"example": ""
-					},
-					"weight": {
-						"type": "number",
-						"example": 12.3
-					},
-					"checkoutToken": {
-						"type": "string",
-						"example": ""
-					},
-					"currency": {
-						"type": "string",
-						"example": "EUR"
-					},
-					"metadata": {
-						"type": "object",
-						"example": {}
-					},
-					"privateMetadata": {
-						"type": "object",
-						"example": {}
-					},
-					"redirectUrl": {
-						"type": "string",
-						"example": ""
-					},
-					"shippingTaxRate": {
-						"type": "number",
-						"example": 12.3
-					},
-					"undiscountedTotalGrossAmount": {
-						"type": "number",
-						"example": 12.3
-					},
-					"undiscountedTotalNetAmount": {
-						"type": "number",
-						"example": 12.3
-					},
-					"totalPaidAmount": {
-						"type": "number",
-						"example": 12.3
-					},
-					"origin": {
-						"type": "string",
-						"example": ""
-					},
-					"original": {
-						"type": "object"
-					},
-					"searchDocument": {
-						"type": "string",
-						"example": ""
-					}
-				},
-				"required": [
-					"trackingClientId",
-					"userEmail",
-					"totalNetAmount",
-					"voucher_id",
-					"languageCode",
-					"shippingPriceGrossAmount",
-					"totalGrossAmount",
-					"shippingPriceNetAmount",
-					"status",
-					"displayGrossPrices",
-					"customerNote",
-					"weight",
-					"checkoutToken",
-					"currency",
-					"metadata",
-					"privateMetadata",
-					"shippingTaxRate",
-					"undiscountedTotalGrossAmount",
-					"undiscountedTotalNetAmount",
-					"totalPaidAmount",
-					"origin",
-					"searchDocument"
-				]
-			},
-			"UpdateOrderDto": {
-				"type": "object",
-				"properties": {
-					"trackingClientId": {
-						"type": "string",
-						"example": "123ABC456",
-						"description": "shipping tracking id"
-					},
-					"userEmail": {
-						"type": "string",
-						"example": "test@example.com"
-					},
-					"billingAddress": {
-						"$ref": "#/components/schemas/AddressDto"
-					},
-					"shippingAddress": {
-						"$ref": "#/components/schemas/AddressDto"
-					},
-					"user": {
-						"$ref": "#/components/schemas/UserDto"
-					},
-					"totalNetAmount": {
-						"type": "number",
-						"example": 12.3
-					},
-					"voucher_id": {
-						"type": "number",
-						"example": 1
-					},
-					"languageCode": {
-						"example": "en",
-						"$ref": "#/components/schemas/LanguageCode"
-					},
-					"shippingPriceGrossAmount": {
-						"type": "number",
-						"example": 12.3
-					},
-					"totalGrossAmount": {
-						"type": "number",
-						"example": 12.3
-					},
-					"shippingPriceNetAmount": {
-						"type": "number",
-						"example": 12.3
-					},
-					"status": {
-						"example": "DRAFT",
-						"$ref": "#/components/schemas/OrderStatus"
-					},
-					"shippingMethodName": {
-						"type": "string",
-						"example": "Same Day Delivery"
-					},
-					"shippingMethodId": {
-						"type": "number",
-						"example": "Same Day Delivery"
-					},
-					"displayGrossPrices": {
-						"type": "boolean",
-						"example": true
-					},
-					"customerNote": {
-						"type": "string",
-						"example": ""
-					},
-					"weight": {
-						"type": "number",
-						"example": 12.3
-					},
-					"checkoutToken": {
-						"type": "string",
-						"example": ""
-					},
-					"currency": {
-						"type": "string",
-						"example": "EUR"
-					},
-					"metadata": {
-						"type": "object",
-						"example": {}
-					},
-					"privateMetadata": {
-						"type": "object",
-						"example": {}
-					},
-					"redirectUrl": {
-						"type": "string",
-						"example": ""
-					},
-					"shippingTaxRate": {
-						"type": "number",
-						"example": 12.3
-					},
-					"undiscountedTotalGrossAmount": {
-						"type": "number",
-						"example": 12.3
-					},
-					"undiscountedTotalNetAmount": {
-						"type": "number",
-						"example": 12.3
-					},
-					"totalPaidAmount": {
-						"type": "number",
-						"example": 12.3
-					},
-					"origin": {
-						"type": "string",
-						"example": ""
-					},
-					"original": {
-						"type": "object"
-					},
-					"searchDocument": {
-						"type": "string",
-						"example": ""
-					}
-				}
-			},
-			"CreateCheckoutDto": {
-				"type": "object",
-				"properties": {
-					"languageCode": {
-						"$ref": "#/components/schemas/LanguageCode"
-					}
-				},
-				"required": [
-					"languageCode"
-				]
-			},
 			"CheckoutLineDto": {
 				"type": "object",
 				"properties": {
@@ -4390,11 +6562,175 @@
 					},
 					"variantId": {
 						"type": "number"
+					},
+					"productId": {
+						"type": "number"
+					},
+					"totalCost": {
+						"type": "number"
 					}
 				},
 				"required": [
 					"quantity",
-					"variantId"
+					"variantId",
+					"productId",
+					"totalCost"
+				]
+			},
+			"ShippingZoneLocationType": {
+				"type": "string",
+				"enum": [
+					"COUNTRY",
+					"STATE",
+					"CONTINENT",
+					"POSTAL"
+				]
+			},
+			"ShippingMethodType": {
+				"type": "string",
+				"enum": [
+					"FLAT_RATE",
+					"FREE_SHIPPING",
+					"LOCAL_PICKUP",
+					"BY_WEIGHT"
+				]
+			},
+			"ShippingRateDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"maximumOrderWeight": {
+						"type": "number"
+					},
+					"minimumOrderWeight": {
+						"type": "number"
+					},
+					"maximumPrice": {
+						"type": "number"
+					},
+					"minimumPrice": {
+						"type": "number"
+					},
+					"rate": {
+						"type": "number"
+					},
+					"shippingType": {
+						"$ref": "#/components/schemas/ShippingMethodType"
+					},
+					"maximumDeliveryDays": {
+						"type": "number"
+					},
+					"minimumDeliveryDays": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"id",
+					"rate",
+					"shippingType"
+				]
+			},
+			"ShippingZoneDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"name": {
+						"type": "string"
+					},
+					"locationType": {
+						"$ref": "#/components/schemas/ShippingZoneLocationType"
+					},
+					"locationCodes": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"shippingRates": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ShippingRateDto"
+						}
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"locationType",
+					"locationCodes",
+					"metadata",
+					"privateMetadata",
+					"shippingRates"
+				]
+			},
+			"ShippingMethodDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number"
+					},
+					"name": {
+						"type": "string"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"description": {
+						"example": {
+							"en": "Shipping Method Description"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"shippingZones": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ShippingZoneDto"
+						}
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"metadata",
+					"privateMetadata",
+					"description",
+					"shippingZones"
+				]
+			},
+			"CheckoutAvailableShippingDto": {
+				"type": "object",
+				"properties": {
+					"shippingMethod": {
+						"$ref": "#/components/schemas/ShippingMethodDto"
+					},
+					"rate": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"shippingMethod",
+					"rate"
 				]
 			},
 			"CheckoutDto": {
@@ -4411,6 +6747,10 @@
 					"email": {
 						"type": "string",
 						"example": "test@example.com"
+					},
+					"useShippingAsBilling": {
+						"type": "boolean",
+						"example": true
 					},
 					"token": {
 						"type": "string",
@@ -4437,10 +6777,6 @@
 					"shippingAddress": {
 						"$ref": "#/components/schemas/AddressDto"
 					},
-					"shipping_method_id": {
-						"type": "number",
-						"example": 1
-					},
 					"voucherCode": {
 						"type": "string",
 						"example": "ASDF123"
@@ -4461,10 +6797,6 @@
 						"type": "string",
 						"example": "EUR"
 					},
-					"country": {
-						"type": "string",
-						"example": "Greece"
-					},
 					"redirectUrl": {
 						"type": "string",
 						"example": "http://www.example.com/redirect"
@@ -4476,10 +6808,37 @@
 					"languageCode": {
 						"$ref": "#/components/schemas/LanguageCode"
 					},
+					"paymentMethod": {
+						"$ref": "#/components/schemas/PaymentMethod"
+					},
 					"lines": {
 						"type": "array",
 						"items": {
 							"$ref": "#/components/schemas/CheckoutLineDto"
+						}
+					},
+					"subtotalPrice": {
+						"type": "number"
+					},
+					"shippingCost": {
+						"type": "number"
+					},
+					"quantity": {
+						"type": "number"
+					},
+					"discount": {
+						"type": "number"
+					},
+					"totalCost": {
+						"type": "number"
+					},
+					"shippingMethod": {
+						"$ref": "#/components/schemas/ShippingMethodDto"
+					},
+					"availableShippingMethods": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CheckoutAvailableShippingDto"
 						}
 					}
 				},
@@ -4487,18 +6846,22 @@
 					"created",
 					"lastChange",
 					"token",
-					"user",
 					"billingAddress",
 					"discountAmount",
 					"note",
 					"shippingAddress",
-					"shipping_method_id",
 					"metadata",
 					"privateMetadata",
 					"currency",
-					"country",
 					"languageCode",
-					"lines"
+					"paymentMethod",
+					"lines",
+					"subtotalPrice",
+					"shippingCost",
+					"quantity",
+					"discount",
+					"totalCost",
+					"availableShippingMethods"
 				]
 			},
 			"UpdateCheckoutDto": {
@@ -4508,65 +6871,39 @@
 						"type": "string",
 						"example": "test@example.com"
 					},
+					"useShippingAsBilling": {
+						"type": "boolean",
+						"example": true
+					},
 					"note": {
 						"type": "string",
 						"example": "checkout-note"
 					},
 					"languageCode": {
 						"$ref": "#/components/schemas/LanguageCode"
+					},
+					"paymentMethod": {
+						"$ref": "#/components/schemas/PaymentMethod"
+					},
+					"shippingMethodId": {
+						"type": "number"
 					}
 				}
 			},
-			"CreateAddressDto": {
+			"UpdateCheckoutLineDto": {
 				"type": "object",
 				"properties": {
-					"firstName": {
-						"type": "string",
-						"example": "John"
+					"quantity": {
+						"type": "number",
+						"example": 1
 					},
-					"lastName": {
-						"type": "string",
-						"example": "Doe"
-					},
-					"companyName": {
-						"type": "string",
-						"example": "Indera Inc."
-					},
-					"phone": {
-						"type": "string",
-						"example": "+1 1234 567 890"
-					},
-					"country": {
-						"type": "string",
-						"example": "Greece"
-					},
-					"state": {
-						"type": "string",
-						"example": "Attica"
-					},
-					"city": {
-						"type": "string",
-						"example": "Athens"
-					},
-					"zip": {
-						"type": "string",
-						"example": "12345"
-					},
-					"address": {
-						"type": "string",
-						"example": "Example 123"
-					},
-					"address2": {
-						"type": "string",
-						"example": "Example 123"
+					"variantId": {
+						"type": "number"
 					}
 				},
 				"required": [
-					"country",
-					"state",
-					"city",
-					"zip",
-					"address"
+					"quantity",
+					"variantId"
 				]
 			},
 			"UpdateCheckoutVoucherDto": {
@@ -4580,36 +6917,20 @@
 					"voucherCode"
 				]
 			},
-			"DiscountType": {
-				"type": "string",
-				"enum": [
-					"PERCENTAGE",
-					"FLAT"
-				]
-			},
-			"CreateDiscountSaleDto": {
+			"CreateShippingZoneDto": {
 				"type": "object",
 				"properties": {
 					"name": {
-						"example": {
-							"en": "Discount Sale Name"
-						},
-						"allOf": [
-							{
-								"$ref": "#/components/schemas/TranslatableDto"
-							}
-						]
+						"type": "string"
 					},
-					"discountType": {
-						"$ref": "#/components/schemas/DiscountType"
+					"locationType": {
+						"$ref": "#/components/schemas/ShippingZoneLocationType"
 					},
-					"endDate": {
-						"type": "string",
-						"example": "2022-12-31"
-					},
-					"startDate": {
-						"type": "string",
-						"example": "2022-01-01"
+					"locationCodes": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
 					},
 					"metadata": {
 						"type": "object",
@@ -4618,38 +6939,28 @@
 					"privateMetadata": {
 						"type": "object",
 						"example": {}
+					},
+					"shippingRates": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ShippingRateDto"
+						}
 					}
 				},
 				"required": [
 					"name",
-					"discountType",
+					"locationType",
+					"locationCodes",
 					"metadata",
-					"privateMetadata"
+					"privateMetadata",
+					"shippingRates"
 				]
 			},
-			"UpdateDiscountDto": {
+			"CreateShippingMethodDto": {
 				"type": "object",
 				"properties": {
 					"name": {
-						"example": {
-							"en": "Discount Sale Name"
-						},
-						"allOf": [
-							{
-								"$ref": "#/components/schemas/TranslatableDto"
-							}
-						]
-					},
-					"discountType": {
-						"$ref": "#/components/schemas/DiscountType"
-					},
-					"endDate": {
-						"type": "string",
-						"example": "2022-12-31"
-					},
-					"startDate": {
-						"type": "string",
-						"example": "2022-01-01"
+						"type": "string"
 					},
 					"metadata": {
 						"type": "object",
@@ -4658,6 +6969,171 @@
 					"privateMetadata": {
 						"type": "object",
 						"example": {}
+					},
+					"description": {
+						"example": {
+							"en": "Shipping Method Description"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"shippingZones": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CreateShippingZoneDto"
+						}
+					}
+				},
+				"required": [
+					"name",
+					"metadata",
+					"privateMetadata",
+					"description",
+					"shippingZones"
+				]
+			},
+			"UpdateShippingMethodDto": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"description": {
+						"example": {
+							"en": "Shipping Method Description"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"shippingZones": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CreateShippingZoneDto"
+						}
+					}
+				}
+			},
+			"UpdateShippingZoneDto": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"locationType": {
+						"$ref": "#/components/schemas/ShippingZoneLocationType"
+					},
+					"locationCodes": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"shippingRates": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ShippingRateDto"
+						}
+					}
+				}
+			},
+			"CreateShippingRateDto": {
+				"type": "object",
+				"properties": {
+					"maximumOrderWeight": {
+						"type": "number"
+					},
+					"minimumOrderWeight": {
+						"type": "number"
+					},
+					"maximumPrice": {
+						"type": "number"
+					},
+					"minimumPrice": {
+						"type": "number"
+					},
+					"rate": {
+						"type": "number"
+					},
+					"shippingType": {
+						"$ref": "#/components/schemas/ShippingMethodType"
+					},
+					"maximumDeliveryDays": {
+						"type": "number"
+					},
+					"minimumDeliveryDays": {
+						"type": "number"
+					}
+				},
+				"required": [
+					"rate",
+					"shippingType"
+				]
+			},
+			"UpdateShippingRateDto": {
+				"type": "object",
+				"properties": {
+					"maximumOrderWeight": {
+						"type": "number"
+					},
+					"minimumOrderWeight": {
+						"type": "number"
+					},
+					"maximumPrice": {
+						"type": "number"
+					},
+					"minimumPrice": {
+						"type": "number"
+					},
+					"rate": {
+						"type": "number"
+					},
+					"shippingType": {
+						"$ref": "#/components/schemas/ShippingMethodType"
+					},
+					"maximumDeliveryDays": {
+						"type": "number"
+					},
+					"minimumDeliveryDays": {
+						"type": "number"
+					}
+				}
+			},
+			"UpdatePaymentDto": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"$ref": "#/components/schemas/PaymentStatus"
+					},
+					"supportRefId": {
+						"type": "number"
+					},
+					"referenceId": {
+						"type": "string"
+					},
+					"transactionTicket": {
+						"type": "string"
 					}
 				}
 			}
