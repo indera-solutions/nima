@@ -42,7 +42,7 @@ export class ProductVariantDto extends OmitType(ProductVariantEntity, ['attribut
 	}
 }
 
-export class CreateProductVariantDto extends OmitType(ProductVariantDto, ['created', 'id', 'updatedAt', 'productId', 'productMedia', 'attributes']) {
+export class CreateProductVariantDto extends OmitType(ProductVariantDto, ['created', 'id', 'updatedAt', 'productId', 'productMedia', 'attributes', 'discountedPrice']) {
 	@ApiProperty({ type: [CreateAssignedProductVariantAttributeDto] })
 	@IsArray()
 	attributes: CreateAssignedProductVariantAttributeDto[];

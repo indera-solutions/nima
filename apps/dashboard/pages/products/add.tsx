@@ -195,7 +195,7 @@ export default function Add(props: AddProps) {
 		if ( !existingProductVariants || !productType ) return;
 		if ( productType.hasVariants ) return;
 		if ( !existingProductVariants[0] ) return;
-		const { id, attributes, updatedAt, created, ...rest } = existingProductVariants[0];
+		const { id, attributes, updatedAt, discountedPrice, created, ...rest } = existingProductVariants[0];
 		delete rest['productId'];
 		setDefaultVariant({
 			...rest,

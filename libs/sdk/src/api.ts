@@ -1633,12 +1633,6 @@ export interface CreateProductVariantDto {
 	'trackInventory': boolean;
 	/**
 	 *
-	 * @type {number}
-	 * @memberof CreateProductVariantDto
-	 */
-	'discountedPrice': number;
-	/**
-	 *
 	 * @type {Array<CreateAssignedProductVariantAttributeDto>}
 	 * @memberof CreateProductVariantDto
 	 */
