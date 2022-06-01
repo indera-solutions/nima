@@ -22,6 +22,7 @@ export class SettingsService {
 		return {
 			siteName: entity.siteName,
 			adminLanguage: entity.adminLanguage,
+			adminEmail: entity.adminEmail,
 			availableLanguages: entity.availableLanguages,
 			baseUrl: entity.baseUrl,
 			canRegister: entity.canRegister,
@@ -32,6 +33,7 @@ export class SettingsService {
 			seoDescription: entity.seoDescription,
 			shopAddress: entity.shopAddress,
 			siteLogo: entity.siteLogo,
+			emailWebhooks: entity.emailWebhooks,
 		};
 	}
 

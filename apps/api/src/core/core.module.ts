@@ -17,7 +17,7 @@ import { SettingsService } from './settings/settings.service';
 	imports: [TypeOrmModule.forFeature([AddressEntity, MediaRepository, SettingsEntity])],
 	controllers: [CoreController, SettingsController, MediaController, AddressController],
 	providers: [CoreService, SettingsService, MediaService, AddressService],
-	exports: [MediaService, AddressService],
+	exports: [MediaService, AddressService, SettingsService],
 })
 export class CoreModule {
 }

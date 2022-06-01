@@ -2,10 +2,21 @@ import { ApiProperty } from '@nestjs/swagger';
 import { LanguageCode } from '@nima-cms/utils';
 import { IsBoolean, IsEmail, IsEnum, IsString, IsUrl } from 'class-validator';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Emails } from '../../email/templates';
 import { AddressDto } from '../dto/address.dto';
 import { MediaDto } from '../dto/media.dto';
 import { AddressEntity } from './address.entity';
 import { MediaEntity } from './media.entity';
+
+export class EmailWebhooksDto {
+	@ApiProperty({ enum: Emails, enumName: 'Emails' })
+	@IsEnum(Emails)
+	emailType: Emails;
+
+	@ApiProperty()
+	@IsUrl()
+	webhook: string;
+}
 
 @Entity('core_settings')
 export class SettingsEntity {
@@ -21,6 +32,11 @@ export class SettingsEntity {
 	@ApiProperty({ enum: LanguageCode, example: LanguageCode.en, enumName: 'LanguageCode' })
 	@IsEnum(LanguageCode)
 	adminLanguage: LanguageCode;
+
+	@Column()
+	@ApiProperty({ type: String, example: 'sender@example.com' })
+	@IsEmail()
+	adminEmail: string;
 
 	@Column({ type: 'enum', array: true, enum: LanguageCode })
 	@ApiProperty({ enum: LanguageCode, example: [LanguageCode.en, LanguageCode.el], isArray: true, enumName: 'LanguageCode' })
@@ -69,4 +85,8 @@ export class SettingsEntity {
 	@ManyToOne(() => MediaEntity)
 	@ApiProperty({ type: MediaDto, required: false })
 	siteLogo: MediaDto;
+
+	@Column({ type: 'jsonb', default: [] })
+	@ApiProperty({ type: () => EmailWebhooksDto, isArray: true })
+	emailWebhooks: EmailWebhooksDto[];
 }

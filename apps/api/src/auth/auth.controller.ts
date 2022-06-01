@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Patch, Post, Query, Request, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import {
 	LoginUserDto,
 	RegisterUserDto,
@@ -7,6 +7,7 @@ import {
 	SuccessLoginResponse,
 	UpdateUserPasswordDto,
 } from '../users/dto/user.dto';
+import { IsPublic } from './auth.decorator';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { LocalAuthGuard } from './local-auth.guard';
@@ -23,6 +24,7 @@ export class AuthController {
 	}
 
 	@UseGuards(LocalAuthGuard)
+	@IsPublic()
 	@Post('/login')
 	@ApiBody({ type: LoginUserDto })
 	@ApiOkResponse({ type: SuccessLoginResponse })
@@ -38,6 +40,7 @@ export class AuthController {
 
 	@Patch('/passwordReset')
 	@ApiBody({ type: UpdateUserPasswordDto })
+	@ApiQuery({ name: 'token', required: true, type: String })
 	async resetPassword(@Query('token') token: string, @Body() passwordChangeDto: UpdateUserPasswordDto) {
 		return this.authService.resetPassword({ token: token, dto: passwordChangeDto });
 	}

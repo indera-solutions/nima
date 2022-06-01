@@ -1,8 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
+import { Events } from '../events';
 import {
 	RegisterUserDto,
 	RequestUserPasswordChangeDto,
@@ -21,6 +23,7 @@ export class AuthService {
 		private jwtService: JwtService,
 		@InjectRepository(AuthActionEntity)
 		private authActionEntityRepository: Repository<AuthActionEntity>,
+		private eventEmitter: EventEmitter2,
 	) {
 	}
 
@@ -52,7 +55,7 @@ export class AuthService {
 		if ( existing ) throw new Error('USER_ALREADY_EXISTS');
 
 		const res = await this.userService.create({ registerUserDto: registerUserDto });
-		const _user = await this.userService.getById(res);
+		const _user = await this.userService.getById({ id: res });
 		const user = {
 			id: _user.id,
 			email: _user.email,
@@ -73,6 +76,7 @@ export class AuthService {
 		const res = await this.authActionEntityRepository.save({ user: user, actionType: AuthActionType.RESET_PASSWORD, hasLoggedInSince: false });
 		//TODO: Send email with link to reset password
 		console.log(res);
+		this.eventEmitter.emit(Events.TEST, { test: 'test' });
 		//temporary return to see token
 		return res;
 	}
