@@ -10,4 +10,15 @@ export class CollectionProductsRepository extends BaseRepository<CollectionProdu
 			id: id,
 		});
 	}
+
+	async deleteProductFromCollection(collectionId: number, productId: number) {
+		return this.delete({
+			collection: {
+				id: collectionId,
+			},
+			product: {
+				id: productId,
+			},
+		});
+	}
 }

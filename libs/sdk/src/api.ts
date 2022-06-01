@@ -593,7 +593,6 @@ export interface CheckoutLineDto {
 	 */
 	'totalCost': number;
 }
-
 /**
  *
  * @export
@@ -620,16 +619,16 @@ export interface CollectionDto {
 	'slug': string;
 	/**
 	 *
-	 * @type {string}
+	 * @type {TranslatableDto}
 	 * @memberof CollectionDto
 	 */
-	'seoDescription': string;
+	'seoDescription': TranslatableDto;
 	/**
 	 *
-	 * @type {string}
+	 * @type {TranslatableDto}
 	 * @memberof CollectionDto
 	 */
-	'seoTitle': string;
+	'seoTitle': TranslatableDto;
 	/**
 	 *
 	 * @type {TranslatableDto}
@@ -661,7 +660,6 @@ export interface CollectionDto {
 	 */
 	'products': Array<CollectionProductsDto>;
 }
-
 /**
  *
  * @export
@@ -681,7 +679,6 @@ export interface CollectionProductsDto {
 	 */
 	'product': ProductDto;
 }
-
 /**
  *
  * @export
@@ -1027,7 +1024,6 @@ export interface CreateCheckoutDto {
 	 */
 	'languageCode': LanguageCode;
 }
-
 /**
  *
  * @export
@@ -1048,16 +1044,16 @@ export interface CreateCollectionDto {
 	'slug': string;
 	/**
 	 *
-	 * @type {string}
+	 * @type {TranslatableDto}
 	 * @memberof CreateCollectionDto
 	 */
-	'seoDescription': string;
+	'seoDescription': TranslatableDto;
 	/**
 	 *
-	 * @type {string}
+	 * @type {TranslatableDto}
 	 * @memberof CreateCollectionDto
 	 */
-	'seoTitle': string;
+	'seoTitle': TranslatableDto;
 	/**
 	 *
 	 * @type {TranslatableDto}
@@ -1087,9 +1083,8 @@ export interface CreateCollectionDto {
 	 * @type {number}
 	 * @memberof CreateCollectionDto
 	 */
-	'backgroundImageId': number;
+	'backgroundImageId'?: number;
 }
-
 /**
  *
  * @export
@@ -1109,7 +1104,6 @@ export interface CreateCollectionProductDto {
 	 */
 	'sortOrder': number;
 }
-
 /**
  *
  * @export
@@ -1473,6 +1467,12 @@ export interface CreateProductDto {
 	 * @memberof CreateProductDto
 	 */
 	'productMedia': Array<CreateSortableMediaDto>;
+	/**
+	 *
+	 * @type {Array<number>}
+	 * @memberof CreateProductDto
+	 */
+	'collectionIds': Array<number>;
 }
 /**
  *
@@ -2476,7 +2476,6 @@ export interface OrderListPaginated {
 	 */
 	'totalCount': number;
 }
-
 /**
  *
  * @export
@@ -2574,7 +2573,6 @@ export interface PaymentDto {
 	 */
 	'transactionTicket': string;
 }
-
 /**
  *
  * @export
@@ -2845,6 +2843,12 @@ export interface ProductDto {
 	 * @memberof ProductDto
 	 */
 	'productMedia': Array<SortableMediaDto>;
+	/**
+	 *
+	 * @type {Array<CollectionDto>}
+	 * @memberof ProductDto
+	 */
+	'collections': Array<CollectionDto>;
 }
 /**
  *
@@ -2907,7 +2911,6 @@ export interface ProductFilterResultDto {
 	 */
 	'totalCount': number;
 }
-
 /**
  *
  * @export
@@ -3341,7 +3344,6 @@ export interface ShippingMethodDto {
 	 */
 	'shippingZones': Array<ShippingZoneDto>;
 }
-
 /**
  *
  * @export
@@ -3466,7 +3468,6 @@ export interface ShippingZoneDto {
 	 */
 	'shippingRates': Array<ShippingRateDto>;
 }
-
 /**
  *
  * @export
@@ -3556,7 +3557,6 @@ export interface TranslatableDto {
 	 */
 	'en'?: string;
 }
-
 /**
  *
  * @export
@@ -3861,7 +3861,6 @@ export interface UpdateCheckoutVoucherDto {
 	 */
 	'voucherCode': string;
 }
-
 /**
  *
  * @export
@@ -3882,16 +3881,16 @@ export interface UpdateCollectionDto {
 	'slug'?: string;
 	/**
 	 *
-	 * @type {string}
+	 * @type {TranslatableDto}
 	 * @memberof UpdateCollectionDto
 	 */
-	'seoDescription'?: string;
+	'seoDescription'?: TranslatableDto;
 	/**
 	 *
-	 * @type {string}
+	 * @type {TranslatableDto}
 	 * @memberof UpdateCollectionDto
 	 */
-	'seoTitle'?: string;
+	'seoTitle'?: TranslatableDto;
 	/**
 	 *
 	 * @type {TranslatableDto}
@@ -3917,7 +3916,6 @@ export interface UpdateCollectionDto {
 	 */
 	'backgroundImageId'?: number;
 }
-
 /**
  *
  * @export
@@ -7189,11 +7187,11 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 		 */
 		collectionsAddProducts: async (collectionId: number, createCollectionProductDto: Array<CreateCollectionProductDto>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'collectionId' is not null or undefined
-			assertParamExists('collectionsAddProducts', 'collectionId', collectionId);
+			assertParamExists('collectionsAddProducts', 'collectionId', collectionId)
 			// verify required parameter 'createCollectionProductDto' is not null or undefined
-			assertParamExists('collectionsAddProducts', 'createCollectionProductDto', createCollectionProductDto);
+			assertParamExists('collectionsAddProducts', 'createCollectionProductDto', createCollectionProductDto)
 			const localVarPath = `/api/v1/collections/{collectionId}/products`
-				.replace(`{${ 'collectionId' }}`, encodeURIComponent(String(collectionId)));
+				.replace(`{${ "collectionId" }}`, encodeURIComponent(String(collectionId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -7201,7 +7199,7 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 				baseOptions = configuration.baseOptions;
 			}
 
-			const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+			const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
@@ -7211,7 +7209,7 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createCollectionProductDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createCollectionProductDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -7226,7 +7224,7 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 		 */
 		collectionsCreate: async (createCollectionDto: CreateCollectionDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'createCollectionDto' is not null or undefined
-			assertParamExists('collectionsCreate', 'createCollectionDto', createCollectionDto);
+			assertParamExists('collectionsCreate', 'createCollectionDto', createCollectionDto)
 			const localVarPath = `/api/v1/collections`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7245,7 +7243,7 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createCollectionDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createCollectionDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -7288,9 +7286,9 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 		 */
 		collectionsFindOne: async (collectionId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'collectionId' is not null or undefined
-			assertParamExists('collectionsFindOne', 'collectionId', collectionId);
+			assertParamExists('collectionsFindOne', 'collectionId', collectionId)
 			const localVarPath = `/api/v1/collections/{collectionId}`
-				.replace(`{${ 'collectionId' }}`, encodeURIComponent(String(collectionId)));
+				.replace(`{${ "collectionId" }}`, encodeURIComponent(String(collectionId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -7320,9 +7318,9 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 		 */
 		collectionsRemove: async (collectionId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'collectionId' is not null or undefined
-			assertParamExists('collectionsRemove', 'collectionId', collectionId);
+			assertParamExists('collectionsRemove', 'collectionId', collectionId)
 			const localVarPath = `/api/v1/collections/{collectionId}`
-				.replace(`{${ 'collectionId' }}`, encodeURIComponent(String(collectionId)));
+				.replace(`{${ "collectionId" }}`, encodeURIComponent(String(collectionId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -7347,18 +7345,18 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 		/**
 		 *
 		 * @param {number} collectionId
-		 * @param {number} id
+		 * @param {number} productId
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		collectionsRemoveProduct: async (collectionId: number, id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		collectionsRemoveProduct: async (collectionId: number, productId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'collectionId' is not null or undefined
-			assertParamExists('collectionsRemoveProduct', 'collectionId', collectionId);
-			// verify required parameter 'id' is not null or undefined
-			assertParamExists('collectionsRemoveProduct', 'id', id);
-			const localVarPath = `/api/v1/collections/{collectionId}/products/{id}`
-				.replace(`{${ 'collectionId' }}`, encodeURIComponent(String(collectionId)))
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+			assertParamExists('collectionsRemoveProduct', 'collectionId', collectionId)
+			// verify required parameter 'productId' is not null or undefined
+			assertParamExists('collectionsRemoveProduct', 'productId', productId)
+			const localVarPath = `/api/v1/collections/{collectionId}/products/{productId}`
+				.replace(`{${ "collectionId" }}`, encodeURIComponent(String(collectionId)))
+				.replace(`{${ "productId" }}`, encodeURIComponent(String(productId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -7389,11 +7387,11 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 		 */
 		collectionsUpdate: async (collectionId: number, updateCollectionDto: UpdateCollectionDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'collectionId' is not null or undefined
-			assertParamExists('collectionsUpdate', 'collectionId', collectionId);
+			assertParamExists('collectionsUpdate', 'collectionId', collectionId)
 			// verify required parameter 'updateCollectionDto' is not null or undefined
-			assertParamExists('collectionsUpdate', 'updateCollectionDto', updateCollectionDto);
+			assertParamExists('collectionsUpdate', 'updateCollectionDto', updateCollectionDto)
 			const localVarPath = `/api/v1/collections/{collectionId}`
-				.replace(`{${ 'collectionId' }}`, encodeURIComponent(String(collectionId)));
+				.replace(`{${ "collectionId" }}`, encodeURIComponent(String(collectionId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -7411,14 +7409,14 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateCollectionDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateCollectionDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
 				options: localVarRequestOptions,
 			};
 		},
-	};
+	}
 };
 
 /**
@@ -7481,12 +7479,12 @@ export const CollectionsApiFp = function (configuration?: Configuration) {
 		/**
 		 *
 		 * @param {number} collectionId
-		 * @param {number} id
+		 * @param {number} productId
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async collectionsRemoveProduct(collectionId: number, id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionDto>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.collectionsRemoveProduct(collectionId, id, options);
+		async collectionsRemoveProduct(collectionId: number, productId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.collectionsRemoveProduct(collectionId, productId, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
@@ -7558,12 +7556,12 @@ export const CollectionsApiFactory = function (configuration?: Configuration, ba
 		/**
 		 *
 		 * @param {number} collectionId
-		 * @param {number} id
+		 * @param {number} productId
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		collectionsRemoveProduct(collectionId: number, id: number, options?: any): AxiosPromise<CollectionDto> {
-			return localVarFp.collectionsRemoveProduct(collectionId, id, options).then((request) => request(axios, basePath));
+		collectionsRemoveProduct(collectionId: number, productId: number, options?: any): AxiosPromise<CollectionDto> {
+			return localVarFp.collectionsRemoveProduct(collectionId, productId, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -7659,7 +7657,7 @@ export interface CollectionsApiCollectionsRemoveProductRequest {
 	 * @type {number}
 	 * @memberof CollectionsApiCollectionsRemoveProduct
 	 */
-	readonly id: number;
+	readonly productId: number;
 }
 
 /**
@@ -7752,7 +7750,7 @@ export class CollectionsApi extends BaseAPI {
 	 * @memberof CollectionsApi
 	 */
 	public collectionsRemoveProduct(requestParameters: CollectionsApiCollectionsRemoveProductRequest, options?: AxiosRequestConfig) {
-		return CollectionsApiFp(this.configuration).collectionsRemoveProduct(requestParameters.collectionId, requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+		return CollectionsApiFp(this.configuration).collectionsRemoveProduct(requestParameters.collectionId, requestParameters.productId, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -7962,11 +7960,11 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		discountSalesAddCategories: async (id: number, discountSaleAddCategoriesDto: DiscountSaleAddCategoriesDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('discountSalesAddCategories', 'id', id);
+			assertParamExists('discountSalesAddCategories', 'id', id)
 			// verify required parameter 'discountSaleAddCategoriesDto' is not null or undefined
-			assertParamExists('discountSalesAddCategories', 'discountSaleAddCategoriesDto', discountSaleAddCategoriesDto);
+			assertParamExists('discountSalesAddCategories', 'discountSaleAddCategoriesDto', discountSaleAddCategoriesDto)
 			const localVarPath = `/api/v1/discounts/{id}/categories`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -7984,7 +7982,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(discountSaleAddCategoriesDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(discountSaleAddCategoriesDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -8000,11 +7998,11 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		discountSalesAddCollections: async (id: number, discountSaleAddCollectionsDto: DiscountSaleAddCollectionsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('discountSalesAddCollections', 'id', id);
+			assertParamExists('discountSalesAddCollections', 'id', id)
 			// verify required parameter 'discountSaleAddCollectionsDto' is not null or undefined
-			assertParamExists('discountSalesAddCollections', 'discountSaleAddCollectionsDto', discountSaleAddCollectionsDto);
+			assertParamExists('discountSalesAddCollections', 'discountSaleAddCollectionsDto', discountSaleAddCollectionsDto)
 			const localVarPath = `/api/v1/discounts/{id}/collections`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -8022,7 +8020,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(discountSaleAddCollectionsDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(discountSaleAddCollectionsDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -8038,11 +8036,11 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		discountSalesAddProducts: async (id: number, discountSaleAddProductsDto: DiscountSaleAddProductsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('discountSalesAddProducts', 'id', id);
+			assertParamExists('discountSalesAddProducts', 'id', id)
 			// verify required parameter 'discountSaleAddProductsDto' is not null or undefined
-			assertParamExists('discountSalesAddProducts', 'discountSaleAddProductsDto', discountSaleAddProductsDto);
+			assertParamExists('discountSalesAddProducts', 'discountSaleAddProductsDto', discountSaleAddProductsDto)
 			const localVarPath = `/api/v1/discounts/{id}/products`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -8060,7 +8058,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(discountSaleAddProductsDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(discountSaleAddProductsDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -8076,11 +8074,11 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		discountSalesAddVariants: async (id: number, discountSaleAddVariantsDto: DiscountSaleAddVariantsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('discountSalesAddVariants', 'id', id);
+			assertParamExists('discountSalesAddVariants', 'id', id)
 			// verify required parameter 'discountSaleAddVariantsDto' is not null or undefined
-			assertParamExists('discountSalesAddVariants', 'discountSaleAddVariantsDto', discountSaleAddVariantsDto);
+			assertParamExists('discountSalesAddVariants', 'discountSaleAddVariantsDto', discountSaleAddVariantsDto)
 			const localVarPath = `/api/v1/discounts/{id}/variants`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -8098,7 +8096,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(discountSaleAddVariantsDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(discountSaleAddVariantsDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -8113,7 +8111,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		discountSalesCreate: async (createDiscountSaleDto: CreateDiscountSaleDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'createDiscountSaleDto' is not null or undefined
-			assertParamExists('discountSalesCreate', 'createDiscountSaleDto', createDiscountSaleDto);
+			assertParamExists('discountSalesCreate', 'createDiscountSaleDto', createDiscountSaleDto)
 			const localVarPath = `/api/v1/discounts`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8175,9 +8173,9 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		discountSalesFindOne: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('discountSalesFindOne', 'id', id);
+			assertParamExists('discountSalesFindOne', 'id', id)
 			const localVarPath = `/api/v1/discounts/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -8207,9 +8205,9 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		discountSalesRemove: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('discountSalesRemove', 'id', id);
+			assertParamExists('discountSalesRemove', 'id', id)
 			const localVarPath = `/api/v1/discounts/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -8240,12 +8238,12 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		discountSalesRemoveCategory: async (id: number, categoryId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('discountSalesRemoveCategory', 'id', id);
+			assertParamExists('discountSalesRemoveCategory', 'id', id)
 			// verify required parameter 'categoryId' is not null or undefined
-			assertParamExists('discountSalesRemoveCategory', 'categoryId', categoryId);
+			assertParamExists('discountSalesRemoveCategory', 'categoryId', categoryId)
 			const localVarPath = `/api/v1/discounts/{id}/categories/{categoryId}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)))
-				.replace(`{${ 'categoryId' }}`, encodeURIComponent(String(categoryId)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)))
+				.replace(`{${ "categoryId" }}`, encodeURIComponent(String(categoryId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -8276,12 +8274,12 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		discountSalesRemoveCollection: async (id: number, collectionId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('discountSalesRemoveCollection', 'id', id);
+			assertParamExists('discountSalesRemoveCollection', 'id', id)
 			// verify required parameter 'collectionId' is not null or undefined
-			assertParamExists('discountSalesRemoveCollection', 'collectionId', collectionId);
+			assertParamExists('discountSalesRemoveCollection', 'collectionId', collectionId)
 			const localVarPath = `/api/v1/discounts/{id}/collections/{collectionId}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)))
-				.replace(`{${ 'collectionId' }}`, encodeURIComponent(String(collectionId)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)))
+				.replace(`{${ "collectionId" }}`, encodeURIComponent(String(collectionId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -8312,12 +8310,12 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		discountSalesRemoveProduct: async (id: number, productId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('discountSalesRemoveProduct', 'id', id);
+			assertParamExists('discountSalesRemoveProduct', 'id', id)
 			// verify required parameter 'productId' is not null or undefined
-			assertParamExists('discountSalesRemoveProduct', 'productId', productId);
+			assertParamExists('discountSalesRemoveProduct', 'productId', productId)
 			const localVarPath = `/api/v1/discounts/{id}/products/{productId}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)))
-				.replace(`{${ 'productId' }}`, encodeURIComponent(String(productId)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)))
+				.replace(`{${ "productId" }}`, encodeURIComponent(String(productId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -8348,12 +8346,12 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		discountSalesRemoveVariant: async (id: number, variantId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('discountSalesRemoveVariant', 'id', id);
+			assertParamExists('discountSalesRemoveVariant', 'id', id)
 			// verify required parameter 'variantId' is not null or undefined
-			assertParamExists('discountSalesRemoveVariant', 'variantId', variantId);
+			assertParamExists('discountSalesRemoveVariant', 'variantId', variantId)
 			const localVarPath = `/api/v1/discounts/{id}/variants/{variantId}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)))
-				.replace(`{${ 'variantId' }}`, encodeURIComponent(String(variantId)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)))
+				.replace(`{${ "variantId" }}`, encodeURIComponent(String(variantId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -8384,11 +8382,11 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		 */
 		discountSalesUpdate: async (id: number, updateDiscountDto: UpdateDiscountDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('discountSalesUpdate', 'id', id);
+			assertParamExists('discountSalesUpdate', 'id', id)
 			// verify required parameter 'updateDiscountDto' is not null or undefined
-			assertParamExists('discountSalesUpdate', 'updateDiscountDto', updateDiscountDto);
+			assertParamExists('discountSalesUpdate', 'updateDiscountDto', updateDiscountDto)
 			const localVarPath = `/api/v1/discounts/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -12242,7 +12240,7 @@ export const ShippingApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const ShippingApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = ShippingApiFp(configuration);
+	const localVarFp = ShippingApiFp(configuration)
 	return {
 		/**
 		 *
@@ -12922,7 +12920,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const UsersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = UsersApiFp(configuration);
+	const localVarFp = UsersApiFp(configuration)
 	return {
 		/**
 		 *

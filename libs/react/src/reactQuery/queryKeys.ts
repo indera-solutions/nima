@@ -3,6 +3,7 @@ import { ProductsApiProductsFindAllRequest } from '@nima-cms/sdk';
 const NIMA_QUERY_PREFIX = 'COMMERCE_V2';
 const SETTINGS_QUERY_PREFIX = 'SETTINGS';
 const CATEGORIES_QUERY_PREFIX = 'CATEGORIES';
+const COLLECTION_QUERY_PREFIX = 'COLLECTIONS';
 const ATTRIBUTES_QUERY_PREFIX = 'ATTRIBUTES';
 const PRODUCT_TYPES_QUERY_PREFIX = 'PRODUCT_TYPES';
 const PRODUCTS_QUERY_PREFIX = 'PRODUCTS';
@@ -32,6 +33,12 @@ export const NimaQueryCacheKeys = {
 		list: () => [...NimaQueryCacheKeys.categories.all, 'LIST'] as const,
 		id: (id?: number) => [...NimaQueryCacheKeys.categories.all, 'ID', id] as const,
 		ancestors: (id?: number) => [...NimaQueryCacheKeys.categories.all, 'ANCESTORS', id] as const,
+	},
+	collections: {
+		all: [NIMA_QUERY_PREFIX, COLLECTION_QUERY_PREFIX] as const,
+		list: () => [...NimaQueryCacheKeys.collections.all, 'LIST'] as const,
+		id: (id?: number) => [...NimaQueryCacheKeys.collections.all, 'ID', id] as const,
+		products: (id?: number) => [...NimaQueryCacheKeys.collections.all, 'ID', id, 'PRODUCTS'] as const,
 	},
 	products: {
 		all: [NIMA_QUERY_PREFIX, PRODUCTS_QUERY_PREFIX] as const,

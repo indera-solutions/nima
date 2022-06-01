@@ -2,6 +2,7 @@ import {
 	getTranslation,
 	Trans,
 	useCategories,
+	useCollections,
 	useCreateProductMutation,
 	useCreateProductVariationMutation,
 	useLanguages,
@@ -80,6 +81,7 @@ export default function Add(props: AddProps) {
 		seoTitle: '',
 		weight: 0,
 		productMedia: [],
+		collectionIds: [],
 	});
 
 
@@ -108,6 +110,7 @@ export default function Add(props: AddProps) {
 
 	const { data: productTypes } = useProductTypes();
 	const { data: categories } = useCategories();
+	const { data: collections } = useCollections();
 	const { data: productType } = useProductTypeId(createProductDto.productTypeId);
 
 	const categoriesOptions = useMemo<{ label: string, value: number }[]>(() => {
@@ -130,12 +133,26 @@ export default function Add(props: AddProps) {
 			temp.push(...getChildren(c, 1));
 		});
 		return temp;
-	}, [categories]);
+	}, [categories, languages.adminLanguage]);
 
 	const selectedCategoryOption = useMemo<{ label: string, value: number } | undefined>(() => {
 		if ( !createProductDto.categoryId ) return undefined;
 		return categoriesOptions.find(co => co.value === createProductDto.categoryId);
 	}, [categoriesOptions, createProductDto.categoryId]);
+
+
+	const collectionOptions = useMemo<{ label: string, value: number }[]>(() => {
+		if ( !collections ) return [];
+		return collections.map(c => ({
+			label: getTranslation(c.name, languages.adminLanguage),
+			value: c.id,
+		}));
+	}, [collections, languages.adminLanguage]);
+
+	const selectedCollectionOption = useMemo<{ label: string, value: number }[]>(() => {
+		if ( !createProductDto.categoryId ) return undefined;
+		return collectionOptions.filter(co => createProductDto.collectionIds.includes(co.value));
+	}, [collectionOptions, createProductDto.collectionIds]);
 
 	useEffect(() => {
 		if ( isEditing ) return;
@@ -155,10 +172,11 @@ export default function Add(props: AddProps) {
 
 	useEffect(() => {
 		if ( !existingProduct ) return;
-		const { id, attributes, productMedia, defaultVariantId, updatedAt, created, ...rest } = existingProduct;
+		const { id, attributes, productMedia, collections, defaultVariantId, updatedAt, created, ...rest } = existingProduct;
 		setCreateProductDto({
 			...rest,
 			productMedia: productMedia.map(pm => ({ mediaId: pm.media.id, sortOrder: pm.sortOrder })),
+			collectionIds: collections.map(c => c.id),
 			attributes: productType ? attributes.map(att => {
 				const pta = productType.attributes.find(a => a.attributeId === att.id);
 				if ( !pta ) throw new Error('att not found');
@@ -234,6 +252,10 @@ export default function Add(props: AddProps) {
 			toast.success('Product Updated');
 
 		}
+	}
+
+	function onCollectionEdit(newValue) {
+		console.log(newValue);
 	}
 
 	function onValueEdit(name: keyof CreateProductDto, value: any) {
@@ -419,6 +441,18 @@ export default function Add(props: AddProps) {
 									onChange={ (newValue) => {
 										onValueEdit('categoryId', newValue.value);
 									} }/>
+						</div>
+						<div>
+							<label className="label">
+								<span className="label-text">Collections</span>
+							</label>
+							<Select
+								isMulti
+								options={ collectionOptions }
+								value={ selectedCollectionOption }
+								onChange={ (newValue) => {
+									onValueEdit('collectionIds', newValue.map(c => c.value));
+								} }/>
 						</div>
 					</AdminSection>
 				</AdminColumn>

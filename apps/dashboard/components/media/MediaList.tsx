@@ -1,6 +1,6 @@
 import { useMediaPaginated } from '@nima-cms/react';
 import { MediaDto } from '@nima-cms/sdk';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 export interface MediaListProps {
 	selectedId?: number[];
@@ -9,12 +9,17 @@ export interface MediaListProps {
 }
 
 export function MediaList(props: MediaListProps) {
-	const [selectedIds, setSelectedIds] = useState<number[]>(props.selectedId || []);
+	const [selectedIds, setSelectedIds] = useState<number[]>([]);
 	const { data: mediaListResponse, hasNextPage, isFetchingNextPage, fetchNextPage } = useMediaPaginated({ pageSize: 20 });
 	const allMedia = useMemo(() => {
 		if ( !mediaListResponse || !mediaListResponse.pages ) return [];
 		return mediaListResponse.pages.map(p => p.items).flat();
 	}, [mediaListResponse]);
+
+	useEffect(() => {
+		setSelectedIds(props.selectedId);
+	}, [props.selectedId]);
+
 
 	function onImageSelect(media: MediaDto) {
 		if ( !props.onSelect ) {
@@ -41,7 +46,11 @@ export function MediaList(props: MediaListProps) {
 	return (
 		<>
 			{ props.onSelect && <div className={ 'flex justify-end gap-4' }>
-				<button className={ 'btn btn-primary' } onClick={ () => setSelectedIds([]) }>Clear</button>
+				<button className={ 'btn btn-primary' } onClick={ () => {
+					setSelectedIds([]);
+					props.onSelect([]);
+				} }>Clear
+				</button>
 				<button className={ 'btn btn-success' } onClick={ () => props.onSelect(selectedIds) }>Select</button>
 			</div> }
 			<div className={ 'flex flex-col gap-4' }>

@@ -4,3 +4,4 @@ export * from './forms';
 export * from './products';
 export * from './attributeTypesForms';
 export * from './media';
+export * from './collection';

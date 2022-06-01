@@ -23,18 +23,18 @@ export class CollectionEntity {
 	@IsString()
 	slug: string;
 
-	@ManyToOne(() => MediaEntity)
+	@ManyToOne(() => MediaEntity, { eager: true })
 	backgroundImage: MediaEntity;
 
-	@Column({ type: String })
-	@ApiProperty({ type: String, example: 'SEO Description' })
-	@IsString()
-	seoDescription?: string;
+	@Column({ type: 'jsonb', default: {} })
+	@ApiProperty({ type: TranslatableDto, example: 'SEO Description' })
+	@IsObject()
+	seoDescription: Translatable;
 
-	@Column({ type: String })
-	@ApiProperty({ type: String, example: 'SEO Title' })
-	@IsString()
-	seoTitle?: string;
+	@Column({ type: 'jsonb', default: {} })
+	@ApiProperty({ type: TranslatableDto, example: 'SEO Title' })
+	@IsObject()
+	seoTitle: Translatable;
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: TranslatableDto, example: { en: 'Collection Description' } })

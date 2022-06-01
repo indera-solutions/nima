@@ -24,7 +24,7 @@ export class CollectionDto extends OmitType(CollectionEntity, ['backgroundImage'
 			metadata: entity.metadata,
 			privateMetadata: options?.isAdmin ? entity.privateMetadata : {},
 			description: entity.description,
-			products: entity.products.map(product => CollectionProductsDto.prepare(product, options)),
+			products: entity.products?.map(product => CollectionProductsDto.prepare(product, options)) || [],
 		};
 	}
 }
@@ -35,7 +35,7 @@ export class CreateCollectionDto extends OmitType(CollectionDto, ['id', 'product
 	@Type(() => CreateCollectionProductDto)
 	products: CreateCollectionProductDto[];
 
-	@ApiProperty()
+	@ApiProperty({ required: false })
 	@IsInt()
 	@IsOptional()
 	backgroundImageId?: number;
