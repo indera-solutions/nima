@@ -10,7 +10,11 @@ import { CollectionProductsRepository } from './repositories/collection-products
 import { CollectionRepository } from './repositories/collection.repository';
 
 @Module({
-	imports: [TypeOrmModule.forFeature([CollectionRepository, CollectionProductsRepository]), forwardRef(() => ProductsModule), CoreModule],
+	imports: [
+		TypeOrmModule.forFeature([CollectionRepository, CollectionProductsRepository]),
+		forwardRef(() => ProductsModule),
+		CoreModule,
+	],
 	controllers: [CollectionsController],
 	providers: [CollectionsService],
 	exports: [CollectionsService],

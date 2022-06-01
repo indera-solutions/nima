@@ -6,7 +6,7 @@ import { CollectionEntity } from './collection.entity';
 
 @Entity('collection_collection_products')
 @Unique('collection_product', ['collection', 'product'])
-@Unique('collection_sort_order', ['collection', 'sortOrder'])
+// @Unique('collection_sort_order', ['collection', 'sortOrder'])
 export class CollectionProductsEntity {
 	@PrimaryGeneratedColumn()
 	@ApiProperty({ type: Number, example: 1 })

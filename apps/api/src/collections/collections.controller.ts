@@ -46,7 +46,7 @@ export class CollectionsController {
 		return CollectionDto.prepare(res);
 	}
 
-	@Patch(':collectionId/products')
+	@Post(':collectionId/products')
 	@ApiCreatedResponse({ type: () => CollectionDto })
 	@ApiParam({ name: 'collectionId', type: Number })
 	@ApiBody({ type: [CreateCollectionProductDto] })
@@ -63,12 +63,12 @@ export class CollectionsController {
 		return CollectionDto.prepare(res);
 	}
 
-	@Delete(':collectionId/products/:id')
+	@Delete(':collectionId/products/:productId')
 	@ApiOkResponse({ type: () => CollectionDto })
 	@ApiParam({ name: 'collectionId', type: Number })
-	@ApiParam({ name: 'id', type: Number })
-	async removeProduct(@Param('collectionId', ParseIntPipe) collectionId: number, @Param('id', ParseIntPipe) id: number): Promise<CollectionDto> {
-		const res = await this.collectionsService.removeProduct({ collectionId: collectionId, id: id });
+	@ApiParam({ name: 'productId', type: Number })
+	async removeProduct(@Param('collectionId') collectionId: number, @Param('productId') productId: number): Promise<CollectionDto> {
+		const res = await this.collectionsService.removeProduct({ collectionId: collectionId, productId: productId });
 		return CollectionDto.prepare(res);
 	}
 }

@@ -7,6 +7,7 @@ import { AdminSection } from '../AdminLayout';
 import { MediaGallery } from './MediaGallery';
 
 interface MediaSelectorSectionProps {
+	title?: string;
 	isMulti?: boolean;
 	sortableMedia: CreateSortableMediaDto[];
 	onSelect: (media: CreateSortableMediaDto[]) => void;
@@ -53,10 +54,10 @@ export function MediaSelectorSection(props: MediaSelectorSectionProps) {
 
 	return (
 		<>
-			<AdminSection title={ 'Media' } titleRightContainer={ <>
+			<AdminSection title={ props.title || 'Media' } titleRightContainer={ <>
 				<label htmlFor="mediaSelectorModal" className={ 'btn btn-primary gap-2' }>
 					<SVGPlus width={ '20' } height={ '20' }/>
-					Add Media
+					{ props.isMulti ? 'Add Media' : 'Edit Media' }
 				</label>
 			</> }>
 				<DragDropContext onDragEnd={ onDragEnd }>

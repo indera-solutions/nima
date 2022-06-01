@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { getSlug } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { MediaEntity } from '../core/entities/media.entity';
 import { MediaService } from '../core/media/media.service';
@@ -23,7 +24,9 @@ export class CollectionsService {
 		const { createCollectionDto } = params;
 		let backgroundImage: MediaEntity;
 		if ( createCollectionDto.backgroundImageId ) backgroundImage = await this.mediaService.getById({ id: createCollectionDto.backgroundImageId });
-
+		if ( !createCollectionDto.slug ) {
+			createCollectionDto.slug = getSlug(createCollectionDto.name.en || createCollectionDto.name.el || '');
+		}
 		const collection = await this.collectionRepository.save({ ...createCollectionDto, backgroundImage: backgroundImage });
 		await this.addProductsToCollection(collection, createCollectionDto.products);
 
@@ -46,7 +49,10 @@ export class CollectionsService {
 		if ( updateCollectionDto.backgroundImageId ) {
 			backgroundImage = await this.mediaService.getById({ id: updateCollectionDto.backgroundImageId });
 			updateCollectionDto['backgroundImage'] = backgroundImage;
+		} else {
+			updateCollectionDto['backgroundImage'] = undefined;
 		}
+		delete updateCollectionDto.backgroundImageId;
 		await this.collectionRepository.update(id, updateCollectionDto);
 		return this.getOne({ id: id });
 	}
@@ -67,10 +73,10 @@ export class CollectionsService {
 		return collection;
 	}
 
-	async removeProduct(params: { id: number, collectionId: number }): Promise<CollectionEntity> {
-		const { id, collectionId } = params;
+	async removeProduct(params: { productId: number, collectionId: number }): Promise<CollectionEntity> {
+		const { productId, collectionId } = params;
 		const collection = await this.getOne({ id: collectionId });
-		await this.collectionProductsRepository.deleteById(id);
+		await this.collectionProductsRepository.deleteProductFromCollection(collectionId, productId);
 		return collection;
 	}
 

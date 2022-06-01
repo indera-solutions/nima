@@ -3,6 +3,8 @@ import { BasePaginatedRequest, getSlug, PaginatedResults } from '@nima-cms/utils
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { AttributeValuesService } from '../attributes/attribute-values.service';
 import { CategoriesService } from '../categories/categories.service';
+import { CollectionsService } from '../collections/collections.service';
+import { CollectionProductsEntity } from '../collections/entities/collection-products.entity';
 import { DiscountSalesService } from '../discounts/discount-sales.service';
 import { DiscountType } from '../discounts/dto/discount.enum';
 import { ProductTypeAttributesService } from '../product-types/product-type-attributes.service';
@@ -32,6 +34,7 @@ export class ProductsService {
 		private assignedProductAttributeValueRepository: AssignedProductAttributeValueRepository,
 		private productMediaRepository: ProductMediaRepository,
 		private attributeValuesService: AttributeValuesService,
+		@Inject(forwardRef(() => CollectionsService)) private collectionsService: CollectionsService,
 		@Inject(forwardRef(() => DiscountSalesService))
 		private salesService: DiscountSalesService,
 	) {
@@ -70,6 +73,7 @@ export class ProductsService {
 			productMedia: dto.productMedia,
 		});
 		await this.syncAttributes({ oldAttributes: oldProduct?.attributes || [], newAttributes: dto.attributes, product: product });
+		await this.syncCollections({ oldCollections: oldProduct?.collections || [], newCollections: dto.collectionIds, product: product });
 
 		return await this.getById({ id: product.id });
 	}
@@ -236,6 +240,32 @@ export class ProductsService {
 		for ( const assignedProductAttributeEntity of toUpdate ) {
 			const nAtt = newAttributes.find(nAtt => nAtt.productTypeAttributeId === assignedProductAttributeEntity.productTypeAttribute.id);
 			promises.push(this.syncValues({ oldValues: assignedProductAttributeEntity.values, newValues: nAtt.values, assignment: assignedProductAttributeEntity }));
+		}
+
+		await Promise.all(promises);
+	}
+
+
+	private async syncCollections(params: { oldCollections: CollectionProductsEntity[], newCollections: number[], product: ProductEntity }) {
+		const { oldCollections, newCollections, product } = params;
+		const oldIds = oldCollections.map(value => value.collection.id);
+		const toDelete = oldIds.filter(id => !newCollections.includes(id));
+		const toAdd = newCollections.filter(id => !oldIds.includes(id));
+		const promises: Promise<any>[] = [];
+		for ( const toDeleteElement of toDelete ) {
+			promises.push(this.collectionsService.removeProduct({
+				productId: product.id,
+				collectionId: toDeleteElement,
+			}));
+		}
+		for ( const toAddElement of toAdd ) {
+			promises.push(this.collectionsService.addProducts({
+				id: toAddElement,
+				dtos: [{
+					productId: product.id,
+					sortOrder: 0,
+				}],
+			}));
 		}
 
 		await Promise.all(promises);

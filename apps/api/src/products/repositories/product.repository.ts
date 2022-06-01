@@ -31,7 +31,7 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 
 	async findById(id: number): Promise<ProductEntity> {
 		return await this.findOne({
-			relations: ['productMedia', 'attributes', 'productType', 'category'],
+			relations: ['productMedia', 'attributes', 'productType', 'category', 'collections', 'collections.collection'],
 			where: {
 				id: id,
 			},
@@ -61,8 +61,10 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 		}
 
 		if ( collectionId ) {
-			caQb.leftJoin(CollectionProductsEntity, 'copr', `p.id = copr."productId"`)
-				.andWhere(`copr."collectionId" = :collectionId`, { collectionId: collectionId });
+			caQb.leftJoin(CollectionProductsEntity, 'collection', `collection."productId" = p.id`);
+			caQb.andWhere('collection."collectionId" IN (:...collectionIds)', {
+				collectionIds: [collectionId],
+			});
 		}
 
 		if ( filters && filters.length > 0 ) {
@@ -96,7 +98,9 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 					  .leftJoinAndSelect('att.productTypeAttribute', 'pta')
 					  .leftJoinAndSelect('pta.attribute', 'attr')
 					  .leftJoinAndSelect('p.productMedia', 'pmedia')
-					  .leftJoinAndSelect('pmedia.media', 'pmediaMedia');
+					  .leftJoinAndSelect('pmedia.media', 'pmediaMedia')
+					  .leftJoinAndSelect('p.collections', 'pcollections')
+					  .leftJoinAndSelect('pcollections.collection', 'pcollection');
 
 
 		if ( sorting ) {

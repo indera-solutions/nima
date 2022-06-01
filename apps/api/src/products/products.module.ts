@@ -2,6 +2,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AttributesModule } from '../attributes/attributes.module';
 import { CategoriesModule } from '../categories/categories.module';
+import { CollectionsModule } from '../collections/collections.module';
 import { DiscountsModule } from '../discounts/discounts.module';
 import { ProductTypesModule } from '../product-types/product-types.module';
 import {
@@ -58,7 +59,7 @@ const ProductsModuleRepositories = [
 ];
 
 @Module({
-	imports: [TypeOrmModule.forFeature(ProductsModuleRepositories), ProductTypesModule, AttributesModule, CategoriesModule, forwardRef(() => DiscountsModule)],
+	imports: [TypeOrmModule.forFeature(ProductsModuleRepositories), ProductTypesModule, AttributesModule, CategoriesModule, forwardRef(() => DiscountsModule), forwardRef(() => CollectionsModule)],
 	controllers: [ProductsController, ProductVariantController],
 	providers: [ProductsService, ProductVariantService, FilteringService],
 	exports: [ProductsService, ProductVariantService],

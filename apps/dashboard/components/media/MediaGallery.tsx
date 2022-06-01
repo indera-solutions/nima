@@ -11,7 +11,6 @@ interface MediaGalleryProps {
 
 
 export function MediaGallery(props: MediaGalleryProps & MediaListProps & AddNewMediaProps) {
-
 	const [display, setDisplay] = useState<'list' | 'add'>('list');
 
 	return (
