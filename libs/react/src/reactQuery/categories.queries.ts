@@ -17,6 +17,20 @@ export function useCategories() {
 }
 
 
+export function useFlatCategories() {
+	return useQuery<CategoryDto[]>(
+		NimaQueryCacheKeys.categories.flat(),
+		async () => {
+			const res = await categoriesSDK.categoriesFindAll({
+				depth: -1,
+			});
+			return res.data;
+		},
+		{},
+	);
+}
+
+
 export function useCategoryId(id?: number, options?: { refetchInterval: number | false }) {
 	return useQuery<CategoryDto>(
 		NimaQueryCacheKeys.categories.id(id),

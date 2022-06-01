@@ -1804,7 +1804,6 @@ export interface CreateSortableMediaDto {
 	 */
 	'mediaId': number;
 }
-
 /**
  *
  * @export
@@ -1818,7 +1817,6 @@ export interface DiscountSaleAddCategoriesDto {
 	 */
 	'categoryIds': Array<number>;
 }
-
 /**
  *
  * @export
@@ -1832,7 +1830,6 @@ export interface DiscountSaleAddCollectionsDto {
 	 */
 	'collectionIds': Array<number>;
 }
-
 /**
  *
  * @export
@@ -1846,7 +1843,6 @@ export interface DiscountSaleAddProductsDto {
 	 */
 	'productIds': Array<number>;
 }
-
 /**
  *
  * @export
@@ -1860,7 +1856,6 @@ export interface DiscountSaleAddVariantsDto {
 	 */
 	'variantIds': Array<number>;
 }
-
 /**
  *
  * @export
@@ -1952,7 +1947,6 @@ export interface DiscountSaleDto {
 	 */
 	'collections': Array<CollectionDto>;
 }
-
 /**
  *
  * @export
@@ -8480,7 +8474,7 @@ export const DiscountApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async discountSalesFindAll(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
+		async discountSalesFindAll(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<DiscountSaleDto>>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesFindAll(options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -8490,7 +8484,7 @@ export const DiscountApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async discountSalesFindOne(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<DiscountSaleDto>>> {
+		async discountSalesFindOne(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesFindOne(id, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -8623,7 +8617,7 @@ export const DiscountApiFactory = function (configuration?: Configuration, baseP
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesFindAll(options?: any): AxiosPromise<DiscountSaleDto> {
+		discountSalesFindAll(options?: any): AxiosPromise<Array<DiscountSaleDto>> {
 			return localVarFp.discountSalesFindAll(options).then((request) => request(axios, basePath));
 		},
 		/**
@@ -8632,7 +8626,7 @@ export const DiscountApiFactory = function (configuration?: Configuration, baseP
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesFindOne(id: number, options?: any): AxiosPromise<Array<DiscountSaleDto>> {
+		discountSalesFindOne(id: number, options?: any): AxiosPromise<DiscountSaleDto> {
 			return localVarFp.discountSalesFindOne(id, options).then((request) => request(axios, basePath));
 		},
 		/**

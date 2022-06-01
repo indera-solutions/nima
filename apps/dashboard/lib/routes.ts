@@ -10,6 +10,7 @@ const SETTINGS_INDEX = BASE + '/settings';
 const SHIPPING_INDEX = BASE + '/shipping';
 const ORDERS_INDEX = BASE + '/orders';
 const COLLECTIONS_INDEX = BASE + '/collections';
+const SALES_INDEX = BASE + '/sales';
 
 function appendQuery(q: any): string {
 	const str: string = queryString.stringify(q, {
@@ -38,6 +39,11 @@ export const NIMA_ROUTES = {
 		list: COLLECTIONS_INDEX,
 		add: (parentId?: string | number) => NIMA_ROUTES.collections.list + '/add' + appendQuery({ parentId }),
 		edit: (id: string | number, parentId?: string | number) => NIMA_ROUTES.collections.list + '/add' + appendQuery({ id, parentId }),
+	},
+	sales: {
+		list: SALES_INDEX,
+		add: (parentId?: string | number) => NIMA_ROUTES.sales.list + '/add' + appendQuery({ parentId }),
+		edit: (id: string | number, parentId?: string | number) => NIMA_ROUTES.sales.list + '/add' + appendQuery({ id, parentId }),
 	},
 	products: {
 		list: PRODUCTS_INDEX,

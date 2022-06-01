@@ -25,22 +25,12 @@ import {
 } from '../../components';
 import { NIMA_ROUTES } from '../../lib/routes';
 
-interface AddProductTypeProps {
+interface AddCollectionProps {
 
 }
 
-const defaultCategory = {
-	name: {},
-	slug: '',
-	metadata: {},
-	privateMetadata: {},
-	description: {},
-	parentId: undefined,
-	seoDescription: {},
-	seoTitle: {},
-};
 
-export default function AddCollection(props: AddProductTypeProps) {
+export default function AddCollection(props: AddCollectionProps) {
 	const router = useRouter();
 	const languages = useLanguages();
 	const id: number | undefined = router.query['id'] ? parseIdStr(router.query['id']) : undefined;
@@ -87,7 +77,7 @@ export default function AddCollection(props: AddProductTypeProps) {
 		if ( !isEditing ) {
 			try {
 				const createdCollection = await createCollectionMutation.mutateAsync({ createCollectionDto });
-				toast.success('Category Created!');
+				toast.success('Collection Created!');
 				await router.push(NIMA_ROUTES.collections.edit(createdCollection.id));
 			} catch ( e: any ) {
 				console.log(e);
