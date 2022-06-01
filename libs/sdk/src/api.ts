@@ -593,7 +593,6 @@ export interface CheckoutLineDto {
 	 */
 	'totalCost': number;
 }
-
 /**
  *
  * @export
@@ -661,7 +660,6 @@ export interface CollectionDto {
 	 */
 	'products': Array<CollectionProductsDto>;
 }
-
 /**
  *
  * @export
@@ -681,7 +679,6 @@ export interface CollectionProductsDto {
 	 */
 	'product': ProductDto;
 }
-
 /**
  *
  * @export
@@ -1027,7 +1024,6 @@ export interface CreateCheckoutDto {
 	 */
 	'languageCode': LanguageCode;
 }
-
 /**
  *
  * @export
@@ -1089,7 +1085,6 @@ export interface CreateCollectionDto {
 	 */
 	'backgroundImageId'?: number;
 }
-
 /**
  *
  * @export
@@ -1109,7 +1104,6 @@ export interface CreateCollectionProductDto {
 	 */
 	'sortOrder': number;
 }
-
 /**
  *
  * @export
@@ -1128,6 +1122,12 @@ export interface CreateDiscountSaleDto {
 	 * @memberof CreateDiscountSaleDto
 	 */
 	'discountType': DiscountType;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateDiscountSaleDto
+	 */
+	'discountValue': number;
 	/**
 	 *
 	 * @type {string}
@@ -1633,6 +1633,12 @@ export interface CreateProductVariantDto {
 	'trackInventory': boolean;
 	/**
 	 *
+	 * @type {number}
+	 * @memberof CreateProductVariantDto
+	 */
+	'discountedPrice': number;
+	/**
+	 *
 	 * @type {Array<CreateAssignedProductVariantAttributeDto>}
 	 * @memberof CreateProductVariantDto
 	 */
@@ -1798,6 +1804,155 @@ export interface CreateSortableMediaDto {
 	 */
 	'mediaId': number;
 }
+
+/**
+ *
+ * @export
+ * @interface DiscountSaleAddCategoriesDto
+ */
+export interface DiscountSaleAddCategoriesDto {
+	/**
+	 *
+	 * @type {Array<number>}
+	 * @memberof DiscountSaleAddCategoriesDto
+	 */
+	'categoryIds': Array<number>;
+}
+
+/**
+ *
+ * @export
+ * @interface DiscountSaleAddCollectionsDto
+ */
+export interface DiscountSaleAddCollectionsDto {
+	/**
+	 *
+	 * @type {Array<number>}
+	 * @memberof DiscountSaleAddCollectionsDto
+	 */
+	'collectionIds': Array<number>;
+}
+
+/**
+ *
+ * @export
+ * @interface DiscountSaleAddProductsDto
+ */
+export interface DiscountSaleAddProductsDto {
+	/**
+	 *
+	 * @type {Array<number>}
+	 * @memberof DiscountSaleAddProductsDto
+	 */
+	'productIds': Array<number>;
+}
+
+/**
+ *
+ * @export
+ * @interface DiscountSaleAddVariantsDto
+ */
+export interface DiscountSaleAddVariantsDto {
+	/**
+	 *
+	 * @type {Array<number>}
+	 * @memberof DiscountSaleAddVariantsDto
+	 */
+	'variantIds': Array<number>;
+}
+
+/**
+ *
+ * @export
+ * @interface DiscountSaleDto
+ */
+export interface DiscountSaleDto {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountSaleDto
+	 */
+	'id': number;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof DiscountSaleDto
+	 */
+	'name': TranslatableDto;
+	/**
+	 *
+	 * @type {DiscountType}
+	 * @memberof DiscountSaleDto
+	 */
+	'discountType': DiscountType;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountSaleDto
+	 */
+	'discountValue': number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof DiscountSaleDto
+	 */
+	'endDate'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof DiscountSaleDto
+	 */
+	'startDate'?: string;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof DiscountSaleDto
+	 */
+	'metadata': object;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof DiscountSaleDto
+	 */
+	'privateMetadata': object;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof DiscountSaleDto
+	 */
+	'created': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof DiscountSaleDto
+	 */
+	'updatedAt': string;
+	/**
+	 *
+	 * @type {Array<CategoryDto>}
+	 * @memberof DiscountSaleDto
+	 */
+	'categories': Array<CategoryDto>;
+	/**
+	 *
+	 * @type {Array<ProductDto>}
+	 * @memberof DiscountSaleDto
+	 */
+	'products': Array<ProductDto>;
+	/**
+	 *
+	 * @type {Array<ProductVariantDto>}
+	 * @memberof DiscountSaleDto
+	 */
+	'variants': Array<ProductVariantDto>;
+	/**
+	 *
+	 * @type {Array<CollectionDto>}
+	 * @memberof DiscountSaleDto
+	 */
+	'collections': Array<CollectionDto>;
+}
+
 /**
  *
  * @export
@@ -3025,6 +3180,12 @@ export interface ProductVariantDto {
 	'attributes': Array<ProductAttributeDto>;
 	/**
 	 *
+	 * @type {number}
+	 * @memberof ProductVariantDto
+	 */
+	'discountedPrice': number;
+	/**
+	 *
 	 * @type {Array<SortableMediaDto>}
 	 * @memberof ProductVariantDto
 	 */
@@ -3700,7 +3861,6 @@ export interface UpdateCheckoutVoucherDto {
 	 */
 	'voucherCode': string;
 }
-
 /**
  *
  * @export
@@ -3756,7 +3916,6 @@ export interface UpdateCollectionDto {
 	 */
 	'backgroundImageId'?: number;
 }
-
 /**
  *
  * @export
@@ -3775,6 +3934,12 @@ export interface UpdateDiscountDto {
 	 * @memberof UpdateDiscountDto
 	 */
 	'discountType'?: DiscountType;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateDiscountDto
+	 */
+	'discountValue'?: number;
 	/**
 	 *
 	 * @type {string}
@@ -7259,7 +7424,7 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
  * @export
  */
 export const CollectionsApiFp = function (configuration?: Configuration) {
-	const localVarAxiosParamCreator = CollectionsApiAxiosParamCreator(configuration)
+	const localVarAxiosParamCreator = CollectionsApiAxiosParamCreator(configuration);
 	return {
 		/**
 		 *
@@ -7333,7 +7498,7 @@ export const CollectionsApiFp = function (configuration?: Configuration) {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.collectionsUpdate(collectionId, updateCollectionDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
-	}
+	};
 };
 
 /**
@@ -7341,7 +7506,7 @@ export const CollectionsApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const CollectionsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = CollectionsApiFp(configuration)
+	const localVarFp = CollectionsApiFp(configuration);
 	return {
 		/**
 		 *
@@ -7422,14 +7587,14 @@ export interface CollectionsApiCollectionsAddProductsRequest {
 	 * @type {number}
 	 * @memberof CollectionsApiCollectionsAddProducts
 	 */
-	readonly collectionId: number
+	readonly collectionId: number;
 
 	/**
 	 *
 	 * @type {Array<CreateCollectionProductDto>}
 	 * @memberof CollectionsApiCollectionsAddProducts
 	 */
-	readonly createCollectionProductDto: Array<CreateCollectionProductDto>
+	readonly createCollectionProductDto: Array<CreateCollectionProductDto>;
 }
 
 /**
@@ -7443,7 +7608,7 @@ export interface CollectionsApiCollectionsCreateRequest {
 	 * @type {CreateCollectionDto}
 	 * @memberof CollectionsApiCollectionsCreate
 	 */
-	readonly createCollectionDto: CreateCollectionDto
+	readonly createCollectionDto: CreateCollectionDto;
 }
 
 /**
@@ -7457,7 +7622,7 @@ export interface CollectionsApiCollectionsFindOneRequest {
 	 * @type {number}
 	 * @memberof CollectionsApiCollectionsFindOne
 	 */
-	readonly collectionId: number
+	readonly collectionId: number;
 }
 
 /**
@@ -7471,7 +7636,7 @@ export interface CollectionsApiCollectionsRemoveRequest {
 	 * @type {number}
 	 * @memberof CollectionsApiCollectionsRemove
 	 */
-	readonly collectionId: number
+	readonly collectionId: number;
 }
 
 /**
@@ -7485,14 +7650,14 @@ export interface CollectionsApiCollectionsRemoveProductRequest {
 	 * @type {number}
 	 * @memberof CollectionsApiCollectionsRemoveProduct
 	 */
-	readonly collectionId: number
+	readonly collectionId: number;
 
 	/**
 	 *
 	 * @type {number}
 	 * @memberof CollectionsApiCollectionsRemoveProduct
 	 */
-	readonly productId: number
+	readonly productId: number;
 }
 
 /**
@@ -7506,14 +7671,14 @@ export interface CollectionsApiCollectionsUpdateRequest {
 	 * @type {number}
 	 * @memberof CollectionsApiCollectionsUpdate
 	 */
-	readonly collectionId: number
+	readonly collectionId: number;
 
 	/**
 	 *
 	 * @type {UpdateCollectionDto}
 	 * @memberof CollectionsApiCollectionsUpdate
 	 */
-	readonly updateCollectionDto: UpdateCollectionDto
+	readonly updateCollectionDto: UpdateCollectionDto;
 }
 
 /**
@@ -7788,6 +7953,158 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 	return {
 		/**
 		 *
+		 * @param {number} id
+		 * @param {DiscountSaleAddCategoriesDto} discountSaleAddCategoriesDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountSalesAddCategories: async (id: number, discountSaleAddCategoriesDto: DiscountSaleAddCategoriesDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountSalesAddCategories', 'id', id)
+			// verify required parameter 'discountSaleAddCategoriesDto' is not null or undefined
+			assertParamExists('discountSalesAddCategories', 'discountSaleAddCategoriesDto', discountSaleAddCategoriesDto)
+			const localVarPath = `/api/v1/discounts/{id}/categories`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(discountSaleAddCategoriesDto, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountSaleAddCollectionsDto} discountSaleAddCollectionsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountSalesAddCollections: async (id: number, discountSaleAddCollectionsDto: DiscountSaleAddCollectionsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountSalesAddCollections', 'id', id)
+			// verify required parameter 'discountSaleAddCollectionsDto' is not null or undefined
+			assertParamExists('discountSalesAddCollections', 'discountSaleAddCollectionsDto', discountSaleAddCollectionsDto)
+			const localVarPath = `/api/v1/discounts/{id}/collections`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(discountSaleAddCollectionsDto, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountSaleAddProductsDto} discountSaleAddProductsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountSalesAddProducts: async (id: number, discountSaleAddProductsDto: DiscountSaleAddProductsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountSalesAddProducts', 'id', id)
+			// verify required parameter 'discountSaleAddProductsDto' is not null or undefined
+			assertParamExists('discountSalesAddProducts', 'discountSaleAddProductsDto', discountSaleAddProductsDto)
+			const localVarPath = `/api/v1/discounts/{id}/products`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(discountSaleAddProductsDto, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountSaleAddVariantsDto} discountSaleAddVariantsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountSalesAddVariants: async (id: number, discountSaleAddVariantsDto: DiscountSaleAddVariantsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountSalesAddVariants', 'id', id)
+			// verify required parameter 'discountSaleAddVariantsDto' is not null or undefined
+			assertParamExists('discountSalesAddVariants', 'discountSaleAddVariantsDto', discountSaleAddVariantsDto)
+			const localVarPath = `/api/v1/discounts/{id}/variants`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(discountSaleAddVariantsDto, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
 		 * @param {CreateDiscountSaleDto} createDiscountSaleDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -7850,11 +8167,11 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesFindOne: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		discountSalesFindOne: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('discountSalesFindOne', 'id', id)
 			const localVarPath = `/api/v1/discounts/{id}`
@@ -7882,11 +8199,11 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesRemove: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		discountSalesRemove: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('discountSalesRemove', 'id', id)
 			const localVarPath = `/api/v1/discounts/{id}`
@@ -7914,12 +8231,156 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
+		 * @param {number} categoryId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountSalesRemoveCategory: async (id: number, categoryId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountSalesRemoveCategory', 'id', id)
+			// verify required parameter 'categoryId' is not null or undefined
+			assertParamExists('discountSalesRemoveCategory', 'categoryId', categoryId)
+			const localVarPath = `/api/v1/discounts/{id}/categories/{categoryId}`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)))
+				.replace(`{${ "categoryId" }}`, encodeURIComponent(String(categoryId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} collectionId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountSalesRemoveCollection: async (id: number, collectionId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountSalesRemoveCollection', 'id', id)
+			// verify required parameter 'collectionId' is not null or undefined
+			assertParamExists('discountSalesRemoveCollection', 'collectionId', collectionId)
+			const localVarPath = `/api/v1/discounts/{id}/collections/{collectionId}`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)))
+				.replace(`{${ "collectionId" }}`, encodeURIComponent(String(collectionId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} productId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountSalesRemoveProduct: async (id: number, productId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountSalesRemoveProduct', 'id', id)
+			// verify required parameter 'productId' is not null or undefined
+			assertParamExists('discountSalesRemoveProduct', 'productId', productId)
+			const localVarPath = `/api/v1/discounts/{id}/products/{productId}`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)))
+				.replace(`{${ "productId" }}`, encodeURIComponent(String(productId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} variantId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountSalesRemoveVariant: async (id: number, variantId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountSalesRemoveVariant', 'id', id)
+			// verify required parameter 'variantId' is not null or undefined
+			assertParamExists('discountSalesRemoveVariant', 'variantId', variantId)
+			const localVarPath = `/api/v1/discounts/{id}/variants/{variantId}`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)))
+				.replace(`{${ "variantId" }}`, encodeURIComponent(String(variantId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
 		 * @param {UpdateDiscountDto} updateDiscountDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesUpdate: async (id: string, updateDiscountDto: UpdateDiscountDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		discountSalesUpdate: async (id: number, updateDiscountDto: UpdateDiscountDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('discountSalesUpdate', 'id', id)
 			// verify required parameter 'updateDiscountDto' is not null or undefined
@@ -7962,11 +8423,55 @@ export const DiscountApiFp = function (configuration?: Configuration) {
 	return {
 		/**
 		 *
+		 * @param {number} id
+		 * @param {DiscountSaleAddCategoriesDto} discountSaleAddCategoriesDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountSalesAddCategories(id: number, discountSaleAddCategoriesDto: DiscountSaleAddCategoriesDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesAddCategories(id, discountSaleAddCategoriesDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountSaleAddCollectionsDto} discountSaleAddCollectionsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountSalesAddCollections(id: number, discountSaleAddCollectionsDto: DiscountSaleAddCollectionsDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesAddCollections(id, discountSaleAddCollectionsDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountSaleAddProductsDto} discountSaleAddProductsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountSalesAddProducts(id: number, discountSaleAddProductsDto: DiscountSaleAddProductsDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesAddProducts(id, discountSaleAddProductsDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountSaleAddVariantsDto} discountSaleAddVariantsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountSalesAddVariants(id: number, discountSaleAddVariantsDto: DiscountSaleAddVariantsDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesAddVariants(id, discountSaleAddVariantsDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
 		 * @param {CreateDiscountSaleDto} createDiscountSaleDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async discountSalesCreate(createDiscountSaleDto: CreateDiscountSaleDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async discountSalesCreate(createDiscountSaleDto: CreateDiscountSaleDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesCreate(createDiscountSaleDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -7975,38 +8480,82 @@ export const DiscountApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async discountSalesFindAll(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async discountSalesFindAll(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesFindAll(options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async discountSalesFindOne(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async discountSalesFindOne(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<DiscountSaleDto>>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesFindOne(id, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async discountSalesRemove(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async discountSalesRemove(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesRemove(id, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
+		 * @param {number} categoryId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountSalesRemoveCategory(id: number, categoryId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesRemoveCategory(id, categoryId, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} collectionId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountSalesRemoveCollection(id: number, collectionId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesRemoveCollection(id, collectionId, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} productId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountSalesRemoveProduct(id: number, productId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesRemoveProduct(id, productId, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} variantId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountSalesRemoveVariant(id: number, variantId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesRemoveVariant(id, variantId, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
 		 * @param {UpdateDiscountDto} updateDiscountDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async discountSalesUpdate(id: string, updateDiscountDto: UpdateDiscountDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async discountSalesUpdate(id: number, updateDiscountDto: UpdateDiscountDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesUpdate(id, updateDiscountDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -8022,11 +8571,51 @@ export const DiscountApiFactory = function (configuration?: Configuration, baseP
 	return {
 		/**
 		 *
+		 * @param {number} id
+		 * @param {DiscountSaleAddCategoriesDto} discountSaleAddCategoriesDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountSalesAddCategories(id: number, discountSaleAddCategoriesDto: DiscountSaleAddCategoriesDto, options?: any): AxiosPromise<DiscountSaleDto> {
+			return localVarFp.discountSalesAddCategories(id, discountSaleAddCategoriesDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountSaleAddCollectionsDto} discountSaleAddCollectionsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountSalesAddCollections(id: number, discountSaleAddCollectionsDto: DiscountSaleAddCollectionsDto, options?: any): AxiosPromise<DiscountSaleDto> {
+			return localVarFp.discountSalesAddCollections(id, discountSaleAddCollectionsDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountSaleAddProductsDto} discountSaleAddProductsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountSalesAddProducts(id: number, discountSaleAddProductsDto: DiscountSaleAddProductsDto, options?: any): AxiosPromise<DiscountSaleDto> {
+			return localVarFp.discountSalesAddProducts(id, discountSaleAddProductsDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountSaleAddVariantsDto} discountSaleAddVariantsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountSalesAddVariants(id: number, discountSaleAddVariantsDto: DiscountSaleAddVariantsDto, options?: any): AxiosPromise<DiscountSaleDto> {
+			return localVarFp.discountSalesAddVariants(id, discountSaleAddVariantsDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
 		 * @param {CreateDiscountSaleDto} createDiscountSaleDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesCreate(createDiscountSaleDto: CreateDiscountSaleDto, options?: any): AxiosPromise<void> {
+		discountSalesCreate(createDiscountSaleDto: CreateDiscountSaleDto, options?: any): AxiosPromise<DiscountSaleDto> {
 			return localVarFp.discountSalesCreate(createDiscountSaleDto, options).then((request) => request(axios, basePath));
 		},
 		/**
@@ -8034,39 +8623,163 @@ export const DiscountApiFactory = function (configuration?: Configuration, baseP
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesFindAll(options?: any): AxiosPromise<void> {
+		discountSalesFindAll(options?: any): AxiosPromise<DiscountSaleDto> {
 			return localVarFp.discountSalesFindAll(options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesFindOne(id: string, options?: any): AxiosPromise<void> {
+		discountSalesFindOne(id: number, options?: any): AxiosPromise<Array<DiscountSaleDto>> {
 			return localVarFp.discountSalesFindOne(id, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesRemove(id: string, options?: any): AxiosPromise<void> {
+		discountSalesRemove(id: number, options?: any): AxiosPromise<DiscountSaleDto> {
 			return localVarFp.discountSalesRemove(id, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
-		 * @param {string} id
+		 * @param {number} id
+		 * @param {number} categoryId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountSalesRemoveCategory(id: number, categoryId: number, options?: any): AxiosPromise<DiscountSaleDto> {
+			return localVarFp.discountSalesRemoveCategory(id, categoryId, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} collectionId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountSalesRemoveCollection(id: number, collectionId: number, options?: any): AxiosPromise<DiscountSaleDto> {
+			return localVarFp.discountSalesRemoveCollection(id, collectionId, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} productId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountSalesRemoveProduct(id: number, productId: number, options?: any): AxiosPromise<DiscountSaleDto> {
+			return localVarFp.discountSalesRemoveProduct(id, productId, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} variantId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountSalesRemoveVariant(id: number, variantId: number, options?: any): AxiosPromise<DiscountSaleDto> {
+			return localVarFp.discountSalesRemoveVariant(id, variantId, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
 		 * @param {UpdateDiscountDto} updateDiscountDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesUpdate(id: string, updateDiscountDto: UpdateDiscountDto, options?: any): AxiosPromise<void> {
+		discountSalesUpdate(id: number, updateDiscountDto: UpdateDiscountDto, options?: any): AxiosPromise<DiscountSaleDto> {
 			return localVarFp.discountSalesUpdate(id, updateDiscountDto, options).then((request) => request(axios, basePath));
 		},
 	};
 };
+
+/**
+ * Request parameters for discountSalesAddCategories operation in DiscountApi.
+ * @export
+ * @interface DiscountApiDiscountSalesAddCategoriesRequest
+ */
+export interface DiscountApiDiscountSalesAddCategoriesRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountApiDiscountSalesAddCategories
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {DiscountSaleAddCategoriesDto}
+	 * @memberof DiscountApiDiscountSalesAddCategories
+	 */
+	readonly discountSaleAddCategoriesDto: DiscountSaleAddCategoriesDto;
+}
+
+/**
+ * Request parameters for discountSalesAddCollections operation in DiscountApi.
+ * @export
+ * @interface DiscountApiDiscountSalesAddCollectionsRequest
+ */
+export interface DiscountApiDiscountSalesAddCollectionsRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountApiDiscountSalesAddCollections
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {DiscountSaleAddCollectionsDto}
+	 * @memberof DiscountApiDiscountSalesAddCollections
+	 */
+	readonly discountSaleAddCollectionsDto: DiscountSaleAddCollectionsDto;
+}
+
+/**
+ * Request parameters for discountSalesAddProducts operation in DiscountApi.
+ * @export
+ * @interface DiscountApiDiscountSalesAddProductsRequest
+ */
+export interface DiscountApiDiscountSalesAddProductsRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountApiDiscountSalesAddProducts
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {DiscountSaleAddProductsDto}
+	 * @memberof DiscountApiDiscountSalesAddProducts
+	 */
+	readonly discountSaleAddProductsDto: DiscountSaleAddProductsDto;
+}
+
+/**
+ * Request parameters for discountSalesAddVariants operation in DiscountApi.
+ * @export
+ * @interface DiscountApiDiscountSalesAddVariantsRequest
+ */
+export interface DiscountApiDiscountSalesAddVariantsRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountApiDiscountSalesAddVariants
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {DiscountSaleAddVariantsDto}
+	 * @memberof DiscountApiDiscountSalesAddVariants
+	 */
+	readonly discountSaleAddVariantsDto: DiscountSaleAddVariantsDto;
+}
 
 /**
  * Request parameters for discountSalesCreate operation in DiscountApi.
@@ -8090,10 +8803,10 @@ export interface DiscountApiDiscountSalesCreateRequest {
 export interface DiscountApiDiscountSalesFindOneRequest {
 	/**
 	 *
-	 * @type {string}
+	 * @type {number}
 	 * @memberof DiscountApiDiscountSalesFindOne
 	 */
-	readonly id: string;
+	readonly id: number;
 }
 
 /**
@@ -8104,10 +8817,94 @@ export interface DiscountApiDiscountSalesFindOneRequest {
 export interface DiscountApiDiscountSalesRemoveRequest {
 	/**
 	 *
-	 * @type {string}
+	 * @type {number}
 	 * @memberof DiscountApiDiscountSalesRemove
 	 */
-	readonly id: string;
+	readonly id: number;
+}
+
+/**
+ * Request parameters for discountSalesRemoveCategory operation in DiscountApi.
+ * @export
+ * @interface DiscountApiDiscountSalesRemoveCategoryRequest
+ */
+export interface DiscountApiDiscountSalesRemoveCategoryRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountApiDiscountSalesRemoveCategory
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountApiDiscountSalesRemoveCategory
+	 */
+	readonly categoryId: number;
+}
+
+/**
+ * Request parameters for discountSalesRemoveCollection operation in DiscountApi.
+ * @export
+ * @interface DiscountApiDiscountSalesRemoveCollectionRequest
+ */
+export interface DiscountApiDiscountSalesRemoveCollectionRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountApiDiscountSalesRemoveCollection
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountApiDiscountSalesRemoveCollection
+	 */
+	readonly collectionId: number;
+}
+
+/**
+ * Request parameters for discountSalesRemoveProduct operation in DiscountApi.
+ * @export
+ * @interface DiscountApiDiscountSalesRemoveProductRequest
+ */
+export interface DiscountApiDiscountSalesRemoveProductRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountApiDiscountSalesRemoveProduct
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountApiDiscountSalesRemoveProduct
+	 */
+	readonly productId: number;
+}
+
+/**
+ * Request parameters for discountSalesRemoveVariant operation in DiscountApi.
+ * @export
+ * @interface DiscountApiDiscountSalesRemoveVariantRequest
+ */
+export interface DiscountApiDiscountSalesRemoveVariantRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountApiDiscountSalesRemoveVariant
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountApiDiscountSalesRemoveVariant
+	 */
+	readonly variantId: number;
 }
 
 /**
@@ -8118,10 +8915,10 @@ export interface DiscountApiDiscountSalesRemoveRequest {
 export interface DiscountApiDiscountSalesUpdateRequest {
 	/**
 	 *
-	 * @type {string}
+	 * @type {number}
 	 * @memberof DiscountApiDiscountSalesUpdate
 	 */
-	readonly id: string;
+	readonly id: number;
 
 	/**
 	 *
@@ -8138,6 +8935,50 @@ export interface DiscountApiDiscountSalesUpdateRequest {
  * @extends {BaseAPI}
  */
 export class DiscountApi extends BaseAPI {
+	/**
+	 *
+	 * @param {DiscountApiDiscountSalesAddCategoriesRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof DiscountApi
+	 */
+	public discountSalesAddCategories(requestParameters: DiscountApiDiscountSalesAddCategoriesRequest, options?: AxiosRequestConfig) {
+		return DiscountApiFp(this.configuration).discountSalesAddCategories(requestParameters.id, requestParameters.discountSaleAddCategoriesDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {DiscountApiDiscountSalesAddCollectionsRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof DiscountApi
+	 */
+	public discountSalesAddCollections(requestParameters: DiscountApiDiscountSalesAddCollectionsRequest, options?: AxiosRequestConfig) {
+		return DiscountApiFp(this.configuration).discountSalesAddCollections(requestParameters.id, requestParameters.discountSaleAddCollectionsDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {DiscountApiDiscountSalesAddProductsRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof DiscountApi
+	 */
+	public discountSalesAddProducts(requestParameters: DiscountApiDiscountSalesAddProductsRequest, options?: AxiosRequestConfig) {
+		return DiscountApiFp(this.configuration).discountSalesAddProducts(requestParameters.id, requestParameters.discountSaleAddProductsDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {DiscountApiDiscountSalesAddVariantsRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof DiscountApi
+	 */
+	public discountSalesAddVariants(requestParameters: DiscountApiDiscountSalesAddVariantsRequest, options?: AxiosRequestConfig) {
+		return DiscountApiFp(this.configuration).discountSalesAddVariants(requestParameters.id, requestParameters.discountSaleAddVariantsDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
 	/**
 	 *
 	 * @param {DiscountApiDiscountSalesCreateRequest} requestParameters Request parameters.
@@ -8179,6 +9020,50 @@ export class DiscountApi extends BaseAPI {
 	 */
 	public discountSalesRemove(requestParameters: DiscountApiDiscountSalesRemoveRequest, options?: AxiosRequestConfig) {
 		return DiscountApiFp(this.configuration).discountSalesRemove(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {DiscountApiDiscountSalesRemoveCategoryRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof DiscountApi
+	 */
+	public discountSalesRemoveCategory(requestParameters: DiscountApiDiscountSalesRemoveCategoryRequest, options?: AxiosRequestConfig) {
+		return DiscountApiFp(this.configuration).discountSalesRemoveCategory(requestParameters.id, requestParameters.categoryId, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {DiscountApiDiscountSalesRemoveCollectionRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof DiscountApi
+	 */
+	public discountSalesRemoveCollection(requestParameters: DiscountApiDiscountSalesRemoveCollectionRequest, options?: AxiosRequestConfig) {
+		return DiscountApiFp(this.configuration).discountSalesRemoveCollection(requestParameters.id, requestParameters.collectionId, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {DiscountApiDiscountSalesRemoveProductRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof DiscountApi
+	 */
+	public discountSalesRemoveProduct(requestParameters: DiscountApiDiscountSalesRemoveProductRequest, options?: AxiosRequestConfig) {
+		return DiscountApiFp(this.configuration).discountSalesRemoveProduct(requestParameters.id, requestParameters.productId, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {DiscountApiDiscountSalesRemoveVariantRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof DiscountApi
+	 */
+	public discountSalesRemoveVariant(requestParameters: DiscountApiDiscountSalesRemoveVariantRequest, options?: AxiosRequestConfig) {
+		return DiscountApiFp(this.configuration).discountSalesRemoveVariant(requestParameters.id, requestParameters.variantId, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -11355,7 +12240,7 @@ export const ShippingApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const ShippingApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = ShippingApiFp(configuration);
+	const localVarFp = ShippingApiFp(configuration)
 	return {
 		/**
 		 *
