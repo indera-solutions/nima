@@ -1,23 +1,27 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { BasePaginatedRequest, PaginatedResults } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { AttributeValuesService } from '../attributes/attribute-values.service';
+import { SortableMediaDto } from '../core/dto/media.dto';
+import { DiscountSalesService } from '../discounts/discount-sales.service';
+import { DiscountType } from '../discounts/dto/discount.enum';
 import { ProductTypeVariantAttributesService } from '../product-types/product-type-variant-attributes.service';
-import { CreateAssignedProductVariantAttributeDto } from './dto/product-attribute-assignment.dto';
+import { CreateAssignedProductVariantAttributeDto, ProductAttributeDto } from './dto/product-attribute-assignment.dto';
 import { CreateAssignedProductVariantAttributeValueDto } from './dto/product-attribute-value-assignment.dto';
-import { CreateProductVariantDto } from './dto/product-variant.dto';
+import { CreateProductVariantDto, ProductVariantDto } from './dto/product-variant.dto';
 import { AssignedProductVariantAttributeEntity } from './entities/product-attribute-assignment.entity';
-import { AssignedProductVariantAttributeRepository } from './entities/product-attribute-assignment.repository';
 import { AssignedProductVariantAttributeValueEntity } from './entities/product-attribute-value-assignment.entity';
-import { AssignedProductVariantAttributeValueRepository } from './entities/product-attribute-value-assignment.repository';
-import { ProductVariantMediaRepository } from './entities/product-variant-media.repository';
 import { ProductVariantEntity } from './entities/product-variant.entity';
-import { ProductVariantRepository } from './entities/product-variant.repository';
 import { ProductsService } from './products.service';
+import { AssignedProductVariantAttributeRepository } from './repositories/product-attribute-assignment.repository';
+import { AssignedProductVariantAttributeValueRepository } from './repositories/product-attribute-value-assignment.repository';
+import { ProductVariantMediaRepository } from './repositories/product-variant-media.repository';
+import { ProductVariantRepository } from './repositories/product-variant.repository';
 
 @Injectable()
 export class ProductVariantService {
 	constructor(
+		@Inject(forwardRef(() => ProductsService))
 		private productsService: ProductsService,
 		private productVariantRepository: ProductVariantRepository,
 		private productTypeVariantAttributesService: ProductTypeVariantAttributesService,
@@ -25,13 +29,15 @@ export class ProductVariantService {
 		private assignedProductVariantAttributeValueRepository: AssignedProductVariantAttributeValueRepository,
 		private productVariantMediaRepository: ProductVariantMediaRepository,
 		private attributeValuesService: AttributeValuesService,
+		@Inject(forwardRef(() => DiscountSalesService))
+		private salesService: DiscountSalesService,
 	) {
 	}
 
-	save(params: { productId: number, dto: CreateProductVariantDto }): Promise<ProductVariantEntity>
-	save(params: { productId: number, dto: CreateProductVariantDto, id: number }): Promise<ProductVariantEntity>
+	save(params: { productId: number, dto: CreateProductVariantDto }): Promise<number>
+	save(params: { productId: number, dto: CreateProductVariantDto, id: number }): Promise<number>
 	@Transactional()
-	async save(params: { productId: number, dto: CreateProductVariantDto, id?: number }): Promise<ProductVariantEntity> {
+	async save(params: { productId: number, dto: CreateProductVariantDto, id?: number }): Promise<number> {
 		const { dto, id, productId } = params;
 		let variantId = undefined;
 		let oldVariant: ProductVariantEntity = undefined;
@@ -63,11 +69,15 @@ export class ProductVariantService {
 			});
 		}
 
-		return await this.getById({ id: variant.id });
+		return variant.id;
 	}
 
 	async findOfProduct(params: { productId: number }): Promise<ProductVariantEntity[]> {
 		return await this.productVariantRepository.findByProductId(params.productId);
+	}
+
+	async findIdsOfProduct(params: { productId: number }): Promise<number[]> {
+		return await this.productVariantRepository.findIdsByProductId(params.productId);
 	}
 
 	async findAll(): Promise<ProductVariantEntity[]> {
@@ -111,11 +121,67 @@ export class ProductVariantService {
 		return await this.productVariantRepository.findByIds(params.ids);
 	}
 
-	async remove(params: { id: number }): Promise<ProductVariantEntity> {
+	async remove(params: { id: number }): Promise<void> {
 		const { id } = params;
-		const product = await this.getById({ id: id });
 		await this.productVariantRepository.deleteById(id);
-		return product;
+	}
+
+	async getLowestPrices(ids?: number[]): Promise<{ id: number, lowestPrice: number }[]> {
+		let entities: ProductVariantEntity[];
+		if ( ids ) {
+			entities = await this.productVariantRepository.findByIds(ids);
+		} else {
+			entities = await this.productVariantRepository.find();
+		}
+		const res: { id: number, lowestPrice: number }[] = [];
+		const discountMap = await this.salesService.getVariantDiscountMap();
+		for ( const entity of entities ) {
+			const discounts = discountMap[entity.id];
+			const basePrice = entity.priceAmount || 0;
+			let lowestPrice = basePrice;
+			if ( discounts && discounts.length > 0 ) {
+				for ( const discount of discounts ) {
+					let temp = Number.MAX_SAFE_INTEGER;
+					if ( discount.discountType === DiscountType.PERCENTAGE ) {
+						temp = basePrice - (discount.discountValue * basePrice);
+					} else if ( discount.discountType === DiscountType.FLAT ) {
+						temp = Math.max(basePrice - discount.discountValue, 0);
+					}
+					if ( temp < lowestPrice ) lowestPrice = temp;
+				}
+			}
+			res.push({ id: entity.id, lowestPrice: lowestPrice });
+		}
+		return res;
+	}
+
+	async getDto(id: number, options?: { isAdmin?: boolean }): Promise<ProductVariantDto> {
+		const entity = await this.productVariantRepository.getFullObject(id);
+		const discountedPrice = await this.calculateDiscountedPrice(entity);
+		return {
+			id: entity.id,
+			name: entity.name,
+			created: entity.created,
+			currency: entity.currency,
+			weight: entity.weight,
+			metadata: entity.metadata,
+			privateMetadata: options?.isAdmin ? entity.privateMetadata : {},
+			updatedAt: entity.updatedAt,
+			attributes: entity.attributes.map(attr => ProductAttributeDto.prepareVariant(attr)),
+			sortOrder: entity.sortOrder,
+			productId: entity.productId,
+			costPriceAmount: entity.costPriceAmount,
+			isPreorder: entity.isPreorder,
+			preorderEndDate: entity.preorderEndDate,
+			preorderGlobalThreshold: entity.preorderGlobalThreshold,
+			priceAmount: entity.priceAmount,
+			sku: entity.sku,
+			quantityLimitPerCustomer: entity.quantityLimitPerCustomer,
+			stock: entity.stock,
+			trackInventory: entity.trackInventory,
+			productMedia: entity.productMedia.map(pm => SortableMediaDto.prepare(pm)),
+			discountedPrice: typeof discountedPrice === 'number' ? discountedPrice : undefined,
+		};
 	}
 
 	private async syncProductMedia(params: { productMedia: CreateProductVariantDto['productMedia'], oldProductMedia: ProductVariantEntity['productMedia'], variant: ProductVariantEntity }) {
@@ -172,7 +238,6 @@ export class ProductVariantService {
 
 		await Promise.all(promises);
 	}
-
 
 	private async syncAttributes(params: { oldAttributes: AssignedProductVariantAttributeEntity[], newAttributes: CreateAssignedProductVariantAttributeDto[], variant: ProductVariantEntity }) {
 		const { oldAttributes, newAttributes, variant } = params;
@@ -232,5 +297,27 @@ export class ProductVariantService {
 	private async createValue(dto: CreateAssignedProductVariantAttributeValueDto, assignment: AssignedProductVariantAttributeEntity) {
 		const value = await this.attributeValuesService.getById({ id: dto.valueId });
 		await this.assignedProductVariantAttributeValueRepository.save({ value: value, assignedProductVariantAttribute: assignment, sortOrder: dto.sortOrder });
+	}
+
+	private async calculateDiscountedPrice(entity: ProductVariantEntity): Promise<false | number> {
+		const variantId = entity.id;
+		const productId = entity.productId;
+		const categoryId = entity.product.category.id;
+		const collectionIds = entity.product.collections.map(c => c.id);
+		const basePrice = entity.priceAmount;
+		if ( !basePrice ) return false;
+		const discounts = await this.salesService.findDiscountsOfVariant({ variantId: variantId, productId: productId, categoryId: categoryId, collectionIds: collectionIds });
+		if ( !discounts || discounts.length === 0 ) return false;
+		let lowestPrice = basePrice;
+		for ( const discount of discounts ) {
+			let temp = Number.MAX_SAFE_INTEGER;
+			if ( discount.discountType === DiscountType.PERCENTAGE ) {
+				temp = basePrice - (discount.discountValue * basePrice);
+			} else if ( discount.discountType === DiscountType.FLAT ) {
+				temp = Math.max(basePrice - discount.discountValue, 0);
+			}
+			if ( temp < lowestPrice ) lowestPrice = temp;
+		}
+		return lowestPrice;
 	}
 }

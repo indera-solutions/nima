@@ -8,7 +8,7 @@ import { CategoriesModule, CategoriesModuleEntities } from './categories/categor
 import { CheckoutModule, CheckoutModuleEntities } from './checkout/checkout.module';
 import { CollectionsModule, CollectionsModuleEntities } from './collections/collections.module';
 import { CoreModule, CoreModuleEntities } from './core/core.module';
-import { DiscountsModule } from './discounts/discounts.module';
+import { DiscountsModule, DiscountsModuleEntities } from './discounts/discounts.module';
 import { OrderModule, OrderModuleEntities } from './order/order.module';
 import { PaymentsModule, PaymentsModuleEntities } from './payments/payments.module';
 import { ProductTypesModule, ProductTypesModuleEntities } from './product-types/product-types.module';
@@ -29,6 +29,7 @@ const ALL_ENTITIES = [
 	...PaymentsModuleEntities,
 	...ShippingModuleEntities,
 	...CollectionsModuleEntities,
+	...DiscountsModuleEntities,
 ];
 
 @Module({

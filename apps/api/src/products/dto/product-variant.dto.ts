@@ -9,6 +9,8 @@ export class ProductVariantDto extends OmitType(ProductVariantEntity, ['attribut
 	@IsArray()
 	attributes: ProductAttributeDto[];
 
+	@ApiProperty({ type: Number })
+	discountedPrice?: number;
 
 	@ApiProperty({ type: () => SortableMediaDto, isArray: true })
 	productMedia: SortableMediaDto[];

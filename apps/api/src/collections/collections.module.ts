@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CoreModule } from '../core/core.module';
 import { ProductsModule } from '../products/products.module';
@@ -10,9 +10,10 @@ import { CollectionProductsRepository } from './repositories/collection-products
 import { CollectionRepository } from './repositories/collection.repository';
 
 @Module({
-	imports: [TypeOrmModule.forFeature([CollectionRepository, CollectionProductsRepository]), ProductsModule, CoreModule],
+	imports: [TypeOrmModule.forFeature([CollectionRepository, CollectionProductsRepository]), forwardRef(() => ProductsModule), CoreModule],
 	controllers: [CollectionsController],
 	providers: [CollectionsService],
+	exports: [CollectionsService],
 })
 export class CollectionsModule {
 }

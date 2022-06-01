@@ -2,17 +2,18 @@ import { LanguageCode } from '@nima-cms/utils';
 import { EntityRepository, In } from 'typeorm';
 import { BaseRepository } from 'typeorm-transactional-cls-hooked';
 import { AttributeValueEntity } from '../../attributes/entities/attribute-value.entity';
+import { CollectionProductsEntity } from '../../collections/entities/collection-products.entity';
 import { ProductQueryFilterDto, ProductSorting } from '../dto/product-filtering.dto';
 import {
 	AssignedProductAttributeEntity,
 	AssignedProductVariantAttributeEntity,
-} from './product-attribute-assignment.entity';
+} from '../entities/product-attribute-assignment.entity';
 import {
 	AssignedProductAttributeValueEntity,
 	AssignedProductVariantAttributeValueEntity,
-} from './product-attribute-value-assignment.entity';
-import { ProductVariantEntity } from './product-variant.entity';
-import { ProductEntity } from './product.entity';
+} from '../entities/product-attribute-value-assignment.entity';
+import { ProductVariantEntity } from '../entities/product-variant.entity';
+import { ProductEntity } from '../entities/product.entity';
 
 @EntityRepository(ProductEntity)
 export class ProductRepository extends BaseRepository<ProductEntity> {
@@ -43,12 +44,11 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 		});
 	}
 
-	async findFilteredProductIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string): Promise<{ id: number, price: number }[]> {
+	async findFilteredProductIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string): Promise<number[]> {
 		const caQb = this.createQueryBuilder('p')
 						 .select('p.id', 'id')
-						 .addSelect('p."minPrice"', 'price')
 						 .distinctOn(['p.id'])
-						 .where('p.id IS NOT NULL');
+						 .where('p."isPublished" = true');
 		if ( search ) {
 			const query = `'"${ search.trim().replace(' ', '+') }":*'`;
 			caQb.andWhere(`to_tsvector(pp.searchDocument) @@ to_tsquery(${ query })`);
@@ -61,7 +61,8 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 		}
 
 		if ( collectionId ) {
-			//TODO: Collection Handling
+			caQb.leftJoin(CollectionProductsEntity, 'copr', `p.id = copr."productId"`)
+				.andWhere(`copr."collectionId" = :collectionId`, { collectionId: collectionId });
 		}
 
 		if ( filters && filters.length > 0 ) {
@@ -81,7 +82,7 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 		}
 
 		const res = await caQb.getRawMany();
-		return res.map(r => ({ id: Number(r.id), price: Number(r.price) }));
+		return res.map(r => (Number(r.id)));
 	}
 
 	async findByIdsWithSorting(ids: number[], skip?: number, take?: number, sorting?: ProductSorting, language: LanguageCode = LanguageCode.en): Promise<ProductEntity[]> {
@@ -130,5 +131,12 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 			},
 			loadEagerRelations: false,
 		});
+	}
+
+	async findAllIds() {
+		const res = await this.find({
+			select: ['id'],
+		});
+		return res.map(p => p.id);
 	}
 }

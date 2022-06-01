@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Metadata, Translatable } from '@nima-cms/utils';
+import { IsEnum, IsISO8601, IsNumber, IsObject, IsOptional } from 'class-validator';
 import {
 	Column,
 	CreateDateColumn,
@@ -9,10 +10,10 @@ import {
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
-import { CategoryDto } from '../../categories/dto/category.dto';
 import { CategoryEntity } from '../../categories/entities/category.entity';
+import { CollectionEntity } from '../../collections/entities/collection.entity';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
-import { ProductDto } from '../../products/dto/product.dto';
+import { ProductVariantEntity } from '../../products/entities/product-variant.entity';
 import { ProductEntity } from '../../products/entities/product.entity';
 import { DiscountType } from '../dto/discount.enum';
 
@@ -24,26 +25,41 @@ export class DiscountSaleEntity {
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: TranslatableDto, example: { en: 'Discount Sale Name' } })
+	@IsObject()
 	name: Translatable;
 
 	@Column({ type: 'enum', enum: DiscountType })
 	@ApiProperty({ enum: DiscountType, enumName: 'DiscountType' })
+	@IsEnum(DiscountType)
 	discountType: DiscountType;
+
+	@Column({ type: Number })
+	@ApiProperty({ type: Number })
+	@IsNumber()
+	discountValue: number;
 
 	@Column({ type: String, nullable: true })
 	@ApiProperty({ type: String, example: '2022-12-31', required: false })
+	@IsISO8601()
+	@IsOptional()
 	endDate?: string;
 
 	@Column({ type: String, nullable: true })
 	@ApiProperty({ type: String, example: '2022-01-01', required: false })
+	@IsISO8601()
+	@IsOptional()
 	startDate?: string;
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: Object, example: {} })
+	@IsObject()
+	@IsOptional()
 	metadata: Metadata;
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: Object, example: {} })
+	@IsObject()
+	@IsOptional()
 	privateMetadata: Metadata;
 
 	@CreateDateColumn({ type: String })
@@ -56,12 +72,17 @@ export class DiscountSaleEntity {
 
 	@ManyToMany(() => CategoryEntity)
 	@JoinTable({ name: 'discounts_discount_sale_categories' })
-	@ApiProperty({ type: [CategoryDto] })
-	categories: CategoryDto[];
+	categories: CategoryEntity[];
 
 	@ManyToMany(() => ProductEntity)
 	@JoinTable({ name: 'discounts_discount_sale_products' })
-	@ApiProperty({ type: [ProductDto] })
-	products: ProductDto[];
+	products: ProductEntity[];
 
+	@ManyToMany(() => ProductVariantEntity)
+	@JoinTable({ name: 'discounts_discount_sale_variants' })
+	variants: ProductVariantEntity[];
+
+	@ManyToMany(() => CollectionEntity)
+	@JoinTable({ name: 'discounts_discount_sale_collections' })
+	collections: CollectionEntity[];
 }
