@@ -1,4 +1,5 @@
+import { AuthEmails } from './auth';
 import { CommerceEmails } from './commerce';
 
-export const Emails = { ...CommerceEmails };
-export type Emails = CommerceEmails
+export const Emails = { ...CommerceEmails, ...AuthEmails };
+export type Emails = CommerceEmails | AuthEmails

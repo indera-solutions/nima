@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { LanguageCode } from '@nima-cms/utils';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { Events } from '../events';
@@ -11,6 +12,7 @@ import {
 	SuccessLoginResponse,
 	UpdateUserPasswordDto,
 } from '../users/dto/user.dto';
+import { UserEntity } from '../users/entities/user.entity';
 import { UserRepository } from '../users/entities/user.repository';
 import { UsersService } from '../users/users.service';
 import { AuthActionEntity, AuthActionType } from './entities/AuthAction.entity';
@@ -73,12 +75,12 @@ export class AuthService {
 	async requestPasswordReset(params: { passwordChangeDto: RequestUserPasswordChangeDto }) {
 		const { passwordChangeDto } = params;
 		const user = await this.userService.getByEmail({ email: passwordChangeDto.email });
-		const res = await this.authActionEntityRepository.save({ user: user, actionType: AuthActionType.RESET_PASSWORD, hasLoggedInSince: false });
+		const authAction = await this.authActionEntityRepository.save({ user: user, actionType: AuthActionType.RESET_PASSWORD, hasLoggedInSince: false });
 		//TODO: Send email with link to reset password
-		console.log(res);
-		this.eventEmitter.emit(Events.TEST, { test: 'test' });
+		const payload: { user: UserEntity, authAction: AuthActionEntity, language: LanguageCode } = { authAction: authAction, user: user, language: user.languageCode };
+		this.eventEmitter.emit(Events.PASSWORD.RESET_REQUESTED, payload);
 		//temporary return to see token
-		return res;
+		return authAction;
 	}
 
 	async resetPassword(params: { token: string, dto: UpdateUserPasswordDto }) {

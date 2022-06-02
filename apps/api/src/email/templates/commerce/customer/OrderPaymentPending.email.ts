@@ -1,6 +1,6 @@
 import { LanguageCode } from '@nima-cms/utils';
-import { BaseEmailParams, NimaEmail } from '../BaseEmail';
-import { BaseCommerceEmail, CommerceEmailOrderDetails } from './BaseCommerceEmail';
+import { BaseEmailParams, NimaEmail } from '../../BaseEmail';
+import { BaseCommerceEmail, CommerceEmailOrderDetails } from '../BaseCommerceEmail';
 
 export interface OrderPaymentPendingEmailTemplateOptions extends BaseEmailParams {
 	orderDetails: CommerceEmailOrderDetails;

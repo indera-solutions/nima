@@ -1,7 +1,7 @@
 import { LanguageCode } from '@nima-cms/utils';
-import { UserEntity } from '../../../users/entities/user.entity';
-import { BaseEmailParams, NimaEmail } from '../BaseEmail';
-import { BaseCommerceEmail, CommerceEmailOrderDetails } from './BaseCommerceEmail';
+import { UserEntity } from '../../../../users/entities/user.entity';
+import { BaseEmailParams, NimaEmail } from '../../BaseEmail';
+import { BaseCommerceEmail, CommerceEmailOrderDetails } from '../BaseCommerceEmail';
 
 export interface OrderDetailsEmailTemplateOptions extends BaseEmailParams {
 	companyName: string;

@@ -4,7 +4,6 @@ const mjml2html = require('mjml');
 
 
 export interface BaseEmailParams {
-	recipient: string;
 }
 
 export interface BaseAdminEmailParams {
@@ -14,6 +13,13 @@ export interface NimaEmail {
 	body: string;
 	html?: string;
 	subject: string;
+}
+
+export function isNimaEmail(obj: unknown): obj is NimaEmail {
+	const objKeys = Object.keys(obj);
+	const notProperKeys = objKeys.filter(key => !['body', 'html', 'subject'].includes(key));
+	const hasMandatoryFields = obj['body'] && obj['subject'];
+	return hasMandatoryFields && notProperKeys.length === 0;
 }
 
 export abstract class BaseEmail {
