@@ -23,7 +23,7 @@ export class ProductVariantRepository extends BaseRepository<ProductVariantEntit
 			where: {
 				id: variantId,
 			},
-			relations: ['product', 'product.category', 'product.collections'],
+			relations: ['product', 'product.category', 'product.collections', 'product.collections.collection'],
 		});
 	}
 

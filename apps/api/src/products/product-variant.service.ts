@@ -308,7 +308,7 @@ export class ProductVariantService {
 		const variantId = entity.id;
 		const productId = entity.productId;
 		const categoryId = entity.product.category.id;
-		const collectionIds = entity.product.collections.map(c => c.id);
+		const collectionIds = entity.product.collections.map(c => c.collection.id);
 		const basePrice = entity.priceAmount;
 		if ( !basePrice ) return false;
 		const discounts = await this.salesService.findDiscountsOfVariant({ variantId: variantId, productId: productId, categoryId: categoryId, collectionIds: collectionIds });
@@ -317,7 +317,7 @@ export class ProductVariantService {
 		for ( const discount of discounts ) {
 			let temp = Number.MAX_SAFE_INTEGER;
 			if ( discount.discountType === DiscountType.PERCENTAGE ) {
-				temp = basePrice - (discount.discountValue * basePrice);
+				temp = basePrice - (discount.discountValue * basePrice / 100);
 			} else if ( discount.discountType === DiscountType.FLAT ) {
 				temp = Math.max(basePrice - discount.discountValue, 0);
 			}

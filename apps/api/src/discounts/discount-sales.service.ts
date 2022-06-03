@@ -72,7 +72,6 @@ export class DiscountSalesService {
 				discounts.push(discount);
 			}
 		}
-
 		return discounts;
 	}
 

@@ -90,16 +90,13 @@ export class CheckoutService {
 		const { dto, token } = params;
 		const co = await this.findOne({ token: token });
 		const variant = await this.variantService.getByIdWithoutEager({ id: dto.variantId });
-		const existingLine = co.lines.find(line => line.variantId === dto.variantId);
-		if ( existingLine ) await this.checkoutLineRepository.increment({ checkout: { token: token }, variant: { id: dto.variantId } }, 'quantity', dto.quantity);
-		else if ( dto.quantity > 0 ) await this.checkoutLineRepository.save({ checkout: co, variant: variant, quantity: dto.quantity, product: { id: variant.productId } });
-		else if ( dto.quantity <= 0 ) await this.checkoutLineRepository.deleteByVariantAndToken(dto.variantId, token);
+		if ( dto.quantity > 0 ) await this.checkoutLineRepository.save({ checkout: co, variant: variant, quantity: dto.quantity, product: { id: variant.productId } });
+		if ( dto.quantity <= 0 ) await this.checkoutLineRepository.deleteByVariantAndToken(dto.variantId, token);
 	}
 
 	async updateAddress(params: { token: string, dto: AddressDto, billing?: boolean, shipping?: boolean }): Promise<void> {
 		const { dto, token } = params;
 		let { billing, shipping } = params;
-		console.log(params);
 		const co = await this.checkoutRepository.findOne({
 			where: {
 				token,
@@ -154,7 +151,7 @@ export class CheckoutService {
 			if ( !line.variant ) throw new Error('MISSING_VARIANT');
 			const minPrice = minPrices.find(value => value.id === line.variantId);
 			const totalCost = line.quantity * line.variant.priceAmount;
-			const discountedTotalCost = minPrice.sale ? line.quantity * minPrice.lowestPrice : undefined;
+			const discountedTotalCost = line.quantity * (minPrice.sale ? minPrice.lowestPrice : minPrice.basePrice);
 			discounts.push(totalCost - discountedTotalCost);
 			weight += line.variant.weight || 0;
 			return {
@@ -177,7 +174,6 @@ export class CheckoutService {
 		if ( entity.shippingAddress ) {
 
 			const validMethods = await this.shippingService.getValidMethodsOfAddress(entity.shippingAddress, weight, subtotalPrice);
-			console.log(validMethods);
 			for ( const validMethod of validMethods ) {
 				const shippingMethod = ShippingMethodDto.prepare(validMethod);
 				const rate = ShippingMethodDto.calculateCost(shippingMethod);

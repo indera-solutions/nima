@@ -77,7 +77,7 @@ export default function Variants(props: VariantsProps) {
 
 	useEffect(() => {
 		if ( !existingVariation ) return;
-		const { id, attributes, updatedAt, productMedia, created, ...rest } = existingVariation;
+		const { id, attributes, updatedAt, productMedia, discountedPrice, created, ...rest } = existingVariation;
 		delete rest['productId'];
 
 		setCreateProductVariation({

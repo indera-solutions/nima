@@ -20,7 +20,7 @@ export class ShippingMethodDto extends OmitType(ShippingMethodEntity, ['shipping
 	}
 
 	static calculateCost(method: ShippingMethodDto): number {
-		if ( !method.shippingZones ) return 0;
+		if ( !method?.shippingZones ) return 0;
 		return method.shippingZones[0]?.shippingRates[0]?.rate || 0;
 	}
 }
