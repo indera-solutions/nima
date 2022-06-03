@@ -1,8 +1,9 @@
-import { Body, Controller, Post, Query, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiProperty, ApiQuery } from '@nestjs/swagger';
+import { Body, Controller, Post, Query } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { ApiProperty, ApiQuery } from '@nestjs/swagger';
 import { IsPublic, User } from '../auth/auth.decorator';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CommerceEmails } from '../email/templates/commerce';
+import { Events } from '../events';
 import { CoreService } from './core.service';
 
 class TestDto {
@@ -12,7 +13,10 @@ class TestDto {
 
 @Controller('core')
 export class CoreController {
-	constructor(private readonly coreService: CoreService) {
+	constructor(
+		private readonly coreService: CoreService,
+		private eventEmitter: EventEmitter2,
+	) {
 	}
 
 	@Post('/test2')
@@ -22,12 +26,9 @@ export class CoreController {
 	}
 
 	@Post('/test')
-	@ApiBearerAuth()
 	@IsPublic()
-	@UseGuards(JwtAuthGuard)
 	test(@Body() dto: any, @User() user?: any) {
-		console.log(user);
-		console.log(dto);
+		this.eventEmitter.emit(Events.TEST);
 		return 'Hello!';
 	}
 }

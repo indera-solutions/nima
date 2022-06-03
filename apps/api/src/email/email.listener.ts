@@ -1,9 +1,8 @@
 import { HttpService } from '@nestjs/axios';
 import { Controller } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { LanguageCode } from '@nima-cms/utils';
+import { LanguageCode, observableToPromise } from '@nima-cms/utils';
 import { AuthActionEntity } from '../auth/entities/AuthAction.entity';
-import { EmailWebhooksDto } from '../core/entities/settings.entity';
 import { SettingsService } from '../core/settings/settings.service';
 import { Events } from '../events';
 import { UserEntity } from '../users/entities/user.entity';
@@ -30,37 +29,26 @@ export class EmailListener {
 			link: 'http://localhost:3333/docs/#/Authentication/Auth_resetPassword',
 		};
 		const webhook = settings.emailWebhooks.find(setting => setting.emailType === Emails.RESET_PASSWORD);
-		const template: NimaEmail = (new ResetPasswordEmail()).getTemplate(payload.language, params);
-		await this.sendTemplateOrExternal(payload.user.email, template, payload, webhook);
+		let template: NimaEmail;
+		if ( webhook ) {
+			const res = await observableToPromise(this.httpService.post(webhook.webhook, payload));
+			if ( isNimaEmail(res.data) ) template = res.data;
+			else throw new Error('RESULT_IS_NOT_NIMA_EMAIL_TEMPLATE');
+
+		} else template = (new ResetPasswordEmail()).getTemplate(payload.language, params);
+		await this.service.sendEmail(template, payload.user.email);
 	}
 
 	@OnEvent(Events.TEST)
 	async test(payload: any) {
 		const settings = await this.settingsService.getSettings();
-		const webhook = settings.emailWebhooks.find(setting => setting.emailType === Emails.BASE_COMMERCE);
+		const webhook = settings.emailWebhooks.find(setting => setting.emailType === Emails.RESET_PASSWORD);
 		if ( webhook ) {
-			let test = undefined;
-			this.httpService.post(webhook.webhook, payload).subscribe({
-				next: value => {
-					console.log(value.status);
-					test = value.data;
-					console.log(test);
-				}, error: console.error, complete: console.info,
-			});
-		}
-		console.dir(payload, { depth: 10 });
-	}
-
-	private async sendTemplateOrExternal(recipient: string, template: NimaEmail, payload: any, webhook?: EmailWebhooksDto) {
-		if ( webhook ) {
-			this.httpService.post(webhook.webhook, payload).subscribe({
-				next: value => {
-					if ( isNimaEmail(value.data) )
-						this.service.sendEmail(value.data, recipient);
-				}, error: console.error, complete: console.info,
-			});
+			const obs = this.httpService.post(webhook.webhook, payload);
+			const res = await observableToPromise(obs);
+			// console.log(res);
 		} else {
-			await this.service.sendEmail(template, recipient);
+			console.log('no webhook found');
 		}
 	}
 }
