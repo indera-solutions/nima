@@ -1,46 +1,42 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { IsStaff } from '../auth/auth.decorator';
 import { RegisterUserDto, UpdateUserDto } from './dto/user.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
 @ApiTags('Users')
+@ApiBearerAuth()
 export class UsersController {
 	constructor(private readonly usersService: UsersService) {
 	}
 
 	@Post()
-	@UseGuards(JwtAuthGuard)
-	@ApiBearerAuth()
+	@IsStaff()
 	create(@Body() createUserDto: RegisterUserDto) {
 		return this.usersService.create({ registerUserDto: createUserDto });
 	}
 
 	@Get()
-	@UseGuards(JwtAuthGuard)
-	@ApiBearerAuth()
+	@IsStaff()
 	findAll() {
 		return this.usersService.findAll();
 	}
 
 	@Get(':id')
-	@UseGuards(JwtAuthGuard)
-	@ApiBearerAuth()
+	@IsStaff()
 	findOne(@Param('id', ParseIntPipe) id: number) {
 		return this.usersService.getById({ id: id });
 	}
 
 	@Patch(':id')
-	@UseGuards(JwtAuthGuard)
-	@ApiBearerAuth()
+	@IsStaff()
 	update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
 		return this.usersService.update({ id, updateUserDto });
 	}
 
 	@Delete(':id')
-	@UseGuards(JwtAuthGuard)
-	@ApiBearerAuth()
+	@IsStaff()
 	remove(@Param('id', ParseIntPipe) id: number) {
 		return this.usersService.remove({ id: id });
 	}

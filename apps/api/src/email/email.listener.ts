@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Controller } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { LanguageCode, observableToPromise } from '@nima-cms/utils';
 import { AuthActionEntity } from '../auth/entities/AuthAction.entity';
@@ -11,7 +11,7 @@ import { Emails } from './templates';
 import { ResetPasswordEmail, ResetPasswordEmailParams } from './templates/auth/customer';
 import { isNimaEmail, NimaEmail } from './templates/BaseEmail';
 
-@Controller('email')
+@Injectable()
 export class EmailListener {
 	constructor(
 		private service: EmailService,

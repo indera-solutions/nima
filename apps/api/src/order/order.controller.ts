@@ -1,5 +1,14 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
-import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+	ApiBearerAuth,
+	ApiBody,
+	ApiCreatedResponse,
+	ApiOkResponse,
+	ApiParam,
+	ApiQuery,
+	ApiTags,
+} from '@nestjs/swagger';
+import { IsPublic, IsStaff } from '../auth/auth.decorator';
 import {
 	CreateOrderDto,
 	CreateOrderFromCheckoutDto,
@@ -12,6 +21,7 @@ import { OrderService } from './order.service';
 
 @Controller('order')
 @ApiTags('Orders')
+@ApiBearerAuth()
 export class OrderController {
 	constructor(private readonly orderService: OrderService) {
 	}
@@ -19,6 +29,7 @@ export class OrderController {
 	@Post()
 	@ApiCreatedResponse({ type: OrderDto })
 	@ApiBody({ type: CreateOrderDto })
+	@IsStaff()
 	create(@Body() createOrderDto: CreateOrderDto): Promise<OrderDto> {
 		return this.orderService.create({ createOrderDto });
 	}
@@ -34,6 +45,7 @@ export class OrderController {
 	@ApiQuery({ type: Number, required: false, name: 'page' })
 	@ApiQuery({ type: Number, required: false, name: 'itemsPerPage' })
 	@ApiOkResponse({ type: OrderListPaginated })
+	@IsStaff()
 	async findAll(@Query('page') page?: number, @Query('itemsPerPage') itemsPerPage?: number): Promise<OrderListPaginated> {
 		const res = await this.orderService.findAll({ page, itemsPerPage });
 		return {
@@ -48,6 +60,7 @@ export class OrderController {
 	@Get(':id')
 	@ApiOkResponse({ type: OrderDto })
 	@ApiParam({ type: Number, name: 'id' })
+	@IsPublic()
 	async findOne(@Param('id', ParseIntPipe) id: number) {
 		const res = await this.orderService.findOne({ id });
 		return OrderDto.prepare(res);
@@ -56,6 +69,7 @@ export class OrderController {
 	@Patch(':id')
 	@ApiCreatedResponse({ type: OrderDto })
 	@ApiParam({ type: Number, name: 'id' })
+	@IsStaff()
 	update(@Param('id', ParseIntPipe) id: number, @Body() updateOrderDto: UpdateOrderDto) {
 		return this.orderService.update({ id, updateOrderDto });
 	}
@@ -72,6 +86,7 @@ export class OrderController {
 	@Delete(':id')
 	@ApiOkResponse({ type: OrderDto })
 	@ApiParam({ type: Number, name: 'id' })
+	@IsStaff()
 	remove(@Param('id', ParseIntPipe) id: number) {
 		return this.orderService.remove({ id });
 	}
