@@ -52,8 +52,6 @@ export default function Variants(props: VariantsProps) {
 			attributes: [],
 			currency: 'EUR',
 			metadata: {},
-			costPriceAmount: 0,
-			isPreorder: false,
 			sku: '',
 			stock: 0,
 			trackInventory: false,

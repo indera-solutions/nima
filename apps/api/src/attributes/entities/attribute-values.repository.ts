@@ -49,6 +49,7 @@ export class AttributeValuesRepository extends Repository<AttributeValueEntity> 
 							  .addGroupBy('a.slug')
 							  .addGroupBy('av.id')
 							  .addGroupBy('av.slug')
+							  .andWhere('a.filterableInStorefront = true')
 							  .getRawMany();
 		return res.map(r => ({ aId: r.a_id, aSlug: r.a_slug, avSlug: r.av_slug, avId: r.av_id, count: r.count }));
 	}

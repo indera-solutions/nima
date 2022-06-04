@@ -144,15 +144,16 @@ export class CheckoutService {
 
 		let weight = 0;
 
-		const minPrices = await this.variantService.getLowestPrices(entity.lines.map(line => line.variantId));
 		const discounts: number[] = [];
 
 		const lines: CheckoutLineDto[] = entity.lines.map(line => {
 			if ( !line.variant ) throw new Error('MISSING_VARIANT');
-			const minPrice = minPrices.find(value => value.id === line.variantId);
-			const totalCost = line.quantity * line.variant.priceAmount;
-			const discountedTotalCost = line.quantity * (minPrice.sale ? minPrice.lowestPrice : minPrice.basePrice);
-			discounts.push(totalCost - discountedTotalCost);
+			const totalCost = line.quantity * (line.variant.discountedPrice || line.variant.priceAmount);
+			let discountedTotalCost;
+			if ( line.variant.discountedPrice ) {
+				discountedTotalCost = line.quantity * line.variant.discountedPrice;
+				// discounts.push(totalCost - discountedTotalCost);
+			}
 			weight += line.variant.weight || 0;
 			return {
 				quantity: line.quantity,

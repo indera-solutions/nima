@@ -64,15 +64,16 @@ export class FilteringService {
 			if ( result.length === 0 )
 				return emptyRes;
 
-			const lowestPrices = await this.productService.getLowestPrices(result);
+			// const lowestPrices = await this.productService.getLowestPrices(result);
 
-			for ( const lowestPrice of lowestPrices ) {
+			for ( const product of result ) {
 				let underMax = true, overMin = true;
-				if ( params.maxPrice ) underMax = lowestPrice.lowestPrice <= params.maxPrice;
-				if ( params.minPrice ) overMin = lowestPrice.lowestPrice >= params.minPrice;
-				if ( underMax && overMin ) ids.push(lowestPrice.id);
-				if ( lowestPrice.lowestPrice < minPrice ) minPrice = lowestPrice.lowestPrice;
-				if ( lowestPrice.lowestPrice > maxPrice ) maxPrice = lowestPrice.lowestPrice;
+				const lowestPrice = product.discountedPrice || product.priceAmount;
+				if ( params.maxPrice ) underMax = lowestPrice <= params.maxPrice;
+				if ( params.minPrice ) overMin = lowestPrice >= params.minPrice;
+				if ( underMax && overMin ) ids.push(product.id);
+				if ( lowestPrice < minPrice ) minPrice = lowestPrice;
+				if ( lowestPrice > maxPrice ) maxPrice = lowestPrice;
 			}
 			if ( ids.length === 0 ) return emptyRes;
 			products = await this.productRepository.findByIdsWithSorting(ids, skip, take, params.sorting, params.language);

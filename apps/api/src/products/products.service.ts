@@ -120,7 +120,8 @@ export class ProductsService {
 	}
 
 	async findFilteredProductIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string): Promise<number[]> {
-		return await this.productRepository.findFilteredProductIds(collectionId, categoryIds, filters, search);
+		const res = await this.productRepository.findFilteredProductIds(collectionId, categoryIds, filters, search);
+		return res.map(r => r.id);
 	}
 
 	async setDefaultVariant(params: { productId: number, variantId: number }) {
@@ -146,7 +147,7 @@ export class ProductsService {
 					for ( const discount of discounts ) {
 						let temp = Number.MAX_SAFE_INTEGER;
 						if ( discount.discountType === DiscountType.PERCENTAGE ) {
-							temp = basePrice - (discount.discountValue * basePrice);
+							temp = basePrice - ((discount.discountValue / 100) * basePrice);
 						} else if ( discount.discountType === DiscountType.FLAT ) {
 							temp = Math.max(basePrice - discount.discountValue, 0);
 						}

@@ -30,7 +30,7 @@ export class DiscountSalesController {
 	async findAll(): Promise<DiscountSaleDto[]> {
 		const res = await this.discountsService.findAllIds();
 		const promises = res.map(r => this.discountsService.getDto(r));
-		return Promise.all(promises);
+		return await Promise.all(promises);
 	}
 
 	@Get(':id')

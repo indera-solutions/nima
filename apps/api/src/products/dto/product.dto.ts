@@ -4,6 +4,7 @@ import { CollectionDto } from '../../collections/dto/collection.dto';
 import { CreateSortableMediaDto, SortableMediaDto } from '../../core/dto/media.dto';
 import { ProductEntity } from '../entities/product.entity';
 import { CreateAssignedProductAttributeDto, ProductAttributeDto } from './product-attribute-assignment.dto';
+import { ProductVariantDto } from './product-variant.dto';
 
 export class ProductDto extends OmitType(ProductEntity, ['productType', 'productMedia', 'attributes', 'category', 'defaultVariant', 'searchDocument', 'collections']) {
 	@ApiProperty()
@@ -23,6 +24,9 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'product
 
 	@ApiProperty({ type: () => CollectionDto, isArray: true })
 	collections: CollectionDto[];
+
+	@ApiProperty({ type: () => ProductVariantDto, required: false })
+	defaultVariant?: ProductVariantDto;
 
 	static prepare(entity: ProductEntity, options?: { isAdmin?: boolean }): ProductDto {
 		return {
@@ -44,6 +48,7 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'product
 			isPublished: entity.isPublished,
 			isVisibleInListings: entity.isVisibleInListings,
 			minPrice: entity.minPrice,
+			defaultVariant: entity.defaultVariant ? ProductVariantDto.prepare(entity.defaultVariant) : undefined,
 			rating: entity.rating,
 			seoDescription: entity.seoDescription,
 			productMedia: entity.productMedia ? entity.productMedia.map(pm => SortableMediaDto.prepare(pm)) : [],
@@ -55,15 +60,10 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'product
 	}
 }
 
-export class CreateProductDto extends OmitType(ProductDto, ['id', 'attributes', 'created', 'updatedAt', 'productMedia', 'defaultVariantId', 'categoryId', 'collections']) {
+export class CreateProductDto extends OmitType(ProductDto, ['id', 'attributes', 'defaultVariant', 'created', 'updatedAt', 'productMedia', 'defaultVariantId', 'categoryId', 'collections']) {
 	@ApiProperty({ type: [CreateAssignedProductAttributeDto] })
 	@IsArray()
 	attributes: CreateAssignedProductAttributeDto[];
-
-	// @ApiProperty()
-	// @IsInt()
-	// defaultVariantId: number;
-
 
 	@ApiProperty()
 	@IsInt()

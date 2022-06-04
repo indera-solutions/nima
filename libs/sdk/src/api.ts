@@ -592,6 +592,12 @@ export interface CheckoutLineDto {
 	 * @memberof CheckoutLineDto
 	 */
 	'totalCost': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CheckoutLineDto
+	 */
+	'discountedTotalCost': number;
 }
 /**
  *
@@ -1579,30 +1585,6 @@ export interface CreateProductVariantDto {
 	'sortOrder'?: number;
 	/**
 	 *
-	 * @type {boolean}
-	 * @memberof CreateProductVariantDto
-	 */
-	'isPreorder'?: boolean;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof CreateProductVariantDto
-	 */
-	'preorderEndDate'?: string;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof CreateProductVariantDto
-	 */
-	'preorderGlobalThreshold'?: number;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof CreateProductVariantDto
-	 */
-	'quantityLimitPerCustomer'?: number;
-	/**
-	 *
 	 * @type {string}
 	 * @memberof CreateProductVariantDto
 	 */
@@ -1613,12 +1595,6 @@ export interface CreateProductVariantDto {
 	 * @memberof CreateProductVariantDto
 	 */
 	'priceAmount'?: number;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof CreateProductVariantDto
-	 */
-	'costPriceAmount'?: number;
 	/**
 	 *
 	 * @type {number}
@@ -2422,10 +2398,10 @@ export interface OrderLineDto {
 	'undiscountedUnitPriceNetAmount': number;
 	/**
 	 *
-	 * @type {string}
+	 * @type {number}
 	 * @memberof OrderLineDto
 	 */
-	'saleId'?: string;
+	'saleId'?: number;
 	/**
 	 *
 	 * @type {string}
@@ -2837,6 +2813,12 @@ export interface ProductDto {
 	 * @memberof ProductDto
 	 */
 	'collections': Array<CollectionDto>;
+	/**
+	 *
+	 * @type {ProductVariantDto}
+	 * @memberof ProductDto
+	 */
+	'defaultVariant'?: ProductVariantDto;
 }
 /**
  *
@@ -3096,30 +3078,6 @@ export interface ProductVariantDto {
 	'sortOrder'?: number;
 	/**
 	 *
-	 * @type {boolean}
-	 * @memberof ProductVariantDto
-	 */
-	'isPreorder'?: boolean;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof ProductVariantDto
-	 */
-	'preorderEndDate'?: string;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof ProductVariantDto
-	 */
-	'preorderGlobalThreshold'?: number;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof ProductVariantDto
-	 */
-	'quantityLimitPerCustomer'?: number;
-	/**
-	 *
 	 * @type {string}
 	 * @memberof ProductVariantDto
 	 */
@@ -3147,7 +3105,7 @@ export interface ProductVariantDto {
 	 * @type {number}
 	 * @memberof ProductVariantDto
 	 */
-	'costPriceAmount'?: number;
+	'discountedPrice'?: number;
 	/**
 	 *
 	 * @type {number}
@@ -3166,12 +3124,6 @@ export interface ProductVariantDto {
 	 * @memberof ProductVariantDto
 	 */
 	'attributes': Array<ProductAttributeDto>;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof ProductVariantDto
-	 */
-	'discountedPrice': number;
 	/**
 	 *
 	 * @type {Array<SortableMediaDto>}

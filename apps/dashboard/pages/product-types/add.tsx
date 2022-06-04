@@ -179,17 +179,21 @@ export default function AddProductType(props: AddProductTypeProps) {
 								</tr>
 								</thead>
 								<tbody>
-								{ createProductTypeDto.attributes.map(attribute => <tr key={ attribute.attributeId }>
-									<th>
-										<Trans>{ attributes?.find(a => a.id === attribute.attributeId)?.name || '' }</Trans>
-									</th>
-									<th>
-										<button className={ 'btn btn-error' }
-												onClick={ () => onRemoveAttribute(attribute.attributeId, false) }>
-											Remove
-										</button>
-									</th>
-								</tr>) }
+								{ createProductTypeDto.attributes.map(attribute => {
+									const att = attributes?.find(a => a.id === attribute.attributeId);
+									if ( !att ) return;
+									return <tr key={ attribute.attributeId }>
+										<th>
+											<Trans>{ att.name }</Trans> ({ att.slug })
+										</th>
+										<th>
+											<button className={ 'btn btn-error' }
+													onClick={ () => onRemoveAttribute(attribute.attributeId, false) }>
+												Remove
+											</button>
+										</th>
+									</tr>;
+								}) }
 
 								</tbody>
 							</table>
@@ -211,24 +215,28 @@ export default function AddProductType(props: AddProductTypeProps) {
 								</tr>
 								</thead>
 								<tbody>
-								{ createProductTypeDto.variantAttributes.map(attribute => <tr
-									key={ attribute.attributeId }>
-									<th>
-										<Trans>{ attributes?.find(a => a.id === attribute.attributeId)?.name || '' }</Trans>
-									</th>
-									<th>
-										<input type="checkbox"
-											   checked={ attribute.variantSelection }
-											   onChange={ () => onVariantSelectionToggle(attribute.attributeId) }
-											   className="checkbox"/>
-									</th>
-									<th>
-										<button className={ 'btn btn-error' }
-												onClick={ () => onRemoveAttribute(attribute.attributeId, true) }>
-											Remove
-										</button>
-									</th>
-								</tr>) }
+								{ createProductTypeDto.variantAttributes.map(attribute => {
+									const att = attributes?.find(a => a.id === attribute.attributeId);
+									if ( !att ) return;
+									return <tr
+										key={ attribute.attributeId }>
+										<th>
+											<Trans>{ att.name || '' }</Trans> ({ att.slug })
+										</th>
+										<th>
+											<input type="checkbox"
+												   checked={ attribute.variantSelection }
+												   onChange={ () => onVariantSelectionToggle(attribute.attributeId) }
+												   className="checkbox"/>
+										</th>
+										<th>
+											<button className={ 'btn btn-error' }
+													onClick={ () => onRemoveAttribute(attribute.attributeId, true) }>
+												Remove
+											</button>
+										</th>
+									</tr>;
+								}) }
 
 								</tbody>
 							</table>
@@ -288,7 +296,7 @@ function AvailableAttributesModal(props: { id: string, availableAttributes: Attr
 				<h3 className="text-lg font-bold">Select all the attributes to add</h3>
 				{ props.availableAttributes.map(att => <div className="form-control" key={ att.id }>
 					<label className="label cursor-pointer">
-						<span className="label-text"><Trans>{ att.name }</Trans></span>
+						<span className="label-text"><Trans>{ att.name }</Trans> ({ att.slug })</span>
 						<input type="checkbox" checked={ checkedMap[att.id] } className="checkbox"
 							   onChange={ () => onChange(att.id) }/>
 					</label>
