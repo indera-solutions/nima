@@ -43,7 +43,7 @@ export class DiscountSaleRepository extends BaseRepository<DiscountSaleEntity> {
 		return this.createQueryBuilder()
 				   .delete()
 				   .from('discounts_discount_sale_variants')
-				   .where('"productsProductVariantsId" = :variantId', { productId: variantId })
+				   .where('"productsProductVariantsId" = :variantId', { variantId: variantId })
 				   .andWhere('"discountsDiscountSaleId" = :saleId', { saleId: saleId })
 				   .execute();
 	}
@@ -52,7 +52,7 @@ export class DiscountSaleRepository extends BaseRepository<DiscountSaleEntity> {
 		return this.createQueryBuilder()
 				   .delete()
 				   .from('discounts_discount_sale_categories')
-				   .where('"categoriesCategoriesId" = :categoryId', { productId: categoryId })
+				   .where('"categoriesCategoriesId" = :categoryId', { categoryId: categoryId })
 				   .andWhere('"discountsDiscountSaleId" = :saleId', { saleId: saleId })
 				   .execute();
 	}
@@ -61,7 +61,7 @@ export class DiscountSaleRepository extends BaseRepository<DiscountSaleEntity> {
 		return this.createQueryBuilder()
 				   .delete()
 				   .from('discounts_discount_sale_collections')
-				   .where('"collectionCollectionId" = :collectionId', { productId: collectionId })
+				   .where('"collectionCollectionId" = :collectionId', { collectionId: collectionId })
 				   .andWhere('"discountsDiscountSaleId" = :saleId', { saleId: saleId })
 				   .execute();
 	}

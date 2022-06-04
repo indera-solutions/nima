@@ -111,7 +111,7 @@ export class CheckoutEntity {
 	@IsString()
 	languageCode: LanguageCode;
 
-	@Column({ enum: PaymentMethod, type: 'enum', default: PaymentMethod.CASH_ON_DELIVERY })
+	@Column({ enum: PaymentMethod, type: 'enum', default: PaymentMethod.CASH_ON_DELIVERY, enumName: 'checkoutPaymentMethod' })
 	@ApiProperty({ enum: PaymentMethod, enumName: 'PaymentMethod' })
 	@IsString()
 	paymentMethod: PaymentMethod;

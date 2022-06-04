@@ -592,6 +592,12 @@ export interface CheckoutLineDto {
 	 * @memberof CheckoutLineDto
 	 */
 	'totalCost': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CheckoutLineDto
+	 */
+	'discountedTotalCost': number;
 }
 /**
  *
@@ -1579,30 +1585,6 @@ export interface CreateProductVariantDto {
 	'sortOrder'?: number;
 	/**
 	 *
-	 * @type {boolean}
-	 * @memberof CreateProductVariantDto
-	 */
-	'isPreorder'?: boolean;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof CreateProductVariantDto
-	 */
-	'preorderEndDate'?: string;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof CreateProductVariantDto
-	 */
-	'preorderGlobalThreshold'?: number;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof CreateProductVariantDto
-	 */
-	'quantityLimitPerCustomer'?: number;
-	/**
-	 *
 	 * @type {string}
 	 * @memberof CreateProductVariantDto
 	 */
@@ -1618,12 +1600,6 @@ export interface CreateProductVariantDto {
 	 * @type {number}
 	 * @memberof CreateProductVariantDto
 	 */
-	'costPriceAmount'?: number;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof CreateProductVariantDto
-	 */
 	'stock': number;
 	/**
 	 *
@@ -1631,12 +1607,6 @@ export interface CreateProductVariantDto {
 	 * @memberof CreateProductVariantDto
 	 */
 	'trackInventory': boolean;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof CreateProductVariantDto
-	 */
-	'discountedPrice': number;
 	/**
 	 *
 	 * @type {Array<CreateAssignedProductVariantAttributeDto>}
@@ -1804,7 +1774,6 @@ export interface CreateSortableMediaDto {
 	 */
 	'mediaId': number;
 }
-
 /**
  *
  * @export
@@ -1818,7 +1787,6 @@ export interface DiscountSaleAddCategoriesDto {
 	 */
 	'categoryIds': Array<number>;
 }
-
 /**
  *
  * @export
@@ -1832,7 +1800,6 @@ export interface DiscountSaleAddCollectionsDto {
 	 */
 	'collectionIds': Array<number>;
 }
-
 /**
  *
  * @export
@@ -1846,7 +1813,6 @@ export interface DiscountSaleAddProductsDto {
 	 */
 	'productIds': Array<number>;
 }
-
 /**
  *
  * @export
@@ -1860,7 +1826,6 @@ export interface DiscountSaleAddVariantsDto {
 	 */
 	'variantIds': Array<number>;
 }
-
 /**
  *
  * @export
@@ -1952,7 +1917,6 @@ export interface DiscountSaleDto {
 	 */
 	'collections': Array<CollectionDto>;
 }
-
 /**
  *
  * @export
@@ -2434,10 +2398,10 @@ export interface OrderLineDto {
 	'undiscountedUnitPriceNetAmount': number;
 	/**
 	 *
-	 * @type {string}
+	 * @type {number}
 	 * @memberof OrderLineDto
 	 */
-	'saleId'?: string;
+	'saleId'?: number;
 	/**
 	 *
 	 * @type {string}
@@ -2849,6 +2813,12 @@ export interface ProductDto {
 	 * @memberof ProductDto
 	 */
 	'collections': Array<CollectionDto>;
+	/**
+	 *
+	 * @type {ProductVariantDto}
+	 * @memberof ProductDto
+	 */
+	'defaultVariant'?: ProductVariantDto;
 }
 /**
  *
@@ -3108,30 +3078,6 @@ export interface ProductVariantDto {
 	'sortOrder'?: number;
 	/**
 	 *
-	 * @type {boolean}
-	 * @memberof ProductVariantDto
-	 */
-	'isPreorder'?: boolean;
-	/**
-	 *
-	 * @type {string}
-	 * @memberof ProductVariantDto
-	 */
-	'preorderEndDate'?: string;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof ProductVariantDto
-	 */
-	'preorderGlobalThreshold'?: number;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof ProductVariantDto
-	 */
-	'quantityLimitPerCustomer'?: number;
-	/**
-	 *
 	 * @type {string}
 	 * @memberof ProductVariantDto
 	 */
@@ -3159,7 +3105,7 @@ export interface ProductVariantDto {
 	 * @type {number}
 	 * @memberof ProductVariantDto
 	 */
-	'costPriceAmount'?: number;
+	'discountedPrice'?: number;
 	/**
 	 *
 	 * @type {number}
@@ -3178,12 +3124,6 @@ export interface ProductVariantDto {
 	 * @memberof ProductVariantDto
 	 */
 	'attributes': Array<ProductAttributeDto>;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof ProductVariantDto
-	 */
-	'discountedPrice': number;
 	/**
 	 *
 	 * @type {Array<SortableMediaDto>}
@@ -8480,7 +8420,7 @@ export const DiscountApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async discountSalesFindAll(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
+		async discountSalesFindAll(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<DiscountSaleDto>>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesFindAll(options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -8490,7 +8430,7 @@ export const DiscountApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async discountSalesFindOne(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<DiscountSaleDto>>> {
+		async discountSalesFindOne(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesFindOne(id, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -8623,7 +8563,7 @@ export const DiscountApiFactory = function (configuration?: Configuration, baseP
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesFindAll(options?: any): AxiosPromise<DiscountSaleDto> {
+		discountSalesFindAll(options?: any): AxiosPromise<Array<DiscountSaleDto>> {
 			return localVarFp.discountSalesFindAll(options).then((request) => request(axios, basePath));
 		},
 		/**
@@ -8632,7 +8572,7 @@ export const DiscountApiFactory = function (configuration?: Configuration, baseP
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesFindOne(id: number, options?: any): AxiosPromise<Array<DiscountSaleDto>> {
+		discountSalesFindOne(id: number, options?: any): AxiosPromise<DiscountSaleDto> {
 			return localVarFp.discountSalesFindOne(id, options).then((request) => request(axios, basePath));
 		},
 		/**

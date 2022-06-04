@@ -5,6 +5,7 @@ import { AttributeValuesService } from '../attributes/attribute-values.service';
 import { SortableMediaDto } from '../core/dto/media.dto';
 import { DiscountSalesService } from '../discounts/discount-sales.service';
 import { DiscountType } from '../discounts/dto/discount.enum';
+import { DiscountSaleEntity } from '../discounts/entities/discount-sale.entity';
 import { ProductTypeVariantAttributesService } from '../product-types/product-type-variant-attributes.service';
 import { CreateAssignedProductVariantAttributeDto, ProductAttributeDto } from './dto/product-attribute-assignment.dto';
 import { CreateAssignedProductVariantAttributeValueDto } from './dto/product-attribute-value-assignment.dto';
@@ -69,6 +70,8 @@ export class ProductVariantService {
 			});
 		}
 
+		await this.syncVariantDiscountValue({ variantId: variant.id });
+
 		return variant.id;
 	}
 
@@ -126,38 +129,49 @@ export class ProductVariantService {
 		await this.productVariantRepository.deleteById(id);
 	}
 
-	async getLowestPrices(ids?: number[]): Promise<{ id: number, lowestPrice: number }[]> {
+	async syncVariantDiscountValue(params: { variantId: number }): Promise<void> {
+		const variant = await this.productVariantRepository.getFullObject(params.variantId);
+		const discountPrice = await this.calculateDiscountedPrice(variant);
+		await this.productVariantRepository.update(params.variantId, {
+			discountedPrice: discountPrice ? discountPrice : null,
+		});
+	}
+
+	async getLowestPrices(ids?: number[]): Promise<{ id: number, basePrice: number, lowestPrice: number, sale?: DiscountSaleEntity }[]> {
 		let entities: ProductVariantEntity[];
 		if ( ids ) {
 			entities = await this.productVariantRepository.findByIds(ids);
 		} else {
 			entities = await this.productVariantRepository.find();
 		}
-		const res: { id: number, lowestPrice: number }[] = [];
+		const res: { id: number, basePrice: number, lowestPrice: number, sale: DiscountSaleEntity }[] = [];
 		const discountMap = await this.salesService.getVariantDiscountMap();
 		for ( const entity of entities ) {
 			const discounts = discountMap[entity.id];
 			const basePrice = entity.priceAmount || 0;
+			let sale = undefined;
 			let lowestPrice = basePrice;
 			if ( discounts && discounts.length > 0 ) {
 				for ( const discount of discounts ) {
 					let temp = Number.MAX_SAFE_INTEGER;
 					if ( discount.discountType === DiscountType.PERCENTAGE ) {
-						temp = basePrice - (discount.discountValue * basePrice);
+						temp = basePrice - (discount.discountValue * basePrice / 100);
 					} else if ( discount.discountType === DiscountType.FLAT ) {
 						temp = Math.max(basePrice - discount.discountValue, 0);
 					}
-					if ( temp < lowestPrice ) lowestPrice = temp;
+					if ( temp < lowestPrice ) {
+						lowestPrice = temp;
+						sale = discount;
+					}
 				}
 			}
-			res.push({ id: entity.id, lowestPrice: lowestPrice });
+			res.push({ id: entity.id, lowestPrice: lowestPrice, sale: sale, basePrice: basePrice });
 		}
 		return res;
 	}
 
 	async getDto(id: number, options?: { isAdmin?: boolean }): Promise<ProductVariantDto> {
 		const entity = await this.productVariantRepository.getFullObject(id);
-		const discountedPrice = await this.calculateDiscountedPrice(entity);
 		return {
 			id: entity.id,
 			name: entity.name,
@@ -170,17 +184,12 @@ export class ProductVariantService {
 			attributes: entity.attributes.map(attr => ProductAttributeDto.prepareVariant(attr)),
 			sortOrder: entity.sortOrder,
 			productId: entity.productId,
-			costPriceAmount: entity.costPriceAmount,
-			isPreorder: entity.isPreorder,
-			preorderEndDate: entity.preorderEndDate,
-			preorderGlobalThreshold: entity.preorderGlobalThreshold,
-			priceAmount: entity.priceAmount,
 			sku: entity.sku,
-			quantityLimitPerCustomer: entity.quantityLimitPerCustomer,
 			stock: entity.stock,
 			trackInventory: entity.trackInventory,
 			productMedia: entity.productMedia.map(pm => SortableMediaDto.prepare(pm)),
-			discountedPrice: typeof discountedPrice === 'number' ? discountedPrice : undefined,
+			priceAmount: entity.priceAmount,
+			discountedPrice: entity.discountedPrice,
 		};
 	}
 
@@ -299,20 +308,20 @@ export class ProductVariantService {
 		await this.assignedProductVariantAttributeValueRepository.save({ value: value, assignedProductVariantAttribute: assignment, sortOrder: dto.sortOrder });
 	}
 
-	private async calculateDiscountedPrice(entity: ProductVariantEntity): Promise<false | number> {
+	private async calculateDiscountedPrice(entity: ProductVariantEntity): Promise<undefined | number> {
 		const variantId = entity.id;
 		const productId = entity.productId;
 		const categoryId = entity.product.category.id;
-		const collectionIds = entity.product.collections.map(c => c.id);
+		const collectionIds = entity.product.collections.map(c => c.collection.id);
 		const basePrice = entity.priceAmount;
-		if ( !basePrice ) return false;
+		if ( !basePrice ) return undefined;
 		const discounts = await this.salesService.findDiscountsOfVariant({ variantId: variantId, productId: productId, categoryId: categoryId, collectionIds: collectionIds });
-		if ( !discounts || discounts.length === 0 ) return false;
+		if ( !discounts || discounts.length === 0 ) return undefined;
 		let lowestPrice = basePrice;
 		for ( const discount of discounts ) {
 			let temp = Number.MAX_SAFE_INTEGER;
 			if ( discount.discountType === DiscountType.PERCENTAGE ) {
-				temp = basePrice - (discount.discountValue * basePrice);
+				temp = basePrice - (discount.discountValue * basePrice / 100);
 			} else if ( discount.discountType === DiscountType.FLAT ) {
 				temp = Math.max(basePrice - discount.discountValue, 0);
 			}

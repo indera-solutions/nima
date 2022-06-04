@@ -4,6 +4,7 @@ import { getEuroValue } from '@nima-cms/utils';
 import Link from 'next/link';
 import React from 'react';
 import { AdminColumn, AdminPage, AdminSection, NimaTitle } from '../../components';
+import { ProductImage } from '../../components/products/ProductImage';
 import { NIMA_ROUTES } from '../../lib/routes';
 
 interface ProductListProps {
@@ -65,8 +66,7 @@ function ProductRow(props: { product: ProductDto }) {
 
 	return <tr
 		className={ 'hover' }>
-		<td>{ props.product.productMedia[0] &&
-			<img width={ 50 } height={ 50 } src={ props.product.productMedia[0].media.thumbnailUrl } alt=""/> }</td>
+		<td><ProductImage product={ props.product }/></td>
 		<td><Trans>{ product.name }</Trans></td>
 		<td><Trans>{ category?.name }</Trans></td>
 		<td><Trans>{ productType?.name }</Trans></td>

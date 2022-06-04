@@ -10,3 +10,4 @@ export * from './shipping.queries';
 export * from './orders.queries';
 export * from './address.queries';
 export * from './collections.queries';
+export * from './sales.queries';

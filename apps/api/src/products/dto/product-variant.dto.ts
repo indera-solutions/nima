@@ -9,9 +9,6 @@ export class ProductVariantDto extends OmitType(ProductVariantEntity, ['attribut
 	@IsArray()
 	attributes: ProductAttributeDto[];
 
-	@ApiProperty({ type: Number })
-	discountedPrice?: number;
-
 	@ApiProperty({ type: () => SortableMediaDto, isArray: true })
 	productMedia: SortableMediaDto[];
 
@@ -25,24 +22,20 @@ export class ProductVariantDto extends OmitType(ProductVariantEntity, ['attribut
 			metadata: entity.metadata,
 			privateMetadata: options?.isAdmin ? entity.privateMetadata : {},
 			updatedAt: entity.updatedAt,
-			attributes: entity.attributes.map(attr => ProductAttributeDto.prepareVariant(attr)),
+			attributes: (entity.attributes || []).map(attr => ProductAttributeDto.prepareVariant(attr)),
 			sortOrder: entity.sortOrder,
 			productId: entity.productId,
-			costPriceAmount: entity.costPriceAmount,
-			isPreorder: entity.isPreorder,
-			preorderEndDate: entity.preorderEndDate,
-			preorderGlobalThreshold: entity.preorderGlobalThreshold,
 			priceAmount: entity.priceAmount,
 			sku: entity.sku,
-			quantityLimitPerCustomer: entity.quantityLimitPerCustomer,
 			stock: entity.stock,
 			trackInventory: entity.trackInventory,
-			productMedia: entity.productMedia.map(pm => SortableMediaDto.prepare(pm)),
+			productMedia: (entity.productMedia || []).map(pm => SortableMediaDto.prepare(pm)),
+			discountedPrice: entity.discountedPrice,
 		};
 	}
 }
 
-export class CreateProductVariantDto extends OmitType(ProductVariantDto, ['created', 'id', 'updatedAt', 'productId', 'productMedia', 'attributes']) {
+export class CreateProductVariantDto extends OmitType(ProductVariantDto, ['created', 'id', 'updatedAt', 'productId', 'productMedia', 'attributes', 'discountedPrice']) {
 	@ApiProperty({ type: [CreateAssignedProductVariantAttributeDto] })
 	@IsArray()
 	attributes: CreateAssignedProductVariantAttributeDto[];

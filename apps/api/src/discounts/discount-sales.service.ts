@@ -72,11 +72,10 @@ export class DiscountSalesService {
 				discounts.push(discount);
 			}
 		}
-
 		return discounts;
 	}
 
-	async getVariantDiscountMap() {
+	async getVariantDiscountMap(): Promise<{ [variantId: number]: DiscountSaleEntity[] }> {
 		const discounts = await this.findAll();
 		const map: { [variantId: number]: DiscountSaleEntity[] } = {};
 		for ( const discount of discounts ) {
@@ -109,9 +108,20 @@ export class DiscountSalesService {
 		return map;
 	}
 
+	async updateDiscountPricesOfSale(params: { saleId: number }) {
+		const saleMap = await this.getVariantDiscountMap();
+		const discountedVariantIds = [];
+		for ( const variantId in saleMap ) {
+			const discountIds = saleMap[variantId].map(d => d.id);
+			if ( discountIds.includes(params.saleId) ) discountedVariantIds.push(variantId);
+		}
+		await Promise.all(discountedVariantIds.map(variantId => this.variantService.syncVariantDiscountValue({ variantId })));
+	}
+
 	async update(params: { id: number, updateDiscountDto: UpdateDiscountDto }): Promise<void> {
 		const { id, updateDiscountDto } = params;
 		await this.discountSaleRepository.update(id, updateDiscountDto);
+		await this.updateDiscountPricesOfSale({ saleId: id });
 	}
 
 	@Transactional()
@@ -123,6 +133,8 @@ export class DiscountSalesService {
 		const products = await this.productsService.findByIds({ ids: addProductsDto.productIds });
 		res.products.push(...products);
 		await this.discountSaleRepository.save(res);
+		await this.updateDiscountPricesOfSale({ saleId: id });
+
 	}
 
 	@Transactional()
@@ -136,6 +148,8 @@ export class DiscountSalesService {
 			res.collections.push(temp);
 		}
 		await this.discountSaleRepository.save(res);
+		await this.updateDiscountPricesOfSale({ saleId: id });
+
 	}
 
 	@Transactional()
@@ -149,6 +163,8 @@ export class DiscountSalesService {
 			res.categories.push(temp);
 		}
 		await this.discountSaleRepository.save(res);
+		await this.updateDiscountPricesOfSale({ saleId: id });
+
 	}
 
 	@Transactional()
@@ -160,35 +176,47 @@ export class DiscountSalesService {
 		const products = await this.variantService.findByIds({ ids: addVariantsDto.variantIds });
 		res.variants.push(...products);
 		await this.discountSaleRepository.save(res);
+		await this.updateDiscountPricesOfSale({ saleId: id });
+
 	}
 
 	async remove(params: { id: number }): Promise<void> {
 		await this.findOne({ id: params.id });
 		await this.discountSaleRepository.deleteById(params.id);
+		await this.updateDiscountPricesOfSale({ saleId: params.id });
+
 	}
 
 	async removeProduct(params: { saleId: number, productId: number }): Promise<void> {
 		const { saleId, productId } = params;
 		await this.findOne({ id: saleId });
 		await this.discountSaleRepository.deleteProduct(productId, saleId);
+		await this.updateDiscountPricesOfSale({ saleId: saleId });
+
 	}
 
 	async removeCategory(params: { saleId: number, categoryId: number }): Promise<void> {
 		const { saleId, categoryId } = params;
 		await this.findOne({ id: saleId });
 		await this.discountSaleRepository.deleteCategory(categoryId, saleId);
+		await this.updateDiscountPricesOfSale({ saleId: saleId });
+
 	}
 
 	async removeVariant(params: { saleId: number, variantId: number }): Promise<void> {
 		const { saleId, variantId } = params;
 		await this.findOne({ id: saleId });
 		await this.discountSaleRepository.deleteVariant(variantId, saleId);
+		await this.updateDiscountPricesOfSale({ saleId: saleId });
+
 	}
 
 	async removeCollection(params: { saleId: number, collectionId: number }): Promise<void> {
 		const { saleId, collectionId } = params;
 		await this.findOne({ id: saleId });
 		await this.discountSaleRepository.deleteCollection(collectionId, saleId);
+		await this.updateDiscountPricesOfSale({ saleId: saleId });
+
 	}
 
 	async getDto(id: number, options?: { isAdmin?: boolean }): Promise<DiscountSaleDto> {

@@ -26,15 +26,15 @@ export class DiscountSalesController {
 	}
 
 	@Get()
-	@ApiOkResponse({ type: DiscountSaleDto })
+	@ApiOkResponse({ type: DiscountSaleDto, isArray: true })
 	async findAll(): Promise<DiscountSaleDto[]> {
 		const res = await this.discountsService.findAllIds();
 		const promises = res.map(r => this.discountsService.getDto(r));
-		return Promise.all(promises);
+		return await Promise.all(promises);
 	}
 
 	@Get(':id')
-	@ApiOkResponse({ type: [DiscountSaleDto] })
+	@ApiOkResponse({ type: DiscountSaleDto })
 	@ApiParam({ name: 'id', type: Number })
 	async findOne(@Param('id', ParseIntPipe) id: number): Promise<DiscountSaleDto> {
 		return this.discountsService.getDto(id);

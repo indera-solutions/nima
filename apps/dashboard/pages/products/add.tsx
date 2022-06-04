@@ -91,8 +91,6 @@ export default function Add(props: AddProps) {
 			attributes: [],
 			currency: 'EUR',
 			metadata: {},
-			costPriceAmount: 0,
-			isPreorder: false,
 			sku: '',
 			stock: 0,
 			trackInventory: false,
@@ -172,20 +170,20 @@ export default function Add(props: AddProps) {
 
 	useEffect(() => {
 		if ( !existingProduct ) return;
-		const { id, attributes, productMedia, collections, defaultVariantId, updatedAt, created, ...rest } = existingProduct;
+		const { id, attributes, productMedia, defaultVariant, collections, defaultVariantId, updatedAt, created, ...rest } = existingProduct;
 		setCreateProductDto({
 			...rest,
 			productMedia: productMedia.map(pm => ({ mediaId: pm.media.id, sortOrder: pm.sortOrder })),
 			collectionIds: collections.map(c => c.id),
-			attributes: productType ? attributes.map(att => {
-				const pta = productType.attributes.find(a => a.attributeId === att.id);
+			attributes: productType ? productType.attributes.map(pta => {
+				const att = attributes.find(a => pta.attributeId === a.id);
 				if ( !pta ) throw new Error('att not found');
 				return {
 					productTypeAttributeId: pta.id,
-					values: att.values.map(v => ({
+					values: att ? att.values.map(v => ({
 						valueId: v.id,
 						sortOrder: v.sortOrder,
-					})),
+					})) : [],
 				};
 			}) : [],
 		});
@@ -195,7 +193,7 @@ export default function Add(props: AddProps) {
 		if ( !existingProductVariants || !productType ) return;
 		if ( productType.hasVariants ) return;
 		if ( !existingProductVariants[0] ) return;
-		const { id, attributes, updatedAt, created, ...rest } = existingProductVariants[0];
+		const { id, attributes, updatedAt, discountedPrice, created, ...rest } = existingProductVariants[0];
 		delete rest['productId'];
 		setDefaultVariant({
 			...rest,

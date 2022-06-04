@@ -56,7 +56,7 @@ export class CheckoutService {
 	}
 
 	async findOne(params: { token: string }): Promise<CheckoutEntity> {
-		const res = await this.checkoutRepository.findByToken(params.token);
+		const res = await this.checkoutRepository.getWholeObject(params.token);
 		if ( !res ) {
 			throw new NotFoundException('CHECKOUT_NOT_FOUND');
 		}
@@ -97,7 +97,6 @@ export class CheckoutService {
 	async updateAddress(params: { token: string, dto: AddressDto, billing?: boolean, shipping?: boolean }): Promise<void> {
 		const { dto, token } = params;
 		let { billing, shipping } = params;
-		console.log(params);
 		const co = await this.checkoutRepository.findOne({
 			where: {
 				token,
@@ -145,15 +144,23 @@ export class CheckoutService {
 
 		let weight = 0;
 
+		const discounts: number[] = [];
+
 		const lines: CheckoutLineDto[] = entity.lines.map(line => {
 			if ( !line.variant ) throw new Error('MISSING_VARIANT');
-			const totalCost = line.quantity * line.variant.priceAmount;
+			const totalCost = line.quantity * (line.variant.discountedPrice || line.variant.priceAmount);
+			let discountedTotalCost;
+			if ( line.variant.discountedPrice ) {
+				discountedTotalCost = line.quantity * line.variant.discountedPrice;
+				// discounts.push(totalCost - discountedTotalCost);
+			}
 			weight += line.variant.weight || 0;
 			return {
 				quantity: line.quantity,
 				variantId: line.variantId,
 				productId: line.productId,
 				totalCost,
+				discountedTotalCost,
 			};
 		});
 
@@ -161,14 +168,13 @@ export class CheckoutService {
 		const quantity = lines.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0);
 
 		let shippingCost = 0;
-		const discount = subtotalPrice > 50 ? 4 : 0; // TODO connect real discount calculation here
+		const discount = discounts.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
 
 		const availableShippingMethods: CheckoutAvailableShippingDto[] = [];
 
 		if ( entity.shippingAddress ) {
 
 			const validMethods = await this.shippingService.getValidMethodsOfAddress(entity.shippingAddress, weight, subtotalPrice);
-			console.log(validMethods);
 			for ( const validMethod of validMethods ) {
 				const shippingMethod = ShippingMethodDto.prepare(validMethod);
 				const rate = ShippingMethodDto.calculateCost(shippingMethod);

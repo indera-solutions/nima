@@ -18,7 +18,7 @@ export class AssignedProductAttributeEntity {
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
 
-	@ManyToOne(() => ProductEntity, product => product.attributes)
+	@ManyToOne(() => ProductEntity, product => product.attributes, { onDelete: 'CASCADE' })
 	// @ApiProperty({ type: ProductDto })
 	product: ProductEntity;
 

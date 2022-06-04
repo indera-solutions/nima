@@ -26,11 +26,11 @@ export class PaymentEntity {
 	id: number;
 
 	@ApiProperty({ enum: PaymentMethod, enumName: 'PaymentMethod' })
-	@Column({ type: 'enum', enum: PaymentMethod })
+	@Column({ type: 'enum', enum: PaymentMethod, enumName: 'PaymentMethod' })
 	method: PaymentMethod;
 
 	@ApiProperty({ enum: PaymentStatus, enumName: 'PaymentStatus' })
-	@Column({ type: 'enum', enum: PaymentStatus })
+	@Column({ type: 'enum', enum: PaymentStatus, enumName: 'paymentStatus' })
 	status: PaymentStatus;
 
 

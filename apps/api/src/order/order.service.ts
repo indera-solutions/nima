@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { PaginatedResults } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { CheckoutService } from '../checkout/checkout.service';
-import { PaymentStatus } from '../payments/entities/payment.entity';
+import { PaymentMethod, PaymentStatus } from '../payments/entities/payment.entity';
 import { PaymentsService } from '../payments/payments.service';
 import { ProductVariantService } from '../products/product-variant.service';
 import { ProductsService } from '../products/products.service';
@@ -49,7 +49,7 @@ export class OrderService {
 				amount: checkoutDto.totalCost,
 				customerId: checkoutDto.email,
 				description: '',
-				method: checkoutDto.paymentMethod,
+				method: PaymentMethod[checkoutDto.paymentMethod],
 			},
 		});
 
@@ -101,9 +101,12 @@ export class OrderService {
 			parameters: {},
 		});
 
+		// const minPrices = await this.variantService.getLowestPrices(checkoutDto.lines.map(line => line.variantId));
+
 		for ( const line of checkoutDto.lines ) {
 			const product = await this.productService.getById({ id: line.productId });
 			const variant = await this.variantService.getById({ id: line.variantId });
+			// const minPrice = minPrices.find(value => value.id === line.variantId);
 			const dto: InternalCreateOrderLineDto = {
 				variant: variant,
 				order: order,
@@ -118,11 +121,11 @@ export class OrderService {
 
 
 				/*TODO: Implement Sales and Vouchers*/
-				saleId: '',
+				// sale: minPrice.sale,
 				voucherCode: checkoutDto.voucherCode,
-				unitDiscountAmount: 0,
-				unitDiscountReason: '',
-				unitDiscountType: '',
+				unitDiscountAmount: variant.priceAmount - variant.discountedPrice || 0,
+				unitDiscountReason: checkoutDto.voucherCode ? 'voucher' : variant.discountedPrice ? 'sale' : '',
+				unitDiscountType: checkoutDto.voucherCode ? 'voucher' : variant.discountedPrice ? 'sale' : '',
 				unitDiscountValue: 0,
 
 				/*Tax Rate handling not implemented yet*/
@@ -130,15 +133,15 @@ export class OrderService {
 
 				/*Quantity Cost*/
 				isShippingRequired: product.productType.isDigital,
-				totalPriceGrossAmount: line.totalCost,
+				totalPriceGrossAmount: line.discountedTotalCost || line.totalCost,
 				totalPriceNetAmount: 0,
 				undiscountedTotalPriceGrossAmount: line.totalCost,
 				undiscountedTotalPriceNetAmount: 0,
 
 				/*Unit Costs*/
-				unitPriceGrossAmount: 0,
+				unitPriceGrossAmount: line.totalCost,
 				unitPriceNetAmount: 0,
-				undiscountedUnitPriceGrossAmount: variant.priceAmount || 0,
+				undiscountedUnitPriceGrossAmount: line.quantity * (variant.priceAmount || 0),
 				undiscountedUnitPriceNetAmount: 0,
 			};
 			await this.orderLineRepository.insert(dto);

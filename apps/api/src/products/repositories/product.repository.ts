@@ -44,9 +44,16 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 		});
 	}
 
-	async findFilteredProductIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string): Promise<number[]> {
+	async findFilteredProductIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string): Promise<{
+		id: number,
+		priceAmount: number,
+		discountedPrice: number,
+	}[]> {
 		const caQb = this.createQueryBuilder('p')
+						 .leftJoin('p.defaultVariant', 'dpv')
 						 .select('p.id', 'id')
+						 .addSelect('dpv.priceAmount', 'priceAmount')
+						 .addSelect('dpv.discountedPrice', 'discountedPrice')
 						 .distinctOn(['p.id'])
 						 .where('p."isPublished" = true');
 		if ( search ) {
@@ -84,7 +91,11 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 		}
 
 		const res = await caQb.getRawMany();
-		return res.map(r => (Number(r.id)));
+		return res.map(r => ({
+			id: Number(r.id),
+			priceAmount: r.priceAmount,
+			discountedPrice: r.discountedPrice,
+		}));
 	}
 
 	async findByIdsWithSorting(ids: number[], skip?: number, take?: number, sorting?: ProductSorting, language: LanguageCode = LanguageCode.en): Promise<ProductEntity[]> {

@@ -61,29 +61,6 @@ export class ProductVariantEntity {
 	@IsOptional()
 	sortOrder?: number;
 
-	@Column({ nullable: true })
-	@ApiProperty({ type: Boolean, example: false, required: false })
-	@IsBoolean()
-	@IsOptional()
-	isPreorder?: boolean;
-
-	@Column({ nullable: true })
-	@ApiProperty({ type: String, example: '2022-01-01', required: false })
-	@IsString()
-	@IsOptional()
-	preorderEndDate?: string;
-
-	@Column({ nullable: true })
-	@ApiProperty({ type: Number, example: 1, required: false })
-	@IsInt()
-	@IsOptional()
-	preorderGlobalThreshold?: number;
-
-	@Column({ nullable: true })
-	@ApiProperty({ type: Number, example: 1, required: false })
-	@IsInt()
-	@IsOptional()
-	quantityLimitPerCustomer?: number;
 
 	@CreateDateColumn({ type: String })
 	@ApiProperty({ type: String, example: '2022-01-01T00:00:00.000+0200' })
@@ -106,10 +83,10 @@ export class ProductVariantEntity {
 	priceAmount?: number;
 
 	@Column({ type: 'float', nullable: true })
-	@ApiProperty({ type: Number, example: 1.2, required: false })
+	@ApiProperty({ type: Number, example: 1.4, required: false })
 	@IsNumber()
 	@IsOptional()
-	costPriceAmount?: number;
+	discountedPrice?: number;
 
 	//Stock
 	@Column()

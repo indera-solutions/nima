@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Translatable } from '@nima-cms/utils';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
+import { DiscountSaleEntity } from '../../discounts/entities/discount-sale.entity';
 import { ProductVariantDto } from '../../products/dto/product-variant.dto';
 import { ProductVariantEntity } from '../../products/entities/product-variant.entity';
 import { OrderEntity } from './order.entity';
@@ -99,9 +100,12 @@ export class OrderLineEntity {
 	@ApiProperty({ type: Number, example: 12.3 })
 	undiscountedUnitPriceNetAmount: number;
 
-	@Column({ type: String, nullable: true })
-	@ApiProperty({ type: String, example: 'summer-sale-2022', required: false })
-	saleId?: string;
+	@ManyToOne(() => DiscountSaleEntity, { nullable: true })
+	sale?: DiscountSaleEntity;
+
+	@RelationId((line: OrderLineEntity) => line.sale)
+	@ApiProperty({ type: Number, example: 0, required: false })
+	saleId?: number;
 
 	@Column({ type: String, nullable: true })
 	@ApiProperty({ type: String, example: 'ASDF123', required: false })
