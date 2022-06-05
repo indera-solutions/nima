@@ -29,6 +29,14 @@ export class CollectionsController {
 		return res.map(r => CollectionDto.prepare(r));
 	}
 
+	@Get('/slug/:slug')
+	@ApiOkResponse({ type: () => CollectionDto })
+	@ApiParam({ name: 'slug', type: String })
+	async findOneBySlug(@Param('slug') slug: string): Promise<CollectionDto> {
+		const res = await this.collectionsService.getOneBySlug({ slug });
+		return CollectionDto.prepare(res);
+	}
+
 	@Get(':collectionId')
 	@ApiOkResponse({ type: () => CollectionDto })
 	@ApiParam({ name: 'collectionId', type: Number })

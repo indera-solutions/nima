@@ -48,6 +48,12 @@ export class ProductsController {
 		return await this.filteringService.productFilterQuery(filterObj);
 	}
 
+	@Get('ids')
+	@ApiOkResponse({ type: Number, isArray: true })
+	async getAllIds() {
+		return await this.productsService.getAllIds();
+	}
+
 	@Get(':id')
 	@ApiOkResponse({ type: ProductDto })
 	async getById(@Param('id', ParseIntPipe) id: number) {

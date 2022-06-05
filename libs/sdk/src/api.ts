@@ -6120,6 +6120,101 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 			};
 		},
 		/**
+		 * Gets a category by slug. Use depth query to control the level of children to retrieve
+		 * @summary Get a category by slug
+		 * @param {string} slug The slug of the category to get
+		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the requested category, leave
+		 *     empty for the full tree
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		categoriesFindOneBySlug: async (slug: string, depth?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'slug' is not null or undefined
+			assertParamExists('categoriesFindOneBySlug', 'slug', slug)
+			const localVarPath = `/api/v1/categories/slugs/{slug}`
+				.replace(`{${ "slug" }}`, encodeURIComponent(String(slug)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			if ( depth !== undefined ) {
+				localVarQueryParameter['depth'] = depth;
+			}
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 * Gets all ids of categories
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		categoriesGetAllIds: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			const localVarPath = `/api/v1/categories/ids`;
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 * Gets all slugs of categories
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		categoriesGetAllSlugs: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			const localVarPath = `/api/v1/categories/slugs`;
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
 		 *
 		 * @param {number} id
 		 * @param {boolean} [forceDelete] Deletes the children subcategories. Default to false.
@@ -6250,6 +6345,37 @@ export const CategoriesApiFp = function (configuration?: Configuration) {
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
+		 * Gets a category by slug. Use depth query to control the level of children to retrieve
+		 * @summary Get a category by slug
+		 * @param {string} slug The slug of the category to get
+		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the requested category, leave
+		 *     empty for the full tree
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async categoriesFindOneBySlug(slug: string, depth?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CategoryDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.categoriesFindOneBySlug(slug, depth, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 * Gets all ids of categories
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async categoriesGetAllIds(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<number>>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.categoriesGetAllIds(options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 * Gets all slugs of categories
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async categoriesGetAllSlugs(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.categoriesGetAllSlugs(options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
 		 *
 		 * @param {number} id
 		 * @param {boolean} [forceDelete] Deletes the children subcategories. Default to false.
@@ -6321,6 +6447,34 @@ export const CategoriesApiFactory = function (configuration?: Configuration, bas
 		 */
 		categoriesFindOne(id: number, depth?: number, options?: any): AxiosPromise<CategoryDto> {
 			return localVarFp.categoriesFindOne(id, depth, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 * Gets a category by slug. Use depth query to control the level of children to retrieve
+		 * @summary Get a category by slug
+		 * @param {string} slug The slug of the category to get
+		 * @param {number} [depth] The depth of children to retrieve. Set 0 for only the requested category, leave
+		 *     empty for the full tree
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		categoriesFindOneBySlug(slug: string, depth?: number, options?: any): AxiosPromise<CategoryDto> {
+			return localVarFp.categoriesFindOneBySlug(slug, depth, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 * Gets all ids of categories
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		categoriesGetAllIds(options?: any): AxiosPromise<Array<number>> {
+			return localVarFp.categoriesGetAllIds(options).then((request) => request(axios, basePath));
+		},
+		/**
+		 * Gets all slugs of categories
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		categoriesGetAllSlugs(options?: any): AxiosPromise<Array<string>> {
+			return localVarFp.categoriesGetAllSlugs(options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -6405,6 +6559,27 @@ export interface CategoriesApiCategoriesFindOneRequest {
 	 * The depth of children to retrieve. Set 0 for only the requested category, leave empty for the full tree
 	 * @type {number}
 	 * @memberof CategoriesApiCategoriesFindOne
+	 */
+	readonly depth?: number;
+}
+
+/**
+ * Request parameters for categoriesFindOneBySlug operation in CategoriesApi.
+ * @export
+ * @interface CategoriesApiCategoriesFindOneBySlugRequest
+ */
+export interface CategoriesApiCategoriesFindOneBySlugRequest {
+	/**
+	 * The slug of the category to get
+	 * @type {string}
+	 * @memberof CategoriesApiCategoriesFindOneBySlug
+	 */
+	readonly slug: string;
+
+	/**
+	 * The depth of children to retrieve. Set 0 for only the requested category, leave empty for the full tree
+	 * @type {number}
+	 * @memberof CategoriesApiCategoriesFindOneBySlug
 	 */
 	readonly depth?: number;
 }
@@ -6502,6 +6677,38 @@ export class CategoriesApi extends BaseAPI {
 	 */
 	public categoriesFindOne(requestParameters: CategoriesApiCategoriesFindOneRequest, options?: AxiosRequestConfig) {
 		return CategoriesApiFp(this.configuration).categoriesFindOne(requestParameters.id, requestParameters.depth, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 * Gets a category by slug. Use depth query to control the level of children to retrieve
+	 * @summary Get a category by slug
+	 * @param {CategoriesApiCategoriesFindOneBySlugRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof CategoriesApi
+	 */
+	public categoriesFindOneBySlug(requestParameters: CategoriesApiCategoriesFindOneBySlugRequest, options?: AxiosRequestConfig) {
+		return CategoriesApiFp(this.configuration).categoriesFindOneBySlug(requestParameters.slug, requestParameters.depth, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 * Gets all ids of categories
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof CategoriesApi
+	 */
+	public categoriesGetAllIds(options?: AxiosRequestConfig) {
+		return CategoriesApiFp(this.configuration).categoriesGetAllIds(options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 * Gets all slugs of categories
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof CategoriesApi
+	 */
+	public categoriesGetAllSlugs(options?: AxiosRequestConfig) {
+		return CategoriesApiFp(this.configuration).categoriesGetAllSlugs(options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -7252,6 +7459,38 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 		},
 		/**
 		 *
+		 * @param {string} slug
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		collectionsFindOneBySlug: async (slug: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'slug' is not null or undefined
+			assertParamExists('collectionsFindOneBySlug', 'slug', slug)
+			const localVarPath = `/api/v1/collections/slug/{slug}`
+				.replace(`{${ "slug" }}`, encodeURIComponent(String(slug)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
 		 * @param {number} collectionId
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -7408,6 +7647,16 @@ export const CollectionsApiFp = function (configuration?: Configuration) {
 		},
 		/**
 		 *
+		 * @param {string} slug
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async collectionsFindOneBySlug(slug: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.collectionsFindOneBySlug(slug, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
 		 * @param {number} collectionId
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -7483,6 +7732,15 @@ export const CollectionsApiFactory = function (configuration?: Configuration, ba
 		 */
 		collectionsFindOne(collectionId: number, options?: any): AxiosPromise<CollectionDto> {
 			return localVarFp.collectionsFindOne(collectionId, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {string} slug
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		collectionsFindOneBySlug(slug: string, options?: any): AxiosPromise<CollectionDto> {
+			return localVarFp.collectionsFindOneBySlug(slug, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -7563,6 +7821,20 @@ export interface CollectionsApiCollectionsFindOneRequest {
 	 * @memberof CollectionsApiCollectionsFindOne
 	 */
 	readonly collectionId: number;
+}
+
+/**
+ * Request parameters for collectionsFindOneBySlug operation in CollectionsApi.
+ * @export
+ * @interface CollectionsApiCollectionsFindOneBySlugRequest
+ */
+export interface CollectionsApiCollectionsFindOneBySlugRequest {
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CollectionsApiCollectionsFindOneBySlug
+	 */
+	readonly slug: string;
 }
 
 /**
@@ -7669,6 +7941,17 @@ export class CollectionsApi extends BaseAPI {
 	 */
 	public collectionsFindOne(requestParameters: CollectionsApiCollectionsFindOneRequest, options?: AxiosRequestConfig) {
 		return CollectionsApiFp(this.configuration).collectionsFindOne(requestParameters.collectionId, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {CollectionsApiCollectionsFindOneBySlugRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof CollectionsApi
+	 */
+	public collectionsFindOneBySlug(requestParameters: CollectionsApiCollectionsFindOneBySlugRequest, options?: AxiosRequestConfig) {
+		return CollectionsApiFp(this.configuration).collectionsFindOneBySlug(requestParameters.slug, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -11177,6 +11460,34 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 		},
 		/**
 		 *
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		productsGetAllIds: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			const localVarPath = `/api/v1/products/ids`;
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
 		 * @param {number} id
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -11327,6 +11638,15 @@ export const ProductsApiFp = function (configuration?: Configuration) {
 		},
 		/**
 		 *
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async productsGetAllIds(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<number>>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.productsGetAllIds(options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
 		 * @param {number} id
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -11364,7 +11684,7 @@ export const ProductsApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const ProductsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = ProductsApiFp(configuration);
+	const localVarFp = ProductsApiFp(configuration)
 	return {
 		/**
 		 *
@@ -11393,6 +11713,14 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
 		 */
 		productsFindAll(attributeValueIds?: Array<number>, minPrice?: number, maxPrice?: number, sorting?: ProductSorting, language?: LanguageCode, search?: string, variants?: boolean, itemsPerPage?: number, page?: number, categoryId?: number, collectionId?: number, options?: any): AxiosPromise<ProductFilterResultDto> {
 			return localVarFp.productsFindAll(attributeValueIds, minPrice, maxPrice, sorting, language, search, variants, itemsPerPage, page, categoryId, collectionId, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		productsGetAllIds(options?: any): AxiosPromise<Array<number>> {
+			return localVarFp.productsGetAllIds(options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -11599,6 +11927,16 @@ export class ProductsApi extends BaseAPI {
 	 */
 	public productsFindAll(requestParameters: ProductsApiProductsFindAllRequest = {}, options?: AxiosRequestConfig) {
 		return ProductsApiFp(this.configuration).productsFindAll(requestParameters.attributeValueIds, requestParameters.minPrice, requestParameters.maxPrice, requestParameters.sorting, requestParameters.language, requestParameters.search, requestParameters.variants, requestParameters.itemsPerPage, requestParameters.page, requestParameters.categoryId, requestParameters.collectionId, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof ProductsApi
+	 */
+	public productsGetAllIds(options?: AxiosRequestConfig) {
+		return ProductsApiFp(this.configuration).productsGetAllIds(options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**

@@ -46,6 +46,14 @@ export class CategoriesService {
 
 	}
 
+	async findOneBySlug(params: { slug: string, depth?: number }): Promise<CategoryEntity> {
+		const root = await this.categoryRepository.findOne({ where: { slug: params.slug }, select: ['id'] });
+		return this.findOne({
+			id: root.id,
+			depth: params.depth,
+		});
+	}
+
 	async findOne(params: { id: number, depth?: number }): Promise<CategoryEntity> {
 		const root = await this.categoryRepository.findOne({ where: { id: params.id } });
 		if ( !root ) throw new NotFoundException('CATEGORY_NOT_FOUND', `The category with id ${ params.id } is not found.`);
@@ -83,5 +91,15 @@ export class CategoriesService {
 
 	async listIdsOfChildren(params: { id: number }) {
 		return await this.categoryRepository.listIdsOfChildren(params.id);
+	}
+
+	async getAllIds(): Promise<number[]> {
+		const res = await this.categoryRepository.find({ select: ['id'] });
+		return res.map(r => r.id);
+	}
+
+	async getAllSlugs(): Promise<string[]> {
+		const res = await this.categoryRepository.find({ select: ['slug'] });
+		return res.map(r => r.slug);
 	}
 }

@@ -13,6 +13,17 @@ export class CollectionRepository extends BaseRepository<CollectionEntity> {
 		});
 	}
 
+	async getIdBySlug(slug: string): Promise<number | undefined> {
+		const res = await this.findOne({
+			where: {
+				slug,
+			},
+			select: ['id'],
+		});
+
+		return res?.id;
+	}
+
 	async getFullObjects() {
 		return this.find({
 			relations: ['products', 'products.product', 'products.product.productMedia'],

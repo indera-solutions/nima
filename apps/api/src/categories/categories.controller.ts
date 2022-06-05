@@ -35,6 +35,34 @@ export class CategoriesController {
 		return res.map(r => CategoryDto.prepare(r));
 	}
 
+	@Get('/slugs/:slug')
+	@ApiOperation({ description: 'Gets a category by slug. Use depth query to control the level of children to retrieve', summary: 'Get a category by slug' })
+	@ApiParam({ name: 'slug', description: 'The slug of the category to get' })
+	@ApiQuery({ name: 'depth', description: 'The depth of children to retrieve. Set 0 for only the requested category, leave empty for the full tree', required: false })
+	@ApiOkResponse({ type: CategoryDto })
+	@ApiNotFoundResponse({ description: 'The category does not exists' })
+	async findOneBySlug(@Param('slug') slug: string, @Query('depth') depth?: number): Promise<CategoryDto> {
+		const res = await this.categoriesService.findOneBySlug({ slug, depth });
+		return CategoryDto.prepare(res);
+	}
+
+	@Get('/ids')
+	@ApiOperation({ description: 'Gets all ids of categories' })
+	@ApiOkResponse({ type: Number, isArray: true })
+	@ApiNotFoundResponse({ description: 'The category does not exists' })
+	async getAllIds(): Promise<number[]> {
+		return await this.categoriesService.getAllIds();
+	}
+
+
+	@Get('/slugs')
+	@ApiOperation({ description: 'Gets all slugs of categories' })
+	@ApiOkResponse({ type: String, isArray: true })
+	@ApiNotFoundResponse({ description: 'The category does not exists' })
+	async getAllSlugs(): Promise<string[]> {
+		return await this.categoriesService.getAllSlugs();
+	}
+
 	@Get(':id')
 	@ApiOperation({ description: 'Gets a category. Use depth query to control the level of children to retrieve', summary: 'Get a category by id' })
 	@ApiParam({ name: 'id', description: 'The id of the category to get' })

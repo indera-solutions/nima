@@ -102,6 +102,13 @@ export class ProductsService {
 		return product;
 	}
 
+	async getAllIds(): Promise<number[]> {
+		const ids = await this.productRepository.find({
+			select: ['id'],
+		});
+		return ids.map(product => product.id);
+	}
+
 	async findByIds(params: { ids: number[] }): Promise<ProductEntity[]> {
 		return await this.productRepository.findByIds(params.ids);
 	}

@@ -37,6 +37,12 @@ export class CollectionsService {
 		return this.collectionRepository.getFullObjects();
 	}
 
+	async getOneBySlug(params: { slug: string }): Promise<CollectionEntity> {
+		const id = await this.collectionRepository.getIdBySlug(params.slug);
+		if ( !id ) throw new NotFoundException('COLLECTION_NOT_FOUND');
+		return await this.getOne({ id });
+	}
+
 	async getOne(params: { id: number }): Promise<CollectionEntity> {
 		const res = await this.collectionRepository.getFullObject(params.id);
 		if ( !res ) throw new NotFoundException('COLLECTION_NOT_FOUND');

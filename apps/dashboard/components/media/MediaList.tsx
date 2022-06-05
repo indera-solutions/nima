@@ -17,7 +17,7 @@ export function MediaList(props: MediaListProps) {
 	}, [mediaListResponse]);
 
 	useEffect(() => {
-		setSelectedIds(props.selectedId);
+		setSelectedIds(props.selectedId || []);
 	}, [props.selectedId]);
 
 
