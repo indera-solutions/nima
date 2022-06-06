@@ -2077,6 +2077,7 @@ export interface MediaListPaginated {
 	 */
 	'totalCount': number;
 }
+
 /**
  *
  * @export
@@ -2263,7 +2264,92 @@ export interface OrderDto {
 	 * @memberof OrderDto
 	 */
 	'payment': PaymentDto;
+	/**
+	 *
+	 * @type {Array<OrderEventDto>}
+	 * @memberof OrderDto
+	 */
+	'events': Array<OrderEventDto>;
 }
+
+/**
+ *
+ * @export
+ * @interface OrderEventDto
+ */
+export interface OrderEventDto {
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrderEventDto
+	 */
+	'date': string;
+	/**
+	 *
+	 * @type {OrderEventsEnum}
+	 * @memberof OrderEventDto
+	 */
+	'eventType': OrderEventsEnum;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof OrderEventDto
+	 */
+	'parameters': object;
+}
+
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+
+export enum OrderEventsEnum {
+	DRAFT_CREATED = 'DRAFT_CREATED',
+	DRAFT_CREATED_FROM_REPLACE = 'DRAFT_CREATED_FROM_REPLACE',
+	ADDED_PRODUCTS = 'ADDED_PRODUCTS',
+	REMOVED_PRODUCTS = 'REMOVED_PRODUCTS',
+	PLACED = 'PLACED',
+	PLACED_FROM_DRAFT = 'PLACED_FROM_DRAFT',
+	OVERSOLD_ITEMS = 'OVERSOLD_ITEMS',
+	CANCELED = 'CANCELED',
+	ORDER_MARKED_AS_PAID = 'ORDER_MARKED_AS_PAID',
+	ORDER_FULLY_PAID = 'ORDER_FULLY_PAID',
+	ORDER_REPLACEMENT_CREATED = 'ORDER_REPLACEMENT_CREATED',
+	ORDER_DISCOUNT_ADDED = 'ORDER_DISCOUNT_ADDED',
+	ORDER_DISCOUNT_AUTOMATICALLY_UPDATED = 'ORDER_DISCOUNT_AUTOMATICALLY_UPDATED',
+	ORDER_DISCOUNT_UPDATED = 'ORDER_DISCOUNT_UPDATED',
+	ORDER_DISCOUNT_DELETED = 'ORDER_DISCOUNT_DELETED',
+	ORDER_LINE_DISCOUNT_UPDATED = 'ORDER_LINE_DISCOUNT_UPDATED',
+	ORDER_LINE_DISCOUNT_REMOVED = 'ORDER_LINE_DISCOUNT_REMOVED',
+	ORDER_LINE_PRODUCT_DELETED = 'ORDER_LINE_PRODUCT_DELETED',
+	ORDER_LINE_VARIANT_DELETED = 'ORDER_LINE_VARIANT_DELETED',
+	UPDATED_ADDRESS = 'UPDATED_ADDRESS',
+	EMAIL_SENT = 'EMAIL_SENT',
+	CONFIRMED = 'CONFIRMED',
+	PAYMENT_AUTHORIZED = 'PAYMENT_AUTHORIZED',
+	PAYMENT_CAPTURED = 'PAYMENT_CAPTURED',
+	EXTERNAL_SERVICE_NOTIFICATION = 'EXTERNAL_SERVICE_NOTIFICATION',
+	PAYMENT_REFUNDED = 'PAYMENT_REFUNDED',
+	PAYMENT_VOIDED = 'PAYMENT_VOIDED',
+	PAYMENT_FAILED = 'PAYMENT_FAILED',
+	INVOICE_REQUESTED = 'INVOICE_REQUESTED',
+	INVOICE_GENERATED = 'INVOICE_GENERATED',
+	INVOICE_UPDATED = 'INVOICE_UPDATED',
+	INVOICE_SENT = 'INVOICE_SENT',
+	FULFILLMENT_CANCELED = 'FULFILLMENT_CANCELED',
+	FULFILLMENT_RESTOCKED_ITEMS = 'FULFILLMENT_RESTOCKED_ITEMS',
+	FULFILLMENT_FULFILLED_ITEMS = 'FULFILLMENT_FULFILLED_ITEMS',
+	FULFILLMENT_REFUNDED = 'FULFILLMENT_REFUNDED',
+	FULFILLMENT_RETURNED = 'FULFILLMENT_RETURNED',
+	FULFILLMENT_REPLACED = 'FULFILLMENT_REPLACED',
+	FULFILLMENT_AWAITS_APPROVAL = 'FULFILLMENT_AWAITS_APPROVAL',
+	TRACKING_UPDATED = 'TRACKING_UPDATED',
+	NOTE_ADDED = 'NOTE_ADDED',
+	OTHER = 'OTHER'
+}
+
+
 /**
  *
  * @export
@@ -4080,6 +4166,27 @@ export interface UpdateOrderDto {
 	 */
 	'userId'?: number;
 }
+
+/**
+ *
+ * @export
+ * @interface UpdateOrderStatusDto
+ */
+export interface UpdateOrderStatusDto {
+	/**
+	 *
+	 * @type {OrderStatus}
+	 * @memberof UpdateOrderStatusDto
+	 */
+	'status': OrderStatus;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof UpdateOrderStatusDto
+	 */
+	'notifyCustomer': boolean;
+}
+
 /**
  *
  * @export
@@ -9879,6 +9986,44 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 				options: localVarRequestOptions,
 			};
 		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {UpdateOrderStatusDto} updateOrderStatusDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		orderUpdateStatus: async (id: number, updateOrderStatusDto: UpdateOrderStatusDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('orderUpdateStatus', 'id', id)
+			// verify required parameter 'updateOrderStatusDto' is not null or undefined
+			assertParamExists('orderUpdateStatus', 'updateOrderStatusDto', updateOrderStatusDto)
+			const localVarPath = `/api/v1/order/{id}/status`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(updateOrderStatusDto, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
 	}
 };
 
@@ -9951,6 +10096,17 @@ export const OrdersApiFp = function (configuration?: Configuration) {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.orderUpdate(id, updateOrderDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {UpdateOrderStatusDto} updateOrderStatusDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async orderUpdateStatus(id: number, updateOrderStatusDto: UpdateOrderStatusDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.orderUpdateStatus(id, updateOrderStatusDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
 	};
 };
 
@@ -10016,6 +10172,16 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
 		 */
 		orderUpdate(id: number, updateOrderDto: UpdateOrderDto, options?: any): AxiosPromise<OrderDto> {
 			return localVarFp.orderUpdate(id, updateOrderDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {UpdateOrderStatusDto} updateOrderStatusDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		orderUpdateStatus(id: number, updateOrderStatusDto: UpdateOrderStatusDto, options?: any): AxiosPromise<OrderDto> {
+			return localVarFp.orderUpdateStatus(id, updateOrderStatusDto, options).then((request) => request(axios, basePath));
 		},
 	};
 };
@@ -10119,6 +10285,27 @@ export interface OrdersApiOrderUpdateRequest {
 }
 
 /**
+ * Request parameters for orderUpdateStatus operation in OrdersApi.
+ * @export
+ * @interface OrdersApiOrderUpdateStatusRequest
+ */
+export interface OrdersApiOrderUpdateStatusRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof OrdersApiOrderUpdateStatus
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {UpdateOrderStatusDto}
+	 * @memberof OrdersApiOrderUpdateStatus
+	 */
+	readonly updateOrderStatusDto: UpdateOrderStatusDto;
+}
+
+/**
  * OrdersApi - object-oriented interface
  * @export
  * @class OrdersApi
@@ -10189,6 +10376,17 @@ export class OrdersApi extends BaseAPI {
 	 */
 	public orderUpdate(requestParameters: OrdersApiOrderUpdateRequest, options?: AxiosRequestConfig) {
 		return OrdersApiFp(this.configuration).orderUpdate(requestParameters.id, requestParameters.updateOrderDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {OrdersApiOrderUpdateStatusRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof OrdersApi
+	 */
+	public orderUpdateStatus(requestParameters: OrdersApiOrderUpdateStatusRequest, options?: AxiosRequestConfig) {
+		return OrdersApiFp(this.configuration).orderUpdateStatus(requestParameters.id, requestParameters.updateOrderStatusDto, options).then((request) => request(this.axios, this.basePath));
 	}
 }
 

@@ -1,17 +1,21 @@
-import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
+import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger';
 import { PaginatedResults } from '@nima-cms/utils';
-import { IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 import { PaymentDto } from '../../payments/dto/payment.dto';
 import { OrderEntity } from '../entities/order.entity';
+import { OrderEventDto } from './order-event.dto';
 import { OrderLineDto } from './order-line.dto';
 
-export class OrderDto extends OmitType(OrderEntity, ['lines', 'events', 'searchDocument', 'payment']) {
+export class OrderDto extends OmitType(OrderEntity, ['lines', 'searchDocument', 'payment', 'events']) {
 
 	@ApiProperty({ type: () => OrderLineDto, isArray: true })
 	lines: OrderLineDto[];
 
 	@ApiProperty({ type: () => PaymentDto })
 	payment: PaymentDto;
+
+	@ApiProperty({ type: () => OrderEventDto, isArray: true })
+	events: OrderEventDto[];
 
 	static prepare(entity: OrderEntity): OrderDto {
 		return {
@@ -48,11 +52,12 @@ export class OrderDto extends OmitType(OrderEntity, ['lines', 'events', 'searchD
 			original: entity.original,
 			lines: entity.lines?.map(OrderLineDto.prepare) || [],
 			payment: entity.payment ? PaymentDto.prepare(entity.payment) : undefined,
+			events: entity.events ? entity.events.map(OrderEventDto.prepare) : [],
 		};
 	}
 }
 
-export class CreateOrderDto extends OmitType(OrderDto, ['id', 'created', 'updatedAt']) {
+export class CreateOrderDto extends OmitType(OrderDto, ['id', 'created', 'updatedAt', 'events']) {
 	@ApiProperty({ type: Number, required: false })
 	@IsOptional()
 	userId?: number;
@@ -67,6 +72,12 @@ export class CreateOrderFromCheckoutDto {
 export class UpdateOrderDto extends PartialType(CreateOrderDto) {
 }
 
+
+export class UpdateOrderStatusDto extends PickType(CreateOrderDto, ['status']) {
+	@ApiProperty()
+	@IsBoolean()
+	notifyCustomer: boolean;
+}
 
 export class OrderListPaginated implements PaginatedResults<OrderDto> {
 	@ApiProperty({ type: [OrderDto] })

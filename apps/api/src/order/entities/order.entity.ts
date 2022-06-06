@@ -184,7 +184,7 @@ export class OrderEntity {
 	@OneToMany(() => OrderLineEntity, line => line.order, { eager: true })
 	lines: OrderLineEntity[];
 
-	@OneToMany(() => OrderEventEntity, event => event.order)
+	@OneToMany(() => OrderEventEntity, event => event.order, { eager: true })
 	events: OrderEventEntity[];
 
 	@OneToOne(() => PaymentEntity)

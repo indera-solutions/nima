@@ -8,7 +8,7 @@ import { ProductVariantService } from '../products/product-variant.service';
 import { ProductsService } from '../products/products.service';
 import { ShippingService } from '../shipping/shipping.service';
 import { InternalCreateOrderLineDto } from './dto/order-line.dto';
-import { CreateOrderDto, UpdateOrderDto } from './dto/order.dto';
+import { CreateOrderDto, UpdateOrderDto, UpdateOrderStatusDto } from './dto/order.dto';
 import { OrderEventsEnum, OrderStatus } from './dto/order.enum';
 import { OrderEntity } from './entities/order.entity';
 import { OrderEventRepository } from './repositories/order-event.repository';
@@ -64,7 +64,7 @@ export class OrderService {
 			checkoutToken: checkoutDto.token,
 			customerNote: checkoutDto.note,
 			userEmail: checkoutDto.email,
-			status: OrderStatus.DRAFT,
+			status: OrderStatus.UNCONFIRMED,
 			shippingAddress: checkoutDto.shippingAddress,
 			weight: 0,
 
@@ -185,6 +185,36 @@ export class OrderService {
 		const { id, updateOrderDto } = params;
 		await this.orderRepository.update(id, updateOrderDto);
 		return this.findOne({ id });
+	}
+
+	async updateStatus(params: { id: number, updateOrderStatusDto: UpdateOrderStatusDto }): Promise<OrderEntity> {
+		const { id, updateOrderStatusDto } = params;
+		await this.orderRepository.update(id, {
+			status: OrderStatus[updateOrderStatusDto.status],
+		});
+		const order = await this.findOne({ id });
+		let statusEvent: OrderEventsEnum;
+		switch ( updateOrderStatusDto.status ) {
+			case OrderStatus.FULFILLED:
+				statusEvent = OrderEventsEnum.FULFILLMENT_FULFILLED_ITEMS;
+				break;
+			case  OrderStatus.CANCELED:
+				statusEvent = OrderEventsEnum.CANCELED;
+				break;
+			case  OrderStatus.RETURNED:
+				statusEvent = OrderEventsEnum.FULFILLMENT_RETURNED;
+				break;
+			case  OrderStatus.UNCONFIRMED:
+				break;
+		}
+		if ( statusEvent ) {
+			await this.orderEventRepository.save({
+				order: order,
+				eventType: statusEvent,
+				parameters: {},
+			});
+		}
+		return order;
 	}
 
 	async remove(params: { id: number }): Promise<OrderEntity> {

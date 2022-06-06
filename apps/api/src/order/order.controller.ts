@@ -6,6 +6,7 @@ import {
 	OrderDto,
 	OrderListPaginated,
 	UpdateOrderDto,
+	UpdateOrderStatusDto,
 } from './dto/order.dto';
 import { OrderService } from './order.service';
 
@@ -57,6 +58,15 @@ export class OrderController {
 	@ApiParam({ type: Number, name: 'id' })
 	update(@Param('id', ParseIntPipe) id: number, @Body() updateOrderDto: UpdateOrderDto) {
 		return this.orderService.update({ id, updateOrderDto });
+	}
+
+
+	@Patch(':id/status')
+	@ApiCreatedResponse({ type: OrderDto })
+	@ApiBody({ type: UpdateOrderStatusDto })
+	@ApiParam({ type: Number, name: 'id' })
+	updateStatus(@Param('id') id: number, @Body() updateOrderStatusDto: UpdateOrderStatusDto) {
+		return this.orderService.updateStatus({ id, updateOrderStatusDto });
 	}
 
 	@Delete(':id')

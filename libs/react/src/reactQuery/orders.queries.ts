@@ -1,4 +1,4 @@
-import { OrderDto, OrderListPaginated, OrdersApi } from '@nima-cms/sdk';
+import { OrderDto, OrderListPaginated, OrdersApi, UpdateOrderStatusDto } from '@nima-cms/sdk';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { defaultConfiguration } from '../reactQueryCommons';
 import { NimaQueryCacheKeys } from './queryKeys';
@@ -48,6 +48,30 @@ export function useCreateOrderFromCheckoutMutation() {
 		{
 			onSuccess: () => {
 				client.invalidateQueries(NimaQueryCacheKeys.checkout.current());
+				client.invalidateQueries(NimaQueryCacheKeys.orders.all);
+			},
+		},
+	);
+}
+
+
+export function useUpdateOrderStatusMutation() {
+	const client = useQueryClient();
+	return useMutation<OrderDto,
+		never,
+		{
+			id: number,
+			updateOrderStatusDto: UpdateOrderStatusDto
+		}>(
+		async ({ id, updateOrderStatusDto }) => {
+			const res = await orderSDK.orderUpdateStatus({
+				id,
+				updateOrderStatusDto,
+			});
+			return res.data;
+		},
+		{
+			onSuccess: () => {
 				client.invalidateQueries(NimaQueryCacheKeys.orders.all);
 			},
 		},
