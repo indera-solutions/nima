@@ -7,8 +7,8 @@ interface LoginFormProps {
 
 export function LoginForm(props: LoginFormProps) {
 
-	const [email, setEmail] = useState<string>('test@email.com');
-	const [password, setPassword] = useState<string>('xxxx');
+	const [email, setEmail] = useState<string>('');
+	const [password, setPassword] = useState<string>('');
 
 	const { login } = useAuth();
 

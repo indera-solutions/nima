@@ -5,5 +5,5 @@ import getConfig from 'next/config';
 const { publicRuntimeConfig } = getConfig();
 export const defaultConfiguration = new Configuration({
 	accessToken: () => getAccessToken() || '',
-	basePath: publicRuntimeConfig.basePath,
+	basePath: process.env['NEXT_PUBLIC_BASE_PATH'] || publicRuntimeConfig.basePath,
 });
