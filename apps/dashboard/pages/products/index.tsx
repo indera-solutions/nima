@@ -2,20 +2,36 @@ import { Trans, useCategoryId, useProducts, useProductTypeId } from '@nima-cms/r
 import { ProductDto } from '@nima-cms/sdk';
 import { getEuroValue } from '@nima-cms/utils';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { AdminColumn, AdminPage, AdminSection, NimaTitle } from '../../components';
 import { ProductImage } from '../../components/products/ProductImage';
+import { Pagination } from '../../components/utils/Pagination';
 import { NIMA_ROUTES } from '../../lib/routes';
+
+const queryString = require('query-string');
 
 interface ProductListProps {
 
 }
 
+const ITEMS_PER_PAGE = 20;
 export default function ProductList(props: ProductListProps) {
+	const router = useRouter();
+	const page = (+router.query['page'] || 1) as number;
 	const { data: productsResponse } = useProducts({
-		page: 1,
-		itemsPerPage: 20,
+		page: page,
+		itemsPerPage: ITEMS_PER_PAGE,
 	});
+
+	async function onPageSelect(page: number) {
+		const q: string = queryString.stringify({
+			page: page,
+		}, {
+			skipNull: true,
+		});
+		await router.push(router.pathname + '?' + q, undefined, {});
+	}
 
 	return <>
 		<NimaTitle title={ 'Products' }/>
@@ -50,6 +66,12 @@ export default function ProductList(props: ProductListProps) {
 																						 product={ product }/>) }
 							</tbody>
 						</table>
+						{ productsResponse && ITEMS_PER_PAGE < productsResponse.totalCount && <Pagination
+							onPageSelect={ onPageSelect }
+							page={ page }
+							itemsPerPage={ ITEMS_PER_PAGE }
+							totalItems={ productsResponse?.totalCount || 0 }
+						/> }
 					</div>
 				</AdminSection>
 			</AdminColumn>
