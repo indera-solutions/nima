@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Put } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { IsAdmin, IsStaff } from '../../auth/auth.decorator';
-import { SettingsDto } from '../dto/settings.dto';
+import { CreateSettingsDto, SettingsDto, UpdateWebhookSettingsDto } from '../dto/settings.dto';
 import { SettingsService } from './settings.service';
 
 @Controller('core/settings')
@@ -19,9 +19,16 @@ export class SettingsController {
 	}
 
 	@Put()
-	@ApiOkResponse({ type: SettingsDto })
+	@ApiOkResponse({ type: CreateSettingsDto })
 	@IsAdmin()
-	async updateSettings(@Body() createSettingsDto: SettingsDto): Promise<SettingsDto> {
+	async updateSettings(@Body() createSettingsDto: CreateSettingsDto): Promise<SettingsDto> {
 		return this.settingsService.updateSettings(createSettingsDto);
+	}
+
+	@Patch('/webhooks')
+	@ApiOkResponse({ type: CreateSettingsDto })
+	@IsAdmin()
+	async updateWebhookSettings(@Body() webhookSettingsDto: UpdateWebhookSettingsDto): Promise<SettingsDto> {
+		return this.settingsService.updateWebhooks(webhookSettingsDto);
 	}
 }

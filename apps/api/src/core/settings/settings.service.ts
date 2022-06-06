@@ -1,7 +1,7 @@
 import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { SettingsDto } from '../dto/settings.dto';
+import { CreateSettingsDto, SettingsDto, UpdateWebhookSettingsDto } from '../dto/settings.dto';
 import { SettingsEntity } from '../entities/settings.entity';
 
 @Injectable()
@@ -43,7 +43,7 @@ export class SettingsService {
 		return SettingsService.prepareSettings(existingSettings[0]);
 	}
 
-	async updateSettings(createSettingsDto: SettingsDto): Promise<SettingsDto> {
+	async updateSettings(createSettingsDto: CreateSettingsDto): Promise<SettingsDto> {
 		const existingSettings = await this.settingsRepository.find();
 		if ( existingSettings.length === 0 ) {
 			const res = await this.settingsRepository.save(createSettingsDto);
@@ -56,5 +56,13 @@ export class SettingsService {
 			});
 			return SettingsService.prepareSettings(res);
 		}
+	}
+
+	async updateWebhooks(updateWebhookSettingsDto: UpdateWebhookSettingsDto): Promise<SettingsDto> {
+		const existingSettings = await this.settingsRepository.find();
+		SettingsService.checkSettingsIntegrity(existingSettings);
+		const setting = existingSettings[0];
+		const res = await this.settingsRepository.save({ ...setting, emailWebhooks: updateWebhookSettingsDto.emailWebhooks });
+		return SettingsService.prepareSettings(res);
 	}
 }
