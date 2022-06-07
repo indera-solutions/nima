@@ -12,7 +12,7 @@ export class ResetPasswordEmail extends BaseAuthEmail {
 
 	getTemplate(language: LanguageCode, params: ResetPasswordEmailParams): NimaEmail {
 		return super.customerEmailWithDetails({
-			title: {
+			subject: {
 				[LanguageCode.en]: `Your ${ params.siteName } Password has been reset`,
 				[LanguageCode.el]: `Ο κωδικός σας στο ${ params.siteName } έχει επανεφερθεί`,
 			},
@@ -24,7 +24,7 @@ If you did not request this change, please ignore it.`,
 Ακολουθήστε τον υπερσύνδεσμο για να αλλάξετε τον κωδικό σας: <a href="${ params.link }">${ params.link }</a>.
 Αν δεν αιτηθήκατε αυτή την αλλαγή κωδικού, αγνοήστε αυτό το email.`,
 			},
-			subject: {
+			title: {
 				[LanguageCode.en]: `Somebody requested a password change for your associated ${ params.siteName } account.`,
 				[LanguageCode.el]: `Κάποιος αιτήθηκε αλλαγή κωδικού για τον λογαριασμό σας στο ${ params.siteName }.`,
 			},

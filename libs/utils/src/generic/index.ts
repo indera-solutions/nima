@@ -5,4 +5,3 @@ export * from './testing';
 export * from './arrays.utils';
 export * from './util.types';
 export * from './object.utils';
-export * from './transformers';

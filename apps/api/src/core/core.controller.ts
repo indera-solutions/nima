@@ -1,9 +1,7 @@
-import { Body, Controller, Post, Query } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { ApiProperty, ApiQuery } from '@nestjs/swagger';
-import { IsPublic, User } from '../auth/auth.decorator';
+import { ApiProperty } from '@nestjs/swagger';
 import { CommerceEmails } from '../email/templates/commerce';
-import { Events } from '../events';
 import { CoreService } from './core.service';
 
 class TestDto {
@@ -19,16 +17,17 @@ export class CoreController {
 	) {
 	}
 
-	@Post('/test2')
-	@ApiQuery({ enum: CommerceEmails, name: 'enumTest' })
-	test2(@Body() dto: TestDto, @Query('enumTest') enumTest: CommerceEmails) {
-		console.log(dto);
-	}
-
-	@Post('/test')
-	@IsPublic()
-	test(@Body() dto: any, @User() user?: any) {
-		this.eventEmitter.emit(Events.TEST);
-		return 'Hello!';
-	}
+	//
+	// @Post('/test2')
+	// @ApiQuery({ enum: CommerceEmails, name: 'enumTest' })
+	// test2(@Body() dto: TestDto, @Query('enumTest') enumTest: CommerceEmails) {
+	// 	console.log(dto);
+	// }
+	//
+	// @Post('/test')
+	// @IsPublic()
+	// test(@Body() dto: any, @User() user?: any) {
+	// 	this.eventEmitter.emit(Events.TEST);
+	// 	return 'Hello!';
+	// }
 }

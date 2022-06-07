@@ -3,9 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { SettingsService } from '../core/settings/settings.service';
 import { NimaEmail } from './templates/BaseEmail';
 
-const mjml2html = require('mjml');
-
-
 export interface EmailParams {
 	origin?: string;
 	sender?: string;
@@ -46,7 +43,6 @@ export class EmailService {
 				Source: emailParams.sender || 'szarpas@indera.gr',
 			};
 			const command = new SendEmailCommand(sesParams);
-			console.log(sesParams);
 			await sesClient.send(command);
 		} catch ( e ) {
 			console.error(e);
