@@ -11,14 +11,14 @@ export class CategoryDto extends OmitType(CategoryEntity, ['parent', 'children']
 	@ApiProperty({ type: CategoryDto, required: false, description: 'Only for ancestors query' })
 	parent?: CategoryDto;
 
-	static prepare(entity: CategoryEntity): CategoryDto {
+	static prepare(entity: CategoryEntity, options?: { isAdmin?: boolean }): CategoryDto {
 		return {
 			id: entity.id,
 			name: entity.name,
 			slug: entity.slug,
 			children: entity.children?.map(c => CategoryDto.prepare(c)) || [],
 			parent: entity.parent ? CategoryDto.prepare(entity.parent) : undefined,
-			privateMetadata: entity.privateMetadata,
+			privateMetadata: options?.isAdmin ? entity.privateMetadata : {},
 			metadata: entity.metadata,
 			description: entity.description,
 			seoTitle: entity.seoTitle,

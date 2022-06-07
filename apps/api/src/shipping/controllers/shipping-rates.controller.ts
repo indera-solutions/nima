@@ -1,13 +1,12 @@
-import { Body, Controller, Delete, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiParam, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
+import { IsStaff } from '../../auth/auth.decorator';
 import { CreateShippingRateDto, ShippingRateDto, UpdateShippingRateDto } from '../dto/shipping-rate.dto';
 import { ShippingService } from '../shipping.service';
 
 
 @Controller('shipping/:methodId/zones/:zoneId/rates')
 @ApiTags('Shipping')
-@UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 export class ShippingRatesController {
 	constructor(private readonly shippingService: ShippingService) {
@@ -18,6 +17,7 @@ export class ShippingRatesController {
 	@ApiParam({ type: Number, name: 'zoneId' })
 	@ApiCreatedResponse({ type: () => ShippingRateDto })
 	@ApiBody({ type: () => CreateShippingRateDto })
+	@IsStaff()
 	async createRate(@Param('methodId') methodId: number, @Param('zoneId') zoneId: number, @Body() dto: CreateShippingRateDto): Promise<ShippingRateDto> {
 		const res = await this.shippingService.createRate({
 			dto: dto,
@@ -33,6 +33,7 @@ export class ShippingRatesController {
 	@ApiParam({ type: Number, name: 'id' })
 	@ApiBody({ type: () => UpdateShippingRateDto })
 	@ApiCreatedResponse({ type: () => ShippingRateDto })
+	@IsStaff()
 	async updateRate(
 		@Param('methodId') methodId: number,
 		@Param('zoneId') zoneId: number,
@@ -53,6 +54,7 @@ export class ShippingRatesController {
 	@ApiParam({ type: Number, name: 'zoneId' })
 	@ApiParam({ type: Number, name: 'id' })
 	@ApiCreatedResponse({ type: () => ShippingRateDto })
+	@IsStaff()
 	async deleteRate(
 		@Param('methodId') methodId: number,
 		@Param('zoneId') zoneId: number,

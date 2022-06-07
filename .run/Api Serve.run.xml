@@ -5,7 +5,11 @@
         <tasks>
             <task value="api:serve"/>
         </tasks>
-        <envs/>
+        <envs>
+            <env name="USER_PASS_RECOVERY_LINK" value="http://localhost:3333/docs/"/>
+            <env name="STAFF_PASS_RECOVERY_LINK"
+                 value="http://localhost:3333/docs/#/Authentication/Auth_resetPassword"/>
+        </envs>
         <method v="2"/>
     </configuration>
 </component>

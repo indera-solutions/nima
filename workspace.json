@@ -4,6 +4,7 @@
 		"api": "apps/api",
 		"dashboard": "apps/dashboard",
 		"dashboard-e2e": "apps/dashboard-e2e",
+		"dev-webhooks": "apps/dev/webhooks",
 		"react": "libs/react",
 		"sdk": "libs/sdk",
 		"utils": "libs/utils"

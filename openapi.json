@@ -56,6 +56,11 @@
 				},
 				"tags": [
 					"Attributes"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -89,6 +94,11 @@
 				},
 				"tags": [
 					"Attributes"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"patch": {
@@ -294,6 +304,11 @@
 				},
 				"tags": [
 					"Attribute Values"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -335,6 +350,11 @@
 				},
 				"tags": [
 					"Attribute Values"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"patch": {
@@ -631,6 +651,40 @@
 				},
 				"tags": [
 					"Products"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/products/ids": {
+			"get": {
+				"operationId": "Products_getAllIds",
+				"parameters": [ ],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "number"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Products"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -661,6 +715,11 @@
 				},
 				"tags": [
 					"Products"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"put": {
@@ -813,6 +872,11 @@
 				},
 				"tags": [
 					"Product Variants"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -851,6 +915,11 @@
 				},
 				"tags": [
 					"Product Variants"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"put": {
@@ -1148,6 +1217,11 @@
 				},
 				"tags": [
 					"Categories"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"get": {
@@ -1180,6 +1254,129 @@
 				},
 				"tags": [
 					"Categories"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/categories/slugs/{slug}": {
+			"get": {
+				"operationId": "Categories_findOneBySlug",
+				"summary": "Get a category by slug",
+				"description": "Gets a category by slug. Use depth query to control the level of children to retrieve",
+				"parameters": [
+					{
+						"name": "slug",
+						"required": true,
+						"in": "path",
+						"description": "The slug of the category to get",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "depth",
+						"required": false,
+						"in": "query",
+						"description": "The depth of children to retrieve. Set 0 for only the requested category, leave empty for the full tree",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CategoryDto"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The category does not exists"
+					}
+				},
+				"tags": [
+					"Categories"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/categories/ids": {
+			"get": {
+				"operationId": "Categories_getAllIds",
+				"summary": "",
+				"description": "Gets all ids of categories",
+				"parameters": [ ],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "number"
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The category does not exists"
+					}
+				},
+				"tags": [
+					"Categories"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/categories/slugs": {
+			"get": {
+				"operationId": "Categories_getAllSlugs",
+				"summary": "",
+				"description": "Gets all slugs of categories",
+				"parameters": [ ],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The category does not exists"
+					}
+				},
+				"tags": [
+					"Categories"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -1225,6 +1422,11 @@
 				},
 				"tags": [
 					"Categories"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"put": {
@@ -1263,6 +1465,11 @@
 				},
 				"tags": [
 					"Categories"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"delete": {
@@ -1293,6 +1500,11 @@
 				},
 				"tags": [
 					"Categories"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -1329,6 +1541,11 @@
 				},
 				"tags": [
 					"Categories"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -1360,6 +1577,11 @@
 				},
 				"tags": [
 					"Discount"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"get": {
@@ -1371,7 +1593,10 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/DiscountSaleDto"
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/DiscountSaleDto"
+									}
 								}
 							}
 						}
@@ -1379,6 +1604,11 @@
 				},
 				"tags": [
 					"Discount"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -1401,10 +1631,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/DiscountSaleDto"
-									}
+									"$ref": "#/components/schemas/DiscountSaleDto"
 								}
 							}
 						}
@@ -1412,6 +1639,11 @@
 				},
 				"tags": [
 					"Discount"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"patch": {
@@ -1450,6 +1682,11 @@
 				},
 				"tags": [
 					"Discount"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"delete": {
@@ -1478,6 +1715,11 @@
 				},
 				"tags": [
 					"Discount"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -1518,6 +1760,11 @@
 				},
 				"tags": [
 					"Discount"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -1558,6 +1805,11 @@
 				},
 				"tags": [
 					"Discount"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -1598,6 +1850,11 @@
 				},
 				"tags": [
 					"Discount"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -1638,6 +1895,11 @@
 				},
 				"tags": [
 					"Discount"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -1676,6 +1938,11 @@
 				},
 				"tags": [
 					"Discount"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -1714,6 +1981,11 @@
 				},
 				"tags": [
 					"Discount"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -1752,6 +2024,11 @@
 				},
 				"tags": [
 					"Discount"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -1790,6 +2067,11 @@
 				},
 				"tags": [
 					"Discount"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -1821,6 +2103,11 @@
 				},
 				"tags": [
 					"Collections"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"get": {
@@ -1843,6 +2130,46 @@
 				},
 				"tags": [
 					"Collections"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/collections/slug/{slug}": {
+			"get": {
+				"operationId": "Collections_findOneBySlug",
+				"parameters": [
+					{
+						"name": "slug",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CollectionDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Collections"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -1873,6 +2200,11 @@
 				},
 				"tags": [
 					"Collections"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"patch": {
@@ -1911,6 +2243,11 @@
 				},
 				"tags": [
 					"Collections"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"delete": {
@@ -1939,11 +2276,16 @@
 				},
 				"tags": [
 					"Collections"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
 		"/api/v1/collections/{collectionId}/products": {
-			"patch": {
+			"post": {
 				"operationId": "Collections_addProducts",
 				"parameters": [
 					{
@@ -1982,10 +2324,15 @@
 				},
 				"tags": [
 					"Collections"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
-		"/api/v1/collections/{collectionId}/products/{id}": {
+		"/api/v1/collections/{collectionId}/products/{productId}": {
 			"delete": {
 				"operationId": "Collections_removeProduct",
 				"parameters": [
@@ -1998,7 +2345,7 @@
 						}
 					},
 					{
-						"name": "id",
+						"name": "productId",
 						"required": true,
 						"in": "path",
 						"schema": {
@@ -2020,6 +2367,11 @@
 				},
 				"tags": [
 					"Collections"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -2056,7 +2408,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/SettingsDto"
+								"$ref": "#/components/schemas/CreateSettingsDto"
 							}
 						}
 					}
@@ -2067,7 +2419,43 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/SettingsDto"
+									"$ref": "#/components/schemas/CreateSettingsDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Core"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/core/settings/webhooks": {
+			"patch": {
+				"operationId": "Settings_updateWebhookSettings",
+				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateWebhookSettingsDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CreateSettingsDto"
 								}
 							}
 						}
@@ -2117,6 +2505,11 @@
 				},
 				"tags": [
 					"Media"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"get": {
@@ -2153,6 +2546,11 @@
 				},
 				"tags": [
 					"Media"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -2183,6 +2581,11 @@
 				},
 				"tags": [
 					"Media"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"delete": {
@@ -2211,6 +2614,11 @@
 				},
 				"tags": [
 					"Media"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -2301,7 +2709,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CreateUserDto"
+								"$ref": "#/components/schemas/RegisterUserDto"
 							}
 						}
 					}
@@ -2313,6 +2721,11 @@
 				},
 				"tags": [
 					"Users"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"get": {
@@ -2325,6 +2738,11 @@
 				},
 				"tags": [
 					"Users"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -2337,7 +2755,7 @@
 						"required": true,
 						"in": "path",
 						"schema": {
-							"type": "string"
+							"type": "number"
 						}
 					}
 				],
@@ -2348,6 +2766,11 @@
 				},
 				"tags": [
 					"Users"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"patch": {
@@ -2358,7 +2781,7 @@
 						"required": true,
 						"in": "path",
 						"schema": {
-							"type": "string"
+							"type": "number"
 						}
 					}
 				],
@@ -2379,6 +2802,11 @@
 				},
 				"tags": [
 					"Users"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"delete": {
@@ -2389,7 +2817,7 @@
 						"required": true,
 						"in": "path",
 						"schema": {
-							"type": "string"
+							"type": "number"
 						}
 					}
 				],
@@ -2400,6 +2828,11 @@
 				},
 				"tags": [
 					"Users"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -2458,6 +2891,61 @@
 				]
 			}
 		},
+		"/api/v1/auth/passwordReset": {
+			"post": {
+				"operationId": "Auth_requestPasswordReset",
+				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RequestUserPasswordChangeDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Authentication"
+				]
+			},
+			"patch": {
+				"operationId": "Auth_resetPassword",
+				"parameters": [
+					{
+						"name": "token",
+						"required": true,
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateUserPasswordDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": [
+					"Authentication"
+				]
+			}
+		},
 		"/api/v1/auth/profile": {
 			"get": {
 				"operationId": "Auth_getHello",
@@ -2500,6 +2988,11 @@
 				},
 				"tags": [
 					"Orders"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"get": {
@@ -2536,6 +3029,11 @@
 				},
 				"tags": [
 					"Orders"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -2567,6 +3065,11 @@
 				},
 				"tags": [
 					"Orders"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -2597,6 +3100,11 @@
 				},
 				"tags": [
 					"Orders"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"patch": {
@@ -2635,6 +3143,11 @@
 				},
 				"tags": [
 					"Orders"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"delete": {
@@ -2663,6 +3176,56 @@
 				},
 				"tags": [
 					"Orders"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/order/{id}/status": {
+			"patch": {
+				"operationId": "Order_updateStatus",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateOrderStatusDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OrderDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Orders"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -2694,6 +3257,11 @@
 				},
 				"tags": [
 					"Checkout"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -2724,6 +3292,11 @@
 				},
 				"tags": [
 					"Checkout"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"patch": {
@@ -2762,6 +3335,11 @@
 				},
 				"tags": [
 					"Checkout"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -2802,6 +3380,11 @@
 				},
 				"tags": [
 					"Checkout"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -2858,6 +3441,11 @@
 				},
 				"tags": [
 					"Checkout"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -2898,6 +3486,11 @@
 				},
 				"tags": [
 					"Checkout"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		},
@@ -2929,11 +3522,6 @@
 				},
 				"tags": [
 					"Shipping"
-				],
-				"security": [
-					{
-						"bearer": [ ]
-					}
 				]
 			},
 			"get": {
@@ -3033,11 +3621,6 @@
 				},
 				"tags": [
 					"Shipping"
-				],
-				"security": [
-					{
-						"bearer": [ ]
-					}
 				]
 			}
 		},
@@ -3068,11 +3651,6 @@
 				},
 				"tags": [
 					"Shipping"
-				],
-				"security": [
-					{
-						"bearer": [ ]
-					}
 				]
 			}
 		},
@@ -3367,6 +3945,11 @@
 				},
 				"tags": [
 					"Payments"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			},
 			"patch": {
@@ -3405,6 +3988,11 @@
 				},
 				"tags": [
 					"Payments"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
 				]
 			}
 		}
@@ -4005,6 +4593,12 @@
 						"items": {
 							"$ref": "#/components/schemas/CreateSortableMediaDto"
 						}
+					},
+					"collectionIds": {
+						"type": "array",
+						"items": {
+							"type": "number"
+						}
 					}
 				},
 				"required": [
@@ -4027,7 +4621,8 @@
 					"productTypeId",
 					"attributes",
 					"categoryId",
-					"productMedia"
+					"productMedia",
+					"collectionIds"
 				]
 			},
 			"ProductAttributeDto": {
@@ -4186,6 +4781,99 @@
 					"media"
 				]
 			},
+			"ProductVariantDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"example": 1
+					},
+					"sku": {
+						"type": "string",
+						"example": "product-sku-1"
+					},
+					"name": {
+						"example": {
+							"en": "Product Variant Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"weight": {
+						"type": "number",
+						"example": 1
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"sortOrder": {
+						"type": "number",
+						"example": 1
+					},
+					"created": {
+						"type": "string",
+						"example": "2022-01-01T00:00:00.000+0200"
+					},
+					"updatedAt": {
+						"type": "string",
+						"example": "2022-01-01T00:00:00.000+0200"
+					},
+					"currency": {
+						"type": "string",
+						"example": "EUR"
+					},
+					"priceAmount": {
+						"type": "number",
+						"example": 1.4
+					},
+					"discountedPrice": {
+						"type": "number",
+						"example": 1.4
+					},
+					"stock": {
+						"type": "number",
+						"example": 10
+					},
+					"trackInventory": {
+						"type": "boolean",
+						"example": true
+					},
+					"attributes": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ProductAttributeDto"
+						}
+					},
+					"productMedia": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/SortableMediaDto"
+						}
+					}
+				},
+				"required": [
+					"id",
+					"sku",
+					"name",
+					"metadata",
+					"privateMetadata",
+					"created",
+					"updatedAt",
+					"currency",
+					"stock",
+					"trackInventory",
+					"attributes",
+					"productMedia"
+				]
+			},
 			"ProductDto": {
 				"type": "object",
 				"properties": {
@@ -4297,6 +4985,15 @@
 						"items": {
 							"$ref": "#/components/schemas/SortableMediaDto"
 						}
+					},
+					"collections": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CollectionDto"
+						}
+					},
+					"defaultVariant": {
+						"$ref": "#/components/schemas/ProductVariantDto"
 					}
 				},
 				"required": [
@@ -4323,7 +5020,101 @@
 					"productTypeId",
 					"categoryId",
 					"attributes",
-					"productMedia"
+					"productMedia",
+					"collections"
+				]
+			},
+			"CollectionProductsDto": {
+				"type": "object",
+				"properties": {
+					"sortOrder": {
+						"type": "number"
+					},
+					"product": {
+						"$ref": "#/components/schemas/ProductDto"
+					}
+				},
+				"required": [
+					"sortOrder",
+					"product"
+				]
+			},
+			"CollectionDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"example": 1
+					},
+					"name": {
+						"example": {
+							"en": "Collection Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"slug": {
+						"type": "string",
+						"example": "collection-name"
+					},
+					"seoDescription": {
+						"example": "SEO Description",
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"seoTitle": {
+						"example": "SEO Title",
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"description": {
+						"example": {
+							"en": "Collection Description"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"backgroundImage": {
+						"$ref": "#/components/schemas/MediaDto"
+					},
+					"products": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CollectionProductsDto"
+						}
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"slug",
+					"seoDescription",
+					"seoTitle",
+					"description",
+					"metadata",
+					"privateMetadata",
+					"backgroundImage",
+					"products"
 				]
 			},
 			"ProductSorting": {
@@ -4508,22 +5299,6 @@
 						"type": "number",
 						"example": 1
 					},
-					"isPreorder": {
-						"type": "boolean",
-						"example": false
-					},
-					"preorderEndDate": {
-						"type": "string",
-						"example": "2022-01-01"
-					},
-					"preorderGlobalThreshold": {
-						"type": "number",
-						"example": 1
-					},
-					"quantityLimitPerCustomer": {
-						"type": "number",
-						"example": 1
-					},
 					"currency": {
 						"type": "string",
 						"example": "EUR"
@@ -4532,10 +5307,6 @@
 						"type": "number",
 						"example": 1.4
 					},
-					"costPriceAmount": {
-						"type": "number",
-						"example": 1.2
-					},
 					"stock": {
 						"type": "number",
 						"example": 10
@@ -4543,9 +5314,6 @@
 					"trackInventory": {
 						"type": "boolean",
 						"example": true
-					},
-					"discountedPrice": {
-						"type": "number"
 					},
 					"attributes": {
 						"type": "array",
@@ -4568,121 +5336,7 @@
 					"currency",
 					"stock",
 					"trackInventory",
-					"discountedPrice",
 					"attributes",
-					"productMedia"
-				]
-			},
-			"ProductVariantDto": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "number",
-						"example": 1
-					},
-					"sku": {
-						"type": "string",
-						"example": "product-sku-1"
-					},
-					"name": {
-						"example": {
-							"en": "Product Variant Name"
-						},
-						"allOf": [
-							{
-								"$ref": "#/components/schemas/TranslatableDto"
-							}
-						]
-					},
-					"weight": {
-						"type": "number",
-						"example": 1
-					},
-					"metadata": {
-						"type": "object",
-						"example": {}
-					},
-					"privateMetadata": {
-						"type": "object",
-						"example": {}
-					},
-					"sortOrder": {
-						"type": "number",
-						"example": 1
-					},
-					"isPreorder": {
-						"type": "boolean",
-						"example": false
-					},
-					"preorderEndDate": {
-						"type": "string",
-						"example": "2022-01-01"
-					},
-					"preorderGlobalThreshold": {
-						"type": "number",
-						"example": 1
-					},
-					"quantityLimitPerCustomer": {
-						"type": "number",
-						"example": 1
-					},
-					"created": {
-						"type": "string",
-						"example": "2022-01-01T00:00:00.000+0200"
-					},
-					"updatedAt": {
-						"type": "string",
-						"example": "2022-01-01T00:00:00.000+0200"
-					},
-					"currency": {
-						"type": "string",
-						"example": "EUR"
-					},
-					"priceAmount": {
-						"type": "number",
-						"example": 1.4
-					},
-					"costPriceAmount": {
-						"type": "number",
-						"example": 1.2
-					},
-					"stock": {
-						"type": "number",
-						"example": 10
-					},
-					"trackInventory": {
-						"type": "boolean",
-						"example": true
-					},
-					"attributes": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/ProductAttributeDto"
-						}
-					},
-					"discountedPrice": {
-						"type": "number"
-					},
-					"productMedia": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/SortableMediaDto"
-						}
-					}
-				},
-				"required": [
-					"id",
-					"sku",
-					"name",
-					"metadata",
-					"privateMetadata",
-					"created",
-					"updatedAt",
-					"currency",
-					"stock",
-					"trackInventory",
-					"attributes",
-					"discountedPrice",
 					"productMedia"
 				]
 			},
@@ -5132,91 +5786,6 @@
 					"privateMetadata"
 				]
 			},
-			"CollectionProductsDto": {
-				"type": "object",
-				"properties": {
-					"sortOrder": {
-						"type": "number"
-					},
-					"product": {
-						"$ref": "#/components/schemas/ProductDto"
-					}
-				},
-				"required": [
-					"sortOrder",
-					"product"
-				]
-			},
-			"CollectionDto": {
-				"type": "object",
-				"properties": {
-					"id": {
-						"type": "number",
-						"example": 1
-					},
-					"name": {
-						"example": {
-							"en": "Collection Name"
-						},
-						"allOf": [
-							{
-								"$ref": "#/components/schemas/TranslatableDto"
-							}
-						]
-					},
-					"slug": {
-						"type": "string",
-						"example": "collection-name"
-					},
-					"seoDescription": {
-						"type": "string",
-						"example": "SEO Description"
-					},
-					"seoTitle": {
-						"type": "string",
-						"example": "SEO Title"
-					},
-					"description": {
-						"example": {
-							"en": "Collection Description"
-						},
-						"allOf": [
-							{
-								"$ref": "#/components/schemas/TranslatableDto"
-							}
-						]
-					},
-					"metadata": {
-						"type": "object",
-						"example": {}
-					},
-					"privateMetadata": {
-						"type": "object",
-						"example": {}
-					},
-					"backgroundImage": {
-						"$ref": "#/components/schemas/MediaDto"
-					},
-					"products": {
-						"type": "array",
-						"items": {
-							"$ref": "#/components/schemas/CollectionProductsDto"
-						}
-					}
-				},
-				"required": [
-					"id",
-					"name",
-					"slug",
-					"seoDescription",
-					"seoTitle",
-					"description",
-					"metadata",
-					"privateMetadata",
-					"backgroundImage",
-					"products"
-				]
-			},
 			"DiscountSaleDto": {
 				"type": "object",
 				"properties": {
@@ -5430,12 +5999,20 @@
 						"example": "collection-name"
 					},
 					"seoDescription": {
-						"type": "string",
-						"example": "SEO Description"
+						"example": "SEO Description",
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
 					},
 					"seoTitle": {
-						"type": "string",
-						"example": "SEO Title"
+						"example": "SEO Title",
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
 					},
 					"description": {
 						"example": {
@@ -5473,8 +6050,7 @@
 					"description",
 					"metadata",
 					"privateMetadata",
-					"products",
-					"backgroundImageId"
+					"products"
 				]
 			},
 			"UpdateCollectionDto": {
@@ -5495,12 +6071,20 @@
 						"example": "collection-name"
 					},
 					"seoDescription": {
-						"type": "string",
-						"example": "SEO Description"
+						"example": "SEO Description",
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
 					},
 					"seoTitle": {
-						"type": "string",
-						"example": "SEO Title"
+						"example": "SEO Title",
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
 					},
 					"description": {
 						"example": {
@@ -5582,6 +6166,42 @@
 					"address"
 				]
 			},
+			"Emails": {
+				"type": "string",
+				"enum": [
+					"BASE_COMMERCE",
+					"ORDER_REFUNDED",
+					"ORDER_SHIPPED",
+					"ORDER_CANCELED",
+					"ORDER_COMPLETED",
+					"ORDER_DETAILS",
+					"ORDER_ON_HOLD",
+					"ORDER_PAYMENT_PENDING",
+					"ORDER_PROCESSING",
+					"ORDER_CANCELED_ADMIN",
+					"LOW_STOCK_ADMIN",
+					"ORDER_CREATED_ADMIN",
+					"ORDER_FAILED",
+					"ORDER_PAYMENT_PENDING_ADMIN",
+					"VERIFY_EMAIL",
+					"RESET_PASSWORD"
+				]
+			},
+			"EmailWebhooksDto": {
+				"type": "object",
+				"properties": {
+					"emailType": {
+						"$ref": "#/components/schemas/Emails"
+					},
+					"webhook": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"emailType",
+					"webhook"
+				]
+			},
 			"SettingsDto": {
 				"type": "object",
 				"properties": {
@@ -5592,6 +6212,91 @@
 					"adminLanguage": {
 						"example": "en",
 						"$ref": "#/components/schemas/LanguageCode"
+					},
+					"adminEmail": {
+						"type": "string",
+						"example": "sender@example.com"
+					},
+					"availableLanguages": {
+						"type": "array",
+						"example": [
+							"en",
+							"el"
+						],
+						"items": {
+							"$ref": "#/components/schemas/LanguageCode"
+						}
+					},
+					"baseUrl": {
+						"type": "string",
+						"example": "https://example.com"
+					},
+					"canRegister": {
+						"type": "boolean",
+						"example": true
+					},
+					"defaultLanguage": {
+						"example": "en",
+						"$ref": "#/components/schemas/LanguageCode"
+					},
+					"senderEmail": {
+						"type": "string",
+						"example": "sender@example.com"
+					},
+					"senderName": {
+						"type": "string",
+						"example": "Sender"
+					},
+					"seoTitle": {
+						"type": "string",
+						"example": "Awesome Eshop"
+					},
+					"seoDescription": {
+						"type": "string",
+						"example": "What a great shop!"
+					},
+					"shopAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"siteLogo": {
+						"$ref": "#/components/schemas/MediaDto"
+					},
+					"emailWebhooks": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/EmailWebhooksDto"
+						}
+					}
+				},
+				"required": [
+					"siteName",
+					"adminLanguage",
+					"adminEmail",
+					"availableLanguages",
+					"baseUrl",
+					"canRegister",
+					"defaultLanguage",
+					"senderEmail",
+					"senderName",
+					"seoTitle",
+					"seoDescription",
+					"emailWebhooks"
+				]
+			},
+			"CreateSettingsDto": {
+				"type": "object",
+				"properties": {
+					"siteName": {
+						"type": "string",
+						"example": "Example Shop"
+					},
+					"adminLanguage": {
+						"example": "en",
+						"$ref": "#/components/schemas/LanguageCode"
+					},
+					"adminEmail": {
+						"type": "string",
+						"example": "sender@example.com"
 					},
 					"availableLanguages": {
 						"type": "array",
@@ -5641,6 +6346,7 @@
 				"required": [
 					"siteName",
 					"adminLanguage",
+					"adminEmail",
 					"availableLanguages",
 					"baseUrl",
 					"canRegister",
@@ -5649,6 +6355,20 @@
 					"senderName",
 					"seoTitle",
 					"seoDescription"
+				]
+			},
+			"UpdateWebhookSettingsDto": {
+				"type": "object",
+				"properties": {
+					"emailWebhooks": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/EmailWebhooksDto"
+						}
+					}
+				},
+				"required": [
+					"emailWebhooks"
 				]
 			},
 			"MediaListPaginated": {
@@ -5729,14 +6449,6 @@
 					"address"
 				]
 			},
-			"CreateUserDto": {
-				"type": "object",
-				"properties": {}
-			},
-			"UpdateUserDto": {
-				"type": "object",
-				"properties": {}
-			},
 			"RegisterUserDto": {
 				"type": "object",
 				"properties": {
@@ -5750,14 +6462,80 @@
 					"lastName": {
 						"type": "string"
 					},
+					"languageCode": {
+						"example": "en",
+						"$ref": "#/components/schemas/LanguageCode"
+					},
 					"password": {
 						"type": "string"
 					}
 				},
 				"required": [
 					"email",
+					"languageCode",
 					"password"
 				]
+			},
+			"UpdateUserDto": {
+				"type": "object",
+				"properties": {
+					"email": {
+						"type": "string",
+						"example": "test@example.com"
+					},
+					"isAdmin": {
+						"type": "boolean",
+						"example": false
+					},
+					"isStaff": {
+						"type": "boolean",
+						"example": false
+					},
+					"isActive": {
+						"type": "boolean",
+						"example": false
+					},
+					"updatedAt": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"defaultBillingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"defaultShippingAddress": {
+						"$ref": "#/components/schemas/AddressDto"
+					},
+					"notes": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"avatar": {
+						"$ref": "#/components/schemas/MediaDto"
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"languageCode": {
+						"example": "en",
+						"$ref": "#/components/schemas/LanguageCode"
+					},
+					"addresses": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/AddressDto"
+						}
+					}
+				}
 			},
 			"LoginUserDto": {
 				"type": "object",
@@ -5784,6 +6562,29 @@
 				},
 				"required": [
 					"access_token"
+				]
+			},
+			"RequestUserPasswordChangeDto": {
+				"type": "object",
+				"properties": {
+					"email": {
+						"type": "string",
+						"example": "test@example.com"
+					}
+				},
+				"required": [
+					"email"
+				]
+			},
+			"UpdateUserPasswordDto": {
+				"type": "object",
+				"properties": {
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"password"
 				]
 			},
 			"OrderStatus": {
@@ -5899,8 +6700,8 @@
 						"example": 12.3
 					},
 					"saleId": {
-						"type": "string",
-						"example": "summer-sale-2022"
+						"type": "number",
+						"example": 0
 					},
 					"voucherCode": {
 						"type": "string",
@@ -6146,6 +6947,74 @@
 					"payment"
 				]
 			},
+			"OrderEventsEnum": {
+				"type": "string",
+				"enum": [
+					"DRAFT_CREATED",
+					"DRAFT_CREATED_FROM_REPLACE",
+					"ADDED_PRODUCTS",
+					"REMOVED_PRODUCTS",
+					"PLACED",
+					"PLACED_FROM_DRAFT",
+					"OVERSOLD_ITEMS",
+					"CANCELED",
+					"ORDER_MARKED_AS_PAID",
+					"ORDER_FULLY_PAID",
+					"ORDER_REPLACEMENT_CREATED",
+					"ORDER_DISCOUNT_ADDED",
+					"ORDER_DISCOUNT_AUTOMATICALLY_UPDATED",
+					"ORDER_DISCOUNT_UPDATED",
+					"ORDER_DISCOUNT_DELETED",
+					"ORDER_LINE_DISCOUNT_UPDATED",
+					"ORDER_LINE_DISCOUNT_REMOVED",
+					"ORDER_LINE_PRODUCT_DELETED",
+					"ORDER_LINE_VARIANT_DELETED",
+					"UPDATED_ADDRESS",
+					"EMAIL_SENT",
+					"CONFIRMED",
+					"PAYMENT_AUTHORIZED",
+					"PAYMENT_CAPTURED",
+					"EXTERNAL_SERVICE_NOTIFICATION",
+					"PAYMENT_REFUNDED",
+					"PAYMENT_VOIDED",
+					"PAYMENT_FAILED",
+					"INVOICE_REQUESTED",
+					"INVOICE_GENERATED",
+					"INVOICE_UPDATED",
+					"INVOICE_SENT",
+					"FULFILLMENT_CANCELED",
+					"FULFILLMENT_RESTOCKED_ITEMS",
+					"FULFILLMENT_FULFILLED_ITEMS",
+					"FULFILLMENT_REFUNDED",
+					"FULFILLMENT_RETURNED",
+					"FULFILLMENT_REPLACED",
+					"FULFILLMENT_AWAITS_APPROVAL",
+					"TRACKING_UPDATED",
+					"NOTE_ADDED",
+					"OTHER"
+				]
+			},
+			"OrderEventDto": {
+				"type": "object",
+				"properties": {
+					"date": {
+						"type": "string",
+						"example": ""
+					},
+					"eventType": {
+						"$ref": "#/components/schemas/OrderEventsEnum"
+					},
+					"parameters": {
+						"type": "object",
+						"example": {}
+					}
+				},
+				"required": [
+					"date",
+					"eventType",
+					"parameters"
+				]
+			},
 			"OrderDto": {
 				"type": "object",
 				"properties": {
@@ -6268,6 +7137,12 @@
 					},
 					"payment": {
 						"$ref": "#/components/schemas/PaymentDto"
+					},
+					"events": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/OrderEventDto"
+						}
 					}
 				},
 				"required": [
@@ -6296,7 +7171,8 @@
 					"totalPaidAmount",
 					"origin",
 					"lines",
-					"payment"
+					"payment",
+					"events"
 				]
 			},
 			"CreateOrderFromCheckoutDto": {
@@ -6452,6 +7328,22 @@
 					}
 				}
 			},
+			"UpdateOrderStatusDto": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"example": "DRAFT",
+						"$ref": "#/components/schemas/OrderStatus"
+					},
+					"notifyCustomer": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"status",
+					"notifyCustomer"
+				]
+			},
 			"CreateCheckoutDto": {
 				"type": "object",
 				"properties": {
@@ -6533,9 +7425,6 @@
 						"items": {
 							"$ref": "#/components/schemas/AddressDto"
 						}
-					},
-					"password": {
-						"type": "string"
 					}
 				},
 				"required": [
@@ -6549,8 +7438,7 @@
 					"metadata",
 					"privateMetadata",
 					"languageCode",
-					"addresses",
-					"password"
+					"addresses"
 				]
 			},
 			"CheckoutLineDto": {
@@ -6568,13 +7456,17 @@
 					},
 					"totalCost": {
 						"type": "number"
+					},
+					"discountedTotalCost": {
+						"type": "number"
 					}
 				},
 				"required": [
 					"quantity",
 					"variantId",
 					"productId",
-					"totalCost"
+					"totalCost",
+					"discountedTotalCost"
 				]
 			},
 			"ShippingZoneLocationType": {

@@ -1,11 +1,10 @@
-import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
-import { SettingsDto } from '../dto/settings.dto';
+import { IsAdmin, IsStaff } from '../../auth/auth.decorator';
+import { CreateSettingsDto, SettingsDto, UpdateWebhookSettingsDto } from '../dto/settings.dto';
 import { SettingsService } from './settings.service';
 
 @Controller('core/settings')
-@UseGuards(JwtAuthGuard)
 @ApiTags('Core')
 @ApiBearerAuth()
 export class SettingsController {
@@ -14,13 +13,22 @@ export class SettingsController {
 
 	@Get()
 	@ApiOkResponse({ type: SettingsDto, description: 'asdas', status: 200 })
+	@IsStaff()
 	async getSettings(): Promise<SettingsDto> {
 		return this.settingsService.getSettings();
 	}
 
 	@Put()
-	@ApiOkResponse({ type: SettingsDto })
-	async updateSettings(@Body() createSettingsDto: SettingsDto): Promise<SettingsDto> {
+	@ApiOkResponse({ type: CreateSettingsDto })
+	@IsAdmin()
+	async updateSettings(@Body() createSettingsDto: CreateSettingsDto): Promise<SettingsDto> {
 		return this.settingsService.updateSettings(createSettingsDto);
+	}
+
+	@Patch('/webhooks')
+	@ApiOkResponse({ type: CreateSettingsDto })
+	@IsAdmin()
+	async updateWebhookSettings(@Body() webhookSettingsDto: UpdateWebhookSettingsDto): Promise<SettingsDto> {
+		return this.settingsService.updateWebhooks(webhookSettingsDto);
 	}
 }

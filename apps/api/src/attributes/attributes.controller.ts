@@ -1,11 +1,13 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { IsPublic, IsStaff, User } from '../auth/auth.decorator';
+import { UserEntity } from '../users/entities/user.entity';
 import { AttributesService } from './attributes.service';
 import { AttributeDto, CreateAttributeDto, UpdateAttributeDto } from './dto/attribute.dto';
 
 @Controller('attributes')
 @ApiTags('Attributes')
+@ApiBearerAuth()
 export class AttributesController {
 	constructor(private service: AttributesService) {
 	}
@@ -13,53 +15,57 @@ export class AttributesController {
 	@Post()
 	@ApiOkResponse({ type: AttributeDto })
 	@ApiBody({ type: CreateAttributeDto })
-	@UseGuards(JwtAuthGuard)
-	@ApiBearerAuth()
-	create(@Body() createAttributeDto: CreateAttributeDto): Promise<AttributeDto> {
-		return this.service.save({ dto: createAttributeDto });
+	@IsStaff()
+	async create(@Body() createAttributeDto: CreateAttributeDto, @User() user?: UserEntity): Promise<AttributeDto> {
+		const res = await this.service.save({ dto: createAttributeDto });
+		return AttributeDto.prepare(res, { isAdmin: user ? user.isStaff : false });
 	}
 
 	@Get()
 	@ApiOkResponse({ type: [AttributeDto] })
-	findAll(): Promise<AttributeDto[]> {
-		return this.service.findAll();
+	@IsPublic()
+	async findAll(@User() user: UserEntity): Promise<AttributeDto[]> {
+		const res = await this.service.findAll();
+		return res.map(att => AttributeDto.prepare(att, { isAdmin: user ? user.isStaff : false }));
 	}
 
 	@Get('/:attributeId')
 	@ApiParam({ type: Number, name: 'attributeId' })
 	@ApiNotFoundResponse({ description: 'ATTRIBUTE_NOT_FOUND' })
 	@ApiOkResponse({ type: AttributeDto })
-	getById(@Param('attributeId', ParseIntPipe) attributeId: number): Promise<AttributeDto> {
-		return this.service.getById({ id: attributeId });
+	@IsPublic()
+	async getById(@Param('attributeId', ParseIntPipe) attributeId: number, @User() user?: UserEntity): Promise<AttributeDto> {
+		const res = await this.service.getById({ id: attributeId });
+		return AttributeDto.prepare(res, { isAdmin: user ? user.isStaff : false });
 	}
 
 	@Patch('/:attributeId')
 	@ApiOkResponse({ type: AttributeDto })
 	@ApiBody({ type: UpdateAttributeDto })
 	@ApiParam({ type: Number, name: 'attributeId' })
-	@UseGuards(JwtAuthGuard)
-	@ApiBearerAuth()
-	patch(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() updateAttributeDto: UpdateAttributeDto): Promise<AttributeDto> {
-		return this.service.update({ id: attributeId, dto: updateAttributeDto });
+	@IsStaff()
+	async patch(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() updateAttributeDto: UpdateAttributeDto, @User() user?: UserEntity): Promise<AttributeDto> {
+		const res = await this.service.update({ id: attributeId, dto: updateAttributeDto });
+		return AttributeDto.prepare(res, { isAdmin: user ? user.isStaff : false });
 	}
 
 	@Put('/:attributeId')
 	@ApiOkResponse({ type: AttributeDto })
 	@ApiBody({ type: CreateAttributeDto })
 	@ApiParam({ type: Number, name: 'attributeId' })
-	@UseGuards(JwtAuthGuard)
-	@ApiBearerAuth()
-	update(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() createAttributeDto: CreateAttributeDto): Promise<AttributeDto> {
-		return this.service.save({ id: attributeId, dto: createAttributeDto });
+	@IsStaff()
+	async update(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() createAttributeDto: CreateAttributeDto, @User() user?: UserEntity): Promise<AttributeDto> {
+		const res = await this.service.save({ id: attributeId, dto: createAttributeDto });
+		return AttributeDto.prepare(res, { isAdmin: user ? user.isStaff : false });
 	}
 
 	@Delete('/:attributeId')
 	@ApiOkResponse({ type: AttributeDto })
 	@ApiBody({ type: UpdateAttributeDto })
 	@ApiParam({ type: Number, name: 'attributeId' })
-	@UseGuards(JwtAuthGuard)
-	@ApiBearerAuth()
-	remove(@Param('attributeId', ParseIntPipe) attributeId: number): Promise<AttributeDto> {
-		return this.service.deleteById({ id: attributeId });
+	@IsStaff()
+	async remove(@Param('attributeId', ParseIntPipe) attributeId: number, @User() user?: UserEntity): Promise<AttributeDto> {
+		const res = await this.service.deleteById({ id: attributeId });
+		return AttributeDto.prepare(res, { isAdmin: user ? user.isStaff : false });
 	}
 }

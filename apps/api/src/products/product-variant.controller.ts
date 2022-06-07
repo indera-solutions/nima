@@ -1,11 +1,13 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { IsPublic, IsStaff, User } from '../auth/auth.decorator';
+import { UserEntity } from '../users/entities/user.entity';
 import { CreateProductVariantDto, ProductVariantDto } from './dto/product-variant.dto';
 import { ProductVariantService } from './product-variant.service';
 
 @Controller('products/:productId/variants')
 @ApiTags('Product Variants')
+@ApiBearerAuth()
 export class ProductVariantController {
 	constructor(private readonly productVariantService: ProductVariantService) {
 	}
@@ -14,47 +16,46 @@ export class ProductVariantController {
 	@ApiParam({ type: Number, name: 'productId' })
 	@ApiCreatedResponse({ type: ProductVariantDto })
 	@ApiBody({ type: CreateProductVariantDto })
-	@UseGuards(JwtAuthGuard)
-	@ApiBearerAuth()
-	async create(@Param('productId', ParseIntPipe) productId: number, @Body() createProductVariantDto: CreateProductVariantDto) {
+	@IsStaff()
+	async create(@Param('productId', ParseIntPipe) productId: number, @Body() createProductVariantDto: CreateProductVariantDto, @User() user?: UserEntity) {
 		const res = await this.productVariantService.save({ productId: productId, dto: createProductVariantDto });
-		return this.productVariantService.getDto(res);
+		return this.productVariantService.getDto(res, { isAdmin: user ? user.isStaff : false });
 	}
 
 	@Get()
 	@ApiParam({ type: Number, name: 'productId' })
 	@ApiOkResponse({ type: [ProductVariantDto] })
-	async findOfProduct(@Param('productId', ParseIntPipe) productId: number): Promise<ProductVariantDto[]> {
+	@IsPublic()
+	async findOfProduct(@Param('productId', ParseIntPipe) productId: number, @User() user?: UserEntity): Promise<ProductVariantDto[]> {
 		const products = await this.productVariantService.findIdsOfProduct({ productId: productId });
-		const promises = products.map(product => this.productVariantService.getDto(product));
+		const promises = products.map(product => this.productVariantService.getDto(product, { isAdmin: user ? user.isStaff : false }));
 		return Promise.all(promises);
 	}
 
 	@Get(':id')
 	@ApiParam({ type: Number, name: 'productId' })
 	@ApiOkResponse({ type: ProductVariantDto })
-	async getById(@Param('productId', ParseIntPipe) productId: number, @Param('id', ParseIntPipe) id: number) {
-		return this.productVariantService.getDto(id);
+	@IsPublic()
+	async getById(@Param('productId', ParseIntPipe) productId: number, @Param('id', ParseIntPipe) id: number, @User() user?: UserEntity) {
+		return this.productVariantService.getDto(id, { isAdmin: user ? user.isStaff : false });
 	}
 
 	@Put(':id')
 	@ApiParam({ type: Number, name: 'productId' })
 	@ApiOkResponse({ type: ProductVariantDto })
 	@ApiBody({ type: CreateProductVariantDto })
-	@UseGuards(JwtAuthGuard)
-	@ApiBearerAuth()
-	async update(@Param('productId', ParseIntPipe) productId: number, @Param('id', ParseIntPipe) id: number, @Body() createProductVariantDto: CreateProductVariantDto) {
+	@IsStaff()
+	async update(@Param('productId', ParseIntPipe) productId: number, @Param('id', ParseIntPipe) id: number, @Body() createProductVariantDto: CreateProductVariantDto, @User() user?: UserEntity) {
 		const res = await this.productVariantService.save({ productId: productId, dto: createProductVariantDto, id: id });
-		return this.productVariantService.getDto(res);
+		return this.productVariantService.getDto(res, { isAdmin: user ? user.isStaff : false });
 	}
 
 	@Delete(':id')
 	@ApiParam({ type: Number, name: 'productId' })
 	@ApiOkResponse({ type: ProductVariantDto })
-	@UseGuards(JwtAuthGuard)
-	@ApiBearerAuth()
-	async remove(@Param('productId', ParseIntPipe) productId: number, @Param('id', ParseIntPipe) id: number) {
-		const product = this.productVariantService.getDto(id);
+	@IsStaff()
+	async remove(@Param('productId', ParseIntPipe) productId: number, @Param('id', ParseIntPipe) id: number, @User() user?: UserEntity) {
+		const product = this.productVariantService.getDto(id, { isAdmin: user ? user.isStaff : false });
 		await this.productVariantService.remove({ id: id });
 		return product;
 	}

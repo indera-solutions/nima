@@ -1,10 +1,11 @@
 import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
-import { ApiBody, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { PaymentDto, UpdatePaymentDto } from './dto/payment.dto';
 import { PaymentsService } from './payments.service';
 
 @Controller('payments')
 @ApiTags('Payments')
+@ApiBearerAuth()
 export class PaymentsController {
 	constructor(private service: PaymentsService) {
 	}

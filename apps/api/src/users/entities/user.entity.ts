@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { LanguageCode, Metadata } from '@nima-cms/utils';
+import { IsEmail, IsOptional, IsString } from 'class-validator';
 import {
 	Column,
 	CreateDateColumn,
@@ -24,6 +25,7 @@ export class UserEntity {
 
 	@Column()
 	@ApiProperty({ type: String, example: 'test@example.com' })
+	@IsEmail()
 	email: string;
 
 	@Column({ default: false })
@@ -64,10 +66,14 @@ export class UserEntity {
 
 	@Column({ nullable: true })
 	@ApiProperty({ type: String, required: false })
+	@IsString()
+	@IsOptional()
 	firstName?: string;
 
 	@Column({ nullable: true })
 	@ApiProperty({ type: String, required: false })
+	@IsString()
+	@IsOptional()
 	lastName?: string;
 
 	@ManyToOne(() => MediaEntity, { nullable: true })
@@ -84,6 +90,7 @@ export class UserEntity {
 
 	@Column({ type: 'enum', enum: LanguageCode })
 	@ApiProperty({ enum: LanguageCode, example: LanguageCode.en, enumName: 'LanguageCode' })
+	@IsString()
 	languageCode: LanguageCode;
 
 	@ManyToMany(() => AddressEntity)
