@@ -23,25 +23,25 @@ export class DiscountSaleDto extends OmitType(DiscountSaleEntity, ['categories',
 export class CreateDiscountSaleDto extends OmitType(DiscountSaleDto, ['id', 'created', 'updatedAt', 'categories', 'products', 'collections', 'variants']) {
 }
 
-export class DiscountSaleAddProductsDto {
+export class DiscountAddProductsDto {
 	@ApiProperty({ type: [Number] })
 	@IsInt({ each: true })
 	productIds: number[];
 }
 
-export class DiscountSaleAddCategoriesDto {
+export class DiscountAddCategoriesDto {
 	@ApiProperty({ type: [Number] })
 	@IsInt({ each: true })
 	categoryIds: number[];
 }
 
-export class DiscountSaleAddCollectionsDto {
+export class DiscountAddCollectionsDto {
 	@ApiProperty({ type: [Number] })
 	@IsInt({ each: true })
 	collectionIds: number[];
 }
 
-export class DiscountSaleAddVariantsDto {
+export class DiscountAddVariantsDto {
 	@ApiProperty({ type: [Number] })
 	@IsInt({ each: true })
 	variantIds: number[];

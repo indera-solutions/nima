@@ -5,14 +5,15 @@ import { CollectionsModule } from '../collections/collections.module';
 import { ProductsModule } from '../products/products.module';
 import { DiscountSalesController } from './discount-sales.controller';
 import { DiscountSalesService } from './discount-sales.service';
+import { DiscountVoucherService } from './discount-voucher.service';
 import { DiscountSaleEntity } from './entities/discount-sale.entity';
 import { DiscountSaleRepository } from './repositories/discount-sale.repository';
 
 @Module({
 	imports: [TypeOrmModule.forFeature([DiscountSaleRepository]), forwardRef(() => ProductsModule), CategoriesModule, CollectionsModule],
 	controllers: [DiscountSalesController],
-	providers: [DiscountSalesService],
-	exports: [DiscountSalesService],
+	providers: [DiscountSalesService, DiscountVoucherService],
+	exports: [DiscountSalesService, DiscountVoucherService],
 })
 export class DiscountsModule {
 }
