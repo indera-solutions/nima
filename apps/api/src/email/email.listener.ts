@@ -22,11 +22,14 @@ export class EmailListener {
 
 	@OnEvent(Events.PASSWORD.RESET_REQUESTED)
 	async passwordChangeRequested(payload: { user: UserEntity, authAction: AuthActionEntity, language: LanguageCode }) {
+		const { authAction, user, language } = payload;
 		const settings = await this.settingsService.getSettings();
+		const link = user.isStaff ? process.env['STAFF_PASS_RECOVERY_LINK'] : ['USER_PASS_RECOVERY_LINK'];
+
 		const params: ResetPasswordEmailParams = {
-			authDetails: { authAction: payload.authAction, user: payload.user },
+			authDetails: { authAction: authAction, user: user },
 			siteName: settings.siteName,
-			link: 'http://localhost:3333/docs/#/Authentication/Auth_resetPassword',
+			link: link + `?token=${ authAction.token }`,
 		};
 		const webhook = settings.emailWebhooks.find(setting => setting.emailType === Emails.RESET_PASSWORD);
 		let template: NimaEmail;
@@ -35,8 +38,8 @@ export class EmailListener {
 			if ( isNimaEmail(res.data) ) template = res.data;
 			else throw new Error('RESULT_IS_NOT_NIMA_EMAIL_TEMPLATE');
 
-		} else template = (new ResetPasswordEmail()).getTemplate(payload.language, params);
-		await this.service.sendEmail(template, payload.user.email);
+		} else template = (new ResetPasswordEmail()).getTemplate(language, params);
+		await this.service.sendEmail(template, user.email);
 	}
 
 	@OnEvent(Events.TEST)
