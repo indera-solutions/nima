@@ -37,6 +37,7 @@ export class CollectionsController {
 	@Get('/slug/:slug')
 	@ApiOkResponse({ type: () => CollectionDto })
 	@ApiParam({ name: 'slug', type: String })
+	@IsPublic()
 	async findOneBySlug(@Param('slug') slug: string): Promise<CollectionDto> {
 		const res = await this.collectionsService.getOneBySlug({ slug });
 		return CollectionDto.prepare(res);

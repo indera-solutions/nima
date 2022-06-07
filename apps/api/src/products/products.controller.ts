@@ -50,6 +50,7 @@ export class ProductsController {
 	}
 
 	@Get('ids')
+	@IsPublic()
 	@ApiOkResponse({ type: Number, isArray: true })
 	async getAllIds() {
 		return await this.productsService.getAllIds();

@@ -33,7 +33,7 @@ export class SettingsEntity {
 	@IsEnum(LanguageCode)
 	adminLanguage: LanguageCode;
 
-	@Column()
+	@Column({ default: 'test@test.com' })
 	@ApiProperty({ type: String, example: 'sender@example.com' })
 	@IsEmail()
 	adminEmail: string;

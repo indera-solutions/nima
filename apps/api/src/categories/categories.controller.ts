@@ -42,6 +42,7 @@ export class CategoriesController {
 	}
 
 	@Get('/slugs/:slug')
+	@IsPublic()
 	@ApiOperation({ description: 'Gets a category by slug. Use depth query to control the level of children to retrieve', summary: 'Get a category by slug' })
 	@ApiParam({ name: 'slug', description: 'The slug of the category to get' })
 	@ApiQuery({ name: 'depth', description: 'The depth of children to retrieve. Set 0 for only the requested category, leave empty for the full tree', required: false })
@@ -53,6 +54,7 @@ export class CategoriesController {
 	}
 
 	@Get('/ids')
+	@IsPublic()
 	@ApiOperation({ description: 'Gets all ids of categories' })
 	@ApiOkResponse({ type: Number, isArray: true })
 	@ApiNotFoundResponse({ description: 'The category does not exists' })
@@ -62,6 +64,7 @@ export class CategoriesController {
 
 
 	@Get('/slugs')
+	@IsPublic()
 	@ApiOperation({ description: 'Gets all slugs of categories' })
 	@ApiOkResponse({ type: String, isArray: true })
 	@ApiNotFoundResponse({ description: 'The category does not exists' })
@@ -70,23 +73,23 @@ export class CategoriesController {
 	}
 
 	@Get(':id')
+	@IsPublic()
 	@ApiOperation({ description: 'Gets a category. Use depth query to control the level of children to retrieve', summary: 'Get a category by id' })
 	@ApiParam({ name: 'id', description: 'The id of the category to get' })
 	@ApiQuery({ name: 'depth', description: 'The depth of children to retrieve. Set 0 for only the requested category, leave empty for the full tree', required: false })
 	@ApiOkResponse({ type: CategoryDto })
 	@ApiNotFoundResponse({ description: 'The category does not exists' })
-	@IsPublic()
 	async findOne(@Param('id', ParseIntPipe) id: number, @Query('depth') depth?: number, @User() user?: UserEntity): Promise<CategoryDto> {
 		const res = await this.categoriesService.findOne({ id, depth });
 		return CategoryDto.prepare(res, { isAdmin: user ? user.isStaff : false });
 	}
 
 	@Get(':id/ancestors')
+	@IsPublic()
 	@ApiOperation({ description: 'Gets all the ancestors of a category. Useful for breadcrumbs', summary: 'Get ancestors of category by id' })
 	@ApiParam({ name: 'id', description: 'The id of the category to get' })
 	@ApiOkResponse({ type: CategoryDto })
 	@ApiNotFoundResponse({ description: 'The category does not exists' })
-	@IsPublic()
 	async findAncestorsById(@Param('id', ParseIntPipe) id: number, @User() user?: UserEntity): Promise<CategoryDto> {
 		const res = await this.categoriesService.findAncestors({ id });
 		return CategoryDto.prepare(res, { isAdmin: user ? user.isStaff : false });
