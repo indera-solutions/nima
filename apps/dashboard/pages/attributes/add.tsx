@@ -179,6 +179,7 @@ export default function AddAttribute(props: AddAttributeProps) {
 								onChange={ (e) => {
 									onValueEdit('inputType', e.value);
 								} }
+								styles={{menu: styles => ({ ...styles, zIndex: 100 })}}
 							/>
 						</div>
 						<div className="form-control w-full max-w-xs">
