@@ -23,6 +23,17 @@ export class OrderRepository extends BaseRepository<OrderEntity> {
 		});
 	}
 
+	findOfUser(userId: number) {
+		return this.find({
+			where: {
+				user: {
+					id: userId,
+				},
+			},
+			relations: ['voucher'],
+		});
+	}
+
 	deleteById(id: number) {
 		return this.delete({
 			id: id,

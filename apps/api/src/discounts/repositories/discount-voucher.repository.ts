@@ -32,6 +32,10 @@ export class DiscountVoucherRepository extends BaseRepository<DiscountVoucherEnt
 		});
 	}
 
+	async addOneUse(id: number) {
+		return this.increment({ id: id }, 'used', 1);
+	}
+
 	async deleteById(id: number) {
 		return this.delete({
 			id: id,

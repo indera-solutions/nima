@@ -38,6 +38,23 @@ export class DiscountVoucherController {
 		return await Promise.all(promises);
 	}
 
+	@Get(':id')
+	@ApiOkResponse({ type: DiscountVoucherDto })
+	@ApiParam({ name: 'id', type: Number })
+	@IsStaff()
+	async findOne(@Param('id', ParseIntPipe) id: number, @User() user?: UserEntity): Promise<DiscountVoucherDto> {
+		return this.voucherService.getDto(id, { isAdmin: user ? user.isStaff : false });
+	}
+
+	// @Get('/code/:code')
+	// @ApiOkResponse({ type: DiscountVoucherDto })
+	// @ApiParam({ name: 'code', type: String })
+	// @IsPublic()
+	// async findByCode(@Param('code') code: string, @User() user?: UserEntity): Promise<DiscountVoucherDto> {
+	// 	const res = await this.voucherService.findByCode({ code: code });
+	// 	return this.voucherService.getDto(res.id);
+	// }
+
 	@Patch(':id')
 	@ApiCreatedResponse({ type: DiscountVoucherDto })
 	@ApiParam({ name: 'id', type: Number })

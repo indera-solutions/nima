@@ -1,7 +1,9 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { PaginatedResults } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { CheckoutService } from '../checkout/checkout.service';
+import { DiscountVoucherService } from '../discounts/discount-voucher.service';
+import { DiscountVoucherEntity } from '../discounts/entities/discount-voucher.entity';
 import { PaymentMethod, PaymentStatus } from '../payments/entities/payment.entity';
 import { PaymentsService } from '../payments/payments.service';
 import { ProductVariantService } from '../products/product-variant.service';
@@ -22,11 +24,13 @@ export class OrderService {
 		private orderRepository: OrderRepository,
 		private orderLineRepository: OrderLineRepository,
 		private orderEventRepository: OrderEventRepository,
+		@Inject(forwardRef(() => CheckoutService))
 		private checkoutService: CheckoutService,
 		private shippingService: ShippingService,
 		private productService: ProductsService,
 		private variantService: ProductVariantService,
 		private paymentService: PaymentsService,
+		private voucherService: DiscountVoucherService,
 	) {
 	}
 
@@ -41,6 +45,13 @@ export class OrderService {
 		const checkoutDto = await this.checkoutService.getDto(params.token);
 		if ( !checkoutDto.shippingMethod ) throw new BadRequestException('CHECKOUT_NO_SELECTED_SHIPPING_METHOD');
 		const shippingMethod = await this.shippingService.getById({ id: checkoutDto.shippingMethod.id });
+
+		let voucher: DiscountVoucherEntity = undefined;
+		let voucherVariants: number[] = [];
+		if ( checkoutDto.voucherCode ) {
+			voucher = await this.voucherService.findByCode({ code: checkoutDto.voucherCode });
+			voucherVariants = await this.voucherService.findVariationsOfVoucher(voucher.id);
+		}
 
 		const payment = await this.paymentService.save({
 			dto: {
@@ -155,6 +166,8 @@ export class OrderService {
 
 		await this.checkoutService.remove({ token: params.token });
 
+		if ( voucher ) await this.voucherService.addOneUse(voucher.id);
+
 		return this.findOne({ id: order.id });
 	}
 
@@ -179,6 +192,10 @@ export class OrderService {
 			pageSize: itemsPerPage,
 			pageNumber: page,
 		};
+	}
+
+	async findOfUser(userId: number) {
+		return this.orderRepository.findOfUser(userId);
 	}
 
 	async update(params: { id: number, updateOrderDto: UpdateOrderDto }): Promise<OrderEntity> {

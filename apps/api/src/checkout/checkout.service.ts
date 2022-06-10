@@ -1,7 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import * as dayjs from 'dayjs';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { AddressService } from '../core/address/address.service';
 import { AddressDto } from '../core/dto/address.dto';
+import { DiscountVoucherService } from '../discounts/discount-voucher.service';
+import { DiscountType, DiscountVoucherType } from '../discounts/dto/discount.enum';
+import { DiscountVoucherEntity } from '../discounts/entities/discount-voucher.entity';
+import { OrderService } from '../order/order.service';
 import { ProductVariantService } from '../products/product-variant.service';
 import { ShippingMethodDto } from '../shipping/dto/shipping-method.dto';
 import { ShippingService } from '../shipping/shipping.service';
@@ -27,6 +32,9 @@ export class CheckoutService {
 		private usersService: UsersService,
 		private variantService: ProductVariantService,
 		private shippingService: ShippingService,
+		private voucherService: DiscountVoucherService,
+		@Inject(forwardRef(() => OrderService))
+		private orderService: OrderService,
 	) {
 	}
 
@@ -77,13 +85,39 @@ export class CheckoutService {
 		}
 	}
 
-	async updateVoucher(params: { token: string, dto: UpdateCheckoutVoucherDto }): Promise<void> {
+	async updateVoucher(params: { token: string, dto: UpdateCheckoutVoucherDto }, options?: { isStaff?: boolean, userId?: number }): Promise<void> {
 		const { dto, token } = params;
-		const co = await this.findOne({ token: token });
 
-		co.voucherCode = dto.voucherCode;
+		const voucher = await this.voucherService.findByCode({ code: dto.voucherCode });
+		const co = await this.getDto(token);
 
-		await this.checkoutRepository.save(co);
+		if ( voucher.minCheckoutItemsQuantity < co.quantity ) throw new BadRequestException('VOUCHER_NOT_APPLICABLE', 'Not enough items in cart');
+		if ( voucher.minSpentAmount < co.subtotalPrice ) throw new BadRequestException('VOUCHER_NOT_APPLICABLE', 'Subtotal under voucher limit');
+		if ( voucher.usageLimit > 0 && voucher.usageLimit <= voucher.used ) throw new BadRequestException('VOUCHER_NOT_APPLICABLE', 'Code usage limit exceeded');
+		if ( voucher.onlyForStaff && !(options && options.isStaff) ) throw new BadRequestException('VOUCHER_NOT_APPLICABLE', 'This code is only for staff');
+		const now = dayjs();
+		if ( dayjs(voucher.startDate).isAfter(now) ) throw new BadRequestException('VOUCHER_NOT_APPLICABLE', 'This code is not enabled at this time');
+		if ( voucher.endDate && dayjs(voucher.endDate).isBefore(now) ) throw new BadRequestException('VOUCHER_NOT_APPLICABLE', 'This code is not enabled at this time');
+		if ( voucher.applyOncePerCustomer && options?.userId ) {
+			const res = await this.orderService.findOfUser(options.userId);
+			for ( const order of res ) {
+				if ( order.voucherId === voucher.id ) throw new BadRequestException('VOUCHER_NOT_APPLICABLE', 'This code can only be used once per customer');
+			}
+		}
+
+		let isApplicable = false;
+		const voucherVariants = await this.voucherService.findVariationsOfVoucher(voucher.id);
+		if ( voucherVariants.length === 0 ) {
+			isApplicable = true;
+		} else {
+			for ( const line of co.lines ) {
+				if ( voucherVariants.includes(line.variantId) ) {
+					isApplicable = true;
+				}
+			}
+		}
+		if ( !isApplicable ) throw new BadRequestException('VOUCHER_NOT_APPLICABLE', 'Cart does not contained promotional items');
+		await this.checkoutRepository.update(token, dto);
 	}
 
 	async updateLines(params: { token: string, dto: UpdateCheckoutLineDto }): Promise<void> {
@@ -146,13 +180,29 @@ export class CheckoutService {
 
 		const discounts: number[] = [];
 
+		let voucher: DiscountVoucherEntity = undefined;
+		let voucherVariants: number[] = [];
+		if ( entity.voucherCode ) {
+			voucher = await this.voucherService.findByCode({ code: entity.voucherCode });
+			voucherVariants = await this.voucherService.findVariationsOfVoucher(voucher.id);
+		}
+
 		const lines: CheckoutLineDto[] = entity.lines.map(line => {
 			if ( !line.variant ) throw new Error('MISSING_VARIANT');
 			const totalCost = line.quantity * (line.variant.discountedPrice || line.variant.priceAmount);
 			let discountedTotalCost;
+			let voucherCost;
 			if ( line.variant.discountedPrice ) {
 				discountedTotalCost = line.quantity * line.variant.discountedPrice;
 				// discounts.push(totalCost - discountedTotalCost);
+			}
+			if ( voucher.voucherType === DiscountVoucherType.SPECIFIC_PRODUCT && voucherVariants.includes(line.variantId) ) {
+				const temp = discountedTotalCost || totalCost;
+				if ( voucher.discountValueType === DiscountType.PERCENTAGE ) {
+					voucherCost = voucher.applyOncePerOrder ? temp - ((line.variant.discountedPrice || line.variant.priceAmount) * voucher.discountValue / 100) : temp - (temp * voucher.discountValue / 100);
+				} else if ( voucher.discountValueType === DiscountType.FLAT ) {
+					voucherCost = voucher.applyOncePerOrder ? temp - voucher.discountValue : temp - (line.quantity * voucher.discountValue);
+				}
 			}
 			weight += line.variant.weight || 0;
 			return {
@@ -160,7 +210,7 @@ export class CheckoutService {
 				variantId: line.variantId,
 				productId: line.productId,
 				totalCost,
-				discountedTotalCost,
+				discountedTotalCost: voucherCost ? voucherCost : discountedTotalCost,
 			};
 		});
 
@@ -168,11 +218,18 @@ export class CheckoutService {
 		const quantity = lines.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0);
 
 		let shippingCost = 0;
-		const discount = discounts.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+		let discount = discounts.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+		if ( voucher && voucher.voucherType === DiscountVoucherType.ENTIRE_ORDER ) {
+			if ( voucher.discountValueType === DiscountType.PERCENTAGE ) {
+				discount += subtotalPrice * voucher.discountValue / 100;
+			} else if ( voucher.discountValueType === DiscountType.FLAT ) {
+				discount += voucher.discountValue;
+			}
+		}
 
 		const availableShippingMethods: CheckoutAvailableShippingDto[] = [];
 
-		if ( entity.shippingAddress ) {
+		if ( entity.shippingAddress && !(voucher && voucher.voucherType === DiscountVoucherType.SHIPPING && voucher.discountValueType === DiscountType.FREE_SHIPPING) ) {
 
 			const validMethods = await this.shippingService.getValidMethodsOfAddress(entity.shippingAddress, weight, subtotalPrice);
 			for ( const validMethod of validMethods ) {

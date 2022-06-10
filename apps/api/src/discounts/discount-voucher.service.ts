@@ -47,10 +47,36 @@ export class DiscountVoucherService {
 		return this.voucherRepository.getAllIds();
 	}
 
-	async findByToken(params: { token: string }): Promise<DiscountVoucherEntity> {
-		const res = await this.voucherRepository.findByCode(params.token);
+	async findByCode(params: { code: string }): Promise<DiscountVoucherEntity> {
+		const res = await this.voucherRepository.findByCode(params.code);
 		if ( !res ) throw new NotFoundException('VOUCHER_NOT_FOUND');
 		return res;
+	}
+
+	async findVariationsOfVoucher(id: number) {
+		const voucher = await this.voucherRepository.getFullObject(id);
+		const variantIds = voucher.variants.map(v => v.id);
+		const productIds = voucher.products.map(p => p.id);
+		const categoryIds = voucher.categories.map(c => c.id);
+		const collectionIds = voucher.collections.map(c => c.id);
+		for ( const collectionId of collectionIds ) {
+			const collection = await this.collectionsService.getOne({ id: collectionId });
+			for ( const product of collection.products ) {
+				if ( !productIds.includes(product.product.id) ) productIds.push(product.product.id);
+			}
+		}
+		for ( const categoryId of categoryIds ) {
+			const children = await this.categoriesService.listIdsOfChildren({ id: categoryId });
+			for ( const id of [...children, categoryId] ) {
+				const products = await this.productsService.getOfCategory({ categoryId: id });
+				products.forEach(p => productIds.includes(p.id) ? undefined : productIds.push(p.id));
+			}
+		}
+		for ( const productId of productIds ) {
+			const variants = await this.variantService.findOfProduct({ productId: productId });
+			variants.forEach(v => variantIds.includes(v.id) ? undefined : variantIds.push(v.id));
+		}
+		return variantIds;
 	}
 
 	@Transactional()
@@ -104,6 +130,10 @@ export class DiscountVoucherService {
 	async update(params: { id: number, updateVoucherDto: UpdateDiscountVoucherDto }): Promise<void> {
 		const { id, updateVoucherDto } = params;
 		await this.voucherRepository.update(id, updateVoucherDto);
+	}
+
+	async addOneUse(id: number): Promise<void> {
+		await this.voucherRepository.addOneUse(id);
 	}
 
 	async getDto(id: number, options?: { isAdmin?: boolean }): Promise<DiscountVoucherDto> {
