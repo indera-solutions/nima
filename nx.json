@@ -1,52 +1,53 @@
 {
-	"npmScope": "nima-cms",
-	"affected": {
-		"defaultBase": "main"
-	},
-	"cli": {
-		"defaultCollection": "@nrwl/nest"
-	},
-	"implicitDependencies": {
-		"package.json": {
-			"dependencies": "*",
-			"devDependencies": "*"
-		},
-		".eslintrc.json": "*"
-	},
-	"tasksRunnerOptions": {
-		"default": {
-			"runner": "@nrwl/nx-cloud",
-			"options": {
-				"cacheableOperations": [
-					"build",
-					"lint",
-					"test",
-					"e2e"
-				],
-				"accessToken": "NjQ2ODhkYWYtZDU2MS00OGNlLTg1ZDUtMTUxOGY0YTdkNDhmfHJlYWQtd3JpdGU="
-			}
-		}
-	},
-	"targetDependencies": {
-		"build": [
-			{
-				"target": "build",
-				"projects": "dependencies"
-			}
-		]
-	},
-	"defaultProject": "api",
-	"generators": {
-		"@nrwl/react": {
-			"application": {
-				"babel": true
-			}
-		},
-		"@nrwl/next": {
-			"application": {
-				"style": "scss",
-				"linter": "eslint"
-			}
-		}
-	}
+  "npmScope": "nima-cms",
+  "affected": {
+    "defaultBase": "main"
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/nest"
+  },
+  "implicitDependencies": {
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    ".eslintrc.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/nx-cloud",
+      "options": {
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ],
+        "accessToken": "NjQ2ODhkYWYtZDU2MS00OGNlLTg1ZDUtMTUxOGY0YTdkNDhmfHJlYWQtd3JpdGU="
+      }
+    }
+  },
+  "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
+  },
+  "defaultProject": "api",
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "babel": true
+      }
+    },
+    "@nrwl/next": {
+      "application": {
+        "style": "scss",
+        "linter": "eslint"
+      }
+    }
+  },
+  "$schema": "./node_modules/nx/schemas/nx-schema.json"
 }
