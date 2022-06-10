@@ -32,7 +32,7 @@ export class AttributeValuesService {
 
 	async getById(params: { id: number }): Promise<AttributeValueEntity> {
 		const { id } = params;
-		const res = await this.attributeValueRepository.findOne(id);
+		const res = await this.attributeValueRepository.findOne({ where: { id: id } });
 		if ( !res ) throw new NotFoundException('ATTRIBUTE_VALUE_NOT_FOUND');
 		return res;
 	}

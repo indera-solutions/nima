@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInt } from 'class-validator';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { ISortableMediaEntity } from '../../core/dto/media.dto';
 import { MediaEntity } from '../../core/entities/media.entity';
 import { ProductEntity } from './product.entity';
@@ -13,12 +13,19 @@ export class ProductMediaEntity implements ISortableMediaEntity {
 	@IsInt()
 	sortOrder: number;
 
-	@ManyToOne(() => ProductEntity, post => post.productMedia, { primary: true, onDelete: 'CASCADE' })
+	@ManyToOne(() => ProductEntity, post => post.productMedia, { onDelete: 'CASCADE' })
+	@JoinColumn({ name: 'productId' })
 	public product: ProductEntity;
 
-	@ManyToOne(() => MediaEntity, { primary: true, eager: true, onDelete: 'CASCADE' })
+	@PrimaryColumn()
+	productId: number;
+
+	@ManyToOne(() => MediaEntity, { eager: true })
+	@JoinColumn({ name: 'mediaId' })
 	public media!: MediaEntity;
 
+	@PrimaryColumn()
+	mediaId: number;
 }
 
 

@@ -192,7 +192,7 @@ export class ShippingService {
 	}
 
 	async getZoneById(params: { id: number }): Promise<ShippingZoneEntity> {
-		const zone = await this.zoneRepository.findOne(params.id);
+		const zone = await this.zoneRepository.findOne({ where: { id: params.id } });
 		if ( !zone ) throw new NotFoundException('SHIPPING_ZONE_NOT_FOUND');
 		return zone;
 	}
@@ -207,7 +207,7 @@ export class ShippingService {
 	}
 
 	async getRateById(params: { id: number }): Promise<ShippingRateEntity> {
-		const rate = await this.rateRepository.findOne(params.id);
+		const rate = await this.rateRepository.findOne({ where: { id: params.id } });
 		if ( !rate ) throw new NotFoundException('SHIPPING_RATE_NOT_FOUND');
 		return rate;
 	}

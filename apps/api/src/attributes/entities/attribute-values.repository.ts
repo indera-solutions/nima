@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, In, Repository } from 'typeorm';
 import {
 	AssignedProductAttributeEntity,
 	AssignedProductVariantAttributeEntity,
@@ -24,8 +24,9 @@ export class AttributeValuesRepository extends Repository<AttributeValueEntity> 
 	}
 
 	async getSlugAndAttributeSlugOfValues(ids: number[]) {
-		const res = await this.findByIds(ids, {
-			relations: ['attribute'],
+		const res = await this.find({
+			relations: { attribute: true },
+			where: { id: In(ids) },
 		});
 		return res.map(r => ({
 			attributeSlug: r.attribute.slug,

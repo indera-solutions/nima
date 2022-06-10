@@ -17,7 +17,7 @@ export class ProductTypeVariantAttributeRepository extends BaseRepository<Produc
 	}
 
 	async getById(productTypeAttributeId: number) {
-		return this.findOne(productTypeAttributeId, { relations: ['attribute'] });
+		return this.findOne({ relations: { attribute: true }, where: { id: productTypeAttributeId } });
 	}
 
 	async getByAttributeAndProductType(productTypeId: number, attributeId: number) {

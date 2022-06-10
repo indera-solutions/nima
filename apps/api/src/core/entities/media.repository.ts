@@ -14,7 +14,7 @@ export class MediaRepository extends BaseRepository<MediaEntity> {
 	}
 
 	async findById(id: number) {
-		return this.findOne(id);
+		return this.findOne({ where: { id: id } });
 	}
 
 	async deleteById(id: number) {

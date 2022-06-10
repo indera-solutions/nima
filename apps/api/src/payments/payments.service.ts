@@ -16,7 +16,7 @@ export class PaymentsService {
 
 	async getById(params: { id: number }): Promise<PaymentDto> {
 		const { id } = params;
-		const attribute = await this.paymentRepository.findOne(id);
+		const attribute = await this.paymentRepository.findOne({ where: { id: id } });
 		if ( !attribute ) throw new NotFoundException('ATTRIBUTE_NOT_FOUND');
 		return PaymentDto.prepare(attribute);
 

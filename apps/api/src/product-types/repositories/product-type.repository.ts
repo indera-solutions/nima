@@ -6,7 +6,7 @@ import { ProductTypeEntity } from '../entities';
 export class ProductTypeRepository extends BaseRepository<ProductTypeEntity> {
 
 	async getById(id: number) {
-		return this.findOne(id);
+		return this.findOne({ where: { id: id } });
 	}
 
 	async deleteById(id: number) {

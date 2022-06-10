@@ -13,7 +13,7 @@ export class AttributeRepository extends Repository<AttributeEntity> {
 	}
 
 	findById(id: number): Promise<AttributeEntity> {
-		return this.findOne(id);
+		return this.findOne({ where: { id: id } });
 	}
 
 	async deleteById(id: number) {
