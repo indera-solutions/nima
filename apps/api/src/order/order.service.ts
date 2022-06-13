@@ -3,6 +3,7 @@ import { PaginatedResults } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { CheckoutService } from '../checkout/checkout.service';
 import { DiscountVoucherService } from '../discounts/discount-voucher.service';
+import { DiscountVoucherType } from '../discounts/dto/discount.enum';
 import { DiscountVoucherEntity } from '../discounts/entities/discount-voucher.entity';
 import { PaymentMethod, PaymentStatus } from '../payments/entities/payment.entity';
 import { PaymentsService } from '../payments/payments.service';
@@ -102,6 +103,7 @@ export class OrderService {
 			lines: [],
 
 			payment: payment,
+			voucherId: voucher?.id,
 		};
 
 		const order = await this.orderRepository.save(dto);
@@ -118,6 +120,13 @@ export class OrderService {
 			const product = await this.productService.getById({ id: line.productId });
 			const variant = await this.variantService.getById({ id: line.variantId });
 			// const minPrice = minPrices.find(value => value.id === line.variantId);
+
+			let voucherCode = undefined, unitDiscountReason = undefined;
+			if ( voucher && voucher.voucherType === DiscountVoucherType.SPECIFIC_PRODUCT && voucherVariants.includes(line.variantId) ) {
+				voucherCode = voucher.code;
+				unitDiscountReason = variant.discountedPrice ? 'sale&voucher' : 'voucher';
+			}
+
 			const dto: InternalCreateOrderLineDto = {
 				variant: variant,
 				order: order,
@@ -133,10 +142,10 @@ export class OrderService {
 
 				/*TODO: Implement Sales and Vouchers*/
 				// sale: minPrice.sale,
-				voucherCode: checkoutDto.voucherCode,
+				voucherCode: voucherCode,
 				unitDiscountAmount: variant.priceAmount - variant.discountedPrice || 0,
-				unitDiscountReason: checkoutDto.voucherCode ? 'voucher' : variant.discountedPrice ? 'sale' : '',
-				unitDiscountType: checkoutDto.voucherCode ? 'voucher' : variant.discountedPrice ? 'sale' : '',
+				unitDiscountReason: unitDiscountReason ? unitDiscountReason : variant.discountedPrice ? 'sale' : '',
+				unitDiscountType: unitDiscountReason ? unitDiscountReason : variant.discountedPrice ? 'sale' : '',
 				unitDiscountValue: 0,
 
 				/*Tax Rate handling not implemented yet*/

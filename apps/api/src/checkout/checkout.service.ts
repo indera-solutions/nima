@@ -1,4 +1,5 @@
 import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { roundToDigit } from '@nima-cms/utils';
 import * as dayjs from 'dayjs';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { AddressService } from '../core/address/address.service';
@@ -90,9 +91,9 @@ export class CheckoutService {
 
 		const voucher = await this.voucherService.findByCode({ code: dto.voucherCode });
 		const co = await this.getDto(token);
-
-		if ( voucher.minCheckoutItemsQuantity < co.quantity ) throw new BadRequestException('VOUCHER_NOT_APPLICABLE', 'Not enough items in cart');
-		if ( voucher.minSpentAmount < co.subtotalPrice ) throw new BadRequestException('VOUCHER_NOT_APPLICABLE', 'Subtotal under voucher limit');
+		console.log(voucher.minCheckoutItemsQuantity, co.quantity, voucher.minCheckoutItemsQuantity < co.quantity);
+		if ( voucher.minCheckoutItemsQuantity > co.quantity ) throw new BadRequestException('VOUCHER_NOT_APPLICABLE', 'Not enough items in cart');
+		if ( voucher.minSpentAmount > co.subtotalPrice ) throw new BadRequestException('VOUCHER_NOT_APPLICABLE', 'Subtotal under voucher limit');
 		if ( voucher.usageLimit > 0 && voucher.usageLimit <= voucher.used ) throw new BadRequestException('VOUCHER_NOT_APPLICABLE', 'Code usage limit exceeded');
 		if ( voucher.onlyForStaff && !(options && options.isStaff) ) throw new BadRequestException('VOUCHER_NOT_APPLICABLE', 'This code is only for staff');
 		const now = dayjs();
@@ -191,18 +192,19 @@ export class CheckoutService {
 			if ( !line.variant ) throw new Error('MISSING_VARIANT');
 			const totalCost = line.quantity * (line.variant.discountedPrice || line.variant.priceAmount);
 			let discountedTotalCost;
-			let voucherCost;
+			let voucherDiscount;
 			if ( line.variant.discountedPrice ) {
 				discountedTotalCost = line.quantity * line.variant.discountedPrice;
-				// discounts.push(totalCost - discountedTotalCost);
 			}
-			if ( voucher.voucherType === DiscountVoucherType.SPECIFIC_PRODUCT && voucherVariants.includes(line.variantId) ) {
+			if ( voucher && voucher.voucherType === DiscountVoucherType.SPECIFIC_PRODUCT && voucherVariants.includes(line.variantId) ) {
 				const temp = discountedTotalCost || totalCost;
 				if ( voucher.discountValueType === DiscountType.PERCENTAGE ) {
-					voucherCost = voucher.applyOncePerOrder ? temp - ((line.variant.discountedPrice || line.variant.priceAmount) * voucher.discountValue / 100) : temp - (temp * voucher.discountValue / 100);
+					voucherDiscount = voucher.applyOncePerOrder ? ((line.variant.discountedPrice || line.variant.priceAmount) * voucher.discountValue / 100) : (temp * voucher.discountValue / 100);
 				} else if ( voucher.discountValueType === DiscountType.FLAT ) {
-					voucherCost = voucher.applyOncePerOrder ? temp - voucher.discountValue : temp - (line.quantity * voucher.discountValue);
+					voucherDiscount = voucher.applyOncePerOrder ? voucher.discountValue : (line.quantity * voucher.discountValue);
 				}
+				discounts.push(voucherDiscount);
+				discountedTotalCost = temp - voucherDiscount;
 			}
 			weight += line.variant.weight || 0;
 			return {
@@ -210,11 +212,12 @@ export class CheckoutService {
 				variantId: line.variantId,
 				productId: line.productId,
 				totalCost,
-				discountedTotalCost: voucherCost ? voucherCost : discountedTotalCost,
+				discountedTotalCost: discountedTotalCost,
 			};
 		});
 
-		const subtotalPrice = lines.reduce((previousValue, currentValue) => previousValue + currentValue.totalCost, 0);
+		const _subtotalPrice = lines.reduce((previousValue, currentValue) => previousValue + currentValue.totalCost, 0);
+		const subtotalPrice = roundToDigit(_subtotalPrice);
 		const quantity = lines.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0);
 
 		let shippingCost = 0;
@@ -253,8 +256,7 @@ export class CheckoutService {
 			shippingCost = ShippingMethodDto.calculateCost(activeShipping);
 		}
 
-
-		const totalCost = subtotalPrice + shippingCost - discount;
+		const totalCost = roundToDigit(subtotalPrice + shippingCost - discount);
 
 		return {
 			token: entity.token,
