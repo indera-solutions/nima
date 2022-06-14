@@ -74,7 +74,7 @@ export class DiscountVoucherRepository extends BaseRepository<DiscountVoucherEnt
 				   .delete()
 				   .from('discounts_discount_voucher_collections')
 				   .where('"collectionCollectionId" = :collectionId', { collectionId: collectionId })
-				   .andWhere('"discountsDiscountSaleId" = :saleId', { saleId: saleId })
+				   .andWhere('"discountVouchersId" = :saleId', { saleId: saleId })
 				   .execute();
 	}
 }

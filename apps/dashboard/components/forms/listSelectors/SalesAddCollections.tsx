@@ -1,20 +1,19 @@
-import { Trans, useAddCategoryToSaleMutation, useFlatCategories } from '@nima-cms/react';
-import { CategoryDto } from '@nima-cms/sdk';
+import { Trans, useCollections } from '@nima-cms/react';
+import { CollectionDto } from '@nima-cms/sdk';
 import React, { useMemo, useState } from 'react';
 
-interface SalesAddCategoriesProps {
-	saleId: number;
-	existingCategories: CategoryDto[];
+interface SalesAddCollectionsProps {
+	existingCollections: CollectionDto[];
 	onClose: () => void;
+	onSave: (ids: number[]) => void;
 }
 
-export function SalesAddCategories(props: SalesAddCategoriesProps) {
-	const { data: categories } = useFlatCategories();
-	const addCategoryToSaleMutation = useAddCategoryToSaleMutation();
+export function SalesAddCollections(props: SalesAddCollectionsProps) {
+	const { data: collections } = useCollections();
 	const [selectedIds, setSelectedIds] = useState<number[]>([]);
 	const existingIds = useMemo(() => {
-		return props.existingCategories.map(e => e.id);
-	}, [props.existingCategories]);
+		return props.existingCollections.map(e => e.id);
+	}, [props.existingCollections]);
 
 	function onToggle(id: number) {
 		setSelectedIds(state => {
@@ -29,12 +28,7 @@ export function SalesAddCategories(props: SalesAddCategoriesProps) {
 	}
 
 	async function onSave() {
-		await addCategoryToSaleMutation.mutateAsync({
-			id: props.saleId,
-			discountSaleAddCategoriesDto: {
-				categoryIds: selectedIds,
-			},
-		});
+		props.onSave(selectedIds);
 		props.onClose();
 	}
 
@@ -46,7 +40,7 @@ export function SalesAddCategories(props: SalesAddCategoriesProps) {
 					<h3 className="font-bold text-lg">Add Collections</h3>
 					<div className="py-4">
 						<div className={ 'flex gap-4' }>
-							<table className="table w-full scroll-auto h-20">
+							<table className="table w-full">
 								<thead>
 								<tr>
 									<th></th>
@@ -54,13 +48,13 @@ export function SalesAddCategories(props: SalesAddCategoriesProps) {
 								</tr>
 								</thead>
 								<tbody>
-								{ (categories || [])
-									.filter(category => !existingIds.includes(category.id))
-									.map(category => <SalesAddCategoryListItem
-										key={ category.id }
-										selected={ selectedIds.includes(category.id) }
+								{ (collections || [])
+									.filter(collection => !existingIds.includes(collection.id))
+									.map(collection => <SalesAddCollectionListItem
+										key={ collection.id }
+										selected={ selectedIds.includes(collection.id) }
 										onToggle={ onToggle }
-										category={ category }/>) }
+										collection={ collection }/>) }
 								</tbody>
 							</table>
 
@@ -77,19 +71,19 @@ export function SalesAddCategories(props: SalesAddCategoriesProps) {
 	);
 }
 
-function SalesAddCategoryListItem(props: {
-	category: CategoryDto,
+function SalesAddCollectionListItem(props: {
+	collection: CollectionDto,
 	selected: boolean,
 	onToggle: (id: number) => void
 }) {
-	const { category } = props;
+	const { collection } = props;
 	return <tr className={ 'hover' }>
 		<td><input
 			type="checkbox"
 			className={ 'checkbox' }
 			checked={ props.selected }
-			onChange={ () => props.onToggle(props.category.id) }
+			onChange={ () => props.onToggle(props.collection.id) }
 		/></td>
-		<td><Trans>{ category.name }</Trans></td>
+		<td><Trans>{ collection.name }</Trans></td>
 	</tr>;
 }

@@ -19,7 +19,7 @@ export class SettingsController {
 	}
 
 	@Put()
-	@ApiOkResponse({ type: CreateSettingsDto })
+	@ApiOkResponse({ type: SettingsDto })
 	@IsAdmin()
 	async updateSettings(@Body() createSettingsDto: CreateSettingsDto): Promise<SettingsDto> {
 		return this.settingsService.updateSettings(createSettingsDto);

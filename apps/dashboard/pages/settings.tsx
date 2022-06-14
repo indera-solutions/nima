@@ -1,5 +1,5 @@
 import { useSettings, useUpdateSettings } from '@nima-cms/react';
-import { SettingsDto } from '@nima-cms/sdk';
+import { CreateSettingsDto, SettingsDto } from '@nima-cms/sdk';
 import { LanguageCode, languages } from '@nima-cms/utils';
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
@@ -17,7 +17,7 @@ export default function SettingsPage(props: SettingsProps) {
 	const { data: existingSettings, isSuccess } = useSettings();
 	const updateSettingsMutation = useUpdateSettings();
 
-	const [settings, setSettings] = useState<SettingsDto>({
+	const [settings, setSettings] = useState<CreateSettingsDto>({
 		siteName: '',
 		siteLogo: undefined,
 		adminLanguage: LanguageCode.en,
@@ -30,6 +30,7 @@ export default function SettingsPage(props: SettingsProps) {
 		seoDescription: '',
 		seoTitle: '',
 		shopAddress: undefined,
+		adminEmail: '',
 	});
 
 	useEffect(() => {
@@ -117,6 +118,14 @@ export default function SettingsPage(props: SettingsProps) {
 
 					</AdminSection>
 					<AdminSection title={ 'Emails' }>
+						<div className="form-control w-full max-w-xs">
+							<label className="label">
+								<span className="label-text">Admin Email</span>
+							</label>
+							<input type="text" value={ settings.adminEmail }
+								   onChange={ (e) => onEditValue('adminEmail', e.target.value) }
+								   className="input input-bordered w-full max-w-xs"/>
+						</div>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
 								<span className="label-text">Sender Email</span>

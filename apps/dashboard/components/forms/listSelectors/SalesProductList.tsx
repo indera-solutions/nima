@@ -1,19 +1,14 @@
-import {
-	Trans,
-	useCategoryId,
-	useProductById,
-	useProductTypeId,
-	useRemoveProductFromSaleMutation,
-} from '@nima-cms/react';
+import { Trans, useCategoryId, useProductById, useProductTypeId } from '@nima-cms/react';
 import { ProductDto } from '@nima-cms/sdk';
 import React, { useState } from 'react';
-import { AdminSection } from '../AdminLayout';
-import { ProductImage } from '../products/ProductImage';
+import { AdminSection } from '../../AdminLayout';
+import { ProductImage } from '../../products/ProductImage';
 import { SalesAddProducts } from './SalesAddProducts';
 
 interface SalesProductListProps {
-	id: number;
 	products: ProductDto[];
+	onSave: (ids: number[]) => void;
+	onRemove: (id: number) => void;
 }
 
 export function SalesProductList(props: SalesProductListProps) {
@@ -37,7 +32,8 @@ export function SalesProductList(props: SalesProductListProps) {
 						</thead>
 						<tbody>
 						{ (props.products || []).map(product => <SaleProductTableItem
-							productId={ product.id } saleId={ props.id }
+							productId={ product.id }
+							onRemove={ props.onRemove }
 							key={ product.id }/>) }
 						</tbody>
 					</table>
@@ -46,24 +42,16 @@ export function SalesProductList(props: SalesProductListProps) {
 			{ modalOpen && <SalesAddProducts
 				onClose={ () => setModalOpen(false) }
 				existingProducts={ props.products || [] }
-				saleId={ props.id }
+				onSave={ props.onSave }
 			/> }
 		</>
 	);
 }
 
-function SaleProductTableItem(props: { productId: number, saleId: number }) {
+function SaleProductTableItem(props: { productId: number, onRemove: (id: number) => void; }) {
 	const { data: product } = useProductById(props.productId);
 	const { data: category } = useCategoryId(product?.categoryId);
 	const { data: type } = useProductTypeId(product?.productTypeId);
-	const removeProductFromSaleMutation = useRemoveProductFromSaleMutation();
-
-	async function removeProduct() {
-		await removeProductFromSaleMutation.mutateAsync({
-			id: props.saleId,
-			productId: props.productId,
-		});
-	}
 
 	if ( !product || !category || !type ) return;
 
@@ -73,7 +61,7 @@ function SaleProductTableItem(props: { productId: number, saleId: number }) {
 		<td><Trans>{ category.name }</Trans></td>
 		<td><Trans>{ type.name }</Trans></td>
 		<td>
-			<button className={ 'btn btn-error' } onClick={ removeProduct }>Remove</button>
+			<button className={ 'btn btn-error' } onClick={ () => props.onRemove(props.productId) }>Remove</button>
 		</td>
 	</tr>;
 }

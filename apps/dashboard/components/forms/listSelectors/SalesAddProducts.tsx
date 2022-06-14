@@ -1,17 +1,16 @@
-import { Trans, useAddProductToSaleMutation, useCategoryId, useProducts, useProductTypeId } from '@nima-cms/react';
+import { Trans, useCategoryId, useProducts, useProductTypeId } from '@nima-cms/react';
 import { ProductDto } from '@nima-cms/sdk';
 import React, { useMemo, useState } from 'react';
-import { ProductImage } from '../products/ProductImage';
+import { ProductImage } from '../../products/ProductImage';
 
 interface SalesAddProductsProps {
-	saleId: number;
+	onSave: (ids: number[]) => void;
 	existingProducts: ProductDto[];
 	onClose: () => void;
 }
 
 export function SalesAddProducts(props: SalesAddProductsProps) {
 	const { data: products } = useProducts({});
-	const addProductToSaleMutation = useAddProductToSaleMutation();
 	const [selectedIds, setSelectedIds] = useState<number[]>([]);
 	const existingIds = useMemo(() => {
 		return props.existingProducts.map(e => e.id);
@@ -30,12 +29,7 @@ export function SalesAddProducts(props: SalesAddProductsProps) {
 	}
 
 	async function onSave() {
-		await addProductToSaleMutation.mutateAsync({
-			id: props.saleId,
-			discountSaleAddProductsDto: {
-				productIds: selectedIds,
-			},
-		});
+		props.onSave(selectedIds);
 		props.onClose();
 	}
 

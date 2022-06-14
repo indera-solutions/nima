@@ -1,5 +1,5 @@
 import { defaultConfiguration, useSession } from '@nima-cms/react';
-import { CoreApi, SettingsDto } from '@nima-cms/sdk';
+import { CoreApi, CreateSettingsDto, SettingsDto } from '@nima-cms/sdk';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { NimaQueryCacheKeys } from './queryKeys';
 
@@ -25,10 +25,11 @@ export function useSettings() {
 
 export function useUpdateSettings() {
 	const client = useQueryClient();
-	return useMutation<SettingsDto, never, { settings: SettingsDto }>(
+	return useMutation<SettingsDto, never, { settings: CreateSettingsDto }>(
 		async ({ settings }) => {
 			const res = await coreApi.settingsUpdateSettings({
-				settingsDto: settings,
+				createSettingsDto: settings,
+
 			});
 			return res.data;
 		},

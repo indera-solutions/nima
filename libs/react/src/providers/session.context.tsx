@@ -118,13 +118,21 @@ export function useAuth(): Pick<SessionContextStructure, 'refreshSession' | 'log
 }
 
 export function getAccessToken(): string | null {
-	return localStorage.getItem(ACCESS_TOKEN);
+	if ( typeof window !== 'undefined' ) {
+		return localStorage.getItem(ACCESS_TOKEN) || null;
+	}
+	return null;
 }
 
 function deleteAccessToken(): void {
-	localStorage.removeItem(ACCESS_TOKEN);
+	if ( typeof window !== 'undefined' ) {
+		localStorage.removeItem(ACCESS_TOKEN);
+	}
 }
 
 function setAccessToken(value: string): void {
-	localStorage.setItem(ACCESS_TOKEN, value);
+	if ( typeof window !== 'undefined' ) {
+		localStorage.setItem(ACCESS_TOKEN, value);
+	}
 }
+

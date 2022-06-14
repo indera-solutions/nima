@@ -5,6 +5,7 @@ const SETTINGS_QUERY_PREFIX = 'SETTINGS';
 const CATEGORIES_QUERY_PREFIX = 'CATEGORIES';
 const COLLECTION_QUERY_PREFIX = 'COLLECTIONS';
 const SALES_QUERY_PREFIX = 'SALES';
+const VOUCHERS_QUERY_PREFIX = 'VOUCHERS';
 const ATTRIBUTES_QUERY_PREFIX = 'ATTRIBUTES';
 const PRODUCT_TYPES_QUERY_PREFIX = 'PRODUCT_TYPES';
 const PRODUCTS_QUERY_PREFIX = 'PRODUCTS';
@@ -46,6 +47,11 @@ export const NimaQueryCacheKeys = {
 		all: [NIMA_QUERY_PREFIX, SALES_QUERY_PREFIX] as const,
 		list: () => [...NimaQueryCacheKeys.sales.all, 'LIST'] as const,
 		id: (id?: number) => [...NimaQueryCacheKeys.sales.all, 'ID', id] as const,
+	},
+	vouchers: {
+		all: [NIMA_QUERY_PREFIX, VOUCHERS_QUERY_PREFIX] as const,
+		list: () => [...NimaQueryCacheKeys.vouchers.all, 'LIST'] as const,
+		id: (id?: number) => [...NimaQueryCacheKeys.vouchers.all, 'ID', id] as const,
 	},
 	products: {
 		all: [NIMA_QUERY_PREFIX, PRODUCTS_QUERY_PREFIX] as const,

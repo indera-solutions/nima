@@ -20,7 +20,7 @@ export class DiscountVoucherDto extends OmitType(DiscountVoucherEntity, ['produc
 	collections: CollectionDto[];
 }
 
-export class CreateDiscountVoucherDto extends OmitType(DiscountVoucherDto, ['id', 'created', 'updatedAt', 'categories', 'products', 'variants', 'collections', 'code']) {
+export class CreateDiscountVoucherDto extends OmitType(DiscountVoucherDto, ['id', 'created', 'updatedAt', 'categories', 'products', 'variants', 'collections', 'code', 'used']) {
 	@ApiProperty({ type: String, example: 'X90BJ0DIJV', required: false })
 	@IsString()
 	@IsOptional()

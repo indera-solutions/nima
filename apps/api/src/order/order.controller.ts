@@ -35,6 +35,7 @@ export class OrderController {
 	}
 
 	@Post('/token')
+	@IsPublic()
 	@ApiCreatedResponse({ type: OrderDto })
 	@ApiBody({ type: CreateOrderFromCheckoutDto })
 	@IsPublic()

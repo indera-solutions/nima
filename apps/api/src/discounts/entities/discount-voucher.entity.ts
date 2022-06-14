@@ -46,7 +46,7 @@ export class DiscountVoucherEntity {
 	@IsNumber()
 	usageLimit: number;
 
-	@Column({ type: Number })
+	@Column({ type: Number, default: 0 })
 	@ApiProperty({ type: Number })
 	@IsNumber()
 	used: number;
@@ -62,7 +62,7 @@ export class DiscountVoucherEntity {
 	@IsOptional()
 	endDate?: string;
 
-	@Column({ type: Number })
+	@Column({ type: 'float', default: 0 })
 	@ApiProperty({ type: Number })
 	@IsNumber()
 	discountValue: number;

@@ -5,4 +5,4 @@ export * from './products';
 export * from './attributeTypesForms';
 export * from './media';
 export * from './collection';
-export * from './sales';
+export * from './forms/listSelectors';

@@ -27,6 +27,10 @@ export const adminRoutes: NavigationItem[] = [
 		link: NIMA_ROUTES.sales.list,
 	},
 	{
+		name: 'Coupons',
+		link: NIMA_ROUTES.vouchers.list,
+	},
+	{
 		name: 'Media',
 		link: NIMA_ROUTES.media.index,
 	},
