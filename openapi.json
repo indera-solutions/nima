@@ -1741,7 +1741,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/DiscountSaleAddProductsDto"
+								"$ref": "#/components/schemas/DiscountAddProductsDto"
 							}
 						}
 					}
@@ -1786,7 +1786,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/DiscountSaleAddCategoriesDto"
+								"$ref": "#/components/schemas/DiscountAddCategoriesDto"
 							}
 						}
 					}
@@ -1831,7 +1831,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/DiscountSaleAddVariantsDto"
+								"$ref": "#/components/schemas/DiscountAddVariantsDto"
 							}
 						}
 					}
@@ -1876,7 +1876,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/DiscountSaleAddCollectionsDto"
+								"$ref": "#/components/schemas/DiscountAddCollectionsDto"
 							}
 						}
 					}
@@ -2067,6 +2067,532 @@
 				},
 				"tags": [
 					"Discount"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/vouchers": {
+			"post": {
+				"operationId": "DiscountVoucher_create",
+				"parameters": [ ],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateDiscountVoucherDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountVoucherDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Vouchers"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			},
+			"get": {
+				"operationId": "DiscountVoucher_findAll",
+				"parameters": [ ],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/DiscountVoucherDto"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Vouchers"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/vouchers/{id}": {
+			"get": {
+				"operationId": "DiscountVoucher_findOne",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountVoucherDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Vouchers"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			},
+			"patch": {
+				"operationId": "DiscountVoucher_update",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateDiscountVoucherDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountVoucherDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Vouchers"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DiscountVoucher_remove",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountVoucherDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Vouchers"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/vouchers/{id}/products": {
+			"put": {
+				"operationId": "DiscountVoucher_addProducts",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DiscountAddProductsDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountVoucherDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Vouchers"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/vouchers/{id}/categories": {
+			"put": {
+				"operationId": "DiscountVoucher_addCategories",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DiscountAddCategoriesDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountVoucherDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Vouchers"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/vouchers/{id}/variants": {
+			"put": {
+				"operationId": "DiscountVoucher_addVariants",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DiscountAddVariantsDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountVoucherDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Vouchers"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/vouchers/{id}/collections": {
+			"put": {
+				"operationId": "DiscountVoucher_addCollections",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DiscountAddCollectionsDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountVoucherDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Vouchers"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/vouchers/{id}/products/{productId}": {
+			"delete": {
+				"operationId": "DiscountVoucher_removeProduct",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "productId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountVoucherDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Vouchers"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/vouchers/{id}/variants/{variantId}": {
+			"delete": {
+				"operationId": "DiscountVoucher_removeVariant",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "variantId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountVoucherDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Vouchers"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/vouchers/{id}/categories/{categoryId}": {
+			"delete": {
+				"operationId": "DiscountVoucher_removeCategory",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "categoryId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountVoucherDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Vouchers"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/vouchers/{id}/collections/{collectionId}": {
+			"delete": {
+				"operationId": "DiscountVoucher_removeCollection",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "collectionId",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DiscountVoucherDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Vouchers"
 				],
 				"security": [
 					{
@@ -2419,7 +2945,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/CreateSettingsDto"
+									"$ref": "#/components/schemas/SettingsDto"
 								}
 							}
 						}
@@ -5739,7 +6265,8 @@
 				"type": "string",
 				"enum": [
 					"PERCENTAGE",
-					"FLAT"
+					"FLAT",
+					"FREE_SHIPPING"
 				]
 			},
 			"CreateDiscountSaleDto": {
@@ -5910,7 +6437,7 @@
 					}
 				}
 			},
-			"DiscountSaleAddProductsDto": {
+			"DiscountAddProductsDto": {
 				"type": "object",
 				"properties": {
 					"productIds": {
@@ -5924,7 +6451,7 @@
 					"productIds"
 				]
 			},
-			"DiscountSaleAddCategoriesDto": {
+			"DiscountAddCategoriesDto": {
 				"type": "object",
 				"properties": {
 					"categoryIds": {
@@ -5938,7 +6465,7 @@
 					"categoryIds"
 				]
 			},
-			"DiscountSaleAddVariantsDto": {
+			"DiscountAddVariantsDto": {
 				"type": "object",
 				"properties": {
 					"variantIds": {
@@ -5952,7 +6479,7 @@
 					"variantIds"
 				]
 			},
-			"DiscountSaleAddCollectionsDto": {
+			"DiscountAddCollectionsDto": {
 				"type": "object",
 				"properties": {
 					"collectionIds": {
@@ -5965,6 +6492,287 @@
 				"required": [
 					"collectionIds"
 				]
+			},
+			"DiscountVoucherType": {
+				"type": "string",
+				"enum": [
+					"SHIPPING",
+					"ENTIRE_ORDER",
+					"SPECIFIC_PRODUCT"
+				]
+			},
+			"CreateDiscountVoucherDto": {
+				"type": "object",
+				"properties": {
+					"voucherType": {
+						"$ref": "#/components/schemas/DiscountVoucherType"
+					},
+					"name": {
+						"example": {
+							"en": "Discount Voucher Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"usageLimit": {
+						"type": "number"
+					},
+					"startDate": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"endDate": {
+						"type": "string",
+						"example": "2022-12-31"
+					},
+					"discountValue": {
+						"type": "number"
+					},
+					"discountValueType": {
+						"$ref": "#/components/schemas/DiscountType"
+					},
+					"applyOncePerOrder": {
+						"type": "boolean",
+						"example": true
+					},
+					"minCheckoutItemsQuantity": {
+						"type": "number"
+					},
+					"minSpentAmount": {
+						"type": "number"
+					},
+					"applyOncePerCustomer": {
+						"type": "boolean",
+						"example": true
+					},
+					"onlyForStaff": {
+						"type": "boolean",
+						"example": true
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"code": {
+						"type": "string",
+						"example": "X90BJ0DIJV"
+					}
+				},
+				"required": [
+					"voucherType",
+					"name",
+					"usageLimit",
+					"startDate",
+					"discountValue",
+					"discountValueType",
+					"applyOncePerOrder",
+					"minCheckoutItemsQuantity",
+					"minSpentAmount",
+					"applyOncePerCustomer",
+					"onlyForStaff",
+					"metadata",
+					"privateMetadata"
+				]
+			},
+			"DiscountVoucherDto": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"example": 1
+					},
+					"voucherType": {
+						"$ref": "#/components/schemas/DiscountVoucherType"
+					},
+					"name": {
+						"example": {
+							"en": "Discount Voucher Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"code": {
+						"type": "string",
+						"example": "X90BJ0DIJV"
+					},
+					"usageLimit": {
+						"type": "number"
+					},
+					"used": {
+						"type": "number"
+					},
+					"startDate": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"endDate": {
+						"type": "string",
+						"example": "2022-12-31"
+					},
+					"discountValue": {
+						"type": "number"
+					},
+					"discountValueType": {
+						"$ref": "#/components/schemas/DiscountType"
+					},
+					"applyOncePerOrder": {
+						"type": "boolean",
+						"example": true
+					},
+					"minCheckoutItemsQuantity": {
+						"type": "number"
+					},
+					"minSpentAmount": {
+						"type": "number"
+					},
+					"applyOncePerCustomer": {
+						"type": "boolean",
+						"example": true
+					},
+					"onlyForStaff": {
+						"type": "boolean",
+						"example": true
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"created": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"updatedAt": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"categories": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CategoryDto"
+						}
+					},
+					"products": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ProductDto"
+						}
+					},
+					"variants": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ProductVariantDto"
+						}
+					},
+					"collections": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CollectionDto"
+						}
+					}
+				},
+				"required": [
+					"id",
+					"voucherType",
+					"name",
+					"code",
+					"usageLimit",
+					"used",
+					"startDate",
+					"discountValue",
+					"discountValueType",
+					"applyOncePerOrder",
+					"minCheckoutItemsQuantity",
+					"minSpentAmount",
+					"applyOncePerCustomer",
+					"onlyForStaff",
+					"metadata",
+					"privateMetadata",
+					"created",
+					"updatedAt",
+					"categories",
+					"products",
+					"variants",
+					"collections"
+				]
+			},
+			"UpdateDiscountVoucherDto": {
+				"type": "object",
+				"properties": {
+					"voucherType": {
+						"$ref": "#/components/schemas/DiscountVoucherType"
+					},
+					"name": {
+						"example": {
+							"en": "Discount Voucher Name"
+						},
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TranslatableDto"
+							}
+						]
+					},
+					"usageLimit": {
+						"type": "number"
+					},
+					"startDate": {
+						"type": "string",
+						"example": "2022-01-01"
+					},
+					"endDate": {
+						"type": "string",
+						"example": "2022-12-31"
+					},
+					"discountValue": {
+						"type": "number"
+					},
+					"discountValueType": {
+						"$ref": "#/components/schemas/DiscountType"
+					},
+					"applyOncePerOrder": {
+						"type": "boolean",
+						"example": true
+					},
+					"minCheckoutItemsQuantity": {
+						"type": "number"
+					},
+					"minSpentAmount": {
+						"type": "number"
+					},
+					"applyOncePerCustomer": {
+						"type": "boolean",
+						"example": true
+					},
+					"onlyForStaff": {
+						"type": "boolean",
+						"example": true
+					},
+					"metadata": {
+						"type": "object",
+						"example": {}
+					},
+					"privateMetadata": {
+						"type": "object",
+						"example": {}
+					},
+					"code": {
+						"type": "string",
+						"example": "X90BJ0DIJV"
+					}
+				}
 			},
 			"CreateCollectionProductDto": {
 				"type": "object",
@@ -6828,10 +7636,6 @@
 						"type": "number",
 						"example": 12.3
 					},
-					"voucher_id": {
-						"type": "number",
-						"example": 1
-					},
 					"languageCode": {
 						"example": "en",
 						"$ref": "#/components/schemas/LanguageCode"
@@ -6925,7 +7729,6 @@
 					"trackingClientId",
 					"userEmail",
 					"totalNetAmount",
-					"voucher_id",
 					"languageCode",
 					"shippingPriceGrossAmount",
 					"totalGrossAmount",
@@ -7049,10 +7852,6 @@
 						"type": "number",
 						"example": 12.3
 					},
-					"voucher_id": {
-						"type": "number",
-						"example": 1
-					},
 					"languageCode": {
 						"example": "en",
 						"$ref": "#/components/schemas/LanguageCode"
@@ -7152,7 +7951,6 @@
 					"trackingClientId",
 					"userEmail",
 					"totalNetAmount",
-					"voucher_id",
 					"languageCode",
 					"shippingPriceGrossAmount",
 					"totalGrossAmount",
@@ -7233,10 +8031,6 @@
 					"totalNetAmount": {
 						"type": "number",
 						"example": 12.3
-					},
-					"voucher_id": {
-						"type": "number",
-						"example": 1
 					},
 					"languageCode": {
 						"example": "en",

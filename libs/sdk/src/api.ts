@@ -1159,7 +1159,6 @@ export interface CreateDiscountSaleDto {
 	 */
 	'privateMetadata': object;
 }
-
 /**
  *
  * @export
@@ -1257,7 +1256,6 @@ export interface CreateDiscountVoucherDto {
 	 */
 	'code'?: string;
 }
-
 /**
  *
  * @export
@@ -1952,7 +1950,6 @@ export interface CreateSortableMediaDto {
 	 */
 	'mediaId': number;
 }
-
 /**
  *
  * @export
@@ -1966,7 +1963,6 @@ export interface DiscountAddCategoriesDto {
 	 */
 	'categoryIds': Array<number>;
 }
-
 /**
  *
  * @export
@@ -1980,7 +1976,6 @@ export interface DiscountAddCollectionsDto {
 	 */
 	'collectionIds': Array<number>;
 }
-
 /**
  *
  * @export
@@ -1994,7 +1989,6 @@ export interface DiscountAddProductsDto {
 	 */
 	'productIds': Array<number>;
 }
-
 /**
  *
  * @export
@@ -2008,7 +2002,6 @@ export interface DiscountAddVariantsDto {
 	 */
 	'variantIds': Array<number>;
 }
-
 /**
  *
  * @export
@@ -4361,7 +4354,6 @@ export interface UpdateCollectionDto {
 	 */
 	'backgroundImageId'?: number;
 }
-
 /**
  *
  * @export
@@ -4411,7 +4403,6 @@ export interface UpdateDiscountDto {
 	 */
 	'privateMetadata'?: object;
 }
-
 /**
  *
  * @export
@@ -4509,7 +4500,6 @@ export interface UpdateDiscountVoucherDto {
 	 */
 	'code'?: string;
 }
-
 /**
  *
  * @export
@@ -15212,7 +15202,7 @@ export const VouchersApiAxiosParamCreator = function (configuration?: Configurat
 				options: localVarRequestOptions,
 			};
 		},
-	};
+	}
 };
 
 /**
