@@ -33,7 +33,7 @@ export class DiscountSaleEntity {
 	@IsEnum(DiscountType)
 	discountType: DiscountType;
 
-	@Column({ type: Number })
+	@Column({ type: 'float', default: 0 })
 	@ApiProperty({ type: Number })
 	@IsNumber()
 	discountValue: number;

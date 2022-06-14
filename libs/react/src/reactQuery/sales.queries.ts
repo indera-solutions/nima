@@ -1,10 +1,10 @@
 import { defaultConfiguration, NimaQueryCacheKeys } from '@nima-cms/react';
 import {
 	CreateDiscountSaleDto,
+	DiscountAddCategoriesDto,
+	DiscountAddCollectionsDto,
+	DiscountAddProductsDto,
 	DiscountApi,
-	DiscountSaleAddCategoriesDto,
-	DiscountSaleAddCollectionsDto,
-	DiscountSaleAddProductsDto,
 	DiscountSaleDto,
 	UpdateDiscountDto,
 } from '@nima-cms/sdk';
@@ -91,12 +91,12 @@ export function useAddProductToSaleMutation() {
 		never,
 		{
 			id: number
-			discountSaleAddProductsDto: DiscountSaleAddProductsDto
+			discountAddProductsDto: DiscountAddProductsDto
 		}>(
-		async ({ id, discountSaleAddProductsDto }) => {
+		async ({ id, discountAddProductsDto }) => {
 			const res = await discountApi.discountSalesAddProducts({
 				id,
-				discountSaleAddProductsDto,
+				discountAddProductsDto,
 			});
 			return res.data;
 		},
@@ -139,12 +139,12 @@ export function useAddCollectionsToSaleMutation() {
 		never,
 		{
 			id: number
-			discountSaleAddCollectionsDto: DiscountSaleAddCollectionsDto
+			discountAddCollectionsDto: DiscountAddCollectionsDto
 		}>(
-		async ({ id, discountSaleAddCollectionsDto }) => {
+		async ({ id, discountAddCollectionsDto }) => {
 			const res = await discountApi.discountSalesAddCollections({
 				id,
-				discountSaleAddCollectionsDto,
+				discountAddCollectionsDto,
 			});
 			return res.data;
 		},
@@ -187,12 +187,12 @@ export function useAddCategoryToSaleMutation() {
 		never,
 		{
 			id: number
-			discountSaleAddCategoriesDto: DiscountSaleAddCategoriesDto
+			discountAddCategoriesDto: DiscountAddCategoriesDto
 		}>(
-		async ({ id, discountSaleAddCategoriesDto }) => {
+		async ({ id, discountAddCategoriesDto }) => {
 			const res = await discountApi.discountSalesAddCategories({
 				id,
-				discountSaleAddCategoriesDto,
+				discountAddCategoriesDto,
 			});
 			return res.data;
 		},

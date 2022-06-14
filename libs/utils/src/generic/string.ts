@@ -51,3 +51,9 @@ export function parseQueryString(str: string | string[]): string {
 export function getSlug(input: string): string {
 	return encodeURIComponent(input.replace(/ /g, '-')).toLowerCase();
 }
+
+export function getRandomString(length: number) {
+	let r = Math.random().toString(36).substring(2);
+	while ( r.length < length ) r += Math.random().toString(36).substring(2);
+	return r.slice(r.length - length);
+}

@@ -35,8 +35,10 @@ export class OrderController {
 	}
 
 	@Post('/token')
+	@IsPublic()
 	@ApiCreatedResponse({ type: OrderDto })
 	@ApiBody({ type: CreateOrderFromCheckoutDto })
+	@IsPublic()
 	createFromCheckout(@Body() createOrderDto: CreateOrderFromCheckoutDto): Promise<OrderDto> {
 		return this.orderService.createFromCheckout(createOrderDto);
 	}

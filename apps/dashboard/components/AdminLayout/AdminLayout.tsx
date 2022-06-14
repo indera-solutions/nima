@@ -1,4 +1,4 @@
-import { useSession, useSettings } from '@nima-cms/react';
+import { useAuth, useSession, useSettings } from '@nima-cms/react';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useQueryClient } from 'react-query';
@@ -16,6 +16,7 @@ interface LayoutProps {
 export function AdminLayout(props: LayoutProps) {
 
 	const { session, state } = useSession();
+	const auth = useAuth();
 	const router = useRouter();
 	const { data: settings, isSuccess: isSettingsSuccess } = useSettings();
 
@@ -66,7 +67,7 @@ export function AdminLayout(props: LayoutProps) {
 						<h4>
 							Hello, { session.email }
 						</h4>
-						<button className={ 'btn btn-ghost' }>Logout</button>
+						<button className={ 'btn btn-ghost' } onClick={ () => auth.logout() }>Logout</button>
 
 					</div>
 					{/*<span className={ 'p-1 pr-3' }><button*/ }

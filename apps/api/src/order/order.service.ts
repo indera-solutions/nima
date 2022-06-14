@@ -1,7 +1,10 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { PaginatedResults } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { CheckoutService } from '../checkout/checkout.service';
+import { DiscountVoucherService } from '../discounts/discount-voucher.service';
+import { DiscountVoucherType } from '../discounts/dto/discount.enum';
+import { DiscountVoucherEntity } from '../discounts/entities/discount-voucher.entity';
 import { PaymentMethod, PaymentStatus } from '../payments/entities/payment.entity';
 import { PaymentsService } from '../payments/payments.service';
 import { ProductVariantService } from '../products/product-variant.service';
@@ -22,11 +25,13 @@ export class OrderService {
 		private orderRepository: OrderRepository,
 		private orderLineRepository: OrderLineRepository,
 		private orderEventRepository: OrderEventRepository,
+		@Inject(forwardRef(() => CheckoutService))
 		private checkoutService: CheckoutService,
 		private shippingService: ShippingService,
 		private productService: ProductsService,
 		private variantService: ProductVariantService,
 		private paymentService: PaymentsService,
+		private voucherService: DiscountVoucherService,
 	) {
 	}
 
@@ -41,6 +46,13 @@ export class OrderService {
 		const checkoutDto = await this.checkoutService.getDto(params.token);
 		if ( !checkoutDto.shippingMethod ) throw new BadRequestException('CHECKOUT_NO_SELECTED_SHIPPING_METHOD');
 		const shippingMethod = await this.shippingService.getById({ id: checkoutDto.shippingMethod.id });
+
+		let voucher: DiscountVoucherEntity = undefined;
+		let voucherVariants: number[] = [];
+		if ( checkoutDto.voucherCode ) {
+			voucher = await this.voucherService.findByCode({ code: checkoutDto.voucherCode });
+			voucherVariants = await this.voucherService.findVariationsOfVoucher(voucher.id);
+		}
 
 		const payment = await this.paymentService.save({
 			dto: {
@@ -91,9 +103,10 @@ export class OrderService {
 			lines: [],
 
 			payment: payment,
+			voucherCode: voucher?.code,
 		};
 
-		const order = await this.orderRepository.save(dto);
+		const order = await this.orderRepository.save({ ...dto, voucher: voucher });
 
 		await this.orderEventRepository.save({
 			order: order,
@@ -107,6 +120,13 @@ export class OrderService {
 			const product = await this.productService.getById({ id: line.productId });
 			const variant = await this.variantService.getById({ id: line.variantId });
 			// const minPrice = minPrices.find(value => value.id === line.variantId);
+
+			let voucherCode = undefined, unitDiscountReason = undefined;
+			if ( voucher && voucher.voucherType === DiscountVoucherType.SPECIFIC_PRODUCT && voucherVariants.includes(line.variantId) ) {
+				voucherCode = voucher.code;
+				unitDiscountReason = variant.discountedPrice ? 'sale&voucher' : 'voucher';
+			}
+
 			const dto: InternalCreateOrderLineDto = {
 				variant: variant,
 				order: order,
@@ -122,10 +142,10 @@ export class OrderService {
 
 				/*TODO: Implement Sales and Vouchers*/
 				// sale: minPrice.sale,
-				voucherCode: checkoutDto.voucherCode,
+				voucherCode: voucherCode,
 				unitDiscountAmount: variant.priceAmount - variant.discountedPrice || 0,
-				unitDiscountReason: checkoutDto.voucherCode ? 'voucher' : variant.discountedPrice ? 'sale' : '',
-				unitDiscountType: checkoutDto.voucherCode ? 'voucher' : variant.discountedPrice ? 'sale' : '',
+				unitDiscountReason: unitDiscountReason ? unitDiscountReason : variant.discountedPrice ? 'sale' : '',
+				unitDiscountType: unitDiscountReason ? unitDiscountReason : variant.discountedPrice ? 'sale' : '',
 				unitDiscountValue: 0,
 
 				/*Tax Rate handling not implemented yet*/
@@ -155,6 +175,8 @@ export class OrderService {
 
 		await this.checkoutService.remove({ token: params.token });
 
+		if ( voucher ) await this.voucherService.addOneUse(voucher.id);
+
 		return this.findOne({ id: order.id });
 	}
 
@@ -179,6 +201,10 @@ export class OrderService {
 			pageSize: itemsPerPage,
 			pageNumber: page,
 		};
+	}
+
+	async findOfUser(userId: number) {
+		return this.orderRepository.findOfUser(userId);
 	}
 
 	async update(params: { id: number, updateOrderDto: UpdateOrderDto }): Promise<OrderEntity> {

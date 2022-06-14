@@ -1162,6 +1162,103 @@ export interface CreateDiscountSaleDto {
 /**
  *
  * @export
+ * @interface CreateDiscountVoucherDto
+ */
+export interface CreateDiscountVoucherDto {
+	/**
+	 *
+	 * @type {DiscountVoucherType}
+	 * @memberof CreateDiscountVoucherDto
+	 */
+	'voucherType': DiscountVoucherType;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof CreateDiscountVoucherDto
+	 */
+	'name': TranslatableDto;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateDiscountVoucherDto
+	 */
+	'usageLimit': number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateDiscountVoucherDto
+	 */
+	'startDate': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateDiscountVoucherDto
+	 */
+	'endDate'?: string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateDiscountVoucherDto
+	 */
+	'discountValue': number;
+	/**
+	 *
+	 * @type {DiscountType}
+	 * @memberof CreateDiscountVoucherDto
+	 */
+	'discountValueType': DiscountType;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof CreateDiscountVoucherDto
+	 */
+	'applyOncePerOrder': boolean;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateDiscountVoucherDto
+	 */
+	'minCheckoutItemsQuantity': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateDiscountVoucherDto
+	 */
+	'minSpentAmount': number;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof CreateDiscountVoucherDto
+	 */
+	'applyOncePerCustomer': boolean;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof CreateDiscountVoucherDto
+	 */
+	'onlyForStaff': boolean;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof CreateDiscountVoucherDto
+	 */
+	'metadata': object;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof CreateDiscountVoucherDto
+	 */
+	'privateMetadata': object;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CreateDiscountVoucherDto
+	 */
+	'code'?: string;
+}
+/**
+ *
+ * @export
  * @interface CreateOrderDto
  */
 export interface CreateOrderDto {
@@ -1195,12 +1292,6 @@ export interface CreateOrderDto {
 	 * @memberof CreateOrderDto
 	 */
 	'totalNetAmount': number;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof CreateOrderDto
-	 */
-	'voucher_id': number;
 	/**
 	 *
 	 * @type {LanguageCode}
@@ -1620,7 +1711,6 @@ export interface CreateProductVariantDto {
 	 */
 	'productMedia': Array<CreateSortableMediaDto>;
 }
-
 /**
  *
  * @export
@@ -1706,7 +1796,6 @@ export interface CreateSettingsDto {
 	 */
 	'siteLogo'?: MediaDto;
 }
-
 /**
  *
  * @export
@@ -1864,52 +1953,52 @@ export interface CreateSortableMediaDto {
 /**
  *
  * @export
- * @interface DiscountSaleAddCategoriesDto
+ * @interface DiscountAddCategoriesDto
  */
-export interface DiscountSaleAddCategoriesDto {
+export interface DiscountAddCategoriesDto {
 	/**
 	 *
 	 * @type {Array<number>}
-	 * @memberof DiscountSaleAddCategoriesDto
+	 * @memberof DiscountAddCategoriesDto
 	 */
 	'categoryIds': Array<number>;
 }
 /**
  *
  * @export
- * @interface DiscountSaleAddCollectionsDto
+ * @interface DiscountAddCollectionsDto
  */
-export interface DiscountSaleAddCollectionsDto {
+export interface DiscountAddCollectionsDto {
 	/**
 	 *
 	 * @type {Array<number>}
-	 * @memberof DiscountSaleAddCollectionsDto
+	 * @memberof DiscountAddCollectionsDto
 	 */
 	'collectionIds': Array<number>;
 }
 /**
  *
  * @export
- * @interface DiscountSaleAddProductsDto
+ * @interface DiscountAddProductsDto
  */
-export interface DiscountSaleAddProductsDto {
+export interface DiscountAddProductsDto {
 	/**
 	 *
 	 * @type {Array<number>}
-	 * @memberof DiscountSaleAddProductsDto
+	 * @memberof DiscountAddProductsDto
 	 */
 	'productIds': Array<number>;
 }
 /**
  *
  * @export
- * @interface DiscountSaleAddVariantsDto
+ * @interface DiscountAddVariantsDto
  */
-export interface DiscountSaleAddVariantsDto {
+export interface DiscountAddVariantsDto {
 	/**
 	 *
 	 * @type {Array<number>}
-	 * @memberof DiscountSaleAddVariantsDto
+	 * @memberof DiscountAddVariantsDto
 	 */
 	'variantIds': Array<number>;
 }
@@ -2013,7 +2102,167 @@ export interface DiscountSaleDto {
 
 export enum DiscountType {
 	PERCENTAGE = 'PERCENTAGE',
-	FLAT = 'FLAT'
+	FLAT = 'FLAT',
+	FREE_SHIPPING = 'FREE_SHIPPING'
+}
+
+
+/**
+ *
+ * @export
+ * @interface DiscountVoucherDto
+ */
+export interface DiscountVoucherDto {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountVoucherDto
+	 */
+	'id': number;
+	/**
+	 *
+	 * @type {DiscountVoucherType}
+	 * @memberof DiscountVoucherDto
+	 */
+	'voucherType': DiscountVoucherType;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof DiscountVoucherDto
+	 */
+	'name': TranslatableDto;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof DiscountVoucherDto
+	 */
+	'code': string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountVoucherDto
+	 */
+	'usageLimit': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountVoucherDto
+	 */
+	'used': number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof DiscountVoucherDto
+	 */
+	'startDate': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof DiscountVoucherDto
+	 */
+	'endDate'?: string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountVoucherDto
+	 */
+	'discountValue': number;
+	/**
+	 *
+	 * @type {DiscountType}
+	 * @memberof DiscountVoucherDto
+	 */
+	'discountValueType': DiscountType;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof DiscountVoucherDto
+	 */
+	'applyOncePerOrder': boolean;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountVoucherDto
+	 */
+	'minCheckoutItemsQuantity': number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof DiscountVoucherDto
+	 */
+	'minSpentAmount': number;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof DiscountVoucherDto
+	 */
+	'applyOncePerCustomer': boolean;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof DiscountVoucherDto
+	 */
+	'onlyForStaff': boolean;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof DiscountVoucherDto
+	 */
+	'metadata': object;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof DiscountVoucherDto
+	 */
+	'privateMetadata': object;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof DiscountVoucherDto
+	 */
+	'created': string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof DiscountVoucherDto
+	 */
+	'updatedAt': string;
+	/**
+	 *
+	 * @type {Array<CategoryDto>}
+	 * @memberof DiscountVoucherDto
+	 */
+	'categories': Array<CategoryDto>;
+	/**
+	 *
+	 * @type {Array<ProductDto>}
+	 * @memberof DiscountVoucherDto
+	 */
+	'products': Array<ProductDto>;
+	/**
+	 *
+	 * @type {Array<ProductVariantDto>}
+	 * @memberof DiscountVoucherDto
+	 */
+	'variants': Array<ProductVariantDto>;
+	/**
+	 *
+	 * @type {Array<CollectionDto>}
+	 * @memberof DiscountVoucherDto
+	 */
+	'collections': Array<CollectionDto>;
+}
+
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+
+export enum DiscountVoucherType {
+	SHIPPING = 'SHIPPING',
+	ENTIRE_ORDER = 'ENTIRE_ORDER',
+	SPECIFIC_PRODUCT = 'SPECIFIC_PRODUCT'
 }
 
 
@@ -2265,12 +2514,6 @@ export interface OrderDto {
 	 * @memberof OrderDto
 	 */
 	'totalNetAmount': number;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof OrderDto
-	 */
-	'voucher_id': number;
 	/**
 	 *
 	 * @type {LanguageCode}
@@ -3389,7 +3632,6 @@ export interface RegisterUserDto {
 	 */
 	'password': string;
 }
-
 /**
  *
  * @export
@@ -3403,7 +3645,6 @@ export interface RequestUserPasswordChangeDto {
 	 */
 	'email': string;
 }
-
 /**
  *
  * @export
@@ -4165,6 +4406,103 @@ export interface UpdateDiscountDto {
 /**
  *
  * @export
+ * @interface UpdateDiscountVoucherDto
+ */
+export interface UpdateDiscountVoucherDto {
+	/**
+	 *
+	 * @type {DiscountVoucherType}
+	 * @memberof UpdateDiscountVoucherDto
+	 */
+	'voucherType'?: DiscountVoucherType;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof UpdateDiscountVoucherDto
+	 */
+	'name'?: TranslatableDto;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateDiscountVoucherDto
+	 */
+	'usageLimit'?: number;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof UpdateDiscountVoucherDto
+	 */
+	'startDate'?: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof UpdateDiscountVoucherDto
+	 */
+	'endDate'?: string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateDiscountVoucherDto
+	 */
+	'discountValue'?: number;
+	/**
+	 *
+	 * @type {DiscountType}
+	 * @memberof UpdateDiscountVoucherDto
+	 */
+	'discountValueType'?: DiscountType;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof UpdateDiscountVoucherDto
+	 */
+	'applyOncePerOrder'?: boolean;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateDiscountVoucherDto
+	 */
+	'minCheckoutItemsQuantity'?: number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateDiscountVoucherDto
+	 */
+	'minSpentAmount'?: number;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof UpdateDiscountVoucherDto
+	 */
+	'applyOncePerCustomer'?: boolean;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof UpdateDiscountVoucherDto
+	 */
+	'onlyForStaff'?: boolean;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof UpdateDiscountVoucherDto
+	 */
+	'metadata'?: object;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof UpdateDiscountVoucherDto
+	 */
+	'privateMetadata'?: object;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof UpdateDiscountVoucherDto
+	 */
+	'code'?: string;
+}
+/**
+ *
+ * @export
  * @interface UpdateOrderDto
  */
 export interface UpdateOrderDto {
@@ -4198,12 +4536,6 @@ export interface UpdateOrderDto {
 	 * @memberof UpdateOrderDto
 	 */
 	'totalNetAmount'?: number;
-	/**
-	 *
-	 * @type {number}
-	 * @memberof UpdateOrderDto
-	 */
-	'voucher_id'?: number;
 	/**
 	 *
 	 * @type {LanguageCode}
@@ -4522,7 +4854,6 @@ export interface UpdateShippingZoneDto {
 	 */
 	'shippingRates'?: Array<ShippingRateDto>;
 }
-
 /**
  *
  * @export
@@ -4620,7 +4951,6 @@ export interface UpdateUserDto {
 	 */
 	'addresses'?: Array<AddressDto>;
 }
-
 /**
  *
  * @export
@@ -4634,7 +4964,6 @@ export interface UpdateUserPasswordDto {
 	 */
 	'password': string;
 }
-
 /**
  *
  * @export
@@ -4648,7 +4977,6 @@ export interface UpdateWebhookSettingsDto {
 	 */
 	'emailWebhooks': Array<EmailWebhooksDto>;
 }
-
 /**
  *
  * @export
@@ -4888,7 +5216,7 @@ export const AddressApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const AddressApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = AddressApiFp(configuration);
+	const localVarFp = AddressApiFp(configuration)
 	return {
 		/**
 		 *
@@ -5052,7 +5380,7 @@ export const AttributeValuesApiAxiosParamCreator = function (configuration?: Con
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -5088,7 +5416,7 @@ export const AttributeValuesApiAxiosParamCreator = function (configuration?: Con
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -5319,7 +5647,7 @@ export const AttributeValuesApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const AttributeValuesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = AttributeValuesApiFp(configuration);
+	const localVarFp = AttributeValuesApiFp(configuration)
 	return {
 		/**
 		 *
@@ -5657,7 +5985,7 @@ export const AttributesApiAxiosParamCreator = function (configuration?: Configur
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -5693,7 +6021,7 @@ export const AttributesApiAxiosParamCreator = function (configuration?: Configur
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -5911,7 +6239,7 @@ export const AttributesApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const AttributesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = AttributesApiFp(configuration);
+	const localVarFp = AttributesApiFp(configuration)
 	return {
 		/**
 		 *
@@ -6232,7 +6560,7 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(registerUserDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(registerUserDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -6247,7 +6575,7 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 		 */
 		authRequestPasswordReset: async (requestUserPasswordChangeDto: RequestUserPasswordChangeDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'requestUserPasswordChangeDto' is not null or undefined
-			assertParamExists('authRequestPasswordReset', 'requestUserPasswordChangeDto', requestUserPasswordChangeDto);
+			assertParamExists('authRequestPasswordReset', 'requestUserPasswordChangeDto', requestUserPasswordChangeDto)
 			const localVarPath = `/api/v1/auth/passwordReset`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6266,7 +6594,7 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(requestUserPasswordChangeDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(requestUserPasswordChangeDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -6282,9 +6610,9 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 		 */
 		authResetPassword: async (token: string, updateUserPasswordDto: UpdateUserPasswordDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'token' is not null or undefined
-			assertParamExists('authResetPassword', 'token', token);
+			assertParamExists('authResetPassword', 'token', token)
 			// verify required parameter 'updateUserPasswordDto' is not null or undefined
-			assertParamExists('authResetPassword', 'updateUserPasswordDto', updateUserPasswordDto);
+			assertParamExists('authResetPassword', 'updateUserPasswordDto', updateUserPasswordDto)
 			const localVarPath = `/api/v1/auth/passwordReset`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6307,7 +6635,7 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateUserPasswordDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateUserPasswordDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -6382,7 +6710,7 @@ export const AuthenticationApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const AuthenticationApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = AuthenticationApiFp(configuration);
+	const localVarFp = AuthenticationApiFp(configuration)
 	return {
 		/**
 		 *
@@ -6587,7 +6915,7 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -6595,7 +6923,7 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createCategoryDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createCategoryDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -6624,7 +6952,7 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 			if ( depth !== undefined ) {
 				localVarQueryParameter['depth'] = depth;
@@ -6665,7 +6993,7 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -6704,7 +7032,7 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 			if ( depth !== undefined ) {
 				localVarQueryParameter['depth'] = depth;
@@ -6747,7 +7075,7 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 			if ( depth !== undefined ) {
 				localVarQueryParameter['depth'] = depth;
@@ -6783,7 +7111,7 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -6815,7 +7143,7 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -6852,7 +7180,7 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 			if ( forceDelete !== undefined ) {
 				localVarQueryParameter['forceDelete'] = forceDelete;
@@ -6895,7 +7223,7 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -6903,7 +7231,7 @@ export const CategoriesApiAxiosParamCreator = function (configuration?: Configur
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateCategoryDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateCategoryDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -7026,7 +7354,7 @@ export const CategoriesApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const CategoriesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = CategoriesApiFp(configuration);
+	const localVarFp = CategoriesApiFp(configuration)
 	return {
 		/**
 		 *
@@ -7385,7 +7713,7 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -7393,7 +7721,7 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createCheckoutDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createCheckoutDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -7424,7 +7752,7 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -7463,7 +7791,7 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -7471,7 +7799,7 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateCheckoutDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateCheckoutDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -7507,7 +7835,7 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 			if ( shipping !== undefined ) {
 				localVarQueryParameter['shipping'] = shipping;
@@ -7557,7 +7885,7 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -7565,7 +7893,7 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateCheckoutLineDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateCheckoutLineDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -7599,7 +7927,7 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -7607,7 +7935,7 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateCheckoutVoucherDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateCheckoutVoucherDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -7698,7 +8026,7 @@ export const CheckoutApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const CheckoutApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = CheckoutApiFp(configuration);
+	const localVarFp = CheckoutApiFp(configuration)
 	return {
 		/**
 		 *
@@ -7997,7 +8325,7 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -8005,7 +8333,7 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createCollectionProductDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createCollectionProductDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -8035,7 +8363,7 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -8043,7 +8371,7 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createCollectionDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createCollectionDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -8070,7 +8398,7 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -8106,7 +8434,7 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -8142,7 +8470,7 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -8178,7 +8506,7 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -8218,7 +8546,7 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -8257,7 +8585,7 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -8265,7 +8593,7 @@ export const CollectionsApiAxiosParamCreator = function (configuration?: Configu
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateCollectionDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateCollectionDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -8372,7 +8700,7 @@ export const CollectionsApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const CollectionsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = CollectionsApiFp(configuration);
+	const localVarFp = CollectionsApiFp(configuration)
 	return {
 		/**
 		 *
@@ -8712,7 +9040,7 @@ export const CoreApiAxiosParamCreator = function (configuration?: Configuration)
 		 */
 		settingsUpdateSettings: async (createSettingsDto: CreateSettingsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'createSettingsDto' is not null or undefined
-			assertParamExists('settingsUpdateSettings', 'createSettingsDto', createSettingsDto);
+			assertParamExists('settingsUpdateSettings', 'createSettingsDto', createSettingsDto)
 			const localVarPath = `/api/v1/core/settings`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8727,7 +9055,7 @@ export const CoreApiAxiosParamCreator = function (configuration?: Configuration)
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -8735,7 +9063,7 @@ export const CoreApiAxiosParamCreator = function (configuration?: Configuration)
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createSettingsDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createSettingsDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -8750,7 +9078,7 @@ export const CoreApiAxiosParamCreator = function (configuration?: Configuration)
 		 */
 		settingsUpdateWebhookSettings: async (updateWebhookSettingsDto: UpdateWebhookSettingsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'updateWebhookSettingsDto' is not null or undefined
-			assertParamExists('settingsUpdateWebhookSettings', 'updateWebhookSettingsDto', updateWebhookSettingsDto);
+			assertParamExists('settingsUpdateWebhookSettings', 'updateWebhookSettingsDto', updateWebhookSettingsDto)
 			const localVarPath = `/api/v1/core/settings/webhooks`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8765,7 +9093,7 @@ export const CoreApiAxiosParamCreator = function (configuration?: Configuration)
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -8773,7 +9101,7 @@ export const CoreApiAxiosParamCreator = function (configuration?: Configuration)
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateWebhookSettingsDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateWebhookSettingsDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -8805,7 +9133,7 @@ export const CoreApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async settingsUpdateSettings(createSettingsDto: CreateSettingsDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateSettingsDto>> {
+		async settingsUpdateSettings(createSettingsDto: CreateSettingsDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SettingsDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.settingsUpdateSettings(createSettingsDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -8827,7 +9155,7 @@ export const CoreApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const CoreApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = CoreApiFp(configuration);
+	const localVarFp = CoreApiFp(configuration)
 	return {
 		/**
 		 *
@@ -8843,7 +9171,7 @@ export const CoreApiFactory = function (configuration?: Configuration, basePath?
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		settingsUpdateSettings(createSettingsDto: CreateSettingsDto, options?: any): AxiosPromise<CreateSettingsDto> {
+		settingsUpdateSettings(createSettingsDto: CreateSettingsDto, options?: any): AxiosPromise<SettingsDto> {
 			return localVarFp.settingsUpdateSettings(createSettingsDto, options).then((request) => request(axios, basePath));
 		},
 		/**
@@ -8936,15 +9264,15 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		/**
 		 *
 		 * @param {number} id
-		 * @param {DiscountSaleAddCategoriesDto} discountSaleAddCategoriesDto
+		 * @param {DiscountAddCategoriesDto} discountAddCategoriesDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesAddCategories: async (id: number, discountSaleAddCategoriesDto: DiscountSaleAddCategoriesDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		discountSalesAddCategories: async (id: number, discountAddCategoriesDto: DiscountAddCategoriesDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('discountSalesAddCategories', 'id', id)
-			// verify required parameter 'discountSaleAddCategoriesDto' is not null or undefined
-			assertParamExists('discountSalesAddCategories', 'discountSaleAddCategoriesDto', discountSaleAddCategoriesDto)
+			// verify required parameter 'discountAddCategoriesDto' is not null or undefined
+			assertParamExists('discountSalesAddCategories', 'discountAddCategoriesDto', discountAddCategoriesDto)
 			const localVarPath = `/api/v1/discounts/{id}/categories`
 				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -8960,7 +9288,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -8968,7 +9296,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(discountSaleAddCategoriesDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(discountAddCategoriesDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -8978,15 +9306,15 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		/**
 		 *
 		 * @param {number} id
-		 * @param {DiscountSaleAddCollectionsDto} discountSaleAddCollectionsDto
+		 * @param {DiscountAddCollectionsDto} discountAddCollectionsDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesAddCollections: async (id: number, discountSaleAddCollectionsDto: DiscountSaleAddCollectionsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		discountSalesAddCollections: async (id: number, discountAddCollectionsDto: DiscountAddCollectionsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('discountSalesAddCollections', 'id', id)
-			// verify required parameter 'discountSaleAddCollectionsDto' is not null or undefined
-			assertParamExists('discountSalesAddCollections', 'discountSaleAddCollectionsDto', discountSaleAddCollectionsDto)
+			// verify required parameter 'discountAddCollectionsDto' is not null or undefined
+			assertParamExists('discountSalesAddCollections', 'discountAddCollectionsDto', discountAddCollectionsDto)
 			const localVarPath = `/api/v1/discounts/{id}/collections`
 				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -9002,7 +9330,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -9010,7 +9338,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(discountSaleAddCollectionsDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(discountAddCollectionsDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -9020,15 +9348,15 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		/**
 		 *
 		 * @param {number} id
-		 * @param {DiscountSaleAddProductsDto} discountSaleAddProductsDto
+		 * @param {DiscountAddProductsDto} discountAddProductsDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesAddProducts: async (id: number, discountSaleAddProductsDto: DiscountSaleAddProductsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		discountSalesAddProducts: async (id: number, discountAddProductsDto: DiscountAddProductsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('discountSalesAddProducts', 'id', id)
-			// verify required parameter 'discountSaleAddProductsDto' is not null or undefined
-			assertParamExists('discountSalesAddProducts', 'discountSaleAddProductsDto', discountSaleAddProductsDto)
+			// verify required parameter 'discountAddProductsDto' is not null or undefined
+			assertParamExists('discountSalesAddProducts', 'discountAddProductsDto', discountAddProductsDto)
 			const localVarPath = `/api/v1/discounts/{id}/products`
 				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -9044,7 +9372,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -9052,7 +9380,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(discountSaleAddProductsDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(discountAddProductsDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -9062,15 +9390,15 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 		/**
 		 *
 		 * @param {number} id
-		 * @param {DiscountSaleAddVariantsDto} discountSaleAddVariantsDto
+		 * @param {DiscountAddVariantsDto} discountAddVariantsDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesAddVariants: async (id: number, discountSaleAddVariantsDto: DiscountSaleAddVariantsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		discountSalesAddVariants: async (id: number, discountAddVariantsDto: DiscountAddVariantsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('discountSalesAddVariants', 'id', id)
-			// verify required parameter 'discountSaleAddVariantsDto' is not null or undefined
-			assertParamExists('discountSalesAddVariants', 'discountSaleAddVariantsDto', discountSaleAddVariantsDto)
+			// verify required parameter 'discountAddVariantsDto' is not null or undefined
+			assertParamExists('discountSalesAddVariants', 'discountAddVariantsDto', discountAddVariantsDto)
 			const localVarPath = `/api/v1/discounts/{id}/variants`
 				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -9086,7 +9414,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -9094,7 +9422,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(discountSaleAddVariantsDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(discountAddVariantsDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -9124,7 +9452,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -9132,7 +9460,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createDiscountSaleDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createDiscountSaleDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -9159,7 +9487,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -9195,7 +9523,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -9231,7 +9559,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -9271,7 +9599,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -9311,7 +9639,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -9351,7 +9679,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -9391,7 +9719,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -9430,7 +9758,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -9438,7 +9766,7 @@ export const DiscountApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateDiscountDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateDiscountDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -9458,45 +9786,45 @@ export const DiscountApiFp = function (configuration?: Configuration) {
 		/**
 		 *
 		 * @param {number} id
-		 * @param {DiscountSaleAddCategoriesDto} discountSaleAddCategoriesDto
+		 * @param {DiscountAddCategoriesDto} discountAddCategoriesDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async discountSalesAddCategories(id: number, discountSaleAddCategoriesDto: DiscountSaleAddCategoriesDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesAddCategories(id, discountSaleAddCategoriesDto, options);
+		async discountSalesAddCategories(id: number, discountAddCategoriesDto: DiscountAddCategoriesDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesAddCategories(id, discountAddCategoriesDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
 		 * @param {number} id
-		 * @param {DiscountSaleAddCollectionsDto} discountSaleAddCollectionsDto
+		 * @param {DiscountAddCollectionsDto} discountAddCollectionsDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async discountSalesAddCollections(id: number, discountSaleAddCollectionsDto: DiscountSaleAddCollectionsDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesAddCollections(id, discountSaleAddCollectionsDto, options);
+		async discountSalesAddCollections(id: number, discountAddCollectionsDto: DiscountAddCollectionsDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesAddCollections(id, discountAddCollectionsDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
 		 * @param {number} id
-		 * @param {DiscountSaleAddProductsDto} discountSaleAddProductsDto
+		 * @param {DiscountAddProductsDto} discountAddProductsDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async discountSalesAddProducts(id: number, discountSaleAddProductsDto: DiscountSaleAddProductsDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesAddProducts(id, discountSaleAddProductsDto, options);
+		async discountSalesAddProducts(id: number, discountAddProductsDto: DiscountAddProductsDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesAddProducts(id, discountAddProductsDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
 		 * @param {number} id
-		 * @param {DiscountSaleAddVariantsDto} discountSaleAddVariantsDto
+		 * @param {DiscountAddVariantsDto} discountAddVariantsDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async discountSalesAddVariants(id: number, discountSaleAddVariantsDto: DiscountSaleAddVariantsDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesAddVariants(id, discountSaleAddVariantsDto, options);
+		async discountSalesAddVariants(id: number, discountAddVariantsDto: DiscountAddVariantsDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountSaleDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountSalesAddVariants(id, discountAddVariantsDto, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
@@ -9601,47 +9929,47 @@ export const DiscountApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const DiscountApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = DiscountApiFp(configuration);
+	const localVarFp = DiscountApiFp(configuration)
 	return {
 		/**
 		 *
 		 * @param {number} id
-		 * @param {DiscountSaleAddCategoriesDto} discountSaleAddCategoriesDto
+		 * @param {DiscountAddCategoriesDto} discountAddCategoriesDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesAddCategories(id: number, discountSaleAddCategoriesDto: DiscountSaleAddCategoriesDto, options?: any): AxiosPromise<DiscountSaleDto> {
-			return localVarFp.discountSalesAddCategories(id, discountSaleAddCategoriesDto, options).then((request) => request(axios, basePath));
+		discountSalesAddCategories(id: number, discountAddCategoriesDto: DiscountAddCategoriesDto, options?: any): AxiosPromise<DiscountSaleDto> {
+			return localVarFp.discountSalesAddCategories(id, discountAddCategoriesDto, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
 		 * @param {number} id
-		 * @param {DiscountSaleAddCollectionsDto} discountSaleAddCollectionsDto
+		 * @param {DiscountAddCollectionsDto} discountAddCollectionsDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesAddCollections(id: number, discountSaleAddCollectionsDto: DiscountSaleAddCollectionsDto, options?: any): AxiosPromise<DiscountSaleDto> {
-			return localVarFp.discountSalesAddCollections(id, discountSaleAddCollectionsDto, options).then((request) => request(axios, basePath));
+		discountSalesAddCollections(id: number, discountAddCollectionsDto: DiscountAddCollectionsDto, options?: any): AxiosPromise<DiscountSaleDto> {
+			return localVarFp.discountSalesAddCollections(id, discountAddCollectionsDto, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
 		 * @param {number} id
-		 * @param {DiscountSaleAddProductsDto} discountSaleAddProductsDto
+		 * @param {DiscountAddProductsDto} discountAddProductsDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesAddProducts(id: number, discountSaleAddProductsDto: DiscountSaleAddProductsDto, options?: any): AxiosPromise<DiscountSaleDto> {
-			return localVarFp.discountSalesAddProducts(id, discountSaleAddProductsDto, options).then((request) => request(axios, basePath));
+		discountSalesAddProducts(id: number, discountAddProductsDto: DiscountAddProductsDto, options?: any): AxiosPromise<DiscountSaleDto> {
+			return localVarFp.discountSalesAddProducts(id, discountAddProductsDto, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
 		 * @param {number} id
-		 * @param {DiscountSaleAddVariantsDto} discountSaleAddVariantsDto
+		 * @param {DiscountAddVariantsDto} discountAddVariantsDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		discountSalesAddVariants(id: number, discountSaleAddVariantsDto: DiscountSaleAddVariantsDto, options?: any): AxiosPromise<DiscountSaleDto> {
-			return localVarFp.discountSalesAddVariants(id, discountSaleAddVariantsDto, options).then((request) => request(axios, basePath));
+		discountSalesAddVariants(id: number, discountAddVariantsDto: DiscountAddVariantsDto, options?: any): AxiosPromise<DiscountSaleDto> {
+			return localVarFp.discountSalesAddVariants(id, discountAddVariantsDto, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -9746,10 +10074,10 @@ export interface DiscountApiDiscountSalesAddCategoriesRequest {
 
 	/**
 	 *
-	 * @type {DiscountSaleAddCategoriesDto}
+	 * @type {DiscountAddCategoriesDto}
 	 * @memberof DiscountApiDiscountSalesAddCategories
 	 */
-	readonly discountSaleAddCategoriesDto: DiscountSaleAddCategoriesDto;
+	readonly discountAddCategoriesDto: DiscountAddCategoriesDto;
 }
 
 /**
@@ -9767,10 +10095,10 @@ export interface DiscountApiDiscountSalesAddCollectionsRequest {
 
 	/**
 	 *
-	 * @type {DiscountSaleAddCollectionsDto}
+	 * @type {DiscountAddCollectionsDto}
 	 * @memberof DiscountApiDiscountSalesAddCollections
 	 */
-	readonly discountSaleAddCollectionsDto: DiscountSaleAddCollectionsDto;
+	readonly discountAddCollectionsDto: DiscountAddCollectionsDto;
 }
 
 /**
@@ -9788,10 +10116,10 @@ export interface DiscountApiDiscountSalesAddProductsRequest {
 
 	/**
 	 *
-	 * @type {DiscountSaleAddProductsDto}
+	 * @type {DiscountAddProductsDto}
 	 * @memberof DiscountApiDiscountSalesAddProducts
 	 */
-	readonly discountSaleAddProductsDto: DiscountSaleAddProductsDto;
+	readonly discountAddProductsDto: DiscountAddProductsDto;
 }
 
 /**
@@ -9809,10 +10137,10 @@ export interface DiscountApiDiscountSalesAddVariantsRequest {
 
 	/**
 	 *
-	 * @type {DiscountSaleAddVariantsDto}
+	 * @type {DiscountAddVariantsDto}
 	 * @memberof DiscountApiDiscountSalesAddVariants
 	 */
-	readonly discountSaleAddVariantsDto: DiscountSaleAddVariantsDto;
+	readonly discountAddVariantsDto: DiscountAddVariantsDto;
 }
 
 /**
@@ -9977,7 +10305,7 @@ export class DiscountApi extends BaseAPI {
 	 * @memberof DiscountApi
 	 */
 	public discountSalesAddCategories(requestParameters: DiscountApiDiscountSalesAddCategoriesRequest, options?: AxiosRequestConfig) {
-		return DiscountApiFp(this.configuration).discountSalesAddCategories(requestParameters.id, requestParameters.discountSaleAddCategoriesDto, options).then((request) => request(this.axios, this.basePath));
+		return DiscountApiFp(this.configuration).discountSalesAddCategories(requestParameters.id, requestParameters.discountAddCategoriesDto, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -9988,7 +10316,7 @@ export class DiscountApi extends BaseAPI {
 	 * @memberof DiscountApi
 	 */
 	public discountSalesAddCollections(requestParameters: DiscountApiDiscountSalesAddCollectionsRequest, options?: AxiosRequestConfig) {
-		return DiscountApiFp(this.configuration).discountSalesAddCollections(requestParameters.id, requestParameters.discountSaleAddCollectionsDto, options).then((request) => request(this.axios, this.basePath));
+		return DiscountApiFp(this.configuration).discountSalesAddCollections(requestParameters.id, requestParameters.discountAddCollectionsDto, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -9999,7 +10327,7 @@ export class DiscountApi extends BaseAPI {
 	 * @memberof DiscountApi
 	 */
 	public discountSalesAddProducts(requestParameters: DiscountApiDiscountSalesAddProductsRequest, options?: AxiosRequestConfig) {
-		return DiscountApiFp(this.configuration).discountSalesAddProducts(requestParameters.id, requestParameters.discountSaleAddProductsDto, options).then((request) => request(this.axios, this.basePath));
+		return DiscountApiFp(this.configuration).discountSalesAddProducts(requestParameters.id, requestParameters.discountAddProductsDto, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -10010,7 +10338,7 @@ export class DiscountApi extends BaseAPI {
 	 * @memberof DiscountApi
 	 */
 	public discountSalesAddVariants(requestParameters: DiscountApiDiscountSalesAddVariantsRequest, options?: AxiosRequestConfig) {
-		return DiscountApiFp(this.configuration).discountSalesAddVariants(requestParameters.id, requestParameters.discountSaleAddVariantsDto, options).then((request) => request(this.axios, this.basePath));
+		return DiscountApiFp(this.configuration).discountSalesAddVariants(requestParameters.id, requestParameters.discountAddVariantsDto, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -10141,7 +10469,7 @@ export const MediaApiAxiosParamCreator = function (configuration?: Configuration
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			if ( file !== undefined ) {
@@ -10185,7 +10513,7 @@ export const MediaApiAxiosParamCreator = function (configuration?: Configuration
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10221,7 +10549,7 @@ export const MediaApiAxiosParamCreator = function (configuration?: Configuration
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10255,7 +10583,7 @@ export const MediaApiAxiosParamCreator = function (configuration?: Configuration
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 			if ( page !== undefined ) {
 				localVarQueryParameter['page'] = page;
@@ -10334,7 +10662,7 @@ export const MediaApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const MediaApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = MediaApiFp(configuration);
+	const localVarFp = MediaApiFp(configuration)
 	return {
 		/**
 		 *
@@ -10521,7 +10849,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -10529,7 +10857,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createOrderDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createOrderDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -10559,7 +10887,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -10567,7 +10895,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createOrderFromCheckoutDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createOrderFromCheckoutDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -10596,7 +10924,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 			if ( page !== undefined ) {
 				localVarQueryParameter['page'] = page;
@@ -10640,7 +10968,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10676,7 +11004,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -10715,7 +11043,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -10723,7 +11051,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateOrderDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateOrderDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -10757,7 +11085,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -10765,7 +11093,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateOrderStatusDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateOrderStatusDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -10863,7 +11191,7 @@ export const OrdersApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const OrdersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = OrdersApiFp(configuration);
+	const localVarFp = OrdersApiFp(configuration)
 	return {
 		/**
 		 *
@@ -11169,7 +11497,7 @@ export const PaymentsApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11208,7 +11536,7 @@ export const PaymentsApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -11216,7 +11544,7 @@ export const PaymentsApiAxiosParamCreator = function (configuration?: Configurat
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updatePaymentDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updatePaymentDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -11610,7 +11938,7 @@ export const ProductTypesApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const ProductTypesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = ProductTypesApiFp(configuration);
+	const localVarFp = ProductTypesApiFp(configuration)
 	return {
 		/**
 		 *
@@ -11858,7 +12186,7 @@ export const ProductVariantsApiAxiosParamCreator = function (configuration?: Con
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11898,7 +12226,7 @@ export const ProductVariantsApiAxiosParamCreator = function (configuration?: Con
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12069,7 +12397,7 @@ export const ProductVariantsApiFp = function (configuration?: Configuration) {
  * @export
  */
 export const ProductVariantsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-	const localVarFp = ProductVariantsApiFp(configuration);
+	const localVarFp = ProductVariantsApiFp(configuration)
 	return {
 		/**
 		 *
@@ -12368,7 +12696,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 			if ( attributeValueIds ) {
 				localVarQueryParameter['attributeValueIds'] = attributeValueIds;
@@ -12444,7 +12772,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -12480,7 +12808,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -13936,7 +14264,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 		 */
 		usersCreate: async (registerUserDto: RegisterUserDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'registerUserDto' is not null or undefined
-			assertParamExists('usersCreate', 'registerUserDto', registerUserDto);
+			assertParamExists('usersCreate', 'registerUserDto', registerUserDto)
 			const localVarPath = `/api/v1/users`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -13951,7 +14279,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -13959,7 +14287,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(registerUserDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(registerUserDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -13986,7 +14314,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14006,9 +14334,9 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 		 */
 		usersFindOne: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('usersFindOne', 'id', id);
+			assertParamExists('usersFindOne', 'id', id)
 			const localVarPath = `/api/v1/users/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -14022,7 +14350,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14042,9 +14370,9 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 		 */
 		usersRemove: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('usersRemove', 'id', id);
+			assertParamExists('usersRemove', 'id', id)
 			const localVarPath = `/api/v1/users/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -14058,7 +14386,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -14079,11 +14407,11 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 		 */
 		usersUpdate: async (id: number, updateUserDto: UpdateUserDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
-			assertParamExists('usersUpdate', 'id', id);
+			assertParamExists('usersUpdate', 'id', id)
 			// verify required parameter 'updateUserDto' is not null or undefined
-			assertParamExists('usersUpdate', 'updateUserDto', updateUserDto);
+			assertParamExists('usersUpdate', 'updateUserDto', updateUserDto)
 			const localVarPath = `/api/v1/users/{id}`
-				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -14097,7 +14425,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 
 			// authentication bearer required
 			// http bearer authentication required
-			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -14105,7 +14433,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateUserDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(updateUserDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -14352,6 +14680,1192 @@ export class UsersApi extends BaseAPI {
 	 */
 	public usersUpdate(requestParameters: UsersApiUsersUpdateRequest, options?: AxiosRequestConfig) {
 		return UsersApiFp(this.configuration).usersUpdate(requestParameters.id, requestParameters.updateUserDto, options).then((request) => request(this.axios, this.basePath));
+	}
+}
+
+
+/**
+ * VouchersApi - axios parameter creator
+ * @export
+ */
+export const VouchersApiAxiosParamCreator = function (configuration?: Configuration) {
+	return {
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountAddCategoriesDto} discountAddCategoriesDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherAddCategories: async (id: number, discountAddCategoriesDto: DiscountAddCategoriesDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountVoucherAddCategories', 'id', id);
+			// verify required parameter 'discountAddCategoriesDto' is not null or undefined
+			assertParamExists('discountVoucherAddCategories', 'discountAddCategoriesDto', discountAddCategoriesDto);
+			const localVarPath = `/api/v1/vouchers/{id}/categories`
+				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(discountAddCategoriesDto, localVarRequestOptions, configuration);
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountAddCollectionsDto} discountAddCollectionsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherAddCollections: async (id: number, discountAddCollectionsDto: DiscountAddCollectionsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountVoucherAddCollections', 'id', id);
+			// verify required parameter 'discountAddCollectionsDto' is not null or undefined
+			assertParamExists('discountVoucherAddCollections', 'discountAddCollectionsDto', discountAddCollectionsDto);
+			const localVarPath = `/api/v1/vouchers/{id}/collections`
+				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(discountAddCollectionsDto, localVarRequestOptions, configuration);
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountAddProductsDto} discountAddProductsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherAddProducts: async (id: number, discountAddProductsDto: DiscountAddProductsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountVoucherAddProducts', 'id', id);
+			// verify required parameter 'discountAddProductsDto' is not null or undefined
+			assertParamExists('discountVoucherAddProducts', 'discountAddProductsDto', discountAddProductsDto);
+			const localVarPath = `/api/v1/vouchers/{id}/products`
+				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(discountAddProductsDto, localVarRequestOptions, configuration);
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountAddVariantsDto} discountAddVariantsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherAddVariants: async (id: number, discountAddVariantsDto: DiscountAddVariantsDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountVoucherAddVariants', 'id', id);
+			// verify required parameter 'discountAddVariantsDto' is not null or undefined
+			assertParamExists('discountVoucherAddVariants', 'discountAddVariantsDto', discountAddVariantsDto);
+			const localVarPath = `/api/v1/vouchers/{id}/variants`
+				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(discountAddVariantsDto, localVarRequestOptions, configuration);
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {CreateDiscountVoucherDto} createDiscountVoucherDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherCreate: async (createDiscountVoucherDto: CreateDiscountVoucherDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'createDiscountVoucherDto' is not null or undefined
+			assertParamExists('discountVoucherCreate', 'createDiscountVoucherDto', createDiscountVoucherDto);
+			const localVarPath = `/api/v1/vouchers`;
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(createDiscountVoucherDto, localVarRequestOptions, configuration);
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherFindAll: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			const localVarPath = `/api/v1/vouchers`;
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherFindOne: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountVoucherFindOne', 'id', id);
+			const localVarPath = `/api/v1/vouchers/{id}`
+				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherRemove: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountVoucherRemove', 'id', id);
+			const localVarPath = `/api/v1/vouchers/{id}`
+				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} categoryId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherRemoveCategory: async (id: number, categoryId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountVoucherRemoveCategory', 'id', id);
+			// verify required parameter 'categoryId' is not null or undefined
+			assertParamExists('discountVoucherRemoveCategory', 'categoryId', categoryId);
+			const localVarPath = `/api/v1/vouchers/{id}/categories/{categoryId}`
+				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)))
+				.replace(`{${ 'categoryId' }}`, encodeURIComponent(String(categoryId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} collectionId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherRemoveCollection: async (id: number, collectionId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountVoucherRemoveCollection', 'id', id);
+			// verify required parameter 'collectionId' is not null or undefined
+			assertParamExists('discountVoucherRemoveCollection', 'collectionId', collectionId);
+			const localVarPath = `/api/v1/vouchers/{id}/collections/{collectionId}`
+				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)))
+				.replace(`{${ 'collectionId' }}`, encodeURIComponent(String(collectionId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} productId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherRemoveProduct: async (id: number, productId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountVoucherRemoveProduct', 'id', id);
+			// verify required parameter 'productId' is not null or undefined
+			assertParamExists('discountVoucherRemoveProduct', 'productId', productId);
+			const localVarPath = `/api/v1/vouchers/{id}/products/{productId}`
+				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)))
+				.replace(`{${ 'productId' }}`, encodeURIComponent(String(productId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} variantId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherRemoveVariant: async (id: number, variantId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountVoucherRemoveVariant', 'id', id);
+			// verify required parameter 'variantId' is not null or undefined
+			assertParamExists('discountVoucherRemoveVariant', 'variantId', variantId);
+			const localVarPath = `/api/v1/vouchers/{id}/variants/{variantId}`
+				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)))
+				.replace(`{${ 'variantId' }}`, encodeURIComponent(String(variantId)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {UpdateDiscountVoucherDto} updateDiscountVoucherDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherUpdate: async (id: number, updateDiscountVoucherDto: UpdateDiscountVoucherDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('discountVoucherUpdate', 'id', id);
+			// verify required parameter 'updateDiscountVoucherDto' is not null or undefined
+			assertParamExists('discountVoucherUpdate', 'updateDiscountVoucherDto', updateDiscountVoucherDto);
+			const localVarPath = `/api/v1/vouchers/{id}`
+				.replace(`{${ 'id' }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration);
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(updateDiscountVoucherDto, localVarRequestOptions, configuration);
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+	}
+};
+
+/**
+ * VouchersApi - functional programming interface
+ * @export
+ */
+export const VouchersApiFp = function (configuration?: Configuration) {
+	const localVarAxiosParamCreator = VouchersApiAxiosParamCreator(configuration);
+	return {
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountAddCategoriesDto} discountAddCategoriesDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountVoucherAddCategories(id: number, discountAddCategoriesDto: DiscountAddCategoriesDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountVoucherDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountVoucherAddCategories(id, discountAddCategoriesDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountAddCollectionsDto} discountAddCollectionsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountVoucherAddCollections(id: number, discountAddCollectionsDto: DiscountAddCollectionsDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountVoucherDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountVoucherAddCollections(id, discountAddCollectionsDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountAddProductsDto} discountAddProductsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountVoucherAddProducts(id: number, discountAddProductsDto: DiscountAddProductsDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountVoucherDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountVoucherAddProducts(id, discountAddProductsDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountAddVariantsDto} discountAddVariantsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountVoucherAddVariants(id: number, discountAddVariantsDto: DiscountAddVariantsDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountVoucherDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountVoucherAddVariants(id, discountAddVariantsDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {CreateDiscountVoucherDto} createDiscountVoucherDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountVoucherCreate(createDiscountVoucherDto: CreateDiscountVoucherDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountVoucherDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountVoucherCreate(createDiscountVoucherDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountVoucherFindAll(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<DiscountVoucherDto>>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountVoucherFindAll(options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountVoucherFindOne(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountVoucherDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountVoucherFindOne(id, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountVoucherRemove(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountVoucherDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountVoucherRemove(id, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} categoryId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountVoucherRemoveCategory(id: number, categoryId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountVoucherDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountVoucherRemoveCategory(id, categoryId, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} collectionId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountVoucherRemoveCollection(id: number, collectionId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountVoucherDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountVoucherRemoveCollection(id, collectionId, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} productId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountVoucherRemoveProduct(id: number, productId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountVoucherDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountVoucherRemoveProduct(id, productId, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} variantId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountVoucherRemoveVariant(id: number, variantId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountVoucherDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountVoucherRemoveVariant(id, variantId, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {UpdateDiscountVoucherDto} updateDiscountVoucherDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async discountVoucherUpdate(id: number, updateDiscountVoucherDto: UpdateDiscountVoucherDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DiscountVoucherDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.discountVoucherUpdate(id, updateDiscountVoucherDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+	};
+};
+
+/**
+ * VouchersApi - factory interface
+ * @export
+ */
+export const VouchersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+	const localVarFp = VouchersApiFp(configuration);
+	return {
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountAddCategoriesDto} discountAddCategoriesDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherAddCategories(id: number, discountAddCategoriesDto: DiscountAddCategoriesDto, options?: any): AxiosPromise<DiscountVoucherDto> {
+			return localVarFp.discountVoucherAddCategories(id, discountAddCategoriesDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountAddCollectionsDto} discountAddCollectionsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherAddCollections(id: number, discountAddCollectionsDto: DiscountAddCollectionsDto, options?: any): AxiosPromise<DiscountVoucherDto> {
+			return localVarFp.discountVoucherAddCollections(id, discountAddCollectionsDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountAddProductsDto} discountAddProductsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherAddProducts(id: number, discountAddProductsDto: DiscountAddProductsDto, options?: any): AxiosPromise<DiscountVoucherDto> {
+			return localVarFp.discountVoucherAddProducts(id, discountAddProductsDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {DiscountAddVariantsDto} discountAddVariantsDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherAddVariants(id: number, discountAddVariantsDto: DiscountAddVariantsDto, options?: any): AxiosPromise<DiscountVoucherDto> {
+			return localVarFp.discountVoucherAddVariants(id, discountAddVariantsDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {CreateDiscountVoucherDto} createDiscountVoucherDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherCreate(createDiscountVoucherDto: CreateDiscountVoucherDto, options?: any): AxiosPromise<DiscountVoucherDto> {
+			return localVarFp.discountVoucherCreate(createDiscountVoucherDto, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherFindAll(options?: any): AxiosPromise<Array<DiscountVoucherDto>> {
+			return localVarFp.discountVoucherFindAll(options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherFindOne(id: number, options?: any): AxiosPromise<DiscountVoucherDto> {
+			return localVarFp.discountVoucherFindOne(id, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherRemove(id: number, options?: any): AxiosPromise<DiscountVoucherDto> {
+			return localVarFp.discountVoucherRemove(id, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} categoryId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherRemoveCategory(id: number, categoryId: number, options?: any): AxiosPromise<DiscountVoucherDto> {
+			return localVarFp.discountVoucherRemoveCategory(id, categoryId, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} collectionId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherRemoveCollection(id: number, collectionId: number, options?: any): AxiosPromise<DiscountVoucherDto> {
+			return localVarFp.discountVoucherRemoveCollection(id, collectionId, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} productId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherRemoveProduct(id: number, productId: number, options?: any): AxiosPromise<DiscountVoucherDto> {
+			return localVarFp.discountVoucherRemoveProduct(id, productId, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {number} variantId
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherRemoveVariant(id: number, variantId: number, options?: any): AxiosPromise<DiscountVoucherDto> {
+			return localVarFp.discountVoucherRemoveVariant(id, variantId, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {UpdateDiscountVoucherDto} updateDiscountVoucherDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		discountVoucherUpdate(id: number, updateDiscountVoucherDto: UpdateDiscountVoucherDto, options?: any): AxiosPromise<DiscountVoucherDto> {
+			return localVarFp.discountVoucherUpdate(id, updateDiscountVoucherDto, options).then((request) => request(axios, basePath));
+		},
+	};
+};
+
+/**
+ * Request parameters for discountVoucherAddCategories operation in VouchersApi.
+ * @export
+ * @interface VouchersApiDiscountVoucherAddCategoriesRequest
+ */
+export interface VouchersApiDiscountVoucherAddCategoriesRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof VouchersApiDiscountVoucherAddCategories
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {DiscountAddCategoriesDto}
+	 * @memberof VouchersApiDiscountVoucherAddCategories
+	 */
+	readonly discountAddCategoriesDto: DiscountAddCategoriesDto;
+}
+
+/**
+ * Request parameters for discountVoucherAddCollections operation in VouchersApi.
+ * @export
+ * @interface VouchersApiDiscountVoucherAddCollectionsRequest
+ */
+export interface VouchersApiDiscountVoucherAddCollectionsRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof VouchersApiDiscountVoucherAddCollections
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {DiscountAddCollectionsDto}
+	 * @memberof VouchersApiDiscountVoucherAddCollections
+	 */
+	readonly discountAddCollectionsDto: DiscountAddCollectionsDto;
+}
+
+/**
+ * Request parameters for discountVoucherAddProducts operation in VouchersApi.
+ * @export
+ * @interface VouchersApiDiscountVoucherAddProductsRequest
+ */
+export interface VouchersApiDiscountVoucherAddProductsRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof VouchersApiDiscountVoucherAddProducts
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {DiscountAddProductsDto}
+	 * @memberof VouchersApiDiscountVoucherAddProducts
+	 */
+	readonly discountAddProductsDto: DiscountAddProductsDto;
+}
+
+/**
+ * Request parameters for discountVoucherAddVariants operation in VouchersApi.
+ * @export
+ * @interface VouchersApiDiscountVoucherAddVariantsRequest
+ */
+export interface VouchersApiDiscountVoucherAddVariantsRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof VouchersApiDiscountVoucherAddVariants
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {DiscountAddVariantsDto}
+	 * @memberof VouchersApiDiscountVoucherAddVariants
+	 */
+	readonly discountAddVariantsDto: DiscountAddVariantsDto;
+}
+
+/**
+ * Request parameters for discountVoucherCreate operation in VouchersApi.
+ * @export
+ * @interface VouchersApiDiscountVoucherCreateRequest
+ */
+export interface VouchersApiDiscountVoucherCreateRequest {
+	/**
+	 *
+	 * @type {CreateDiscountVoucherDto}
+	 * @memberof VouchersApiDiscountVoucherCreate
+	 */
+	readonly createDiscountVoucherDto: CreateDiscountVoucherDto;
+}
+
+/**
+ * Request parameters for discountVoucherFindOne operation in VouchersApi.
+ * @export
+ * @interface VouchersApiDiscountVoucherFindOneRequest
+ */
+export interface VouchersApiDiscountVoucherFindOneRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof VouchersApiDiscountVoucherFindOne
+	 */
+	readonly id: number;
+}
+
+/**
+ * Request parameters for discountVoucherRemove operation in VouchersApi.
+ * @export
+ * @interface VouchersApiDiscountVoucherRemoveRequest
+ */
+export interface VouchersApiDiscountVoucherRemoveRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof VouchersApiDiscountVoucherRemove
+	 */
+	readonly id: number;
+}
+
+/**
+ * Request parameters for discountVoucherRemoveCategory operation in VouchersApi.
+ * @export
+ * @interface VouchersApiDiscountVoucherRemoveCategoryRequest
+ */
+export interface VouchersApiDiscountVoucherRemoveCategoryRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof VouchersApiDiscountVoucherRemoveCategory
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof VouchersApiDiscountVoucherRemoveCategory
+	 */
+	readonly categoryId: number;
+}
+
+/**
+ * Request parameters for discountVoucherRemoveCollection operation in VouchersApi.
+ * @export
+ * @interface VouchersApiDiscountVoucherRemoveCollectionRequest
+ */
+export interface VouchersApiDiscountVoucherRemoveCollectionRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof VouchersApiDiscountVoucherRemoveCollection
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof VouchersApiDiscountVoucherRemoveCollection
+	 */
+	readonly collectionId: number;
+}
+
+/**
+ * Request parameters for discountVoucherRemoveProduct operation in VouchersApi.
+ * @export
+ * @interface VouchersApiDiscountVoucherRemoveProductRequest
+ */
+export interface VouchersApiDiscountVoucherRemoveProductRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof VouchersApiDiscountVoucherRemoveProduct
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof VouchersApiDiscountVoucherRemoveProduct
+	 */
+	readonly productId: number;
+}
+
+/**
+ * Request parameters for discountVoucherRemoveVariant operation in VouchersApi.
+ * @export
+ * @interface VouchersApiDiscountVoucherRemoveVariantRequest
+ */
+export interface VouchersApiDiscountVoucherRemoveVariantRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof VouchersApiDiscountVoucherRemoveVariant
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {number}
+	 * @memberof VouchersApiDiscountVoucherRemoveVariant
+	 */
+	readonly variantId: number;
+}
+
+/**
+ * Request parameters for discountVoucherUpdate operation in VouchersApi.
+ * @export
+ * @interface VouchersApiDiscountVoucherUpdateRequest
+ */
+export interface VouchersApiDiscountVoucherUpdateRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof VouchersApiDiscountVoucherUpdate
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {UpdateDiscountVoucherDto}
+	 * @memberof VouchersApiDiscountVoucherUpdate
+	 */
+	readonly updateDiscountVoucherDto: UpdateDiscountVoucherDto;
+}
+
+/**
+ * VouchersApi - object-oriented interface
+ * @export
+ * @class VouchersApi
+ * @extends {BaseAPI}
+ */
+export class VouchersApi extends BaseAPI {
+	/**
+	 *
+	 * @param {VouchersApiDiscountVoucherAddCategoriesRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof VouchersApi
+	 */
+	public discountVoucherAddCategories(requestParameters: VouchersApiDiscountVoucherAddCategoriesRequest, options?: AxiosRequestConfig) {
+		return VouchersApiFp(this.configuration).discountVoucherAddCategories(requestParameters.id, requestParameters.discountAddCategoriesDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {VouchersApiDiscountVoucherAddCollectionsRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof VouchersApi
+	 */
+	public discountVoucherAddCollections(requestParameters: VouchersApiDiscountVoucherAddCollectionsRequest, options?: AxiosRequestConfig) {
+		return VouchersApiFp(this.configuration).discountVoucherAddCollections(requestParameters.id, requestParameters.discountAddCollectionsDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {VouchersApiDiscountVoucherAddProductsRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof VouchersApi
+	 */
+	public discountVoucherAddProducts(requestParameters: VouchersApiDiscountVoucherAddProductsRequest, options?: AxiosRequestConfig) {
+		return VouchersApiFp(this.configuration).discountVoucherAddProducts(requestParameters.id, requestParameters.discountAddProductsDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {VouchersApiDiscountVoucherAddVariantsRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof VouchersApi
+	 */
+	public discountVoucherAddVariants(requestParameters: VouchersApiDiscountVoucherAddVariantsRequest, options?: AxiosRequestConfig) {
+		return VouchersApiFp(this.configuration).discountVoucherAddVariants(requestParameters.id, requestParameters.discountAddVariantsDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {VouchersApiDiscountVoucherCreateRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof VouchersApi
+	 */
+	public discountVoucherCreate(requestParameters: VouchersApiDiscountVoucherCreateRequest, options?: AxiosRequestConfig) {
+		return VouchersApiFp(this.configuration).discountVoucherCreate(requestParameters.createDiscountVoucherDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof VouchersApi
+	 */
+	public discountVoucherFindAll(options?: AxiosRequestConfig) {
+		return VouchersApiFp(this.configuration).discountVoucherFindAll(options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {VouchersApiDiscountVoucherFindOneRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof VouchersApi
+	 */
+	public discountVoucherFindOne(requestParameters: VouchersApiDiscountVoucherFindOneRequest, options?: AxiosRequestConfig) {
+		return VouchersApiFp(this.configuration).discountVoucherFindOne(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {VouchersApiDiscountVoucherRemoveRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof VouchersApi
+	 */
+	public discountVoucherRemove(requestParameters: VouchersApiDiscountVoucherRemoveRequest, options?: AxiosRequestConfig) {
+		return VouchersApiFp(this.configuration).discountVoucherRemove(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {VouchersApiDiscountVoucherRemoveCategoryRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof VouchersApi
+	 */
+	public discountVoucherRemoveCategory(requestParameters: VouchersApiDiscountVoucherRemoveCategoryRequest, options?: AxiosRequestConfig) {
+		return VouchersApiFp(this.configuration).discountVoucherRemoveCategory(requestParameters.id, requestParameters.categoryId, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {VouchersApiDiscountVoucherRemoveCollectionRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof VouchersApi
+	 */
+	public discountVoucherRemoveCollection(requestParameters: VouchersApiDiscountVoucherRemoveCollectionRequest, options?: AxiosRequestConfig) {
+		return VouchersApiFp(this.configuration).discountVoucherRemoveCollection(requestParameters.id, requestParameters.collectionId, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {VouchersApiDiscountVoucherRemoveProductRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof VouchersApi
+	 */
+	public discountVoucherRemoveProduct(requestParameters: VouchersApiDiscountVoucherRemoveProductRequest, options?: AxiosRequestConfig) {
+		return VouchersApiFp(this.configuration).discountVoucherRemoveProduct(requestParameters.id, requestParameters.productId, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {VouchersApiDiscountVoucherRemoveVariantRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof VouchersApi
+	 */
+	public discountVoucherRemoveVariant(requestParameters: VouchersApiDiscountVoucherRemoveVariantRequest, options?: AxiosRequestConfig) {
+		return VouchersApiFp(this.configuration).discountVoucherRemoveVariant(requestParameters.id, requestParameters.variantId, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {VouchersApiDiscountVoucherUpdateRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof VouchersApi
+	 */
+	public discountVoucherUpdate(requestParameters: VouchersApiDiscountVoucherUpdateRequest, options?: AxiosRequestConfig) {
+		return VouchersApiFp(this.configuration).discountVoucherUpdate(requestParameters.id, requestParameters.updateDiscountVoucherDto, options).then((request) => request(this.axios, this.basePath));
 	}
 }
 

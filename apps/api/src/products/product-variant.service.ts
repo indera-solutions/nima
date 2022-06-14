@@ -1,5 +1,5 @@
 import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { BasePaginatedRequest, PaginatedResults } from '@nima-cms/utils';
+import { BasePaginatedRequest, PaginatedResults, roundToDigit } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { AttributeValuesService } from '../attributes/attribute-values.service';
 import { SortableMediaDto } from '../core/dto/media.dto';
@@ -327,6 +327,6 @@ export class ProductVariantService {
 			}
 			if ( temp < lowestPrice ) lowestPrice = temp;
 		}
-		return lowestPrice;
+		return roundToDigit(lowestPrice);
 	}
 }

@@ -10,10 +10,12 @@ import {
 	OneToMany,
 	OneToOne,
 	PrimaryGeneratedColumn,
+	RelationId,
 	UpdateDateColumn,
 } from 'typeorm';
 import { AddressDto } from '../../core/dto/address.dto';
 import { AddressEntity } from '../../core/entities/address.entity';
+import { DiscountVoucherEntity } from '../../discounts/entities/discount-voucher.entity';
 import { PaymentEntity } from '../../payments/entities/payment.entity';
 import { ShippingMethodEntity } from '../../shipping/entities/shipping-method.entity';
 import { UserEntity } from '../../users/entities/user.entity';
@@ -63,10 +65,14 @@ export class OrderEntity {
 	@ApiProperty({ type: Number, example: 12.3 })
 	totalNetAmount: number;
 
-	@Column({ type: Number, nullable: true })
-	@ApiProperty({ type: Number, example: 1 })
-	@IsOptional()
-	voucher_id?: number;
+	@ManyToOne(() => DiscountVoucherEntity, { nullable: true, deferrable: 'INITIALLY DEFERRED' })
+	voucher?: DiscountVoucherEntity;
+
+	@RelationId((order: OrderEntity) => order.voucher)
+	voucherId?: number;
+
+	@Column({ type: String, nullable: true })
+	voucherCode?: string;
 
 	@Column({ type: 'enum', enum: LanguageCode })
 	@ApiProperty({ enum: LanguageCode, example: LanguageCode.en, enumName: 'LanguageCode' })

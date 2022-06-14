@@ -126,7 +126,7 @@ export default function ViewOrder(props: ViewOrderProps) {
 						</h2>
 						<h2>Shipping Method: <strong>{ order.shippingMethodName }</strong></h2>
 						{/*<h2>Payment Method: <strong>{ toTitleCase(order.paymentMethod) }</strong></h2>*/ }
-						{ order.voucher_id && <h2>Voucher code: <strong>{ order.voucher_id }</strong></h2> }
+						{/*{ order.voucher_id && <h2>Voucher code: <strong>{ order.voucher_id }</strong></h2> }*/ }
 					</AdminSection>
 					<AdminSection title={ 'Customer' }>
 						<h2>{ order.userEmail }</h2>

@@ -1,7 +1,13 @@
 import {
 	getTranslation,
+	useAddCategoryToSaleMutation,
+	useAddCollectionsToSaleMutation,
+	useAddProductToSaleMutation,
 	useCreateSaleMutation,
 	useLanguages,
+	useRemoveCategoryFromSaleMutation,
+	useRemoveCollectionsFromSaleMutation,
+	useRemoveProductFromSaleMutation,
 	useSaleById,
 	useUpdateSaleMutation,
 } from '@nima-cms/react';
@@ -18,12 +24,12 @@ import {
 	AdminSection,
 	MetadataEditor,
 	NimaTitle,
+	SalesCategoryList,
 	SalesCollectionList,
 	SalesProductList,
 	SelectEditingLanguage,
 	TranslatableInput,
 } from '../../components';
-import { SalesCategoryList } from '../../components/sales/SalesCategoryList';
 import { NIMA_ROUTES } from '../../lib/routes';
 
 interface AddSaleProps {
@@ -39,6 +45,15 @@ export default function AddSale(props: AddSaleProps) {
 
 	const createSaleMutation = useCreateSaleMutation();
 	const updateSaleMutation = useUpdateSaleMutation();
+
+	const addCategoryToSaleMutation = useAddCategoryToSaleMutation();
+	const removeCategoryFromSaleMutation = useRemoveCategoryFromSaleMutation();
+	const addCollectionsToSaleMutation = useAddCollectionsToSaleMutation();
+	const removeCollectionsFromSaleMutation = useRemoveCollectionsFromSaleMutation();
+	const addProductToSaleMutation = useAddProductToSaleMutation();
+	const removeProductFromSaleMutation = useRemoveProductFromSaleMutation();
+
+
 	const { data: existingSale } = useSaleById(id, { refetchInterval: false });
 
 	useEffect(() => {
@@ -66,7 +81,7 @@ export default function AddSale(props: AddSaleProps) {
 		}));
 	}
 
-	async function onCreateCollection() {
+	async function onCreateSale() {
 
 		if ( !isEditing ) {
 			try {
@@ -77,13 +92,64 @@ export default function AddSale(props: AddSaleProps) {
 				console.log(e);
 			}
 		} else {
-			const updatedCollection = await updateSaleMutation.mutateAsync({
+			const updatedSale = await updateSaleMutation.mutateAsync({
 				id,
 				updateDiscountDto: createSaleDto,
 			});
 			toast.success('Sale Updated!');
 			await router.push(NIMA_ROUTES.sales.list);
 		}
+
+
+	}
+
+	async function onSaveCategories(selectedIds) {
+		await addCategoryToSaleMutation.mutateAsync({
+			id: id,
+			discountAddCategoriesDto: {
+				categoryIds: selectedIds,
+			},
+		});
+	}
+
+	async function removeCategory(categoryId: number) {
+		await removeCategoryFromSaleMutation.mutateAsync({
+			id: id,
+			categoryId: categoryId,
+		});
+	}
+
+	async function onSaveCollections(selectedIds) {
+		await addCollectionsToSaleMutation.mutateAsync({
+			id: id,
+			discountAddCollectionsDto: {
+				collectionIds: selectedIds,
+			},
+		});
+	}
+
+
+	async function removeCollection(collectionId: number) {
+		await removeCollectionsFromSaleMutation.mutateAsync({
+			id: id,
+			collectionId: collectionId,
+		});
+	}
+
+	async function onSaveProduct(selectedIds) {
+		await addProductToSaleMutation.mutateAsync({
+			id: id,
+			discountAddProductsDto: {
+				productIds: selectedIds,
+			},
+		});
+	}
+
+	async function removeProduct(productId) {
+		await removeProductFromSaleMutation.mutateAsync({
+			id: id,
+			productId: productId,
+		});
 	}
 
 	return (
@@ -99,7 +165,7 @@ export default function AddSale(props: AddSaleProps) {
 					</Link>
 
 					<button className="btn btn-success"
-							onClick={ onCreateCollection }>{ isEditing ? 'Save' : 'Create' }</button>
+							onClick={ onCreateSale }>{ isEditing ? 'Save' : 'Create' }</button>
 				</AdminFooter> }
 			>
 				<AdminColumn>
@@ -152,15 +218,18 @@ export default function AddSale(props: AddSaleProps) {
 
 					{ id && existingSale && <SalesCollectionList
 						collections={ existingSale.collections }
-						id={ id }
+						onSave={ onSaveCollections }
+						onRemove={ removeCollection }
 					/> }
 					{ id && existingSale && <SalesCategoryList
 						categories={ existingSale.categories }
-						id={ id }
+						onSave={ onSaveCategories }
+						onRemove={ removeCategory }
 					/> }
 					{ id && existingSale && <SalesProductList
 						products={ existingSale.products }
-						id={ id }
+						onSave={ onSaveProduct }
+						onRemove={ removeProduct }
 					/> }
 
 

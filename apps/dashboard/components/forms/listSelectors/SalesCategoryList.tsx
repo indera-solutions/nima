@@ -1,24 +1,17 @@
-import { Trans, useRemoveCategoryFromSaleMutation } from '@nima-cms/react';
+import { Trans } from '@nima-cms/react';
 import { CategoryDto } from '@nima-cms/sdk';
 import React, { useState } from 'react';
-import { AdminSection } from '../AdminLayout';
+import { AdminSection } from '../../AdminLayout';
 import { SalesAddCategories } from './SalesAddCategories';
 
 interface SalesCategoryListProps {
-	id: number;
 	categories: CategoryDto[];
+	onSave: (selectedIds: number[]) => void;
+	onRemove: (id: number) => void;
 }
 
 export function SalesCategoryList(props: SalesCategoryListProps) {
 	const [modalOpen, setModalOpen] = useState(false);
-	const removeCategoryFromSaleMutation = useRemoveCategoryFromSaleMutation();
-
-	async function removeProduct(id: number) {
-		await removeCategoryFromSaleMutation.mutateAsync({
-			id: props.id,
-			categoryId: id,
-		});
-	}
 
 	return (
 		<>
@@ -38,7 +31,7 @@ export function SalesCategoryList(props: SalesCategoryListProps) {
 								<td><Trans>{ collection.name }</Trans></td>
 								<td>
 									<button className={ 'btn btn-error' }
-											onClick={ () => removeProduct(collection.id) }>Remove
+											onClick={ () => props.onRemove(collection.id) }>Remove
 									</button>
 								</td>
 							</tr>,
@@ -50,7 +43,7 @@ export function SalesCategoryList(props: SalesCategoryListProps) {
 			{ modalOpen && <SalesAddCategories
 				onClose={ () => setModalOpen(false) }
 				existingCategories={ props.categories || [] }
-				saleId={ props.id }
+				onSave={ props.onSave }
 			/> }
 		</>
 	);

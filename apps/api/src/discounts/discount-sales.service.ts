@@ -9,10 +9,10 @@ import { ProductVariantService } from '../products/product-variant.service';
 import { ProductsService } from '../products/products.service';
 import {
 	CreateDiscountSaleDto,
-	DiscountSaleAddCategoriesDto,
-	DiscountSaleAddCollectionsDto,
-	DiscountSaleAddProductsDto,
-	DiscountSaleAddVariantsDto,
+	DiscountAddCategoriesDto,
+	DiscountAddCollectionsDto,
+	DiscountAddProductsDto,
+	DiscountAddVariantsDto,
 	DiscountSaleDto,
 	UpdateDiscountDto,
 } from './dto/discount-sale.dto';
@@ -125,7 +125,7 @@ export class DiscountSalesService {
 	}
 
 	@Transactional()
-	async addProducts(params: { id: number, addProductsDto: DiscountSaleAddProductsDto }): Promise<void> {
+	async addProducts(params: { id: number, addProductsDto: DiscountAddProductsDto }): Promise<void> {
 		const { addProductsDto, id } = params;
 
 		const res = await this.findOne({ id: id });
@@ -138,7 +138,7 @@ export class DiscountSalesService {
 	}
 
 	@Transactional()
-	async addCollections(params: { id: number, addCollectionsDto: DiscountSaleAddCollectionsDto }): Promise<void> {
+	async addCollections(params: { id: number, addCollectionsDto: DiscountAddCollectionsDto }): Promise<void> {
 		const { addCollectionsDto, id } = params;
 
 		const res = await this.findOne({ id: id });
@@ -153,7 +153,7 @@ export class DiscountSalesService {
 	}
 
 	@Transactional()
-	async addCategories(params: { id: number, addCategoriesDto: DiscountSaleAddCategoriesDto }): Promise<void> {
+	async addCategories(params: { id: number, addCategoriesDto: DiscountAddCategoriesDto }): Promise<void> {
 		const { addCategoriesDto, id } = params;
 
 		const res = await this.findOne({ id: id });
@@ -168,7 +168,7 @@ export class DiscountSalesService {
 	}
 
 	@Transactional()
-	async addVariants(params: { id: number, addVariantsDto: DiscountSaleAddVariantsDto }): Promise<void> {
+	async addVariants(params: { id: number, addVariantsDto: DiscountAddVariantsDto }): Promise<void> {
 		const { addVariantsDto, id } = params;
 
 		const res = await this.findOne({ id: id });

@@ -6,7 +6,7 @@ import { OrderEntity } from '../entities/order.entity';
 import { OrderEventDto } from './order-event.dto';
 import { OrderLineDto } from './order-line.dto';
 
-export class OrderDto extends OmitType(OrderEntity, ['lines', 'searchDocument', 'payment', 'events']) {
+export class OrderDto extends OmitType(OrderEntity, ['lines', 'searchDocument', 'payment', 'events', 'voucher']) {
 
 	@ApiProperty({ type: () => OrderLineDto, isArray: true })
 	lines: OrderLineDto[];
@@ -28,7 +28,7 @@ export class OrderDto extends OmitType(OrderEntity, ['lines', 'searchDocument', 
 			shippingAddress: entity.shippingAddress,
 			user: entity.user,
 			totalNetAmount: entity.totalNetAmount,
-			voucher_id: entity.voucher_id,
+			voucherId: entity.voucherId,
 			languageCode: entity.languageCode,
 			shippingPriceGrossAmount: entity.shippingPriceGrossAmount,
 			totalGrossAmount: entity.totalGrossAmount,
