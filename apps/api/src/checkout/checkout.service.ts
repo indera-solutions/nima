@@ -91,7 +91,6 @@ export class CheckoutService {
 
 		const voucher = await this.voucherService.findByCode({ code: dto.voucherCode });
 		const co = await this.getDto(token);
-		console.log(voucher.minCheckoutItemsQuantity, co.quantity, voucher.minCheckoutItemsQuantity < co.quantity);
 		if ( voucher.minCheckoutItemsQuantity > co.quantity ) throw new BadRequestException('VOUCHER_NOT_APPLICABLE', 'Not enough items in cart');
 		if ( voucher.minSpentAmount > co.subtotalPrice ) throw new BadRequestException('VOUCHER_NOT_APPLICABLE', 'Subtotal under voucher limit');
 		if ( voucher.usageLimit > 0 && voucher.usageLimit <= voucher.used ) throw new BadRequestException('VOUCHER_NOT_APPLICABLE', 'Code usage limit exceeded');
@@ -232,7 +231,7 @@ export class CheckoutService {
 
 		const availableShippingMethods: CheckoutAvailableShippingDto[] = [];
 
-		if ( entity.shippingAddress && !(voucher && voucher.voucherType === DiscountVoucherType.SHIPPING && voucher.discountValueType === DiscountType.FREE_SHIPPING) ) {
+		if ( entity.shippingAddress ) {
 
 			const validMethods = await this.shippingService.getValidMethodsOfAddress(entity.shippingAddress, weight, subtotalPrice);
 			for ( const validMethod of validMethods ) {
@@ -253,7 +252,7 @@ export class CheckoutService {
 				activeShipping = validMethods[0];
 
 			}
-			shippingCost = ShippingMethodDto.calculateCost(activeShipping);
+			shippingCost = (voucher && voucher.voucherType === DiscountVoucherType.SHIPPING && voucher.discountValueType === DiscountType.FREE_SHIPPING) ? 0 : ShippingMethodDto.calculateCost(activeShipping);
 		}
 
 		const totalCost = roundToDigit(subtotalPrice + shippingCost - discount);

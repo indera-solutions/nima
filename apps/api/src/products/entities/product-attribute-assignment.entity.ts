@@ -40,10 +40,10 @@ export class AssignedProductVariantAttributeEntity {
 		// @ApiProperty({ type: ProductVariantDto })
 	variant: ProductVariantEntity;
 
-	@ManyToOne(() => ProductTypeVariantAttributeEntity, { eager: true })
+	@ManyToOne(() => ProductTypeVariantAttributeEntity, { eager: true, onDelete: 'CASCADE' })
 	@ApiProperty({ type: ProductTypeVariantAttributeDto })
 	productTypeVariantAttribute: ProductTypeVariantAttributeEntity;
 
-	@OneToMany(() => AssignedProductVariantAttributeValueEntity, assignedValue => assignedValue.assignedProductVariantAttribute, { eager: true })
+	@OneToMany(() => AssignedProductVariantAttributeValueEntity, assignedValue => assignedValue.assignedProductVariantAttribute, { eager: true, onDelete: 'CASCADE' })
 	values: AssignedProductVariantAttributeValueEntity[];
 }

@@ -71,6 +71,9 @@ export class OrderEntity {
 	@RelationId((order: OrderEntity) => order.voucher)
 	voucherId?: number;
 
+	@Column({ type: String, nullable: true })
+	voucherCode?: string;
+
 	@Column({ type: 'enum', enum: LanguageCode })
 	@ApiProperty({ enum: LanguageCode, example: LanguageCode.en, enumName: 'LanguageCode' })
 	@IsEnum(LanguageCode)

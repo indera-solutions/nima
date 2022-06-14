@@ -18,7 +18,7 @@ import { ProductVariantEntity } from '../../products/entities/product-variant.en
 import { ProductEntity } from '../../products/entities/product.entity';
 import { DiscountType, DiscountVoucherType } from '../dto/discount.enum';
 
-@Entity('discount_vouchers')
+@Entity('discounts_discount_voucher')
 @Check(`"used" >= 0`)
 @Check(`"usageLimit" >= 0`)
 export class DiscountVoucherEntity {

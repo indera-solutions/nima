@@ -103,10 +103,10 @@ export class OrderService {
 			lines: [],
 
 			payment: payment,
-			voucherId: voucher?.id,
+			voucherCode: voucher?.code,
 		};
 
-		const order = await this.orderRepository.save(dto);
+		const order = await this.orderRepository.save({ ...dto, voucher: voucher });
 
 		await this.orderEventRepository.save({
 			order: order,
