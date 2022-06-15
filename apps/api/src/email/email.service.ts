@@ -1,7 +1,10 @@
 import { Content, SendEmailCommand, SendEmailCommandInput, SESClient } from '@aws-sdk/client-ses';
 import { Injectable } from '@nestjs/common';
+import axios from 'axios';
+import { SettingsDto } from '../core/dto/settings.dto';
 import { SettingsService } from '../core/settings/settings.service';
-import { NimaEmail } from './templates/BaseEmail';
+import { Emails } from './templates';
+import { isNimaEmail, NimaEmail } from './templates/BaseEmail';
 
 export interface EmailParams {
 	origin?: string;
@@ -72,5 +75,18 @@ export class EmailService {
 			recipient: settings.adminEmail,
 			subject: email.subject,
 		});
+	}
+
+	async getWebhookTemplate(emailType: Emails, payload: any, settings?: SettingsDto): Promise<NimaEmail | undefined> {
+		let _settings = settings;
+		if ( !_settings ) {
+			_settings = await this.settingsService.getSettings();
+		}
+		const webhook = _settings.emailWebhooks.find(setting => setting.emailType === emailType);
+		if ( webhook ) {
+			const res = await axios.post(webhook.webhook, payload);
+			if ( isNimaEmail(res.data) ) return res.data;
+			else throw new Error('RESULT_IS_NOT_NIMA_EMAIL_TEMPLATE');
+		} else return undefined;
 	}
 }

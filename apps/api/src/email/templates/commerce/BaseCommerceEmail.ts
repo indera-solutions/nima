@@ -9,7 +9,6 @@ import {
 	Translatable,
 } from '@nima-cms/utils';
 import { OrderEntity } from '../../../order/entities/order.entity';
-import { PaymentEntity } from '../../../payments/entities/payment.entity';
 import { UserEntity } from '../../../users/entities/user.entity';
 import { BaseEmail, NimaEmail } from '../BaseEmail';
 
@@ -23,7 +22,6 @@ dayjs.extend(timezone);
 
 export interface CommerceEmailOrderDetails {
 	order: OrderEntity;
-	payment: PaymentEntity;
 	user: UserEntity;
 }
 
@@ -67,8 +65,8 @@ export abstract class BaseCommerceEmail extends BaseEmail {
 	}
 
 	protected getOrderDetails(locale: LanguageCode, details: CommerceEmailOrderDetails): string {
-		const { order, payment, user } = details;
-		if ( !order || !order.lines || !payment || !user ) throw new Error('MISSING_FIELD');
+		const { order, user } = details;
+		if ( !order || !order.lines || !order.payment || !user ) throw new Error('MISSING_FIELD');
 		return `
        <mj-column>
          <mj-table>
@@ -95,7 +93,7 @@ export abstract class BaseCommerceEmail extends BaseEmail {
            </tr>
             <tr>
              <td colspan='2'>Τροπος πληρωμής:</td>
-             <td>${ toTitleCase(payment.method) }</td>
+             <td>${ toTitleCase(order.payment.method) }</td>
            </tr>
            <tr>
              <td colspan='2'>Σύνολο:</td>

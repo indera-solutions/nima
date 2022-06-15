@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { LanguageCode } from '@nima-cms/utils';
 import axios from 'axios';
-import { AuthActionEntity } from '../auth/entities/AuthAction.entity';
-import { SettingsService } from '../core/settings/settings.service';
-import { Events } from '../events';
-import { UserEntity } from '../users/entities/user.entity';
-import { EmailService } from './email.service';
-import { Emails } from './templates';
-import { ResetPasswordEmail, ResetPasswordEmailParams } from './templates/auth/customer';
-import { isNimaEmail, NimaEmail } from './templates/BaseEmail';
+import { AuthActionEntity } from '../../auth/entities/AuthAction.entity';
+import { SettingsService } from '../../core/settings/settings.service';
+import { Events } from '../../events';
+import { UserEntity } from '../../users/entities/user.entity';
+import { EmailService } from '../email.service';
+import { Emails } from '../templates';
+import { ResetPasswordEmail, ResetPasswordEmailParams } from '../templates/auth/customer';
+import { NimaEmail } from '../templates/BaseEmail';
 
 @Injectable()
 export class EmailListener {
@@ -30,14 +30,8 @@ export class EmailListener {
 			siteName: settings.siteName,
 			link: link + `?token=${ authAction.token }`,
 		};
-		const webhook = settings.emailWebhooks.find(setting => setting.emailType === Emails.RESET_PASSWORD);
-		let template: NimaEmail;
-		if ( webhook ) {
-			const res = await axios.post(webhook.webhook, payload);
-			if ( isNimaEmail(res.data) ) template = res.data;
-			else throw new Error('RESULT_IS_NOT_NIMA_EMAIL_TEMPLATE');
-
-		} else template = (new ResetPasswordEmail()).getTemplate(language, params);
+		let template: NimaEmail = await this.service.getWebhookTemplate(Emails.RESET_PASSWORD, payload, settings);
+		if ( !template ) template = (new ResetPasswordEmail()).getTemplate(language, params);
 		await this.service.sendEmail(template, user.email);
 	}
 

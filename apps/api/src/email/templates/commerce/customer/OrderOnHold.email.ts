@@ -7,7 +7,7 @@ export interface OrderOnHoldEmailTemplateOptions extends BaseEmailParams {
 }
 
 export class OrderOnHoldEmail extends BaseCommerceEmail {
-	protected getTemplate(language: LanguageCode, params: OrderOnHoldEmailTemplateOptions): NimaEmail {
+	getTemplate(language: LanguageCode, params: OrderOnHoldEmailTemplateOptions): NimaEmail {
 		return super.customerEmailWithDetails({
 			title: {
 				[LanguageCode.en]: 'Order on hold',
