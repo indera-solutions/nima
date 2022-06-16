@@ -6,7 +6,7 @@ import { CheckoutService } from '../checkout/checkout.service';
 import { DiscountVoucherService } from '../discounts/discount-voucher.service';
 import { DiscountVoucherType } from '../discounts/dto/discount.enum';
 import { DiscountVoucherEntity } from '../discounts/entities/discount-voucher.entity';
-import { CommerceEmailEventClient } from '../email/commerce.email.event.client';
+import { CommerceOrderEventClient } from '../email/commerce.order.event.client';
 import { UpdatePaymentStatusDto } from '../payments/dto/payment.dto';
 import { PaymentMethod, PaymentStatus } from '../payments/entities/payment.entity';
 import { PaymentsService } from '../payments/payments.service';
@@ -191,9 +191,9 @@ export class OrderService {
 		const { createOrderEventDto, orderId } = params;
 		const order = await this.findOne({ id: orderId });
 		if ( createOrderEventDto.eventType === OrderEventsEnum.PAYMENT_REFUNDED )
-			await CommerceEmailEventClient.orderRefunded(this.eventEmitter, { order: order });
+			await CommerceOrderEventClient.orderRefunded(this.eventEmitter, { order: order });
 		if ( createOrderEventDto.eventType === OrderEventsEnum.SHIPPED )
-			await CommerceEmailEventClient.orderShipped(this.eventEmitter, { order: order });
+			await CommerceOrderEventClient.orderShipped(this.eventEmitter, { order: order });
 		return this.orderEventRepository.save({ order: order, ...createOrderEventDto });
 	}
 
@@ -241,13 +241,13 @@ export class OrderService {
 			case OrderStatus.FULFILLED:
 				statusEvent = OrderEventsEnum.FULFILLMENT_FULFILLED_ITEMS;
 				if ( updateOrderStatusDto.notifyCustomer ) {
-					await CommerceEmailEventClient.orderCompleted(this.eventEmitter, { order: order });
+					await CommerceOrderEventClient.orderCompleted(this.eventEmitter, { order: order });
 				}
 				break;
 			case  OrderStatus.CANCELED:
 				statusEvent = OrderEventsEnum.CANCELED;
 				if ( updateOrderStatusDto.notifyCustomer ) {
-					await CommerceEmailEventClient.orderCancelled(this.eventEmitter, { order: order });
+					await CommerceOrderEventClient.orderCancelled(this.eventEmitter, { order: order });
 				}
 				break;
 			case  OrderStatus.RETURNED:
@@ -258,7 +258,7 @@ export class OrderService {
 			case OrderStatus.ON_HOLD:
 				statusEvent = OrderEventsEnum.ON_HOLD;
 				if ( updateOrderStatusDto.notifyCustomer ) {
-					await CommerceEmailEventClient.orderOnHold(this.eventEmitter, { order: order });
+					await CommerceOrderEventClient.orderOnHold(this.eventEmitter, { order: order });
 				}
 		}
 		if ( statusEvent ) {
@@ -284,19 +284,19 @@ export class OrderService {
 			case PaymentStatus.ERROR:
 			case PaymentStatus.REFUSED:
 				statusEvent = OrderEventsEnum.PAYMENT_FAILED;
-				await CommerceEmailEventClient.orderFailed(this.eventEmitter, { order: order });
+				await CommerceOrderEventClient.orderFailed(this.eventEmitter, { order: order });
 				if ( order.status !== OrderStatus.CANCELED ) {
 					await this.updateStatus({ id: id, updateOrderStatusDto: { status: OrderStatus.CANCELED, notifyCustomer: false } });
 				}
 				break;
 			case PaymentStatus.PENDING:
-				await CommerceEmailEventClient.orderPaymentPending(this.eventEmitter, { order: order });
+				await CommerceOrderEventClient.orderPaymentPending(this.eventEmitter, { order: order });
 				break;
 			case PaymentStatus.CAPTURED:
 				statusEvent = OrderEventsEnum.PAYMENT_CAPTURED;
 				break;
 			case PaymentStatus.PROCESSING:
-				await CommerceEmailEventClient.orderCreated(this.eventEmitter, { order: order });
+				await CommerceOrderEventClient.orderCreated(this.eventEmitter, { order: order });
 				break;
 			case PaymentStatus.AUTHORIZED:
 				statusEvent = OrderEventsEnum.PAYMENT_AUTHORIZED;

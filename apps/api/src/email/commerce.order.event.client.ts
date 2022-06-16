@@ -2,7 +2,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Events } from '../events';
 import { OrderEntity } from '../order/entities/order.entity';
 
-export class CommerceEmailEventClient {
+export class CommerceOrderEventClient {
 
 	static async orderCreated(eventEmitter: EventEmitter2, payload: { order: OrderEntity }) {
 		return eventEmitter.emit(Events.COMMERCE.ORDER_CREATED, payload);
