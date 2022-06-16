@@ -8,7 +8,10 @@ import {
 	ApiQuery,
 	ApiTags,
 } from '@nestjs/swagger';
-import { IsPublic, IsStaff } from '../auth/auth.decorator';
+import { IsPublic, IsStaff, User } from '../auth/auth.decorator';
+import { UpdatePaymentStatusDto } from '../payments/dto/payment.dto';
+import { UserEntity } from '../users/entities/user.entity';
+import { CreateOrderEventDto, OrderEventDto } from './dto/order-event.dto';
 import {
 	CreateOrderDto,
 	CreateOrderFromCheckoutDto,
@@ -34,12 +37,20 @@ export class OrderController {
 		return this.orderService.create({ createOrderDto });
 	}
 
+	@Post(':id/events')
+	@ApiCreatedResponse({ type: OrderEventDto })
+	@ApiBody({ type: CreateOrderEventDto })
+	@IsStaff()
+	createOrderEvent(@Body() createOrderEventDto: CreateOrderEventDto, @Param('id', ParseIntPipe) id: number) {
+		return this.orderService.createOrderEvent({ orderId: id, createOrderEventDto: createOrderEventDto });
+	}
+
 	@Post('/token')
 	@IsPublic()
 	@ApiCreatedResponse({ type: OrderDto })
 	@ApiBody({ type: CreateOrderFromCheckoutDto })
 	@IsPublic()
-	createFromCheckout(@Body() createOrderDto: CreateOrderFromCheckoutDto): Promise<OrderDto> {
+	createFromCheckout(@Body() createOrderDto: CreateOrderFromCheckoutDto, @User() user?: UserEntity): Promise<OrderDto> {
 		return this.orderService.createFromCheckout(createOrderDto);
 	}
 
@@ -56,7 +67,6 @@ export class OrderController {
 			pageSize: res.pageSize,
 			totalCount: res.totalCount,
 		};
-
 	}
 
 	@Get(':id')
@@ -72,8 +82,9 @@ export class OrderController {
 	@ApiCreatedResponse({ type: OrderDto })
 	@ApiParam({ type: Number, name: 'id' })
 	@IsStaff()
-	update(@Param('id', ParseIntPipe) id: number, @Body() updateOrderDto: UpdateOrderDto) {
-		return this.orderService.update({ id, updateOrderDto });
+	async update(@Param('id', ParseIntPipe) id: number, @Body() updateOrderDto: UpdateOrderDto) {
+		const res = await this.orderService.update({ id, updateOrderDto });
+		return OrderDto.prepare(res);
 	}
 
 
@@ -81,15 +92,26 @@ export class OrderController {
 	@ApiCreatedResponse({ type: OrderDto })
 	@ApiBody({ type: UpdateOrderStatusDto })
 	@ApiParam({ type: Number, name: 'id' })
-	updateStatus(@Param('id') id: number, @Body() updateOrderStatusDto: UpdateOrderStatusDto) {
-		return this.orderService.updateStatus({ id, updateOrderStatusDto });
+	async updateStatus(@Param('id') id: number, @Body() updateOrderStatusDto: UpdateOrderStatusDto) {
+		const res = await this.orderService.updateStatus({ id, updateOrderStatusDto });
+		return OrderDto.prepare(res);
+	}
+
+	@Patch(':id/payment/status')
+	@ApiCreatedResponse({ type: OrderDto })
+	@ApiBody({ type: UpdatePaymentStatusDto })
+	@ApiParam({ type: Number, name: 'id' })
+	async updatePaymentStatus(@Param('id') id: number, @Body() updatePaymentStatusDto: UpdatePaymentStatusDto) {
+		const res = await this.orderService.updatePaymentStatus({ id, updatePaymentStatusDto });
+		return OrderDto.prepare(res);
 	}
 
 	@Delete(':id')
 	@ApiOkResponse({ type: OrderDto })
 	@ApiParam({ type: Number, name: 'id' })
 	@IsStaff()
-	remove(@Param('id', ParseIntPipe) id: number) {
-		return this.orderService.remove({ id });
+	async remove(@Param('id', ParseIntPipe) id: number) {
+		const res = await this.orderService.remove({ id });
+		return OrderDto.prepare(res);
 	}
 }

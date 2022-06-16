@@ -9,7 +9,6 @@ import {
 	Translatable,
 } from '@nima-cms/utils';
 import { OrderEntity } from '../../../order/entities/order.entity';
-import { UserEntity } from '../../../users/entities/user.entity';
 import { BaseEmail, NimaEmail } from '../BaseEmail';
 
 
@@ -22,7 +21,6 @@ dayjs.extend(timezone);
 
 export interface CommerceEmailOrderDetails {
 	order: OrderEntity;
-	user: UserEntity;
 }
 
 export abstract class BaseCommerceEmail extends BaseEmail {
@@ -65,8 +63,8 @@ export abstract class BaseCommerceEmail extends BaseEmail {
 	}
 
 	protected getOrderDetails(locale: LanguageCode, details: CommerceEmailOrderDetails): string {
-		const { order, user } = details;
-		if ( !order || !order.lines || !order.payment || !user ) throw new Error('MISSING_FIELD');
+		const { order } = details;
+		if ( !order || !order.lines || !order.payment ) throw new Error('MISSING_FIELD');
 		return `
        <mj-column>
          <mj-table>
@@ -109,13 +107,13 @@ export abstract class BaseCommerceEmail extends BaseEmail {
            <mj-text color='black' align='center' padding='20px'>
              <h3>Διεύθυνση χρέωσης</h3>
              <ul style='list-style: none; text-align:left' >
-               <li> ${ user.firstName } ${ user.lastName } </li>
+               <li> ${ order.billingAddress?.firstName } ${ order.billingAddress?.lastName } </li>
                <li> ${ order.billingAddress?.address }</li>
                <li> ${ order.billingAddress?.zip }</li>
                <li> ${ getStateName(states[order.billingAddress?.country || 'GR'][order.billingAddress?.state || ''], locale) }</li>
                <li> ${ getCountryName(countries[order.billingAddress?.country || 'GR']) } </li>
                <li> ${ order.billingAddress.phone }</li>
-               <li> ${ user.email }</li>
+               <li> ${ order.userEmail }</li>
              </ul>
            </mj-text>
          </mj-column>
@@ -124,7 +122,7 @@ export abstract class BaseCommerceEmail extends BaseEmail {
 
              <h3> Διεύθυνση αποστολής</h3>
                 <ul style='list-style: none; text-align:left' >
-               <li> ${ user.firstName } ${ user.lastName } </li>
+               <li> ${ order.shippingAddress?.firstName } ${ order.shippingAddress?.lastName } </li>
                <li> ${ order.shippingAddress?.address }</li>
                <li> ${ order.shippingAddress?.zip }</li>
                 <li> ${ getStateName(states[order.shippingAddress?.country || 'GR'][order.shippingAddress?.state || ''], locale) }</li>

@@ -1,18 +1,23 @@
 import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { PaginatedResults } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { CheckoutService } from '../checkout/checkout.service';
 import { DiscountVoucherService } from '../discounts/discount-voucher.service';
 import { DiscountVoucherType } from '../discounts/dto/discount.enum';
 import { DiscountVoucherEntity } from '../discounts/entities/discount-voucher.entity';
+import { CommerceEmailEventClient } from '../email/commerce.email.event.client';
+import { UpdatePaymentStatusDto } from '../payments/dto/payment.dto';
 import { PaymentMethod, PaymentStatus } from '../payments/entities/payment.entity';
 import { PaymentsService } from '../payments/payments.service';
 import { ProductVariantService } from '../products/product-variant.service';
 import { ProductsService } from '../products/products.service';
 import { ShippingService } from '../shipping/shipping.service';
+import { CreateOrderEventDto } from './dto/order-event.dto';
 import { InternalCreateOrderLineDto } from './dto/order-line.dto';
 import { CreateOrderDto, UpdateOrderDto, UpdateOrderStatusDto } from './dto/order.dto';
 import { OrderEventsEnum, OrderStatus } from './dto/order.enum';
+import { OrderEventEntity } from './entities/order-event.entity';
 import { OrderEntity } from './entities/order.entity';
 import { OrderEventRepository } from './repositories/order-event.repository';
 import { OrderLineRepository } from './repositories/order-line.repository';
@@ -32,6 +37,7 @@ export class OrderService {
 		private variantService: ProductVariantService,
 		private paymentService: PaymentsService,
 		private voucherService: DiscountVoucherService,
+		private eventEmitter: EventEmitter2,
 	) {
 	}
 
@@ -180,6 +186,17 @@ export class OrderService {
 		return this.findOne({ id: order.id });
 	}
 
+	@Transactional()
+	async createOrderEvent(params: { orderId: number; createOrderEventDto: CreateOrderEventDto }): Promise<OrderEventEntity> {
+		const { createOrderEventDto, orderId } = params;
+		const order = await this.findOne({ id: orderId });
+		if ( createOrderEventDto.eventType === OrderEventsEnum.PAYMENT_REFUNDED )
+			await CommerceEmailEventClient.orderRefunded(this.eventEmitter, { order: order });
+		if ( createOrderEventDto.eventType === OrderEventsEnum.SHIPPED )
+			await CommerceEmailEventClient.orderShipped(this.eventEmitter, { order: order });
+		return this.orderEventRepository.save({ order: order, ...createOrderEventDto });
+	}
+
 	async findOne(params: { id: number }): Promise<OrderEntity> {
 		const { id } = params;
 		const res = await this.orderRepository.findById(id);
@@ -223,15 +240,26 @@ export class OrderService {
 		switch ( updateOrderStatusDto.status ) {
 			case OrderStatus.FULFILLED:
 				statusEvent = OrderEventsEnum.FULFILLMENT_FULFILLED_ITEMS;
+				if ( updateOrderStatusDto.notifyCustomer ) {
+					await CommerceEmailEventClient.orderCompleted(this.eventEmitter, { order: order });
+				}
 				break;
 			case  OrderStatus.CANCELED:
 				statusEvent = OrderEventsEnum.CANCELED;
+				if ( updateOrderStatusDto.notifyCustomer ) {
+					await CommerceEmailEventClient.orderCancelled(this.eventEmitter, { order: order });
+				}
 				break;
 			case  OrderStatus.RETURNED:
 				statusEvent = OrderEventsEnum.FULFILLMENT_RETURNED;
 				break;
 			case  OrderStatus.UNCONFIRMED:
 				break;
+			case OrderStatus.ON_HOLD:
+				statusEvent = OrderEventsEnum.ON_HOLD;
+				if ( updateOrderStatusDto.notifyCustomer ) {
+					await CommerceEmailEventClient.orderOnHold(this.eventEmitter, { order: order });
+				}
 		}
 		if ( statusEvent ) {
 			await this.orderEventRepository.save({
@@ -241,6 +269,48 @@ export class OrderService {
 			});
 		}
 		return order;
+	}
+
+	async updatePaymentStatus(params: { id: number, updatePaymentStatusDto: UpdatePaymentStatusDto }) {
+		const { id, updatePaymentStatusDto } = params;
+		const order = await this.findOne({ id: id });
+		const { payment } = order;
+		let statusEvent: OrderEventsEnum;
+
+		await this.paymentService.patch({ id: payment.id, dto: updatePaymentStatusDto });
+
+		switch ( updatePaymentStatusDto.status ) {
+			case PaymentStatus.CANCELED:
+			case PaymentStatus.ERROR:
+			case PaymentStatus.REFUSED:
+				statusEvent = OrderEventsEnum.PAYMENT_FAILED;
+				await CommerceEmailEventClient.orderFailed(this.eventEmitter, { order: order });
+				if ( order.status !== OrderStatus.CANCELED ) {
+					await this.updateStatus({ id: id, updateOrderStatusDto: { status: OrderStatus.CANCELED, notifyCustomer: false } });
+				}
+				break;
+			case PaymentStatus.PENDING:
+				await CommerceEmailEventClient.orderPaymentPending(this.eventEmitter, { order: order });
+				break;
+			case PaymentStatus.CAPTURED:
+				statusEvent = OrderEventsEnum.PAYMENT_CAPTURED;
+				break;
+			case PaymentStatus.PROCESSING:
+				await CommerceEmailEventClient.orderCreated(this.eventEmitter, { order: order });
+				break;
+			case PaymentStatus.AUTHORIZED:
+				statusEvent = OrderEventsEnum.PAYMENT_AUTHORIZED;
+				break;
+		}
+		if ( statusEvent ) {
+			await this.orderEventRepository.save({
+				order: order,
+				eventType: statusEvent,
+				parameters: {},
+			});
+		}
+
+		return this.findOne({ id: id });
 	}
 
 	async remove(params: { id: number }): Promise<OrderEntity> {

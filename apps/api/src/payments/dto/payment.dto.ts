@@ -26,3 +26,6 @@ export class CreatePaymentDto extends OmitType(PaymentDto, ['id', 'dateCreated',
 
 export class UpdatePaymentDto extends PartialType(PickType(CreatePaymentDto, ['status', 'supportRefId', 'referenceId', 'transactionTicket'])) {
 }
+
+export class UpdatePaymentStatusDto extends PickType(PaymentDto, ['status']) {
+}
