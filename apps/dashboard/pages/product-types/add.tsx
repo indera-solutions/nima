@@ -82,6 +82,21 @@ export default function AddProductType(props: AddProductTypeProps) {
 		}
 	}
 
+	function onVariantChangeOrder(attribute, newOrder) {
+		setCreateProductTypeDto(state => {
+			const temp = { ...state };
+			temp.variantAttributes[temp.variantAttributes.indexOf(attribute)].sortOrder = newOrder;
+			return temp;
+		});
+	}
+
+	function onAttributeChangeOrder(attribute, newOrder) {
+		setCreateProductTypeDto(state => {
+			const temp = { ...state };
+			temp.attributes[temp.attributes.indexOf(attribute)].sortOrder = newOrder;
+			return temp;
+		});
+	}
 
 	function onVariantSelectionToggle(attributeId: number) {
 		setCreateProductTypeDto(state => {
@@ -175,16 +190,23 @@ export default function AddProductType(props: AddProductTypeProps) {
 								<thead>
 								<tr>
 									<th>Name</th>
+									<th>Order</th>
 									<th>Action</th>
 								</tr>
 								</thead>
 								<tbody>
-								{ createProductTypeDto.attributes.map(attribute => {
+								{ createProductTypeDto.attributes.sort((a, b) => a.sortOrder - b.sortOrder).map(attribute => {
 									const att = attributes?.find(a => a.id === attribute.attributeId);
 									if ( !att ) return;
 									return <tr key={ attribute.attributeId }>
 										<th>
 											<Trans>{ att.name }</Trans> ({ att.slug })
+										</th>
+										<th>
+											<input type="number"
+												   value={ attribute.sortOrder }
+												   onChange={ (e) => onAttributeChangeOrder(attribute, +e.target.value) }
+												   className="input input-border"/>
 										</th>
 										<th>
 											<button className={ 'btn btn-error' }
@@ -211,11 +233,12 @@ export default function AddProductType(props: AddProductTypeProps) {
 								<tr>
 									<th>Name</th>
 									<th>Used in Variant Selection</th>
+									<th>Order</th>
 									<th>Action</th>
 								</tr>
 								</thead>
 								<tbody>
-								{ createProductTypeDto.variantAttributes.map(attribute => {
+								{ createProductTypeDto.variantAttributes.sort((a, b) => a.sortOrder - b.sortOrder).map(attribute => {
 									const att = attributes?.find(a => a.id === attribute.attributeId);
 									if ( !att ) return;
 									return <tr
@@ -228,6 +251,12 @@ export default function AddProductType(props: AddProductTypeProps) {
 												   checked={ attribute.variantSelection }
 												   onChange={ () => onVariantSelectionToggle(attribute.attributeId) }
 												   className="checkbox"/>
+										</th>
+										<th>
+											<input type="number"
+												   value={ attribute.sortOrder }
+												   onChange={ (e) => onVariantChangeOrder(attribute, +e.target.value) }
+												   className="input input-border"/>
 										</th>
 										<th>
 											<button className={ 'btn btn-error' }
