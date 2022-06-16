@@ -42,18 +42,31 @@ export class ProductTypeVariantAttributesService {
 		return await this.productTypeVariantAttributeRepository.getById(productTypeAttributeId);
 	}
 
-	async patch(params: { productTypeId: number, productTypeAttributeId: number, dto: Partial<UpdateProductTypeVariantAttributeDto> }): Promise<ProductTypeVariantAttributeEntity> {
-		const { productTypeId, productTypeAttributeId, dto } = params;
-		const pta = await this.getById({ productTypeAttributeId: productTypeAttributeId });
-		const tempPta = new CreateProductTypeVariantAttributeDto();
-		for ( const dtoKey in dto ) {
-			tempPta[dtoKey] = dto[dtoKey] || pta[dtoKey];
-		}
-		tempPta.attributeId = dto.attributeId || pta.attribute.id;
-		return this.save({
-			dto: tempPta, productTypeId: productTypeId, productTypeAttributeId:
-			productTypeAttributeId,
+	async patch(params: { productTypeAttributeId: number, dto: Partial<UpdateProductTypeVariantAttributeDto> }): Promise<ProductTypeVariantAttributeEntity> {
+		const { productTypeAttributeId, dto } = params;
+
+		await this.productTypeVariantAttributeRepository.update(productTypeAttributeId, {
+			variantSelection: dto.variantSelection,
+			sortOrder: dto.sortOrder,
 		});
+		return this.getById({ productTypeAttributeId: productTypeAttributeId });
+		// const pta = await this.getById({ productTypeAttributeId: productTypeAttributeId });
+		// const tempPta = new CreateProductTypeVariantAttributeDto();
+		// console.log('dto', dto);
+		// console.log('pta', pta);
+		// for ( const dtoKey in dto ) {
+		// 	tempPta[dtoKey] = dto[dtoKey] || pta[dtoKey];
+		// }
+		// tempPta.attributeId = dto.attributeId || pta.attribute.id;
+		// console.log({
+		// 	dto: tempPta, productTypeId: productTypeId, productTypeAttributeId:
+		// 	productTypeAttributeId,
+		// });
+		// return this.save({
+		// 	dto: tempPta,
+		// 	productTypeId: productTypeId,
+		// 	productTypeAttributeId: productTypeAttributeId,
+		// });
 		// throw new Error('');
 	}
 

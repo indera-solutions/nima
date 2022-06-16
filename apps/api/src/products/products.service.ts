@@ -305,7 +305,7 @@ export class ProductsService {
 			promises.push(this.createValue(createAssignedProductAttributeValueDto, assignment));
 		}
 		for ( const assignedProductAttributeValueEntity of toUpdate ) {
-			const newAttr = newValues.find(attr => attr.valueId = assignedProductAttributeValueEntity.value.id);
+			const newAttr = newValues.find(attr => attr.valueId === assignedProductAttributeValueEntity.value.id);
 			promises.push(this.assignedProductAttributeValueRepository.update({ id: assignedProductAttributeValueEntity.id }, { sortOrder: newAttr.sortOrder }));
 		}
 		await Promise.all(promises);

@@ -93,7 +93,7 @@ export class ProductTypesService {
 			promises.push(this.simpleAttributeService.save({ productTypeId: ptId, dto: createProductTypeAttributeDto }));
 		}
 		for ( const productTypeAttributeEntity of toUpdate ) {
-			const newAttr = newAttributes.find(attr => attr.attributeId = productTypeAttributeEntity.attribute.id);
+			const newAttr = newAttributes.find(attr => attr.attributeId === productTypeAttributeEntity.attribute.id);
 			promises.push(this.simpleAttributeService.patch({ productTypeId: ptId, dto: { sortOrder: newAttr.sortOrder }, productTypeAttributeId: productTypeAttributeEntity.id }));
 		}
 		await Promise.all(promises);
@@ -120,8 +120,11 @@ export class ProductTypesService {
 			promises.push(this.variantAttributeService.save({ productTypeId: ptId, dto: createProductTypeAttributeDto }));
 		}
 		for ( const productTypeAttributeEntity of toUpdate ) {
-			const newAttr = newAttributes.find(attr => attr.attributeId = productTypeAttributeEntity.attribute.id);
-			promises.push(this.variantAttributeService.patch({ productTypeId: ptId, dto: { sortOrder: newAttr.sortOrder, variantSelection: newAttr.variantSelection }, productTypeAttributeId: productTypeAttributeEntity.id }));
+			const newAttr = newAttributes.find(attr => attr.attributeId === productTypeAttributeEntity.attribute.id);
+			promises.push(this.variantAttributeService.patch({
+				dto: { sortOrder: newAttr.sortOrder, variantSelection: newAttr.variantSelection },
+				productTypeAttributeId: productTypeAttributeEntity.id,
+			}));
 		}
 		await Promise.all(promises);
 	}
