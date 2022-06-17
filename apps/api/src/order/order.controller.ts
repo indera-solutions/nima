@@ -1,14 +1,16 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import {
 	ApiBearerAuth,
 	ApiBody,
 	ApiCreatedResponse,
+	ApiHeader,
 	ApiOkResponse,
 	ApiParam,
 	ApiQuery,
 	ApiTags,
 } from '@nestjs/swagger';
 import { IsPublic, IsStaff, User } from '../auth/auth.decorator';
+import { StaffOrKeyGuard } from '../auth/combo-auth.guard';
 import { UpdatePaymentStatusDto } from '../payments/dto/payment.dto';
 import { UserEntity } from '../users/entities/user.entity';
 import { CreateOrderEventDto, OrderEventDto } from './dto/order-event.dto';
@@ -96,6 +98,9 @@ export class OrderController {
 
 
 	@Patch(':id/status')
+	@ApiHeader({ name: 'X-API-KEY' })
+	@IsPublic()
+	@UseGuards(StaffOrKeyGuard)
 	@ApiCreatedResponse({ type: OrderDto })
 	@ApiBody({ type: UpdateOrderStatusDto })
 	@ApiParam({ type: Number, name: 'id' })
@@ -105,6 +110,9 @@ export class OrderController {
 	}
 
 	@Patch(':id/payment/status')
+	@ApiHeader({ name: 'X-API-KEY' })
+	@IsPublic()
+	@UseGuards(StaffOrKeyGuard)
 	@ApiCreatedResponse({ type: OrderDto })
 	@ApiBody({ type: UpdatePaymentStatusDto })
 	@ApiParam({ type: Number, name: 'id' })
