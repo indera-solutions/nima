@@ -7,7 +7,8 @@ export interface OrderOnHoldEmailTemplateOptions extends BaseEmailParams {
 }
 
 export class OrderOnHoldEmail extends BaseCommerceEmail {
-	protected getTemplate(language: LanguageCode, params: OrderOnHoldEmailTemplateOptions): NimaEmail {
+	getTemplate(language: LanguageCode, params: OrderOnHoldEmailTemplateOptions): NimaEmail {
+		const firstName = BaseCommerceEmail.getOrderUserFirstName(params.orderDetails.order);
 		return super.customerEmailWithDetails({
 			title: {
 				[LanguageCode.en]: 'Order on hold',
@@ -15,10 +16,10 @@ export class OrderOnHoldEmail extends BaseCommerceEmail {
 			},
 			mainText: {
 				[LanguageCode.en]:
-					`Dear ${ params.orderDetails.user.firstName },
+					`Dear ${ firstName },
 Your order with number #${ params.orderDetails.order.id } is on hold.`,
 				[LanguageCode.el]:
-					`Αγαπητέ ${ params.orderDetails.user.firstName },
+					`Αγαπητέ ${ firstName },
 Η παραγγελία σου  με αριθμό #${ params.orderDetails.order.id } είναι σε αναμονή.`,
 			},
 			subject: {

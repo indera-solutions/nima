@@ -8,6 +8,7 @@ export interface OrderRefundedEmailTemplateOptions extends BaseEmailParams {
 
 export class OrderRefundedEmail extends BaseCommerceEmail {
 	getTemplate(language: LanguageCode, params: OrderRefundedEmailTemplateOptions): NimaEmail {
+		const firstName = BaseCommerceEmail.getOrderUserFirstName(params.orderDetails.order);
 		return super.customerEmailWithDetails({
 			title: {
 				[LanguageCode.en]: 'Order refunded',
@@ -15,10 +16,10 @@ export class OrderRefundedEmail extends BaseCommerceEmail {
 			},
 			mainText: {
 				[LanguageCode.en]:
-					`Dear ${ params.orderDetails.user.firstName },
+					`Dear ${ firstName },
 Your order with number #${ params.orderDetails.order.id }  has been refunded.`,
 				[LanguageCode.el]:
-					`Αγαπητέ ${ params.orderDetails.user.firstName },
+					`Αγαπητέ ${ firstName },
 Η παραγγελία σου με αριθμό #${ params.orderDetails.order.id } έχει επιστραφεί.`,
 			},
 			subject: {

@@ -7,7 +7,7 @@ export interface OrderFailedAdminEmailTemplateOptions extends BaseAdminEmailPara
 }
 
 export class OrderFailedAdminEmail extends BaseCommerceEmail {
-	protected getTemplate(language: LanguageCode, params: OrderFailedAdminEmailTemplateOptions): NimaEmail {
+	getTemplate(language: LanguageCode, params: OrderFailedAdminEmailTemplateOptions): NimaEmail {
 		return super.customerEmailWithDetails({
 			title: {
 				[LanguageCode.en]: 'Order Failed',

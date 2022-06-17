@@ -1,4 +1,4 @@
-import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
+import { OmitType, PartialType } from '@nestjs/swagger';
 import { OrderEventEntity } from '../entities/order-event.entity';
 
 export class OrderEventDto extends OmitType(OrderEventEntity, ['id', 'order', 'user']) {
@@ -12,9 +12,7 @@ export class OrderEventDto extends OmitType(OrderEventEntity, ['id', 'order', 'u
 	}
 }
 
-export class CreateOrderEventDto extends OmitType(OrderEventDto, []) {
-	@ApiProperty({ type: Number })
-	orderId: number;
+export class CreateOrderEventDto extends OmitType(OrderEventDto, ['date']) {
 }
 
 export class UpdateOrderEventDto extends PartialType(CreateOrderEventDto) {

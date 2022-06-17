@@ -15,7 +15,7 @@ export enum PaymentStatus {
 	PENDING = 'PENDING',
 	CANCELED = 'CANCELED',
 	REFUSED = 'REFUSED',
-
+	AUTHORIZED = 'AUTHORIZED',
 }
 
 @Entity('payment_payments')
@@ -33,7 +33,6 @@ export class PaymentEntity {
 	@Column({ type: 'enum', enum: PaymentStatus, enumName: 'paymentStatus' })
 	status: PaymentStatus;
 
-
 	@CreateDateColumn({ type: String })
 	@ApiProperty({ type: String, example: '2022-01-01' })
 	dateCreated: Date;
@@ -42,10 +41,10 @@ export class PaymentEntity {
 	@ApiProperty({ type: String, example: '2022-01-01' })
 	dateUpdated: Date;
 
-
 	@Column({ type: Number, nullable: true })
 	@ApiProperty()
 	supportRefId?: number;
+
 	@Column({ type: 'float' })
 	@ApiProperty()
 	amount: number;
@@ -53,15 +52,19 @@ export class PaymentEntity {
 	@Column({ type: String, nullable: true })
 	@ApiProperty()
 	customerId: string;
+
 	@Column({ type: String, nullable: true })
 	@ApiProperty()
 	description?: string;
+
 	@Column({ type: String, default: 'EUR' })
 	@ApiProperty()
 	currency: string;
+
 	@Column({ type: String, nullable: true })
 	@ApiProperty()
 	referenceId?: string;
+
 	@Column({ type: String, nullable: true })
 	@ApiProperty()
 	transactionTicket?: string;

@@ -7,40 +7,38 @@ export class PaymentsService {
 	constructor(private paymentRepository: PaymentRepository) {
 	}
 
-
 	async save(params: { dto: CreatePaymentDto, id?: number }): Promise<PaymentDto> {
 		const { dto, id } = params;
-		const attribute = await this.paymentRepository.save({ ...dto, id: id });
-		return PaymentDto.prepare(attribute);
+		const payment = await this.paymentRepository.save({ ...dto, id: id });
+		return PaymentDto.prepare(payment);
 	}
 
 	async getById(params: { id: number }): Promise<PaymentDto> {
 		const { id } = params;
-		const attribute = await this.paymentRepository.findOne(id);
-		if ( !attribute ) throw new NotFoundException('ATTRIBUTE_NOT_FOUND');
-		return PaymentDto.prepare(attribute);
+		const payment = await this.paymentRepository.findOne(id);
+		if ( !payment ) throw new NotFoundException('ATTRIBUTE_NOT_FOUND');
+		return PaymentDto.prepare(payment);
 
 	}
 
 	async findAll(): Promise<PaymentDto[]> {
-		const attributes = await this.paymentRepository.find();
+		const payments = await this.paymentRepository.find();
 		return [];
 	}
 
 	async deleteById(params: { id: number }): Promise<PaymentDto> {
 		const { id } = params;
-		const attr = await this.getById({ id });
+		const paymentDto = await this.getById({ id });
 		await this.paymentRepository.delete(id);
-		return attr;
+		return paymentDto;
 	}
-
 
 	async patch(params: { id: number; dto: UpdatePaymentDto }) {
 		const { id, dto } = params;
-		const attr = await this.getById({ id: id });
+		const payment = await this.getById({ id: id });
 		for ( const dtoKey in dto ) {
-			attr[dtoKey] = dto[dtoKey];
+			payment[dtoKey] = dto[dtoKey];
 		}
-		return await this.save({ dto: attr, id: id });
+		return await this.save({ dto: payment, id: id });
 	}
 }
