@@ -179,6 +179,8 @@ export class OrderService {
 			parameters: {},
 		});
 
+		if ( order.payment.method === PaymentMethod.CASH_ON_DELIVERY ) await CommerceOrderEventClient.orderCreated(this.eventEmitter, { order: order, notifyCustomer: true });
+
 		await this.checkoutService.remove({ token: params.token });
 
 		if ( voucher ) await this.voucherService.addOneUse(voucher.id);
@@ -187,13 +189,13 @@ export class OrderService {
 	}
 
 	@Transactional()
-	async createOrderEvent(params: { orderId: number; createOrderEventDto: CreateOrderEventDto }): Promise<OrderEventEntity> {
-		const { createOrderEventDto, orderId } = params;
+	async createOrderEvent(params: { orderId: number; createOrderEventDto: CreateOrderEventDto, notifyCustomer?: boolean }): Promise<OrderEventEntity> {
+		const { createOrderEventDto, orderId, notifyCustomer } = params;
 		const order = await this.findOne({ id: orderId });
 		if ( createOrderEventDto.eventType === OrderEventsEnum.PAYMENT_REFUNDED )
-			await CommerceOrderEventClient.orderRefunded(this.eventEmitter, { order: order });
+			await CommerceOrderEventClient.orderRefunded(this.eventEmitter, { order: order, notifyCustomer: notifyCustomer });
 		if ( createOrderEventDto.eventType === OrderEventsEnum.SHIPPED )
-			await CommerceOrderEventClient.orderShipped(this.eventEmitter, { order: order });
+			await CommerceOrderEventClient.orderShipped(this.eventEmitter, { order: order, notifyCustomer: notifyCustomer });
 		return this.orderEventRepository.save({ order: order, ...createOrderEventDto });
 	}
 
@@ -240,15 +242,11 @@ export class OrderService {
 		switch ( updateOrderStatusDto.status ) {
 			case OrderStatus.FULFILLED:
 				statusEvent = OrderEventsEnum.FULFILLMENT_FULFILLED_ITEMS;
-				if ( updateOrderStatusDto.notifyCustomer ) {
-					await CommerceOrderEventClient.orderCompleted(this.eventEmitter, { order: order });
-				}
+				await CommerceOrderEventClient.orderCompleted(this.eventEmitter, { order: order, notifyCustomer: updateOrderStatusDto.notifyCustomer });
 				break;
 			case  OrderStatus.CANCELED:
 				statusEvent = OrderEventsEnum.CANCELED;
-				if ( updateOrderStatusDto.notifyCustomer ) {
-					await CommerceOrderEventClient.orderCancelled(this.eventEmitter, { order: order });
-				}
+				await CommerceOrderEventClient.orderCancelled(this.eventEmitter, { order: order, notifyCustomer: updateOrderStatusDto.notifyCustomer });
 				break;
 			case  OrderStatus.RETURNED:
 				statusEvent = OrderEventsEnum.FULFILLMENT_RETURNED;
@@ -257,9 +255,7 @@ export class OrderService {
 				break;
 			case OrderStatus.ON_HOLD:
 				statusEvent = OrderEventsEnum.ON_HOLD;
-				if ( updateOrderStatusDto.notifyCustomer ) {
-					await CommerceOrderEventClient.orderOnHold(this.eventEmitter, { order: order });
-				}
+				await CommerceOrderEventClient.orderOnHold(this.eventEmitter, { order: order, notifyCustomer: updateOrderStatusDto.notifyCustomer });
 		}
 		if ( statusEvent ) {
 			await this.orderEventRepository.save({
@@ -271,8 +267,8 @@ export class OrderService {
 		return order;
 	}
 
-	async updatePaymentStatus(params: { id: number, updatePaymentStatusDto: UpdatePaymentStatusDto }) {
-		const { id, updatePaymentStatusDto } = params;
+	async updatePaymentStatus(params: { id: number, updatePaymentStatusDto: UpdatePaymentStatusDto, notifyCustomer?: boolean }) {
+		const { id, updatePaymentStatusDto, notifyCustomer } = params;
 		const order = await this.findOne({ id: id });
 		const { payment } = order;
 		let statusEvent: OrderEventsEnum;
@@ -290,13 +286,13 @@ export class OrderService {
 				}
 				break;
 			case PaymentStatus.PENDING:
-				await CommerceOrderEventClient.orderPaymentPending(this.eventEmitter, { order: order });
+				await CommerceOrderEventClient.orderPaymentPending(this.eventEmitter, { order: order, notifyCustomer: notifyCustomer });
 				break;
 			case PaymentStatus.CAPTURED:
 				statusEvent = OrderEventsEnum.PAYMENT_CAPTURED;
 				break;
 			case PaymentStatus.PROCESSING:
-				await CommerceOrderEventClient.orderCreated(this.eventEmitter, { order: order });
+				await CommerceOrderEventClient.orderCreated(this.eventEmitter, { order: order, notifyCustomer: notifyCustomer });
 				break;
 			case PaymentStatus.AUTHORIZED:
 				statusEvent = OrderEventsEnum.PAYMENT_AUTHORIZED;

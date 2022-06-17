@@ -8,6 +8,7 @@ export interface OrderPaymentPendingEmailTemplateOptions extends BaseEmailParams
 
 export class OrderPaymentPendingEmail extends BaseCommerceEmail {
 	getTemplate(language: LanguageCode, params: OrderPaymentPendingEmailTemplateOptions): NimaEmail {
+		const firstName = BaseCommerceEmail.getOrderUserFirstName(params.orderDetails.order);
 		return super.customerEmailWithDetails({
 			title: {
 				[LanguageCode.en]: 'Order Payment Pending',
@@ -15,10 +16,10 @@ export class OrderPaymentPendingEmail extends BaseCommerceEmail {
 			},
 			mainText: {
 				[LanguageCode.en]:
-					`Dear ${ params.orderDetails.user.firstName },
+					`Dear ${ firstName },
 Your order with number #${ params.orderDetails.order.id } is on hold waiting for payment.`,
 				[LanguageCode.el]:
-					`Αγαπητέ ${ params.orderDetails.user.firstName },
+					`Αγαπητέ ${ firstName },
 Η παραγγελία σου  με αριθμό #${ params.orderDetails.order.id } είναι σε αναμονή πληρωμής.`,
 			},
 			subject: {

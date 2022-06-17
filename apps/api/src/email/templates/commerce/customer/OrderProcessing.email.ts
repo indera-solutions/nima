@@ -8,6 +8,7 @@ export interface OrderProcessingEmailTemplateOptions extends BaseEmailParams {
 
 export class OrderProcessingEmail extends BaseCommerceEmail {
 	getTemplate(language: LanguageCode, params: OrderProcessingEmailTemplateOptions): NimaEmail {
+		const firstName = BaseCommerceEmail.getOrderUserFirstName(params.orderDetails.order);
 		return super.customerEmailWithDetails({
 			title: {
 				[LanguageCode.en]: 'Order processing',
@@ -15,10 +16,10 @@ export class OrderProcessingEmail extends BaseCommerceEmail {
 			},
 			mainText: {
 				[LanguageCode.en]:
-					`Dear ${ params.orderDetails.user.firstName },
+					`Dear ${ firstName },
 Your order with number #${ params.orderDetails.order.id } is processing.`,
 				[LanguageCode.el]:
-					`Αγαπητέ ${ params.orderDetails.user.firstName },
+					`Αγαπητέ ${ firstName },
 Η παραγγελία σου με αριθμό #${ params.orderDetails.order.id } είναι σε εξέλιξη.`,
 			},
 			subject: {

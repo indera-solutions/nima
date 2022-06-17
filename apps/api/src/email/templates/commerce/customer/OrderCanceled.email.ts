@@ -8,6 +8,7 @@ export interface OrderCanceledEmailTemplateOptions extends BaseEmailParams {
 
 export class OrderCanceledEmail extends BaseCommerceEmail {
 	getTemplate(language: LanguageCode, params: OrderCanceledEmailTemplateOptions): NimaEmail {
+		const firstName = BaseCommerceEmail.getOrderUserFirstName(params.orderDetails.order);
 		return super.customerEmailWithDetails({
 			title: {
 				[LanguageCode.en]: 'Order canceled',
@@ -15,10 +16,10 @@ export class OrderCanceledEmail extends BaseCommerceEmail {
 			},
 			mainText: {
 				[LanguageCode.en]:
-					`Dear ${ params.orderDetails.user.firstName },
+					`Dear ${ firstName },
 Your order with number #${ params.orderDetails.order.id } has been canceled.`,
 				[LanguageCode.el]:
-					`Αγαπητέ ${ params.orderDetails.user.firstName },
+					`Αγαπητέ ${ firstName },
 Η παραγγελία σου με αριθμό #${ params.orderDetails.order.id } έχει ακυρωθεί`,
 			},
 			subject: {

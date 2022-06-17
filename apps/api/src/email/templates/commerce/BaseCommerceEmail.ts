@@ -150,4 +150,8 @@ export abstract class BaseCommerceEmail extends BaseEmail {
 			html,
 		};
 	}
+
+	static getOrderUserFirstName(order: OrderEntity): string {
+		return order.user?.firstName || order.billingAddress?.firstName || order.shippingAddress?.firstName || 'Customer';
+	}
 }

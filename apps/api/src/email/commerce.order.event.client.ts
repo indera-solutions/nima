@@ -4,7 +4,7 @@ import { OrderEntity } from '../order/entities/order.entity';
 
 export class CommerceOrderEventClient {
 
-	static async orderCreated(eventEmitter: EventEmitter2, payload: { order: OrderEntity }) {
+	static async orderCreated(eventEmitter: EventEmitter2, payload: { order: OrderEntity, notifyCustomer?: boolean }) {
 		return eventEmitter.emit(Events.COMMERCE.ORDER_CREATED, payload);
 	}
 
@@ -12,27 +12,27 @@ export class CommerceOrderEventClient {
 		return eventEmitter.emit(Events.COMMERCE.ORDER_FAILED, payload);
 	}
 
-	static async orderCancelled(eventEmitter: EventEmitter2, payload: { order: OrderEntity }) {
+	static async orderCancelled(eventEmitter: EventEmitter2, payload: { order: OrderEntity, notifyCustomer?: boolean }) {
 		return eventEmitter.emit(Events.COMMERCE.ORDER_CANCELLED, payload);
 	}
 
-	static async orderShipped(eventEmitter: EventEmitter2, payload: { order: OrderEntity }) {
+	static async orderShipped(eventEmitter: EventEmitter2, payload: { order: OrderEntity, notifyCustomer?: boolean }) {
 		return eventEmitter.emit(Events.COMMERCE.ORDER_SHIPPED, payload);
 	}
 
-	static async orderRefunded(eventEmitter: EventEmitter2, payload: { order: OrderEntity }) {
+	static async orderRefunded(eventEmitter: EventEmitter2, payload: { order: OrderEntity, notifyCustomer?: boolean }) {
 		return eventEmitter.emit(Events.COMMERCE.ORDER_REFUNDED, payload);
 	}
 
-	static async orderCompleted(eventEmitter: EventEmitter2, payload: { order: OrderEntity }) {
+	static async orderCompleted(eventEmitter: EventEmitter2, payload: { order: OrderEntity, notifyCustomer?: boolean }) {
 		return eventEmitter.emit(Events.COMMERCE.ORDER_COMPLETED, payload);
 	}
 
-	static async orderOnHold(eventEmitter: EventEmitter2, payload: { order: OrderEntity }) {
+	static async orderOnHold(eventEmitter: EventEmitter2, payload: { order: OrderEntity, notifyCustomer?: boolean }) {
 		return eventEmitter.emit(Events.COMMERCE.ORDER_ON_HOLD, payload);
 	}
 
-	static async orderPaymentPending(eventEmitter: EventEmitter2, payload: { order: OrderEntity }) {
+	static async orderPaymentPending(eventEmitter: EventEmitter2, payload: { order: OrderEntity, notifyCustomer?: boolean }) {
 		return eventEmitter.emit(Events.COMMERCE.ORDER_PAYMENT_PENDING, payload);
 	}
 }

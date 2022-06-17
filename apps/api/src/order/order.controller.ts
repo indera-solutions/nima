@@ -40,9 +40,10 @@ export class OrderController {
 	@Post(':id/events')
 	@ApiCreatedResponse({ type: OrderEventDto })
 	@ApiBody({ type: CreateOrderEventDto })
+	@ApiQuery({ type: Boolean, name: 'notifyCustomer', required: false, example: false })
 	@IsStaff()
-	createOrderEvent(@Body() createOrderEventDto: CreateOrderEventDto, @Param('id', ParseIntPipe) id: number) {
-		return this.orderService.createOrderEvent({ orderId: id, createOrderEventDto: createOrderEventDto });
+	createOrderEvent(@Body() createOrderEventDto: CreateOrderEventDto, @Param('id', ParseIntPipe) id: number, @Query('notifyCustomer') notifyCustomer?: boolean) {
+		return this.orderService.createOrderEvent({ orderId: id, createOrderEventDto: createOrderEventDto, notifyCustomer: notifyCustomer });
 	}
 
 	@Post('/token')
@@ -101,8 +102,9 @@ export class OrderController {
 	@ApiCreatedResponse({ type: OrderDto })
 	@ApiBody({ type: UpdatePaymentStatusDto })
 	@ApiParam({ type: Number, name: 'id' })
-	async updatePaymentStatus(@Param('id') id: number, @Body() updatePaymentStatusDto: UpdatePaymentStatusDto) {
-		const res = await this.orderService.updatePaymentStatus({ id, updatePaymentStatusDto });
+	@ApiQuery({ type: Boolean, name: 'notifyCustomer', required: false, example: false })
+	async updatePaymentStatus(@Param('id') id: number, @Body() updatePaymentStatusDto: UpdatePaymentStatusDto, @Query('notifyCustomer') notifyCustomer?: boolean) {
+		const res = await this.orderService.updatePaymentStatus({ id, updatePaymentStatusDto, notifyCustomer });
 		return OrderDto.prepare(res);
 	}
 
