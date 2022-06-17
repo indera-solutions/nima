@@ -3775,6 +3775,13 @@
 						"schema": {
 							"type": "number"
 						}
+					},
+					{
+						"name": "X-API-KEY",
+						"in": "header",
+						"schema": {
+							"type": "string"
+						}
 					}
 				],
 				"requestBody": {
@@ -3828,6 +3835,13 @@
 						"example": false,
 						"schema": {
 							"type": "boolean"
+						}
+					},
+					{
+						"name": "X-API-KEY",
+						"in": "header",
+						"schema": {
+							"type": "string"
 						}
 					}
 				],
@@ -4560,6 +4574,13 @@
 						"schema": {
 							"type": "number"
 						}
+					},
+					{
+						"name": "X-API-KEY",
+						"in": "header",
+						"schema": {
+							"type": "string"
+						}
 					}
 				],
 				"responses": {
@@ -4595,6 +4616,13 @@
 						"in": "path",
 						"schema": {
 							"type": "number"
+						}
+					},
+					{
+						"name": "X-API-KEY",
+						"in": "header",
+						"schema": {
+							"type": "string"
 						}
 					}
 				],
