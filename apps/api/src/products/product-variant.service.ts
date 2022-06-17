@@ -181,7 +181,11 @@ export class ProductVariantService {
 			metadata: entity.metadata,
 			privateMetadata: options?.isAdmin ? entity.privateMetadata : {},
 			updatedAt: entity.updatedAt,
-			attributes: entity.attributes.map(attr => ProductAttributeDto.prepareVariant(attr)),
+			attributes: entity.attributes
+							  .sort((a, b) => {
+								  return a.productTypeVariantAttribute.sortOrder - b.productTypeVariantAttribute.sortOrder;
+							  })
+							  .map(attr => ProductAttributeDto.prepareVariant(attr)),
 			sortOrder: entity.sortOrder,
 			productId: entity.productId,
 			sku: entity.sku,

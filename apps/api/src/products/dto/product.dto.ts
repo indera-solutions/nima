@@ -54,7 +54,11 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'product
 			productMedia: entity.productMedia ? entity.productMedia.map(pm => SortableMediaDto.prepare(pm)) : [],
 			seoTitle: entity.seoTitle,
 			updatedAt: entity.updatedAt,
-			attributes: entity.attributes ? entity.attributes.map(attr => ProductAttributeDto.prepare(attr)) : undefined,
+			attributes: entity.attributes ? entity.attributes
+												  .sort((a, b) => {
+													  return a.productTypeAttribute.sortOrder - b.productTypeAttribute.sortOrder;
+												  })
+												  .map(attr => ProductAttributeDto.prepare(attr)) : undefined,
 			collections: entity.collections ? entity.collections.map(collection => CollectionDto.prepare(collection.collection)) : [],
 		};
 	}

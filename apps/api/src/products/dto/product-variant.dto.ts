@@ -22,7 +22,12 @@ export class ProductVariantDto extends OmitType(ProductVariantEntity, ['attribut
 			metadata: entity.metadata,
 			privateMetadata: options?.isAdmin ? entity.privateMetadata : {},
 			updatedAt: entity.updatedAt,
-			attributes: (entity.attributes || []).map(attr => ProductAttributeDto.prepareVariant(attr)),
+			attributes: (entity.attributes || [])
+				.sort((a, b) => {
+					console.log(a.productTypeVariantAttribute);
+					return a.productTypeVariantAttribute.sortOrder - b.productTypeVariantAttribute.sortOrder;
+				})
+				.map(attr => ProductAttributeDto.prepareVariant(attr)),
 			sortOrder: entity.sortOrder,
 			productId: entity.productId,
 			priceAmount: entity.priceAmount,
