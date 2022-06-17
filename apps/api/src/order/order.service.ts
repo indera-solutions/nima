@@ -14,7 +14,7 @@ import { ProductVariantService } from '../products/product-variant.service';
 import { ProductsService } from '../products/products.service';
 import { ShippingService } from '../shipping/shipping.service';
 import { CreateOrderEventDto } from './dto/order-event.dto';
-import { InternalCreateOrderLineDto } from './dto/order-line.dto';
+import { InternalCreateOrderLineDto, OrderLineDto } from './dto/order-line.dto';
 import { CreateOrderDto, UpdateOrderDto, UpdateOrderStatusDto } from './dto/order.dto';
 import { OrderEventsEnum, OrderStatus } from './dto/order.enum';
 import { OrderEventEntity } from './entities/order-event.entity';
@@ -248,6 +248,7 @@ export class OrderService {
 				break;
 			case  OrderStatus.CANCELED:
 				statusEvent = OrderEventsEnum.CANCELED;
+				await this.returnProductVariantStock(order.lines);
 				await CommerceOrderEventClient.orderCancelled(this.eventEmitter, { order: order, notifyCustomer: updateOrderStatusDto.notifyCustomer });
 				break;
 			case  OrderStatus.RETURNED:
@@ -316,5 +317,10 @@ export class OrderService {
 		const res = await this.findOne({ id });
 		await this.orderRepository.deleteById(id);
 		return res;
+	}
+
+	private async returnProductVariantStock(orderLines: OrderLineDto[]): Promise<void> {
+		const returnStockPromises = orderLines.map((item) => this.variantService.returnStock({ productVariantId: item.id, stock: item.quantity }));
+		await Promise.all(returnStockPromises);
 	}
 }

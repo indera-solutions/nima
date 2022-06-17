@@ -205,4 +205,20 @@ export class ProductVariantRepository extends BaseRepository<ProductVariantEntit
 							  .getRawMany();
 		return res.map(r => ({ aId: r.a_id, aSlug: r.a_slug, avSlug: r.av_slug, avId: r.av_id, count: r.count }));
 	}
+
+	async checkStock(productVariantId: number): Promise<Pick<ProductVariantEntity, 'stock'>> {
+		return await this.createQueryBuilder('p').select(['p.stock']).where(`"trackInventory" = true`).andWhere('p.id = :id', { id: productVariantId }).getOne();
+	}
+
+	async returnStock(productVariantId: number, stock: number): Promise<void> {
+		await this.createQueryBuilder().update(ProductVariantEntity).where('id = :id', { id: productVariantId }).andWhere(`"trackInventory" = true`).set({
+			stock: () => `stock + ${ stock }`,
+		}).execute();
+	}
+
+	async removeStock(productVariantId: number, stock: number): Promise<void> {
+		await this.createQueryBuilder().update(ProductVariantEntity).where('id = :id', { id: productVariantId }).andWhere(`"trackInventory" = true`).set({
+			stock: () => `stock - ${ stock }`,
+		}).execute();
+	}
 }
