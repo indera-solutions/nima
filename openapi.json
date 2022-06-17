@@ -3563,6 +3563,60 @@
 				]
 			}
 		},
+		"/api/v1/order/{id}/events": {
+			"post": {
+				"operationId": "Order_createOrderEvent",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "notifyCustomer",
+						"required": false,
+						"in": "query",
+						"example": false,
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOrderEventDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OrderEventDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Orders"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
 		"/api/v1/order/token": {
 			"post": {
 				"operationId": "Order_createFromCheckout",
@@ -3729,6 +3783,60 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/UpdateOrderStatusDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OrderDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Orders"
+				],
+				"security": [
+					{
+						"bearer": [ ]
+					}
+				]
+			}
+		},
+		"/api/v1/order/{id}/payment/status": {
+			"patch": {
+				"operationId": "Order_updatePaymentStatus",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "notifyCustomer",
+						"required": false,
+						"in": "query",
+						"example": false,
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdatePaymentStatusDto"
 							}
 						}
 					}
@@ -7399,6 +7507,7 @@
 				"type": "string",
 				"enum": [
 					"DRAFT",
+					"ON_HOLD",
 					"UNCONFIRMED",
 					"UNFULFILLED",
 					"PARTIALLY_FULFILLED",
@@ -7554,7 +7663,8 @@
 					"ERROR",
 					"PENDING",
 					"CANCELED",
-					"REFUSED"
+					"REFUSED",
+					"AUTHORIZED"
 				]
 			},
 			"PaymentDto": {
@@ -7792,8 +7902,10 @@
 					"FULFILLMENT_RETURNED",
 					"FULFILLMENT_REPLACED",
 					"FULFILLMENT_AWAITS_APPROVAL",
+					"SHIPPED",
 					"TRACKING_UPDATED",
 					"NOTE_ADDED",
+					"ON_HOLD",
 					"OTHER"
 				]
 			},
@@ -7973,6 +8085,22 @@
 					"events"
 				]
 			},
+			"CreateOrderEventDto": {
+				"type": "object",
+				"properties": {
+					"eventType": {
+						"$ref": "#/components/schemas/OrderEventsEnum"
+					},
+					"parameters": {
+						"type": "object",
+						"example": {}
+					}
+				},
+				"required": [
+					"eventType",
+					"parameters"
+				]
+			},
 			"CreateOrderFromCheckoutDto": {
 				"type": "object",
 				"properties": {
@@ -8136,6 +8264,17 @@
 				"required": [
 					"status",
 					"notifyCustomer"
+				]
+			},
+			"UpdatePaymentStatusDto": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"$ref": "#/components/schemas/PaymentStatus"
+					}
+				},
+				"required": [
+					"status"
 				]
 			},
 			"CreateCheckoutDto": {
