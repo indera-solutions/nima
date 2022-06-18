@@ -3,8 +3,10 @@ import { ProductDto } from '@nima-cms/sdk';
 import { getEuroValue } from '@nima-cms/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
+import { useDebounce } from 'use-debounce';
 import { AdminColumn, AdminPage, AdminSection, NimaTitle } from '../../components';
+import { CategoriesSelect } from '../../components/forms/CategoriesSelect';
 import { ProductImage } from '../../components/products/ProductImage';
 import { Pagination } from '../../components/utils/Pagination';
 import { NIMA_ROUTES } from '../../lib/routes';
@@ -19,9 +21,16 @@ const ITEMS_PER_PAGE = 20;
 export default function ProductList(props: ProductListProps) {
 	const router = useRouter();
 	const page = (+router.query['page'] || 1) as number;
+
+
+	const [searchStr, setSearchStr] = useState<string | undefined>(undefined);
+	const [debouncedSearch] = useDebounce(searchStr, 1000);
+	const [categoryId, setCategoryId] = useState<number | undefined>(undefined);
 	const { data: productsResponse } = useProducts({
 		page: page,
 		itemsPerPage: ITEMS_PER_PAGE,
+		search: debouncedSearch,
+		categoryId,
 	});
 
 	async function onPageSelect(page: number) {
@@ -49,6 +58,31 @@ export default function ProductList(props: ProductListProps) {
 						</Link>
 					}
 				>
+					<div className={ 'flex gap-4 align-middle' }>
+						<div className="form-control w-full max-w-xs">
+							<label className="label">
+								<span className="label-text">Search</span>
+							</label>
+							<input className={ 'input w-full max-w-xs input-bordered' }
+								   type="text"
+								   value={ searchStr || '' }
+								   onChange={ (e) => setSearchStr(e.target.value) }
+							/>
+						</div>
+						<div className="form-control w-full max-w-xs">
+
+							<label className="label">
+								<span className="label-text">Categories</span>
+							</label>
+							<CategoriesSelect
+								selectedId={ categoryId }
+								onChange={ setCategoryId }
+								isClearable
+							/>
+						</div>
+					</div>
+				</AdminSection>
+				<AdminSection title={ '' }>
 					<div className="overflow-x-auto">
 						<table className="table w-full">
 							<thead>
@@ -58,6 +92,8 @@ export default function ProductList(props: ProductListProps) {
 								<th>Category</th>
 								<th>Product Type</th>
 								<th>Price</th>
+								<th>Stock</th>
+								<th>Published</th>
 								<th>Actions</th>
 							</tr>
 							</thead>
@@ -93,9 +129,19 @@ function ProductRow(props: { product: ProductDto }) {
 		<td><Trans>{ category?.name }</Trans></td>
 		<td><Trans>{ productType?.name }</Trans></td>
 		<td>{ getEuroValue(product.minPrice) }</td>
+		<td>{ product.defaultVariant?.stock === 0 ? <div className="badge badge-error gap-2">
+			0
+		</div> : product.defaultVariant?.stock }</td>
+		<td>{ product.isPublished ?
+			<div className="badge badge-success gap-2">
+				Published
+			</div>
+			: <div className="badge badge-warning  gap-2">
+				Draft
+			</div> }</td>
 		<td>
 			<Link href={ NIMA_ROUTES.products.edit(product.id) }>
-				<button className={ 'btn btn-primary' }>Edit</button>
+				<a className={ 'btn btn-primary' }>Edit</a>
 			</Link>
 		</td>
 	</tr>;

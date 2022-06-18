@@ -29,7 +29,7 @@ export class CategoriesController {
 	@IsStaff()
 	async create(@Body() createCategoryDto: CreateCategoryDto, @User() user?: UserEntity): Promise<CategoryDto> {
 		const res: CategoryEntity = await this.categoriesService.create({ createCategoryDto });
-		return CategoryDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return CategoryDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Get()
@@ -38,7 +38,7 @@ export class CategoriesController {
 	@IsPublic()
 	async findAll(@Query('depth') depth?: number, @User() user?: UserEntity): Promise<CategoryDto[]> {
 		const res = await this.categoriesService.findAll({ depth });
-		return res.map(r => CategoryDto.prepare(r, { isAdmin: user ? user.isStaff : false }));
+		return res.map(r => CategoryDto.prepare(r, { isAdmin: user?.isStaff || false }));
 	}
 
 	@Get('/slugs/:slug')
@@ -81,7 +81,7 @@ export class CategoriesController {
 	@ApiNotFoundResponse({ description: 'The category does not exists' })
 	async findOne(@Param('id', ParseIntPipe) id: number, @Query('depth') depth?: number, @User() user?: UserEntity): Promise<CategoryDto> {
 		const res = await this.categoriesService.findOne({ id, depth });
-		return CategoryDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return CategoryDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Get(':id/ancestors')
@@ -92,7 +92,7 @@ export class CategoriesController {
 	@ApiNotFoundResponse({ description: 'The category does not exists' })
 	async findAncestorsById(@Param('id', ParseIntPipe) id: number, @User() user?: UserEntity): Promise<CategoryDto> {
 		const res = await this.categoriesService.findAncestors({ id });
-		return CategoryDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return CategoryDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Put(':id')
@@ -100,7 +100,7 @@ export class CategoriesController {
 	@IsStaff()
 	async update(@Param('id') id: number, @Body() updateCategoryDto: UpdateCategoryDto, @User() user?: UserEntity) {
 		const res = await this.categoriesService.update({ id, updateCategoryDto });
-		return CategoryDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return CategoryDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete(':id')

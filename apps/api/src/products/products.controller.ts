@@ -3,6 +3,7 @@ import {
 	Controller,
 	Delete,
 	Get,
+	NotFoundException,
 	Param,
 	ParseIntPipe,
 	Post,
@@ -36,24 +37,27 @@ export class ProductsController {
 	@IsStaff()
 	async create(@Body() createProductDto: CreateProductDto, @User() user?: UserEntity) {
 		const product = await this.productsService.save({ dto: createProductDto });
-		return ProductDto.prepare(product, { isAdmin: user ? user.isStaff : false });
+		return ProductDto.prepare(product, { isAdmin: user?.isStaff || false });
 	}
 
 	@Get()
 	@ApiOkResponse({ type: ProductFilterResultDto })
 	@ApiQuery({ type: () => ProductFilterParamsDto })
 	@IsPublic()
-	async findAll(@Req() request: Request, @Query(new ValidationPipe({})) query, @Query('filters') filters) {
+	async findAll(@Req() request: Request, @Query(new ValidationPipe({})) query, @Query('filters') filters, @User() user?: UserEntity) {
 		const filterObj = plainToInstance(ProductFilterParamsDto, query, { enableImplicitConversion: true });
-		// if (Array.isArray(filterObj.filters))
-		return await this.filteringService.productFilterQuery(filterObj);
+		return await this.filteringService.productFilterQuery(filterObj, {
+			isStaff: user?.isStaff || false,
+		});
 	}
 
 	@Get('ids')
 	@IsPublic()
 	@ApiOkResponse({ type: Number, isArray: true })
-	async getAllIds() {
-		return await this.productsService.getAllIds();
+	async getAllIds(@User() user?: UserEntity) {
+		return await this.productsService.getAllIds({
+			isStaff: user?.isStaff,
+		});
 	}
 
 	@Get(':id')
@@ -61,7 +65,10 @@ export class ProductsController {
 	@IsPublic()
 	async getById(@Param('id', ParseIntPipe) id: number, @User() user?: UserEntity) {
 		const product = await this.productsService.getById({ id: id });
-		return ProductDto.prepare(product, { isAdmin: user ? user.isStaff : false });
+		if ( !product.isPublished && !user?.isStaff ) {
+			throw new NotFoundException('PRODUCT_NOT_FOUND');
+		}
+		return ProductDto.prepare(product, { isAdmin: user?.isStaff || false });
 	}
 
 	@Put(':id')
@@ -70,7 +77,7 @@ export class ProductsController {
 	@IsStaff()
 	async update(@Param('id', ParseIntPipe) id: number, @Body() createProductDto: CreateProductDto, @User() user?: UserEntity) {
 		const product = await this.productsService.save({ dto: createProductDto, id: id });
-		return ProductDto.prepare(product, { isAdmin: user ? user.isStaff : false });
+		return ProductDto.prepare(product, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete(':id')
@@ -78,6 +85,6 @@ export class ProductsController {
 	@IsStaff()
 	async remove(@Param('id', ParseIntPipe) id: number, @User() user?: UserEntity) {
 		const product = await this.productsService.remove({ id: id });
-		return ProductDto.prepare(product, { isAdmin: user ? user.isStaff : false });
+		return ProductDto.prepare(product, { isAdmin: user?.isStaff || false });
 	}
 }

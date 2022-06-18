@@ -1,8 +1,5 @@
 import {
-	getTranslation,
 	Trans,
-	useCategories,
-	useCollections,
 	useCreateProductMutation,
 	useCreateProductVariationMutation,
 	useLanguages,
@@ -13,17 +10,11 @@ import {
 	useUpdateProductMutation,
 	useUpdateProductVariationMutation,
 } from '@nima-cms/react';
-import {
-	CategoryDto,
-	CreateAssignedProductAttributeDto,
-	CreateProductDto,
-	CreateProductVariantDto,
-} from '@nima-cms/sdk';
+import { CreateAssignedProductAttributeDto, CreateProductDto, CreateProductVariantDto } from '@nima-cms/sdk';
 import { getSlug, Metadata, parseIdStr } from '@nima-cms/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
-import Select from 'react-select';
 import { toast } from 'react-toastify';
 import {
 	AdminColumn,
@@ -38,6 +29,8 @@ import {
 	SelectEditingLanguage,
 	TranslatableInput,
 } from '../../components';
+import { CategoriesSelect } from '../../components/forms/CategoriesSelect';
+import { CollectionSelect } from '../../components/forms/CollectionSelect';
 import { NIMA_ROUTES } from '../../lib/routes';
 
 interface AddProps {
@@ -107,50 +100,7 @@ export default function Add(props: AddProps) {
 	}, [createProductDto]);
 
 	const { data: productTypes } = useProductTypes();
-	const { data: categories } = useCategories();
-	const { data: collections } = useCollections();
 	const { data: productType } = useProductTypeId(createProductDto.productTypeId);
-
-	const categoriesOptions = useMemo<{ label: string, value: number }[]>(() => {
-		if ( !categories ) return [];
-		const temp: { label: string, value: number }[] = [];
-
-		function getChildren(category: CategoryDto, depth = 0): { label: string, value: number }[] {
-			const t = category.children.map(c => ({
-				label: ('—'.repeat(depth)) + ' ' + getTranslation(c.name, languages.adminLanguage),
-				value: c.id,
-			}));
-			return [...t, ...(category.children.map(c => getChildren(c, depth + 1))).flat()];
-		}
-
-		categories.forEach(c => {
-			temp.push({
-				label: getTranslation(c.name, languages.adminLanguage),
-				value: c.id,
-			});
-			temp.push(...getChildren(c, 1));
-		});
-		return temp;
-	}, [categories, languages.adminLanguage]);
-
-	const selectedCategoryOption = useMemo<{ label: string, value: number } | undefined>(() => {
-		if ( !createProductDto.categoryId ) return undefined;
-		return categoriesOptions.find(co => co.value === createProductDto.categoryId);
-	}, [categoriesOptions, createProductDto.categoryId]);
-
-
-	const collectionOptions = useMemo<{ label: string, value: number }[]>(() => {
-		if ( !collections ) return [];
-		return collections.map(c => ({
-			label: getTranslation(c.name, languages.adminLanguage),
-			value: c.id,
-		}));
-	}, [collections, languages.adminLanguage]);
-
-	const selectedCollectionOption = useMemo<{ label: string, value: number }[]>(() => {
-		if ( !createProductDto.categoryId ) return undefined;
-		return collectionOptions.filter(co => createProductDto.collectionIds.includes(co.value));
-	}, [collectionOptions, createProductDto.collectionIds]);
 
 	useEffect(() => {
 		if ( isEditing ) return;
@@ -331,6 +281,12 @@ export default function Add(props: AddProps) {
 							/>
 						</div>
 
+						<label className="label cursor-pointer justify-start gap-3">
+							<input type="checkbox" className="checkbox" checked={ !createProductDto.isPublished }
+								   onChange={ (e) => onValueEdit('isPublished', !e.target.checked) }/>
+							<span className="label-text">Draft</span>
+						</label>
+
 					</AdminSection>
 					{ createProductDto.attributes.length > 0 &&
 						<AdminSection title={ 'Attributes' }
@@ -434,23 +390,19 @@ export default function Add(props: AddProps) {
 							<label className="label">
 								<span className="label-text">Categories</span>
 							</label>
-							<Select options={ categoriesOptions }
-									value={ selectedCategoryOption }
-									onChange={ (newValue) => {
-										onValueEdit('categoryId', newValue.value);
-									} }/>
+							<CategoriesSelect
+								selectedId={ createProductDto.categoryId }
+								onChange={ (id) => onValueEdit('categoryId', id) }
+							/>
 						</div>
 						<div>
 							<label className="label">
 								<span className="label-text">Collections</span>
 							</label>
-							<Select
-								isMulti
-								options={ collectionOptions }
-								value={ selectedCollectionOption }
-								onChange={ (newValue) => {
-									onValueEdit('collectionIds', newValue.map(c => c.value));
-								} }/>
+							<CollectionSelect
+								selectedIds={ createProductDto.collectionIds }
+								onChange={ (ids) => onValueEdit('collectionIds', ids) }
+							/>
 						</div>
 					</AdminSection>
 				</AdminColumn>

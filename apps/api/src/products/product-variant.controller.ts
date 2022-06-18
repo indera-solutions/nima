@@ -19,7 +19,7 @@ export class ProductVariantController {
 	@IsStaff()
 	async create(@Param('productId', ParseIntPipe) productId: number, @Body() createProductVariantDto: CreateProductVariantDto, @User() user?: UserEntity) {
 		const res = await this.productVariantService.save({ productId: productId, dto: createProductVariantDto });
-		return this.productVariantService.getDto(res, { isAdmin: user ? user.isStaff : false });
+		return this.productVariantService.getDto(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Get()
@@ -28,7 +28,7 @@ export class ProductVariantController {
 	@IsPublic()
 	async findOfProduct(@Param('productId', ParseIntPipe) productId: number, @User() user?: UserEntity): Promise<ProductVariantDto[]> {
 		const products = await this.productVariantService.findIdsOfProduct({ productId: productId });
-		const promises = products.map(product => this.productVariantService.getDto(product, { isAdmin: user ? user.isStaff : false }));
+		const promises = products.map(product => this.productVariantService.getDto(product, { isAdmin: user?.isStaff || false }));
 		return Promise.all(promises);
 	}
 
@@ -37,7 +37,7 @@ export class ProductVariantController {
 	@ApiOkResponse({ type: ProductVariantDto })
 	@IsPublic()
 	async getById(@Param('productId', ParseIntPipe) productId: number, @Param('id', ParseIntPipe) id: number, @User() user?: UserEntity) {
-		return this.productVariantService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.productVariantService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Put(':id')
@@ -47,7 +47,7 @@ export class ProductVariantController {
 	@IsStaff()
 	async update(@Param('productId', ParseIntPipe) productId: number, @Param('id', ParseIntPipe) id: number, @Body() createProductVariantDto: CreateProductVariantDto, @User() user?: UserEntity) {
 		const res = await this.productVariantService.save({ productId: productId, dto: createProductVariantDto, id: id });
-		return this.productVariantService.getDto(res, { isAdmin: user ? user.isStaff : false });
+		return this.productVariantService.getDto(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete(':id')
@@ -55,7 +55,7 @@ export class ProductVariantController {
 	@ApiOkResponse({ type: ProductVariantDto })
 	@IsStaff()
 	async remove(@Param('productId', ParseIntPipe) productId: number, @Param('id', ParseIntPipe) id: number, @User() user?: UserEntity) {
-		const product = this.productVariantService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		const product = this.productVariantService.getDto(id, { isAdmin: user?.isStaff || false });
 		await this.productVariantService.remove({ id: id });
 		return product;
 	}

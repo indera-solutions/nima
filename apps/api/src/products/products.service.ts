@@ -74,7 +74,7 @@ export class ProductsService {
 		});
 		await this.syncAttributes({ oldAttributes: oldProduct?.attributes || [], newAttributes: dto.attributes, product: product });
 		await this.syncCollections({ oldCollections: oldProduct?.collections || [], newCollections: dto.collectionIds, product: product });
-
+		await this.updateSearchDocument(product.id);
 		return await this.getById({ id: product.id });
 	}
 
@@ -102,9 +102,14 @@ export class ProductsService {
 		return product;
 	}
 
-	async getAllIds(): Promise<number[]> {
+	async getAllIds(params: { isStaff?: boolean }): Promise<number[]> {
+		const where = {};
+		if ( !params.isStaff ) {
+			where['isPublished'] = true;
+		}
 		const ids = await this.productRepository.find({
 			select: ['id'],
+			where,
 		});
 		return ids.map(product => product.id);
 	}
@@ -316,5 +321,24 @@ export class ProductsService {
 		await this.assignedProductAttributeValueRepository.save({ value: value, assignedProductAttribute: assignment, sortOrder: dto.sortOrder });
 	}
 
+
+	private async updateSearchDocument(productId: number): Promise<string> {
+		const product = await this.getById({ id: productId });
+		let str = '';
+		for ( const locale in product.name ) {
+			str += product.name[locale] + ' ';
+		}
+		for ( const locale in product.description ) {
+			str += product.description[locale] + ' ';
+		}
+
+		str += product.slug + ' ';
+
+		await this.productRepository.update(productId, {
+			searchDocument: str,
+		});
+
+		return str;
+	}
 
 }

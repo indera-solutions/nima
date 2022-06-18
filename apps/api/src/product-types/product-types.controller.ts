@@ -20,7 +20,7 @@ export class ProductTypesController {
 	@IsStaff()
 	async create(@Body() createProductTypeDto: CreateProductTypeDto, @User() user?: UserEntity): Promise<ProductTypeDto> {
 		const res = await this.productTypesService.save({ dto: createProductTypeDto });
-		return ProductTypeDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return ProductTypeDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Get()
@@ -28,7 +28,7 @@ export class ProductTypesController {
 	@IsPublic()
 	async findAll(@User() user?: UserEntity): Promise<ProductTypeDto[]> {
 		const res = await this.productTypesService.list();
-		return res.map(r => ProductTypeDto.prepare(r, { isAdmin: user ? user.isStaff : false }));
+		return res.map(r => ProductTypeDto.prepare(r, { isAdmin: user?.isStaff || false }));
 	}
 
 	@Get(':productTypeId')
@@ -37,7 +37,7 @@ export class ProductTypesController {
 	@IsPublic()
 	async getById(@Param('productTypeId', ParseIntPipe) id: number, @User() user?: UserEntity): Promise<ProductTypeDto> {
 		const res = await this.productTypesService.getById({ id });
-		return ProductTypeDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return ProductTypeDto.prepare(res, { isAdmin: user?.isStaff || false });
 
 	}
 
@@ -48,7 +48,7 @@ export class ProductTypesController {
 	@IsStaff()
 	async update(@Param('productTypeId', ParseIntPipe) productTypeId: number, @Body() createProductTypeDto: CreateProductTypeDto, @User() user?: UserEntity): Promise<ProductTypeDto> {
 		const res = await this.productTypesService.save({ id: productTypeId, dto: createProductTypeDto });
-		return ProductTypeDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return ProductTypeDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete(':productTypeId')
@@ -57,6 +57,6 @@ export class ProductTypesController {
 	@IsStaff()
 	async remove(@Param('productTypeId', ParseIntPipe) productTypeId: number, @User() user?: UserEntity): Promise<ProductTypeDto> {
 		const res = await this.productTypesService.deleteById({ id: productTypeId });
-		return ProductTypeDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return ProductTypeDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 }

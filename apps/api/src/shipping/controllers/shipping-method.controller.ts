@@ -18,7 +18,7 @@ export class ShippingMethodController {
 	@IsStaff()
 	async create(@Body() dto: CreateShippingMethodDto, @User() user?: UserEntity) {
 		const res = await this.shippingService.createMethod({ dto: dto });
-		return ShippingMethodDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return ShippingMethodDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 
@@ -30,7 +30,7 @@ export class ShippingMethodController {
 		let res: ShippingMethodEntity[];
 		if ( addressId ) res = await this.shippingService.getOfAddress({ addressId });
 		else res = await this.shippingService.getAll();
-		return res.map(r => ShippingMethodDto.prepare(r, { isAdmin: user ? user.isStaff : false }));
+		return res.map(r => ShippingMethodDto.prepare(r, { isAdmin: user?.isStaff || false }));
 	}
 
 	@Get('/:methodId')
@@ -39,7 +39,7 @@ export class ShippingMethodController {
 	@IsPublic()
 	async getOne(@Param('methodId') methodId?: number, @User() user?: UserEntity) {
 		const res = await this.shippingService.getById({ id: methodId });
-		return ShippingMethodDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return ShippingMethodDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Patch('/:methodId')
@@ -49,7 +49,7 @@ export class ShippingMethodController {
 	@IsStaff()
 	async updateMethod(@Param('methodId', ParseIntPipe) methodId: number, @Body() dto: UpdateShippingMethodDto, @User() user?: UserEntity) {
 		const res = await this.shippingService.updateMethod({ dto: dto, id: methodId });
-		return ShippingMethodDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return ShippingMethodDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete('/:id')
@@ -58,6 +58,6 @@ export class ShippingMethodController {
 	@IsStaff()
 	async deleteById(@Param('id', ParseIntPipe) id: number, @User() user?: UserEntity) {
 		const res = await this.shippingService.deleteById({ id: id });
-		return ShippingMethodDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return ShippingMethodDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 }

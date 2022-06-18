@@ -26,7 +26,7 @@ export class DiscountSalesController {
 	@IsStaff()
 	async create(@Body() createDiscountDto: CreateDiscountSaleDto, @User() user?: UserEntity): Promise<DiscountSaleDto> {
 		const res = await this.discountsService.create({ createDiscountDto: createDiscountDto });
-		return this.discountsService.getDto(res, { isAdmin: user ? user.isStaff : false });
+		return this.discountsService.getDto(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Get()
@@ -34,7 +34,7 @@ export class DiscountSalesController {
 	@IsPublic()
 	async findAll(@User() user?: UserEntity): Promise<DiscountSaleDto[]> {
 		const res = await this.discountsService.findAllIds();
-		const promises = res.map(r => this.discountsService.getDto(r, { isAdmin: user ? user.isStaff : false }));
+		const promises = res.map(r => this.discountsService.getDto(r, { isAdmin: user?.isStaff || false }));
 		return await Promise.all(promises);
 	}
 
@@ -43,7 +43,7 @@ export class DiscountSalesController {
 	@ApiParam({ name: 'id', type: Number })
 	@IsPublic()
 	async findOne(@Param('id', ParseIntPipe) id: number, @User() user?: UserEntity): Promise<DiscountSaleDto> {
-		return this.discountsService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.discountsService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Patch(':id')
@@ -53,7 +53,7 @@ export class DiscountSalesController {
 	@IsStaff()
 	async update(@Param('id', ParseIntPipe) id: number, @Body() updateDiscountDto: UpdateDiscountDto, @User() user?: UserEntity): Promise<DiscountSaleDto> {
 		await this.discountsService.update({ id: id, updateDiscountDto: updateDiscountDto });
-		return this.discountsService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.discountsService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Put(':id/products')
@@ -63,7 +63,7 @@ export class DiscountSalesController {
 	@IsStaff()
 	async addProducts(@Param('id', ParseIntPipe) id: number, @Body() addProductsDto: DiscountAddProductsDto, @User() user?: UserEntity): Promise<DiscountSaleDto> {
 		await this.discountsService.addProducts({ id: id, addProductsDto: addProductsDto });
-		return this.discountsService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.discountsService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Put(':id/categories')
@@ -73,7 +73,7 @@ export class DiscountSalesController {
 	@IsStaff()
 	async addCategories(@Param('id', ParseIntPipe) id: number, @Body() addCategoriesDto: DiscountAddCategoriesDto, @User() user?: UserEntity): Promise<DiscountSaleDto> {
 		await this.discountsService.addCategories({ id: id, addCategoriesDto: addCategoriesDto });
-		return this.discountsService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.discountsService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Put(':id/variants')
@@ -83,7 +83,7 @@ export class DiscountSalesController {
 	@IsStaff()
 	async addVariants(@Param('id', ParseIntPipe) id: number, @Body() addVariantsDto: DiscountAddVariantsDto, @User() user?: UserEntity): Promise<DiscountSaleDto> {
 		await this.discountsService.addVariants({ id: id, addVariantsDto: addVariantsDto });
-		return this.discountsService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.discountsService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Put(':id/collections')
@@ -93,7 +93,7 @@ export class DiscountSalesController {
 	@IsStaff()
 	async addCollections(@Param('id', ParseIntPipe) id: number, @Body() addCollectionsDto: DiscountAddCollectionsDto, @User() user?: UserEntity): Promise<DiscountSaleDto> {
 		await this.discountsService.addCollections({ id: id, addCollectionsDto: addCollectionsDto });
-		return this.discountsService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.discountsService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete(':id')
@@ -102,7 +102,7 @@ export class DiscountSalesController {
 	@IsStaff()
 	async remove(@Param('id', ParseIntPipe) id: number, @User() user?: UserEntity): Promise<DiscountSaleDto> {
 		await this.discountsService.remove({ id: id });
-		return this.discountsService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.discountsService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete(':id/products/:productId')
@@ -112,7 +112,7 @@ export class DiscountSalesController {
 	@IsStaff()
 	async removeProduct(@Param('id', ParseIntPipe) id: number, @Param('productId', ParseIntPipe) productId: number, @User() user?: UserEntity): Promise<DiscountSaleDto> {
 		await this.discountsService.removeProduct({ saleId: id, productId: productId });
-		return this.discountsService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.discountsService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete(':id/variants/:variantId')
@@ -122,7 +122,7 @@ export class DiscountSalesController {
 	@IsStaff()
 	async removeVariant(@Param('id', ParseIntPipe) id: number, @Param('variantId', ParseIntPipe) variantId: number, @User() user?: UserEntity): Promise<DiscountSaleDto> {
 		await this.discountsService.removeVariant({ saleId: id, variantId: variantId });
-		return this.discountsService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.discountsService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete(':id/categories/:categoryId')
@@ -132,7 +132,7 @@ export class DiscountSalesController {
 	@IsStaff()
 	async removeCategory(@Param('id', ParseIntPipe) id: number, @Param('categoryId', ParseIntPipe) categoryId: number, @User() user?: UserEntity): Promise<DiscountSaleDto> {
 		await this.discountsService.removeCategory({ saleId: id, categoryId: categoryId });
-		return this.discountsService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.discountsService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete(':id/collections/:collectionId')
@@ -142,6 +142,6 @@ export class DiscountSalesController {
 	@IsStaff()
 	async removeCollection(@Param('id', ParseIntPipe) id: number, @Param('collectionId', ParseIntPipe) collectionId: number, @User() user?: UserEntity): Promise<DiscountSaleDto> {
 		await this.discountsService.removeCollection({ saleId: id, collectionId: collectionId });
-		return this.discountsService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.discountsService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 }

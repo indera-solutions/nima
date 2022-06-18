@@ -23,7 +23,7 @@ export class CollectionsController {
 	@IsStaff()
 	async create(@Body() createCollectionDto: CreateCollectionDto, @User() user?: UserEntity): Promise<CollectionDto> {
 		const res = await this.collectionsService.create({ createCollectionDto });
-		return CollectionDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return CollectionDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Get()
@@ -31,16 +31,16 @@ export class CollectionsController {
 	@IsPublic()
 	async findAll(@User() user?: UserEntity): Promise<CollectionDto[]> {
 		const res = await this.collectionsService.findAll();
-		return res.map(r => CollectionDto.prepare(r, { isAdmin: user ? user.isStaff : false }));
+		return res.map(r => CollectionDto.prepare(r, { isAdmin: user?.isStaff || false }));
 	}
 
 	@Get('/slug/:slug')
 	@ApiOkResponse({ type: () => CollectionDto })
 	@ApiParam({ name: 'slug', type: String })
 	@IsPublic()
-	async findOneBySlug(@Param('slug') slug: string): Promise<CollectionDto> {
+	async findOneBySlug(@Param('slug') slug: string, @User() user?: UserEntity): Promise<CollectionDto> {
 		const res = await this.collectionsService.getOneBySlug({ slug });
-		return CollectionDto.prepare(res);
+		return CollectionDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Get(':collectionId')
@@ -49,7 +49,7 @@ export class CollectionsController {
 	@IsPublic()
 	async findOne(@Param('collectionId', ParseIntPipe) collectionId: number, @User() user?: UserEntity): Promise<CollectionDto> {
 		const res = await this.collectionsService.getOne({ id: collectionId });
-		return CollectionDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return CollectionDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Patch(':collectionId')
@@ -59,7 +59,7 @@ export class CollectionsController {
 	@IsStaff()
 	async update(@Param('collectionId', ParseIntPipe) collectionId: number, @Body() updateCollectionDto: UpdateCollectionDto, @User() user?: UserEntity): Promise<CollectionDto> {
 		const res = await this.collectionsService.update({ id: collectionId, updateCollectionDto });
-		return CollectionDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return CollectionDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Post(':collectionId/products')
@@ -69,7 +69,7 @@ export class CollectionsController {
 	@IsStaff()
 	async addProducts(@Param('collectionId', ParseIntPipe) collectionId: number, @Body() createCollectionProductDtos: CreateCollectionProductDto[], @User() user?: UserEntity): Promise<CollectionDto> {
 		const res = await this.collectionsService.addProducts({ id: collectionId, dtos: createCollectionProductDtos });
-		return CollectionDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return CollectionDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete(':collectionId')
@@ -78,7 +78,7 @@ export class CollectionsController {
 	@IsStaff()
 	async remove(@Param('collectionId', ParseIntPipe) collectionId: number, @User() user?: UserEntity): Promise<CollectionDto> {
 		const res = await this.collectionsService.remove({ id: collectionId });
-		return CollectionDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return CollectionDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete(':collectionId/products/:productId')
@@ -88,6 +88,6 @@ export class CollectionsController {
 	@IsStaff()
 	async removeProduct(@Param('collectionId') collectionId: number, @Param('productId') productId: number, @User() user?: UserEntity): Promise<CollectionDto> {
 		const res = await this.collectionsService.removeProduct({ collectionId: collectionId, productId: productId });
-		return CollectionDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return CollectionDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 }

@@ -59,7 +59,8 @@
 		"tailwindcss": "^3.0.24",
 		"tslib": "^2.0.0",
 		"typeorm": "^0.2.45",
-		"typeorm-transactional-cls-hooked": "^0.1.21"
+		"typeorm-transactional-cls-hooked": "^0.1.21",
+		"use-debounce": "^8.0.1"
 	},
 	"devDependencies": {
 		"@nestjs/schematics": "^8.0.0",

@@ -24,7 +24,9 @@ export class CollectionDto extends OmitType(CollectionEntity, ['backgroundImage'
 			metadata: entity.metadata,
 			privateMetadata: options?.isAdmin ? entity.privateMetadata : {},
 			description: entity.description,
-			products: entity.products?.map(product => CollectionProductsDto.prepare(product, options)) || [],
+			products: entity.products?.filter(p => {
+				return options?.isAdmin || p.product.isPublished;
+			}).map(product => CollectionProductsDto.prepare(product, options)) || [],
 		};
 	}
 }

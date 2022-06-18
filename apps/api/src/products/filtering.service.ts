@@ -38,7 +38,7 @@ export class FilteringService {
 	) {
 	}
 
-	async productFilterQuery(params: ProductFilterParamsDto): Promise<ProductFilterResultDto> {
+	async productFilterQuery(params: ProductFilterParamsDto, options: { isStaff: boolean }): Promise<ProductFilterResultDto> {
 		let categoryIdArray, collectionId, products = [], attributeDrillDown = [];
 		const ids = [];
 		let minPrice = Number.MAX_SAFE_INTEGER, maxPrice = Number.MIN_SAFE_INTEGER;
@@ -59,7 +59,7 @@ export class FilteringService {
 
 
 		if ( !params.variants ) {
-			const result = await this.productRepository.findFilteredProductIds(collectionId, categoryIdArray, filters);
+			const result = await this.productRepository.findFilteredProductIds(collectionId, categoryIdArray, filters, params.search, options.isStaff);
 
 			if ( result.length === 0 )
 				return emptyRes;

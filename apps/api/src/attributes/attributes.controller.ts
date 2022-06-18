@@ -18,7 +18,7 @@ export class AttributesController {
 	@IsStaff()
 	async create(@Body() createAttributeDto: CreateAttributeDto, @User() user?: UserEntity): Promise<AttributeDto> {
 		const res = await this.service.save({ dto: createAttributeDto });
-		return AttributeDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return AttributeDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Get()
@@ -26,7 +26,7 @@ export class AttributesController {
 	@IsPublic()
 	async findAll(@User() user: UserEntity): Promise<AttributeDto[]> {
 		const res = await this.service.findAll();
-		return res.map(att => AttributeDto.prepare(att, { isAdmin: user ? user.isStaff : false }));
+		return res.map(att => AttributeDto.prepare(att, { isAdmin: user?.isStaff || false }));
 	}
 
 	@Get('/:attributeId')
@@ -36,7 +36,7 @@ export class AttributesController {
 	@IsPublic()
 	async getById(@Param('attributeId', ParseIntPipe) attributeId: number, @User() user?: UserEntity): Promise<AttributeDto> {
 		const res = await this.service.getById({ id: attributeId });
-		return AttributeDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return AttributeDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Patch('/:attributeId')
@@ -46,7 +46,7 @@ export class AttributesController {
 	@IsStaff()
 	async patch(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() updateAttributeDto: UpdateAttributeDto, @User() user?: UserEntity): Promise<AttributeDto> {
 		const res = await this.service.update({ id: attributeId, dto: updateAttributeDto });
-		return AttributeDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return AttributeDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Put('/:attributeId')
@@ -56,7 +56,7 @@ export class AttributesController {
 	@IsStaff()
 	async update(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() createAttributeDto: CreateAttributeDto, @User() user?: UserEntity): Promise<AttributeDto> {
 		const res = await this.service.save({ id: attributeId, dto: createAttributeDto });
-		return AttributeDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return AttributeDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete('/:attributeId')
@@ -66,6 +66,6 @@ export class AttributesController {
 	@IsStaff()
 	async remove(@Param('attributeId', ParseIntPipe) attributeId: number, @User() user?: UserEntity): Promise<AttributeDto> {
 		const res = await this.service.deleteById({ id: attributeId });
-		return AttributeDto.prepare(res, { isAdmin: user ? user.isStaff : false });
+		return AttributeDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 }

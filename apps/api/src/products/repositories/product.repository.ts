@@ -44,7 +44,7 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 		});
 	}
 
-	async findFilteredProductIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string): Promise<{
+	async findFilteredProductIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string, isStaff?: boolean): Promise<{
 		id: number,
 		priceAmount: number,
 		discountedPrice: number,
@@ -54,11 +54,16 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 						 .select('p.id', 'id')
 						 .addSelect('dpv.priceAmount', 'priceAmount')
 						 .addSelect('dpv.discountedPrice', 'discountedPrice')
-						 .distinctOn(['p.id'])
-						 .where('p."isPublished" = true');
+						 .distinctOn(['p.id']);
+
+
+		if ( !isStaff ) {
+			caQb.where('p."isPublished" = true');
+		}
+
 		if ( search ) {
-			const query = `'"${ search.trim().replace(' ', '+') }":*'`;
-			caQb.andWhere(`to_tsvector(pp.searchDocument) @@ to_tsquery(${ query })`);
+			const query = `'"${ search.trim().toLowerCase().replace(' ', '+') }":*'`;
+			caQb.andWhere(`to_tsvector(p.searchDocument) @@ to_tsquery(${ query })`);
 		}
 
 		if ( categoryIds ) {

@@ -26,7 +26,7 @@ export class DiscountVoucherController {
 	@IsStaff()
 	async create(@Body() createVoucherDto: CreateDiscountVoucherDto, @User() user?: UserEntity): Promise<DiscountVoucherDto> {
 		const res = await this.voucherService.create({ createDiscountVoucherDto: createVoucherDto });
-		return this.voucherService.getDto(res, { isAdmin: user ? user.isStaff : false });
+		return this.voucherService.getDto(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Get()
@@ -34,7 +34,7 @@ export class DiscountVoucherController {
 	@IsStaff()
 	async findAll(@User() user?: UserEntity): Promise<DiscountVoucherDto[]> {
 		const res = await this.voucherService.findAllIds();
-		const promises = res.map(r => this.voucherService.getDto(r, { isAdmin: user ? user.isStaff : false }));
+		const promises = res.map(r => this.voucherService.getDto(r, { isAdmin: user?.isStaff || false }));
 		return await Promise.all(promises);
 	}
 
@@ -43,7 +43,7 @@ export class DiscountVoucherController {
 	@ApiParam({ name: 'id', type: Number })
 	@IsStaff()
 	async findOne(@Param('id', ParseIntPipe) id: number, @User() user?: UserEntity): Promise<DiscountVoucherDto> {
-		return this.voucherService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.voucherService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	// @Get('/code/:code')
@@ -62,7 +62,7 @@ export class DiscountVoucherController {
 	@IsStaff()
 	async update(@Param('id', ParseIntPipe) id: number, @Body() updateVoucherDto: UpdateDiscountVoucherDto, @User() user?: UserEntity): Promise<DiscountVoucherDto> {
 		await this.voucherService.update({ id: id, updateVoucherDto: updateVoucherDto });
-		return this.voucherService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.voucherService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 
@@ -73,7 +73,7 @@ export class DiscountVoucherController {
 	@IsStaff()
 	async addProducts(@Param('id', ParseIntPipe) id: number, @Body() addProductsDto: DiscountAddProductsDto, @User() user?: UserEntity): Promise<DiscountVoucherDto> {
 		await this.voucherService.addProducts({ id: id, addProductsDto: addProductsDto });
-		return this.voucherService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.voucherService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Put(':id/categories')
@@ -83,7 +83,7 @@ export class DiscountVoucherController {
 	@IsStaff()
 	async addCategories(@Param('id', ParseIntPipe) id: number, @Body() addCategoriesDto: DiscountAddCategoriesDto, @User() user?: UserEntity): Promise<DiscountVoucherDto> {
 		await this.voucherService.addCategories({ id: id, addCategoriesDto: addCategoriesDto });
-		return this.voucherService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.voucherService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Put(':id/variants')
@@ -93,7 +93,7 @@ export class DiscountVoucherController {
 	@IsStaff()
 	async addVariants(@Param('id', ParseIntPipe) id: number, @Body() addVariantsDto: DiscountAddVariantsDto, @User() user?: UserEntity): Promise<DiscountVoucherDto> {
 		await this.voucherService.addVariants({ id: id, addVariantsDto: addVariantsDto });
-		return this.voucherService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.voucherService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Put(':id/collections')
@@ -103,7 +103,7 @@ export class DiscountVoucherController {
 	@IsStaff()
 	async addCollections(@Param('id', ParseIntPipe) id: number, @Body() addCollectionsDto: DiscountAddCollectionsDto, @User() user?: UserEntity): Promise<DiscountVoucherDto> {
 		await this.voucherService.addCollections({ id: id, addCollectionsDto: addCollectionsDto });
-		return this.voucherService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.voucherService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete(':id')
@@ -112,7 +112,7 @@ export class DiscountVoucherController {
 	@IsStaff()
 	async remove(@Param('id', ParseIntPipe) id: number, @User() user?: UserEntity): Promise<DiscountVoucherDto> {
 		await this.voucherService.remove({ id: id });
-		return this.voucherService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.voucherService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete(':id/products/:productId')
@@ -122,7 +122,7 @@ export class DiscountVoucherController {
 	@IsStaff()
 	async removeProduct(@Param('id', ParseIntPipe) id: number, @Param('productId', ParseIntPipe) productId: number, @User() user?: UserEntity): Promise<DiscountVoucherDto> {
 		await this.voucherService.removeProduct({ saleId: id, productId: productId });
-		return this.voucherService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.voucherService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete(':id/variants/:variantId')
@@ -132,7 +132,7 @@ export class DiscountVoucherController {
 	@IsStaff()
 	async removeVariant(@Param('id', ParseIntPipe) id: number, @Param('variantId', ParseIntPipe) variantId: number, @User() user?: UserEntity): Promise<DiscountVoucherDto> {
 		await this.voucherService.removeVariant({ saleId: id, variantId: variantId });
-		return this.voucherService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.voucherService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete(':id/categories/:categoryId')
@@ -142,7 +142,7 @@ export class DiscountVoucherController {
 	@IsStaff()
 	async removeCategory(@Param('id', ParseIntPipe) id: number, @Param('categoryId', ParseIntPipe) categoryId: number, @User() user?: UserEntity): Promise<DiscountVoucherDto> {
 		await this.voucherService.removeCategory({ saleId: id, categoryId: categoryId });
-		return this.voucherService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.voucherService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete(':id/collections/:collectionId')
@@ -152,6 +152,6 @@ export class DiscountVoucherController {
 	@IsStaff()
 	async removeCollection(@Param('id', ParseIntPipe) id: number, @Param('collectionId', ParseIntPipe) collectionId: number, @User() user?: UserEntity): Promise<DiscountVoucherDto> {
 		await this.voucherService.removeCollection({ saleId: id, collectionId: collectionId });
-		return this.voucherService.getDto(id, { isAdmin: user ? user.isStaff : false });
+		return this.voucherService.getDto(id, { isAdmin: user?.isStaff || false });
 	}
 }
