@@ -1425,7 +1425,6 @@ export interface CreateOrderDto {
 	 */
 	'userId'?: number;
 }
-
 /**
  *
  * @export
@@ -1445,7 +1444,6 @@ export interface CreateOrderEventDto {
 	 */
 	'parameters': object;
 }
-
 /**
  *
  * @export
@@ -4744,7 +4742,6 @@ export interface UpdatePaymentDto {
 	 */
 	'transactionTicket'?: string;
 }
-
 /**
  *
  * @export
@@ -4758,7 +4755,6 @@ export interface UpdatePaymentStatusDto {
 	 */
 	'status': PaymentStatus;
 }
-
 /**
  *
  * @export
@@ -10993,10 +10989,11 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 		 *
 		 * @param {number} [page]
 		 * @param {number} [itemsPerPage]
+		 * @param {OrderStatus} [status]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		orderFindAll: async (page?: number, itemsPerPage?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		orderFindAll: async (page?: number, itemsPerPage?: number, status?: OrderStatus, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			const localVarPath = `/api/v1/order`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -11019,6 +11016,10 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 
 			if ( itemsPerPage !== undefined ) {
 				localVarQueryParameter['itemsPerPage'] = itemsPerPage;
+			}
+
+			if ( status !== undefined ) {
+				localVarQueryParameter['status'] = status;
 			}
 
 
@@ -11280,11 +11281,12 @@ export const OrdersApiFp = function (configuration?: Configuration) {
 		 *
 		 * @param {number} [page]
 		 * @param {number} [itemsPerPage]
+		 * @param {OrderStatus} [status]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async orderFindAll(page?: number, itemsPerPage?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderListPaginated>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.orderFindAll(page, itemsPerPage, options);
+		async orderFindAll(page?: number, itemsPerPage?: number, status?: OrderStatus, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderListPaginated>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.orderFindAll(page, itemsPerPage, status, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
@@ -11384,11 +11386,12 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
 		 *
 		 * @param {number} [page]
 		 * @param {number} [itemsPerPage]
+		 * @param {OrderStatus} [status]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		orderFindAll(page?: number, itemsPerPage?: number, options?: any): AxiosPromise<OrderListPaginated> {
-			return localVarFp.orderFindAll(page, itemsPerPage, options).then((request) => request(axios, basePath));
+		orderFindAll(page?: number, itemsPerPage?: number, status?: OrderStatus, options?: any): AxiosPromise<OrderListPaginated> {
+			return localVarFp.orderFindAll(page, itemsPerPage, status, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -11517,6 +11520,13 @@ export interface OrdersApiOrderFindAllRequest {
 	 * @memberof OrdersApiOrderFindAll
 	 */
 	readonly itemsPerPage?: number;
+
+	/**
+	 *
+	 * @type {OrderStatus}
+	 * @memberof OrdersApiOrderFindAll
+	 */
+	readonly status?: OrderStatus;
 }
 
 /**
@@ -11665,7 +11675,7 @@ export class OrdersApi extends BaseAPI {
 	 * @memberof OrdersApi
 	 */
 	public orderFindAll(requestParameters: OrdersApiOrderFindAllRequest = {}, options?: AxiosRequestConfig) {
-		return OrdersApiFp(this.configuration).orderFindAll(requestParameters.page, requestParameters.itemsPerPage, options).then((request) => request(this.axios, this.basePath));
+		return OrdersApiFp(this.configuration).orderFindAll(requestParameters.page, requestParameters.itemsPerPage, requestParameters.status, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**

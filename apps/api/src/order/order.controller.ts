@@ -20,6 +20,7 @@ import {
 	UpdateOrderDto,
 	UpdateOrderStatusDto,
 } from './dto/order.dto';
+import { OrderStatus } from './dto/order.enum';
 import { OrderService } from './order.service';
 
 @Controller('order')
@@ -58,10 +59,15 @@ export class OrderController {
 	@Get()
 	@ApiQuery({ type: Number, required: false, name: 'page' })
 	@ApiQuery({ type: Number, required: false, name: 'itemsPerPage' })
+	@ApiQuery({ enum: OrderStatus, enumName: 'OrderStatus', required: false, name: 'status', example: OrderStatus.UNFULFILLED })
 	@ApiOkResponse({ type: OrderListPaginated })
 	@IsStaff()
-	async findAll(@Query('page') page?: number, @Query('itemsPerPage') itemsPerPage?: number): Promise<OrderListPaginated> {
-		const res = await this.orderService.findAll({ page, itemsPerPage });
+	async findAll(
+		@Query('page') page?: number,
+		@Query('itemsPerPage') itemsPerPage?: number,
+		@Query('status') status?: OrderStatus,
+	): Promise<OrderListPaginated> {
+		const res = await this.orderService.findAll({ page, itemsPerPage, status });
 		return {
 			items: res.items.map(OrderDto.prepare),
 			pageNumber: res.pageNumber,

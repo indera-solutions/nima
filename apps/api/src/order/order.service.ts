@@ -206,14 +206,16 @@ export class OrderService {
 		return res;
 	}
 
-	async findAll(params: { page?: number, itemsPerPage?: number }): Promise<PaginatedResults<OrderEntity>> {
+	async findAll(params: { page?: number, itemsPerPage?: number, status?: OrderStatus }): Promise<PaginatedResults<OrderEntity>> {
 		const page = params.page || 1;
 		const itemsPerPage = params.itemsPerPage || 20;
 
 		const take = itemsPerPage;
 		const skip = (page - 1) * itemsPerPage;
 
-		const itemsAndCount = await this.orderRepository.findPaginated(take, skip);
+		const itemsAndCount = await this.orderRepository.findPaginated(take, skip, {
+			status: params.status,
+		});
 		return {
 			totalCount: itemsAndCount[1],
 			items: itemsAndCount[0],

@@ -1,6 +1,5 @@
 import { Trans, useOrderById } from '@nima-cms/react';
-import { InputType } from '@nima-cms/sdk';
-import { enumToArray, getEuroValue, parseIdStr, toTitleCase } from '@nima-cms/utils';
+import { getEuroValue, parseIdStr, toTitleCase } from '@nima-cms/utils';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -11,9 +10,6 @@ import { EditOrderStatusModal } from '../../components/orders/EditStatusModal';
 interface ViewOrderProps {
 
 }
-
-const types = enumToArray(InputType);
-const typesDropdown = types.map(type => ({ label: toTitleCase(type), value: type as string }));
 
 export default function ViewOrder(props: ViewOrderProps) {
 

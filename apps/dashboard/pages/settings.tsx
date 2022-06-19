@@ -35,7 +35,21 @@ export default function SettingsPage(props: SettingsProps) {
 
 	useEffect(() => {
 		if ( isSuccess && existingSettings ) {
-			setSettings(existingSettings);
+			setSettings({
+				siteName: existingSettings.siteName,
+				siteLogo: existingSettings.siteLogo,
+				adminLanguage: existingSettings.adminLanguage,
+				availableLanguages: existingSettings.availableLanguages,
+				baseUrl: existingSettings.baseUrl,
+				canRegister: existingSettings.canRegister,
+				defaultLanguage: existingSettings.defaultLanguage,
+				senderEmail: existingSettings.senderEmail,
+				senderName: existingSettings.senderName,
+				seoDescription: existingSettings.seoDescription,
+				seoTitle: existingSettings.seoTitle,
+				shopAddress: existingSettings.shopAddress,
+				adminEmail: existingSettings.adminEmail,
+			});
 		}
 	}, [existingSettings, isSuccess]);
 

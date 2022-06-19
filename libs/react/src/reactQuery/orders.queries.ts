@@ -1,15 +1,21 @@
-import { OrderDto, OrderListPaginated, OrdersApi, UpdateOrderStatusDto } from '@nima-cms/sdk';
+import {
+	OrderDto,
+	OrderListPaginated,
+	OrdersApi,
+	OrdersApiOrderFindAllRequest,
+	UpdateOrderStatusDto,
+} from '@nima-cms/sdk';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { defaultConfiguration } from '../reactQueryCommons';
 import { NimaQueryCacheKeys } from './queryKeys';
 
 const orderSDK = new OrdersApi(defaultConfiguration);
 
-export function useOrders() {
+export function useOrders(params: OrdersApiOrderFindAllRequest) {
 	return useQuery<OrderListPaginated>(
-		NimaQueryCacheKeys.orders.list(),
+		NimaQueryCacheKeys.orders.list(params),
 		async () => {
-			const res = await orderSDK.orderFindAll();
+			const res = await orderSDK.orderFindAll(params);
 			return res.data;
 		},
 		{},

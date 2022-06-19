@@ -78,7 +78,7 @@ export const NimaQueryCacheKeys = {
 	},
 	orders: {
 		all: [NIMA_QUERY_PREFIX, ORDERS_QUERY_PREFIX] as const,
-		list: () => [...NimaQueryCacheKeys.orders.all, 'LIST'] as const,
+		list: (params: any) => [...NimaQueryCacheKeys.orders.all, 'LIST', params] as const,
 		id: (id?: number) => [...NimaQueryCacheKeys.orders.all, 'ID', id] as const,
 	},
 	address: {

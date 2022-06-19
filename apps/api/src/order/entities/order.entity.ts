@@ -193,7 +193,7 @@ export class OrderEntity {
 	@OneToMany(() => OrderEventEntity, event => event.order, { eager: true })
 	events: OrderEventEntity[];
 
-	@OneToOne(() => PaymentEntity)
+	@OneToOne(() => PaymentEntity, { eager: true })
 	@JoinColumn()
 	payment: PaymentEntity;
 
