@@ -20,7 +20,7 @@ export function DropdownValueSelector(props: EditSingleProductAttributeProps & {
 				label: getTranslation(value.name, languages.currentEditingLanguage),
 				value: value.id,
 			}));
-	}, [values]);
+	}, [values, languages]);
 
 	const selected = useMemo(() => {
 		if ( !props.productAttributeValue.values ) return undefined;
@@ -28,12 +28,12 @@ export function DropdownValueSelector(props: EditSingleProductAttributeProps & {
 		if ( props.isMulti ) {
 			return props.productAttributeValue.values.map(value => {
 				const temp = value ? values.find(v => v.id === value.valueId) : undefined;
-				if ( !temp ) throw new Error('Attribute not found');
+				if ( !temp ) return undefined;
 				return {
 					label: getTranslation(temp.name, languages.currentEditingLanguage),
 					value: value.valueId,
 				};
-			});
+			}).filter(v => !!v);
 		} else {
 			const temp = props.productAttributeValue.values[0] ? values.find(v => v.id === props.productAttributeValue.values[0].valueId) : undefined;
 			if ( !temp ) return undefined;
@@ -42,11 +42,10 @@ export function DropdownValueSelector(props: EditSingleProductAttributeProps & {
 				value: props.productAttributeValue.values[0].valueId,
 			};
 		}
-	}, [props.productAttributeValue.values, values]);
+	}, [props.productAttributeValue.values, languages, props.isMulti, values]);
 
 	async function handleChange(newValue: OnChangeValue<any, false>, actionMeta: ActionMeta<any>) {
 		if ( !props.onSelect ) return;
-		console.log(newValue, actionMeta);
 		if ( actionMeta.action === 'select-option' || actionMeta.action === 'remove-value' ) {
 			if ( props.isMulti ) {
 				props.onSelect({
@@ -69,7 +68,6 @@ export function DropdownValueSelector(props: EditSingleProductAttributeProps & {
 
 		if ( actionMeta.action === 'create-option' ) {
 			const valueToCreate = props.isMulti ? newValue.find((v: any) => v.__isNew__) : newValue;
-
 			const newAttributeValue = await addAttributeValueMutation.mutateAsync({
 				attributeId: attributeId,
 				createAttributeValue: {
@@ -83,8 +81,8 @@ export function DropdownValueSelector(props: EditSingleProductAttributeProps & {
 				existing.push(newAttributeValue.id);
 				props.onSelect({
 					...props.productAttributeValue,
-					values: newValue.map((v: any, index) => ({
-						valueId: newAttributeValue.id,
+					values: existing.map((v: any, index) => ({
+						valueId: v,
 						sortOrder: index,
 					})),
 				});

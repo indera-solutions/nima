@@ -67,7 +67,7 @@ export function SessionProvider(props: SessionProviderProps): React.ReactElement
 	}
 
 	async function login(email: string, password: string) {
-		setState('loading');
+		// setState('loading');
 		try {
 			const res = await authSdk.authLogin({ loginUserDto: { email, password } });
 			setAccessToken(res.data.access_token);

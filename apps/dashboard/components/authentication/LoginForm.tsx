@@ -21,7 +21,9 @@ export function LoginForm(props: LoginFormProps) {
 			<label className="label">
 				<span className="label-text">Email</span>
 			</label>
-			<input type="text" placeholder="Type here"
+			<input type="email"
+				   placeholder="email@example.com"
+				   autoComplete={ 'email' }
 				   value={ email }
 				   onChange={ (e) => setEmail(e.target.value) }
 				   className="input input-bordered w-full max-w-xs"/>

@@ -16,7 +16,7 @@ export function EditVariantInformation(props: EditVariantInformationProps) {
 				<span className="label-text">Price</span>
 			</label>
 			<input type="number" placeholder="Price" className="input input-bordered w-full max-w-xs"
-				   value={ state.priceAmount }
+				   value={ state.priceAmount || '' }
 				   onChange={ (e) => onValueEdit('priceAmount', +e.target.value) }
 				   name={ 'priceAmount' }/>
 		</AdminSection>
@@ -25,7 +25,7 @@ export function EditVariantInformation(props: EditVariantInformationProps) {
 				<span className="label-text">SKU</span>
 			</label>
 			<input type="text" placeholder="SKU" className="input input-bordered w-full max-w-xs"
-				   value={ state.sku }
+				   value={ state.sku || '' }
 				   onChange={ (e) => onValueEdit('sku', e.target.value) }
 				   name={ 'SKU' }/>
 
