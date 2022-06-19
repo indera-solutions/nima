@@ -334,13 +334,13 @@ export class ProductVariantService {
 		return roundToDigit(lowestPrice);
 	}
 
-	async checkStock(params: { productVariantId: number }): Promise<Pick<ProductVariantEntity, 'stock'>> {
+	async checkStock(params: { productVariantId: number }): Promise<Pick<ProductVariantEntity, 'stock' | 'trackInventory'>> {
 		return this.productVariantRepository.checkStock(params.productVariantId);
 	}
 
-	async returnStock(params: { productVariantId: number, stock: number }): Promise<void> {
-		const { productVariantId, stock } = params;
-		await this.productVariantRepository.returnStock(productVariantId, stock);
+	async returnStock(params: { productVariantSku: string, stock: number }): Promise<void> {
+		const { productVariantSku, stock } = params;
+		await this.productVariantRepository.returnStock(productVariantSku, stock);
 	}
 
 	async removeStock(params: { productVariantId: number, stock: number }): Promise<void> {

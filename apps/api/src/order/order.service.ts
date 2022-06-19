@@ -113,7 +113,6 @@ export class OrderService {
 		};
 
 		const order = await this.orderRepository.save({ ...dto, voucher: voucher });
-
 		await this.orderEventRepository.save({
 			order: order,
 			eventType: OrderEventsEnum.DRAFT_CREATED,
@@ -121,11 +120,14 @@ export class OrderService {
 		});
 
 		// const minPrices = await this.variantService.getLowestPrices(checkoutDto.lines.map(line => line.variantId));
-
+		const removeFromProductStockPromises: Promise<void>[] = [];
 		for ( const line of checkoutDto.lines ) {
 			const product = await this.productService.getById({ id: line.productId });
 			const variant = await this.variantService.getById({ id: line.variantId });
 			// const minPrice = minPrices.find(value => value.id === line.variantId);
+
+			if ( variant.stock < line.quantity ) throw new BadRequestException(`INSUFFICIENT_STOCK_PRODUCT_${ variant.name }`);
+			removeFromProductStockPromises.push(this.variantService.removeStock({ productVariantId: line.variantId, stock: line.quantity }));
 
 			let voucherCode = undefined, unitDiscountReason = undefined;
 			if ( voucher && voucher.voucherType === DiscountVoucherType.SPECIFIC_PRODUCT && voucherVariants.includes(line.variantId) ) {
@@ -172,7 +174,7 @@ export class OrderService {
 			};
 			await this.orderLineRepository.insert(dto);
 		}
-
+		await Promise.all(removeFromProductStockPromises);
 		await this.orderEventRepository.save({
 			order: order,
 			eventType: OrderEventsEnum.ADDED_PRODUCTS,
@@ -248,8 +250,8 @@ export class OrderService {
 				break;
 			case  OrderStatus.CANCELED:
 				statusEvent = OrderEventsEnum.CANCELED;
-				await this.returnProductVariantStock(order.lines);
 				await CommerceOrderEventClient.orderCancelled(this.eventEmitter, { order: order, notifyCustomer: updateOrderStatusDto.notifyCustomer });
+				await this.returnProductVariantStock(order.lines);
 				break;
 			case  OrderStatus.RETURNED:
 				statusEvent = OrderEventsEnum.FULFILLMENT_RETURNED;
@@ -320,7 +322,7 @@ export class OrderService {
 	}
 
 	private async returnProductVariantStock(orderLines: OrderLineDto[]): Promise<void> {
-		const returnStockPromises = orderLines.map((item) => this.variantService.returnStock({ productVariantId: item.id, stock: item.quantity }));
+		const returnStockPromises = orderLines.map((item) => this.variantService.returnStock({ productVariantSku: item.productSku, stock: item.quantity }));
 		await Promise.all(returnStockPromises);
 	}
 }
