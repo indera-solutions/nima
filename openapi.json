@@ -3539,6 +3539,15 @@
 						"schema": {
 							"type": "number"
 						}
+					},
+					{
+						"name": "status",
+						"required": false,
+						"in": "query",
+						"example": "UNFULFILLED",
+						"schema": {
+							"$ref": "#/components/schemas/OrderStatus"
+						}
 					}
 				],
 				"responses": {
