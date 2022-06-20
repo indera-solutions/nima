@@ -12,6 +12,7 @@ const ORDERS_INDEX = BASE + '/orders';
 const COLLECTIONS_INDEX = BASE + '/collections';
 const SALES_INDEX = BASE + '/sales';
 const COUPONS_INDEX = BASE + '/coupons';
+const USERS_INDEX = BASE + '/users';
 
 function appendQuery(q: any): string {
 	const str: string = queryString.stringify(q, {
@@ -66,6 +67,11 @@ export const NIMA_ROUTES = {
 		list: SHIPPING_INDEX,
 		add: () => NIMA_ROUTES.shipping.list + '/add',
 		edit: (id: string | number) => NIMA_ROUTES.shipping.list + '/add' + appendQuery({ id }),
+	},
+	users: {
+		list: USERS_INDEX,
+		add: () => NIMA_ROUTES.users.list + '/add',
+		edit: (id: string | number) => NIMA_ROUTES.users.list + '/add' + appendQuery({ id }),
 	},
 	orders: {
 		list: ORDERS_INDEX,

@@ -43,6 +43,10 @@ export const adminRoutes: NavigationItem[] = [
 		link: NIMA_ROUTES.orders.list,
 	},
 	{
+		name: 'Users',
+		link: NIMA_ROUTES.users.list,
+	},
+	{
 		name: 'Settings',
 		link: NIMA_ROUTES.settings.index,
 	},

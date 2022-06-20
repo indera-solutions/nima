@@ -47,6 +47,9 @@ export class AuthService {
 	}
 
 	async login(user: any): Promise<SuccessLoginResponse> {
+		await this.userRepository.update(user.id, {
+			lastLogin: new Date().toISOString(),
+		});
 		return {
 			access_token: this.jwtService.sign(user),
 		};
@@ -56,7 +59,7 @@ export class AuthService {
 		const existing = await this.userRepository.findByEmail(registerUserDto.email);
 		if ( existing ) throw new Error('USER_ALREADY_EXISTS');
 
-		const res = await this.userService.create({ registerUserDto: registerUserDto });
+		const res = await this.userService.register({ registerUserDto: registerUserDto });
 		const _user = await this.userService.getById({ id: res });
 		const user = {
 			id: _user.id,
