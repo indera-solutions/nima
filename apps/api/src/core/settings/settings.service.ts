@@ -26,6 +26,7 @@ export class SettingsService {
 			availableLanguages: entity.availableLanguages,
 			baseUrl: entity.baseUrl,
 			canRegister: entity.canRegister,
+			globalStockThreshold: entity.globalStockThreshold,
 			defaultLanguage: entity.defaultLanguage,
 			senderEmail: entity.senderEmail,
 			senderName: entity.senderName,

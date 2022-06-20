@@ -30,11 +30,12 @@ export class OrderLineDto extends OmitType(OrderLineEntity, ['variant', 'order']
 			unitPriceNetAmount: entity.unitPriceNetAmount,
 			variantName: entity.variantName,
 			voucherCode: entity.voucherCode,
+			variantId: entity.variantId,
 		};
 	}
 }
 
-export class CreateOrderLineDto extends OmitType(OrderLineDto, ['id']) {
+export class CreateOrderLineDto extends OmitType(OrderLineDto, ['id', 'variantId']) {
 	@ApiProperty({ type: Number })
 	variantId: number;
 
@@ -42,7 +43,7 @@ export class CreateOrderLineDto extends OmitType(OrderLineDto, ['id']) {
 	orderId: number;
 }
 
-export class InternalCreateOrderLineDto extends OmitType(OrderLineDto, ['id']) {
+export class InternalCreateOrderLineDto extends OmitType(OrderLineDto, ['id', 'variantId']) {
 
 	variant: ProductVariantEntity;
 

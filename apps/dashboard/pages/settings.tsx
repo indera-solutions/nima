@@ -24,6 +24,7 @@ export default function SettingsPage(props: SettingsProps) {
 		availableLanguages: [LanguageCode.en],
 		baseUrl: '',
 		canRegister: false,
+		globalStockThreshold: 1,
 		defaultLanguage: LanguageCode.en,
 		senderEmail: '',
 		senderName: '',
@@ -42,6 +43,7 @@ export default function SettingsPage(props: SettingsProps) {
 				availableLanguages: existingSettings.availableLanguages,
 				baseUrl: existingSettings.baseUrl,
 				canRegister: existingSettings.canRegister,
+				globalStockThreshold: existingSettings.globalStockThreshold,
 				defaultLanguage: existingSettings.defaultLanguage,
 				senderEmail: existingSettings.senderEmail,
 				senderName: existingSettings.senderName,
@@ -131,6 +133,18 @@ export default function SettingsPage(props: SettingsProps) {
 
 
 					</AdminSection>
+
+					<AdminSection title={ 'Commerce Settings' }>
+						<div className="form-control w-full max-w-xs">
+							<label className="label">
+								<span className="label-text">Global Threshold</span>
+							</label>
+							<input type="number" value={ settings.globalStockThreshold }
+								   onChange={ (e) => onEditValue('globalStockThreshold', +e.target.value) }
+								   className="input input-bordered w-full max-w-xs"/>
+						</div>
+					</AdminSection>
+
 					<AdminSection title={ 'Emails' }>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">

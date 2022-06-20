@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { LanguageCode } from '@nima-cms/utils';
-import { IsBoolean, IsEmail, IsEnum, IsString, IsUrl } from 'class-validator';
+import { IsBoolean, IsEmail, IsEnum, IsInt, IsString, IsUrl } from 'class-validator';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Emails } from '../../email/templates';
 import { AddressDto } from '../dto/address.dto';
@@ -52,6 +52,12 @@ export class SettingsEntity {
 	@ApiProperty({ type: Boolean, example: true })
 	@IsBoolean()
 	canRegister: boolean;
+
+
+	@Column({ type: 'int', default: 1 })
+	@ApiProperty({ type: Number, example: 1 })
+	@IsInt()
+	globalStockThreshold: number;
 
 	@Column({ type: 'enum', enum: LanguageCode })
 	@ApiProperty({ enum: LanguageCode, example: LanguageCode.en, enumName: 'LanguageCode' })

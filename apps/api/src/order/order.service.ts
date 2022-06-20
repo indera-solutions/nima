@@ -3,6 +3,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { PaginatedResults } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { CheckoutService } from '../checkout/checkout.service';
+import { SettingsService } from '../core/settings/settings.service';
 import { DiscountVoucherService } from '../discounts/discount-voucher.service';
 import { DiscountVoucherType } from '../discounts/dto/discount.enum';
 import { DiscountVoucherEntity } from '../discounts/entities/discount-voucher.entity';
@@ -14,10 +15,11 @@ import { ProductVariantService } from '../products/product-variant.service';
 import { ProductsService } from '../products/products.service';
 import { ShippingService } from '../shipping/shipping.service';
 import { CreateOrderEventDto } from './dto/order-event.dto';
-import { InternalCreateOrderLineDto } from './dto/order-line.dto';
+import { InternalCreateOrderLineDto, OrderLineDto } from './dto/order-line.dto';
 import { CreateOrderDto, UpdateOrderDto, UpdateOrderStatusDto } from './dto/order.dto';
 import { OrderEventsEnum, OrderStatus } from './dto/order.enum';
 import { OrderEventEntity } from './entities/order-event.entity';
+import { OrderLineEntity } from './entities/order-line.entity';
 import { OrderEntity } from './entities/order.entity';
 import { OrderEventRepository } from './repositories/order-event.repository';
 import { OrderLineRepository } from './repositories/order-line.repository';
@@ -37,6 +39,7 @@ export class OrderService {
 		private variantService: ProductVariantService,
 		private paymentService: PaymentsService,
 		private voucherService: DiscountVoucherService,
+		private settingsService: SettingsService,
 		private eventEmitter: EventEmitter2,
 	) {
 	}
@@ -113,7 +116,6 @@ export class OrderService {
 		};
 
 		const order = await this.orderRepository.save({ ...dto, voucher: voucher });
-
 		await this.orderEventRepository.save({
 			order: order,
 			eventType: OrderEventsEnum.DRAFT_CREATED,
@@ -121,11 +123,14 @@ export class OrderService {
 		});
 
 		// const minPrices = await this.variantService.getLowestPrices(checkoutDto.lines.map(line => line.variantId));
-
+		const removeFromProductStockPromises: Promise<void>[] = [];
 		for ( const line of checkoutDto.lines ) {
 			const product = await this.productService.getById({ id: line.productId });
 			const variant = await this.variantService.getById({ id: line.variantId });
 			// const minPrice = minPrices.find(value => value.id === line.variantId);
+
+			if ( variant.stock < line.quantity ) throw new BadRequestException(`INSUFFICIENT_STOCK_PRODUCT_${ variant.name }`);
+			removeFromProductStockPromises.push(this.variantService.removeStock({ productVariantId: line.variantId, stock: line.quantity }));
 
 			let voucherCode = undefined, unitDiscountReason = undefined;
 			if ( voucher && voucher.voucherType === DiscountVoucherType.SPECIFIC_PRODUCT && voucherVariants.includes(line.variantId) ) {
@@ -172,7 +177,9 @@ export class OrderService {
 			};
 			await this.orderLineRepository.insert(dto);
 		}
-
+		await Promise.all(removeFromProductStockPromises);
+		// After order is created check low stock only of products sold in this order.
+		// await this.alertLowStockVariants(checkoutDto.lines);
 		await this.orderEventRepository.save({
 			order: order,
 			eventType: OrderEventsEnum.ADDED_PRODUCTS,
@@ -183,9 +190,17 @@ export class OrderService {
 
 		await this.checkoutService.remove({ token: params.token });
 
-		if ( voucher ) await this.voucherService.addOneUse(voucher.id);
+		if ( voucher ) {
+			// noinspection ES6MissingAwait
+			this.voucherService.addOneUse(voucher.id);
+		}
 
-		return this.findOne({ id: order.id });
+		const finalOrder = await this.findOne({ id: order.id });
+
+		// noinspection ES6MissingAwait
+		this.alertLowStockVariants(finalOrder.lines);
+
+		return finalOrder;
 	}
 
 	@Transactional()
@@ -249,9 +264,11 @@ export class OrderService {
 			case  OrderStatus.CANCELED:
 				statusEvent = OrderEventsEnum.CANCELED;
 				await CommerceOrderEventClient.orderCancelled(this.eventEmitter, { order: order, notifyCustomer: updateOrderStatusDto.notifyCustomer });
+				await this.returnProductVariantStock(order.lines);
 				break;
 			case  OrderStatus.RETURNED:
 				statusEvent = OrderEventsEnum.FULFILLMENT_RETURNED;
+				await this.returnProductVariantStock(order.lines);
 				break;
 			case  OrderStatus.UNCONFIRMED:
 				break;
@@ -316,5 +333,26 @@ export class OrderService {
 		const res = await this.findOne({ id });
 		await this.orderRepository.deleteById(id);
 		return res;
+	}
+
+	private async returnProductVariantStock(orderLines: OrderLineDto[]): Promise<void> {
+		const returnStockPromises = orderLines.map((item) => this.variantService.returnStock({ productVariantSku: item.productSku, stock: item.quantity }));
+		await Promise.all(returnStockPromises);
+	}
+
+	private async alertLowStockVariants(orderLines: OrderLineEntity[]): Promise<void> {
+		const variantIds = orderLines.map(line => line.variantId);
+		const trackingVariants = await this.variantService.checkLowStock({ productVariantIds: variantIds });
+		if ( trackingVariants.length === 0 ) return;
+		const { globalStockThreshold } = await this.settingsService.getSettings();
+		const lowStockVariants = trackingVariants
+			.map(v => {
+				if ( v.stockThreshold === undefined || v.stockThreshold === null ) {
+					v.stockThreshold = globalStockThreshold;
+				}
+				return v;
+			})
+			.filter(v => v.stock <= v.stockThreshold);
+		await CommerceOrderEventClient.lowStockAlert(this.eventEmitter, { variants: lowStockVariants });
 	}
 }

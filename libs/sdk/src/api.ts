@@ -1719,6 +1719,12 @@ export interface CreateProductVariantDto {
 	'trackInventory': boolean;
 	/**
 	 *
+	 * @type {number}
+	 * @memberof CreateProductVariantDto
+	 */
+	'stockThreshold'?: number;
+	/**
+	 *
 	 * @type {Array<CreateAssignedProductVariantAttributeDto>}
 	 * @memberof CreateProductVariantDto
 	 */
@@ -1772,6 +1778,12 @@ export interface CreateSettingsDto {
 	 * @memberof CreateSettingsDto
 	 */
 	'canRegister': boolean;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateSettingsDto
+	 */
+	'globalStockThreshold': number;
 	/**
 	 *
 	 * @type {LanguageCode}
@@ -3686,6 +3698,12 @@ export interface ProductVariantDto {
 	'trackInventory': boolean;
 	/**
 	 *
+	 * @type {number}
+	 * @memberof ProductVariantDto
+	 */
+	'stockThreshold'?: number;
+	/**
+	 *
 	 * @type {Array<ProductAttributeDto>}
 	 * @memberof ProductVariantDto
 	 */
@@ -3789,6 +3807,12 @@ export interface SettingsDto {
 	 * @memberof SettingsDto
 	 */
 	'canRegister': boolean;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof SettingsDto
+	 */
+	'globalStockThreshold': number;
 	/**
 	 *
 	 * @type {LanguageCode}

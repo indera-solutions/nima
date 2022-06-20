@@ -82,6 +82,7 @@ export class OrderController {
 	@ApiOkResponse({ type: OrderDto })
 	@ApiParam({ type: Number, name: 'id' })
 	@IsPublic()
+	// @IsStaff() //TODO OPEN ME!!!
 	async findOne(@Param('id', ParseIntPipe) id: number) {
 		const res = await this.orderService.findOne({ id });
 		return OrderDto.prepare(res);

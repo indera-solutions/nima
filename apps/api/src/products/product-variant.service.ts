@@ -189,6 +189,7 @@ export class ProductVariantService {
 			sortOrder: entity.sortOrder,
 			productId: entity.productId,
 			sku: entity.sku,
+			stockThreshold: entity.stockThreshold,
 			stock: entity.stock,
 			trackInventory: entity.trackInventory,
 			productMedia: entity.productMedia.map(pm => SortableMediaDto.prepare(pm)),
@@ -332,5 +333,19 @@ export class ProductVariantService {
 			if ( temp < lowestPrice ) lowestPrice = temp;
 		}
 		return roundToDigit(lowestPrice);
+	}
+
+	async checkLowStock(params: { productVariantIds: number[] }): Promise<ProductVariantEntity[]> {
+		return this.productVariantRepository.getTrackedStockVariantsByIds(params.productVariantIds);
+	}
+
+	async returnStock(params: { productVariantSku: string, stock: number }): Promise<void> {
+		const { productVariantSku, stock } = params;
+		await this.productVariantRepository.returnStock(productVariantSku, stock);
+	}
+
+	async removeStock(params: { productVariantId: number, stock: number }): Promise<void> {
+		const { productVariantId, stock } = params;
+		await this.productVariantRepository.removeStock(productVariantId, stock);
 	}
 }
