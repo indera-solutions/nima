@@ -189,6 +189,7 @@ export class ProductVariantService {
 			sortOrder: entity.sortOrder,
 			productId: entity.productId,
 			sku: entity.sku,
+			stockThreshold: entity.stockThreshold,
 			stock: entity.stock,
 			trackInventory: entity.trackInventory,
 			productMedia: entity.productMedia.map(pm => SortableMediaDto.prepare(pm)),
@@ -334,8 +335,8 @@ export class ProductVariantService {
 		return roundToDigit(lowestPrice);
 	}
 
-	async checkStock(params: { productVariantId: number }): Promise<Pick<ProductVariantEntity, 'stock' | 'trackInventory'>> {
-		return this.productVariantRepository.checkStock(params.productVariantId);
+	async checkLowStock(params: { productVariantIds: number[] }): Promise<Pick<ProductVariantEntity, 'stock' | 'trackInventory' | 'stockThreshold'>[]> {
+		return this.productVariantRepository.checkLowStock(params.productVariantIds);
 	}
 
 	async returnStock(params: { productVariantSku: string, stock: number }): Promise<void> {

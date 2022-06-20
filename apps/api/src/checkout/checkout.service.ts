@@ -124,10 +124,12 @@ export class CheckoutService {
 		const { dto, token } = params;
 		const co = await this.findOne({ token: token });
 		const variant = await this.variantService.getByIdWithoutEager({ id: dto.variantId });
-		if ( dto.quantity > 0 && variant.stock >= dto.quantity ) {
-			await this.checkoutLineRepository.save({ checkout: co, variant: variant, quantity: dto.quantity, product: { id: variant.productId } });
-		} else {
-			throw new BadRequestException('INSUFFICIENT_STOCK');
+		if ( dto.quantity > 0 ) {
+			if ( variant.stock >= dto.quantity ) {
+				await this.checkoutLineRepository.save({ checkout: co, variant: variant, quantity: dto.quantity, product: { id: variant.productId } });
+			} else {
+				throw new BadRequestException('INSUFFICIENT_STOCK');
+			}
 		}
 		if ( dto.quantity <= 0 ) await this.checkoutLineRepository.deleteByVariantAndToken(dto.variantId, token);
 	}

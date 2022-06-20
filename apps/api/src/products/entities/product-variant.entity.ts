@@ -99,6 +99,11 @@ export class ProductVariantEntity {
 	@IsBoolean()
 	trackInventory: boolean;
 
+	@Column({ type: 'int', default: 1 })
+	@ApiProperty({ type: Number, example: 4 })
+	@IsInt()
+	stockThreshold?: number;
+
 	@OneToMany(() => ProductVariantMediaEntity, pm => pm.productVariant, { eager: true })
 	productMedia: ProductVariantMediaEntity[];
 

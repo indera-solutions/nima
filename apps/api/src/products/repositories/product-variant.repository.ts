@@ -1,5 +1,5 @@
 import { LanguageCode } from '@nima-cms/utils';
-import { EntityRepository } from 'typeorm';
+import { EntityRepository, In } from 'typeorm';
 import { BaseRepository } from 'typeorm-transactional-cls-hooked';
 import { AttributeValueEntity } from '../../attributes/entities/attribute-value.entity';
 import { AttributeEntity } from '../../attributes/entities/attribute.entity';
@@ -206,8 +206,8 @@ export class ProductVariantRepository extends BaseRepository<ProductVariantEntit
 		return res.map(r => ({ aId: r.a_id, aSlug: r.a_slug, avSlug: r.av_slug, avId: r.av_id, count: r.count }));
 	}
 
-	async checkStock(productVariantId: number): Promise<Pick<ProductVariantEntity, 'stock' | 'trackInventory'>> {
-		return await this.createQueryBuilder('p').select(['p.stock', 'p.trackInventory']).where(`"trackInventory" = true`).andWhere('p.id = :id', { id: productVariantId }).getOne();
+	async checkLowStock(productVariantId: number[]): Promise<Pick<ProductVariantEntity, 'stock' | 'trackInventory' | 'stockThreshold'>[]> {
+		return await this.createQueryBuilder('p').select(['p.stock', 'p.trackInventory', 'p.stockThreshold']).where(`"trackInventory" = true`).andWhere('stock < "stockThreshold"').andWhere('p.id IN (:...ids)', { ids: productVariantId }).getMany();
 	}
 
 	async returnStock(productVariantSku: string, stock: number): Promise<void> {

@@ -3,6 +3,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { PaginatedResults } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { CheckoutService } from '../checkout/checkout.service';
+import { CheckoutLineDto } from '../checkout/dto/checkout-line.dto';
 import { DiscountVoucherService } from '../discounts/discount-voucher.service';
 import { DiscountVoucherType } from '../discounts/dto/discount.enum';
 import { DiscountVoucherEntity } from '../discounts/entities/discount-voucher.entity';
@@ -175,6 +176,8 @@ export class OrderService {
 			await this.orderLineRepository.insert(dto);
 		}
 		await Promise.all(removeFromProductStockPromises);
+		// After order is created check low stock only of products sold in this order.
+		// await this.alertLowStockVariants(checkoutDto.lines);
 		await this.orderEventRepository.save({
 			order: order,
 			eventType: OrderEventsEnum.ADDED_PRODUCTS,
@@ -255,6 +258,7 @@ export class OrderService {
 				break;
 			case  OrderStatus.RETURNED:
 				statusEvent = OrderEventsEnum.FULFILLMENT_RETURNED;
+				await this.returnProductVariantStock(order.lines);
 				break;
 			case  OrderStatus.UNCONFIRMED:
 				break;
@@ -324,5 +328,10 @@ export class OrderService {
 	private async returnProductVariantStock(orderLines: OrderLineDto[]): Promise<void> {
 		const returnStockPromises = orderLines.map((item) => this.variantService.returnStock({ productVariantSku: item.productSku, stock: item.quantity }));
 		await Promise.all(returnStockPromises);
+	}
+
+	private async alertLowStockVariants(orderLines: CheckoutLineDto[]): Promise<void> {
+		const variantIds = orderLines.map(variant => variant.variantId);
+		const variantsInLowStock = await this.variantService.checkLowStock({ productVariantIds: variantIds });
 	}
 }

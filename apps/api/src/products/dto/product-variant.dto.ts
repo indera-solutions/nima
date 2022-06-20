@@ -33,6 +33,7 @@ export class ProductVariantDto extends OmitType(ProductVariantEntity, ['attribut
 			priceAmount: entity.priceAmount,
 			sku: entity.sku,
 			stock: entity.stock,
+			stockThreshold: entity.stockThreshold,
 			trackInventory: entity.trackInventory,
 			productMedia: (entity.productMedia || []).map(pm => SortableMediaDto.prepare(pm)),
 			discountedPrice: entity.discountedPrice,
