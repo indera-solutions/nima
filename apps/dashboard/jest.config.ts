@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	displayName: 'dashboard',
 
 	transform: {
@@ -7,5 +7,5 @@ module.exports = {
 	},
 	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
 	coverageDirectory: '../../coverage/apps/dashboard',
-	preset: '../../jest.preset.ts',
+	preset: '../../jest.preset.js',
 };
