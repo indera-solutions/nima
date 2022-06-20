@@ -1,10 +1,11 @@
 {
+	"$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
 	"sourceRoot": "apps/dashboard",
 	"projectType": "application",
 	"targets": {
 		"build": {
 			"executor": "@nrwl/next:build",
-			"outputs": [ "{options.outputPath}" ],
+			"outputs": ["{options.outputPath}"],
 			"defaultConfiguration": "production",
 			"options": {
 				"root": "apps/dashboard",
@@ -42,7 +43,7 @@
 		},
 		"test": {
 			"executor": "@nrwl/jest:jest",
-			"outputs": [ "coverage/apps/dashboard" ],
+			"outputs": ["coverage/apps/dashboard"],
 			"options": {
 				"jestConfig": "apps/dashboard/jest.config.ts",
 				"passWithNoTests": true
@@ -50,11 +51,11 @@
 		},
 		"lint": {
 			"executor": "@nrwl/linter:eslint",
-			"outputs": [ "{options.outputFile}" ],
+			"outputs": ["{options.outputFile}"],
 			"options": {
-				"lintFilePatterns": [ "apps/dashboard/**/*.{ts,tsx,js,jsx}" ]
+				"lintFilePatterns": ["apps/dashboard/**/*.{ts,tsx,js,jsx}"]
 			}
 		}
 	},
-	"tags": [ "type:app" ]
+	"tags": ["type:app"]
 }

@@ -1,19 +1,16 @@
 {
+	"$schema": "..\\..\\..\\node_modules\\nx\\schemas\\project-schema.json",
 	"sourceRoot": "apps/dev/webhooks/src",
 	"projectType": "application",
 	"targets": {
 		"build": {
 			"executor": "@nrwl/node:webpack",
-			"outputs": [
-				"{options.outputPath}"
-			],
+			"outputs": ["{options.outputPath}"],
 			"options": {
 				"outputPath": "dist/apps/dev/webhooks",
 				"main": "apps/dev/webhooks/src/main.ts",
 				"tsConfig": "apps/dev/webhooks/tsconfig.app.json",
-				"assets": [
-					"apps/dev/webhooks/src/assets"
-				]
+				"assets": ["apps/dev/webhooks/src/assets"]
 			},
 			"configurations": {
 				"production": {
@@ -37,25 +34,19 @@
 		},
 		"lint": {
 			"executor": "@nrwl/linter:eslint",
-			"outputs": [
-				"{options.outputFile}"
-			],
+			"outputs": ["{options.outputFile}"],
 			"options": {
-				"lintFilePatterns": [
-					"apps/dev/webhooks/**/*.ts"
-				]
+				"lintFilePatterns": ["apps/dev/webhooks/**/*.ts"]
 			}
 		},
 		"test": {
 			"executor": "@nrwl/jest:jest",
-			"outputs": [
-				"coverage/apps/dev/webhooks"
-			],
+			"outputs": ["coverage/apps/dev/webhooks"],
 			"options": {
 				"jestConfig": "apps/dev/webhooks/jest.config.ts",
 				"passWithNoTests": true
 			}
 		}
 	},
-	"tags": [ ]
+	"tags": []
 }
