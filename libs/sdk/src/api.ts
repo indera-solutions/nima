@@ -1969,7 +1969,6 @@ export interface CreateSortableMediaDto {
 	 */
 	'mediaId': number;
 }
-
 /**
  *
  * @export
@@ -2049,7 +2048,6 @@ export interface CreateUserDto {
 	 */
 	'password': string;
 }
-
 /**
  *
  * @export
@@ -11214,10 +11212,11 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 		 * @param {number} id
 		 * @param {UpdatePaymentStatusDto} updatePaymentStatusDto
 		 * @param {boolean} [notifyCustomer]
+		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		orderUpdatePaymentStatus: async (id: number, updatePaymentStatusDto: UpdatePaymentStatusDto, notifyCustomer?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		orderUpdatePaymentStatus: async (id: number, updatePaymentStatusDto: UpdatePaymentStatusDto, notifyCustomer?: boolean, xAPIKEY?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('orderUpdatePaymentStatus', 'id', id)
 			// verify required parameter 'updatePaymentStatusDto' is not null or undefined
@@ -11243,6 +11242,10 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 				localVarQueryParameter['notifyCustomer'] = notifyCustomer;
 			}
 
+			if ( xAPIKEY !== undefined && xAPIKEY !== null ) {
+				localVarHeaderParameter['X-API-KEY'] = String(xAPIKEY);
+			}
+
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -11260,10 +11263,11 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 		 *
 		 * @param {number} id
 		 * @param {UpdateOrderStatusDto} updateOrderStatusDto
+		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		orderUpdateStatus: async (id: number, updateOrderStatusDto: UpdateOrderStatusDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		orderUpdateStatus: async (id: number, updateOrderStatusDto: UpdateOrderStatusDto, xAPIKEY?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('orderUpdateStatus', 'id', id)
 			// verify required parameter 'updateOrderStatusDto' is not null or undefined
@@ -11284,6 +11288,10 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 			// authentication bearer required
 			// http bearer authentication required
 			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+			if ( xAPIKEY !== undefined && xAPIKEY !== null ) {
+				localVarHeaderParameter['X-API-KEY'] = String(xAPIKEY);
+			}
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -11388,22 +11396,24 @@ export const OrdersApiFp = function (configuration?: Configuration) {
 		 * @param {number} id
 		 * @param {UpdatePaymentStatusDto} updatePaymentStatusDto
 		 * @param {boolean} [notifyCustomer]
+		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async orderUpdatePaymentStatus(id: number, updatePaymentStatusDto: UpdatePaymentStatusDto, notifyCustomer?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderDto>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.orderUpdatePaymentStatus(id, updatePaymentStatusDto, notifyCustomer, options);
+		async orderUpdatePaymentStatus(id: number, updatePaymentStatusDto: UpdatePaymentStatusDto, notifyCustomer?: boolean, xAPIKEY?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.orderUpdatePaymentStatus(id, updatePaymentStatusDto, notifyCustomer, xAPIKEY, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
 		 * @param {number} id
 		 * @param {UpdateOrderStatusDto} updateOrderStatusDto
+		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async orderUpdateStatus(id: number, updateOrderStatusDto: UpdateOrderStatusDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderDto>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.orderUpdateStatus(id, updateOrderStatusDto, options);
+		async orderUpdateStatus(id: number, updateOrderStatusDto: UpdateOrderStatusDto, xAPIKEY?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.orderUpdateStatus(id, updateOrderStatusDto, xAPIKEY, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 	};
@@ -11489,21 +11499,23 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
 		 * @param {number} id
 		 * @param {UpdatePaymentStatusDto} updatePaymentStatusDto
 		 * @param {boolean} [notifyCustomer]
+		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		orderUpdatePaymentStatus(id: number, updatePaymentStatusDto: UpdatePaymentStatusDto, notifyCustomer?: boolean, options?: any): AxiosPromise<OrderDto> {
-			return localVarFp.orderUpdatePaymentStatus(id, updatePaymentStatusDto, notifyCustomer, options).then((request) => request(axios, basePath));
+		orderUpdatePaymentStatus(id: number, updatePaymentStatusDto: UpdatePaymentStatusDto, notifyCustomer?: boolean, xAPIKEY?: string, options?: any): AxiosPromise<OrderDto> {
+			return localVarFp.orderUpdatePaymentStatus(id, updatePaymentStatusDto, notifyCustomer, xAPIKEY, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
 		 * @param {number} id
 		 * @param {UpdateOrderStatusDto} updateOrderStatusDto
+		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		orderUpdateStatus(id: number, updateOrderStatusDto: UpdateOrderStatusDto, options?: any): AxiosPromise<OrderDto> {
-			return localVarFp.orderUpdateStatus(id, updateOrderStatusDto, options).then((request) => request(axios, basePath));
+		orderUpdateStatus(id: number, updateOrderStatusDto: UpdateOrderStatusDto, xAPIKEY?: string, options?: any): AxiosPromise<OrderDto> {
+			return localVarFp.orderUpdateStatus(id, updateOrderStatusDto, xAPIKEY, options).then((request) => request(axios, basePath));
 		},
 	};
 };
@@ -11667,6 +11679,13 @@ export interface OrdersApiOrderUpdatePaymentStatusRequest {
 	 * @memberof OrdersApiOrderUpdatePaymentStatus
 	 */
 	readonly notifyCustomer?: boolean;
+
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrdersApiOrderUpdatePaymentStatus
+	 */
+	readonly xAPIKEY?: string;
 }
 
 /**
@@ -11688,6 +11707,13 @@ export interface OrdersApiOrderUpdateStatusRequest {
 	 * @memberof OrdersApiOrderUpdateStatus
 	 */
 	readonly updateOrderStatusDto: UpdateOrderStatusDto;
+
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrdersApiOrderUpdateStatus
+	 */
+	readonly xAPIKEY?: string;
 }
 
 /**
@@ -11782,7 +11808,7 @@ export class OrdersApi extends BaseAPI {
 	 * @memberof OrdersApi
 	 */
 	public orderUpdatePaymentStatus(requestParameters: OrdersApiOrderUpdatePaymentStatusRequest, options?: AxiosRequestConfig) {
-		return OrdersApiFp(this.configuration).orderUpdatePaymentStatus(requestParameters.id, requestParameters.updatePaymentStatusDto, requestParameters.notifyCustomer, options).then((request) => request(this.axios, this.basePath));
+		return OrdersApiFp(this.configuration).orderUpdatePaymentStatus(requestParameters.id, requestParameters.updatePaymentStatusDto, requestParameters.notifyCustomer, requestParameters.xAPIKEY, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -11793,7 +11819,7 @@ export class OrdersApi extends BaseAPI {
 	 * @memberof OrdersApi
 	 */
 	public orderUpdateStatus(requestParameters: OrdersApiOrderUpdateStatusRequest, options?: AxiosRequestConfig) {
-		return OrdersApiFp(this.configuration).orderUpdateStatus(requestParameters.id, requestParameters.updateOrderStatusDto, options).then((request) => request(this.axios, this.basePath));
+		return OrdersApiFp(this.configuration).orderUpdateStatus(requestParameters.id, requestParameters.updateOrderStatusDto, requestParameters.xAPIKEY, options).then((request) => request(this.axios, this.basePath));
 	}
 }
 
@@ -11807,10 +11833,11 @@ export const PaymentsApiAxiosParamCreator = function (configuration?: Configurat
 		/**
 		 *
 		 * @param {number} id
+		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		paymentsGetById: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		paymentsGetById: async (id: number, xAPIKEY?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('paymentsGetById', 'id', id)
 			const localVarPath = `/api/v1/payments/{id}`
@@ -11830,6 +11857,10 @@ export const PaymentsApiAxiosParamCreator = function (configuration?: Configurat
 			// http bearer authentication required
 			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+			if ( xAPIKEY !== undefined && xAPIKEY !== null ) {
+				localVarHeaderParameter['X-API-KEY'] = String(xAPIKEY);
+			}
+
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -11844,10 +11875,11 @@ export const PaymentsApiAxiosParamCreator = function (configuration?: Configurat
 		 *
 		 * @param {number} id
 		 * @param {UpdatePaymentDto} updatePaymentDto
+		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		paymentsPatch: async (id: number, updatePaymentDto: UpdatePaymentDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		paymentsPatch: async (id: number, updatePaymentDto: UpdatePaymentDto, xAPIKEY?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('paymentsPatch', 'id', id)
 			// verify required parameter 'updatePaymentDto' is not null or undefined
@@ -11868,6 +11900,10 @@ export const PaymentsApiAxiosParamCreator = function (configuration?: Configurat
 			// authentication bearer required
 			// http bearer authentication required
 			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+			if ( xAPIKEY !== undefined && xAPIKEY !== null ) {
+				localVarHeaderParameter['X-API-KEY'] = String(xAPIKEY);
+			}
 
 
 			localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -11895,22 +11931,24 @@ export const PaymentsApiFp = function (configuration?: Configuration) {
 		/**
 		 *
 		 * @param {number} id
+		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async paymentsGetById(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentDto>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.paymentsGetById(id, options);
+		async paymentsGetById(id: number, xAPIKEY?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.paymentsGetById(id, xAPIKEY, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
 		 * @param {number} id
 		 * @param {UpdatePaymentDto} updatePaymentDto
+		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async paymentsPatch(id: number, updatePaymentDto: UpdatePaymentDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentDto>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.paymentsPatch(id, updatePaymentDto, options);
+		async paymentsPatch(id: number, updatePaymentDto: UpdatePaymentDto, xAPIKEY?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.paymentsPatch(id, updatePaymentDto, xAPIKEY, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 	};
@@ -11926,21 +11964,23 @@ export const PaymentsApiFactory = function (configuration?: Configuration, baseP
 		/**
 		 *
 		 * @param {number} id
+		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		paymentsGetById(id: number, options?: any): AxiosPromise<PaymentDto> {
-			return localVarFp.paymentsGetById(id, options).then((request) => request(axios, basePath));
+		paymentsGetById(id: number, xAPIKEY?: string, options?: any): AxiosPromise<PaymentDto> {
+			return localVarFp.paymentsGetById(id, xAPIKEY, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
 		 * @param {number} id
 		 * @param {UpdatePaymentDto} updatePaymentDto
+		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		paymentsPatch(id: number, updatePaymentDto: UpdatePaymentDto, options?: any): AxiosPromise<PaymentDto> {
-			return localVarFp.paymentsPatch(id, updatePaymentDto, options).then((request) => request(axios, basePath));
+		paymentsPatch(id: number, updatePaymentDto: UpdatePaymentDto, xAPIKEY?: string, options?: any): AxiosPromise<PaymentDto> {
+			return localVarFp.paymentsPatch(id, updatePaymentDto, xAPIKEY, options).then((request) => request(axios, basePath));
 		},
 	};
 };
@@ -11957,6 +11997,13 @@ export interface PaymentsApiPaymentsGetByIdRequest {
 	 * @memberof PaymentsApiPaymentsGetById
 	 */
 	readonly id: number;
+
+	/**
+	 *
+	 * @type {string}
+	 * @memberof PaymentsApiPaymentsGetById
+	 */
+	readonly xAPIKEY?: string;
 }
 
 /**
@@ -11978,6 +12025,13 @@ export interface PaymentsApiPaymentsPatchRequest {
 	 * @memberof PaymentsApiPaymentsPatch
 	 */
 	readonly updatePaymentDto: UpdatePaymentDto;
+
+	/**
+	 *
+	 * @type {string}
+	 * @memberof PaymentsApiPaymentsPatch
+	 */
+	readonly xAPIKEY?: string;
 }
 
 /**
@@ -11995,7 +12049,7 @@ export class PaymentsApi extends BaseAPI {
 	 * @memberof PaymentsApi
 	 */
 	public paymentsGetById(requestParameters: PaymentsApiPaymentsGetByIdRequest, options?: AxiosRequestConfig) {
-		return PaymentsApiFp(this.configuration).paymentsGetById(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+		return PaymentsApiFp(this.configuration).paymentsGetById(requestParameters.id, requestParameters.xAPIKEY, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -12006,7 +12060,7 @@ export class PaymentsApi extends BaseAPI {
 	 * @memberof PaymentsApi
 	 */
 	public paymentsPatch(requestParameters: PaymentsApiPaymentsPatchRequest, options?: AxiosRequestConfig) {
-		return PaymentsApiFp(this.configuration).paymentsPatch(requestParameters.id, requestParameters.updatePaymentDto, options).then((request) => request(this.axios, this.basePath));
+		return PaymentsApiFp(this.configuration).paymentsPatch(requestParameters.id, requestParameters.updatePaymentDto, requestParameters.xAPIKEY, options).then((request) => request(this.axios, this.basePath));
 	}
 }
 
@@ -14595,7 +14649,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 		 */
 		usersCreate: async (createUserDto: CreateUserDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'createUserDto' is not null or undefined
-			assertParamExists('usersCreate', 'createUserDto', createUserDto);
+			assertParamExists('usersCreate', 'createUserDto', createUserDto)
 			const localVarPath = `/api/v1/users`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -14618,7 +14672,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(createUserDto, localVarRequestOptions, configuration);
+			localVarRequestOptions.data = serializeDataIfNeeded(createUserDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
