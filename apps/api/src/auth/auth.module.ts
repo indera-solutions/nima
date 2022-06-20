@@ -7,7 +7,8 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { jwtConstants } from './constants';
 import { AuthActionEntity } from './entities/AuthAction.entity';
-import { JwtStrategy } from './jwt.strategy';
+import { HeaderApiKeyStrategy } from './header-api-key.strategy';
+import { JwtStrategy, StaffJwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
 
 @Module({
@@ -21,7 +22,7 @@ import { LocalStrategy } from './local.strategy';
 		TypeOrmModule.forFeature([AuthActionEntity]),
 	],
 	controllers: [AuthController],
-	providers: [AuthService, LocalStrategy, JwtStrategy],
+	providers: [AuthService, LocalStrategy, JwtStrategy, HeaderApiKeyStrategy, StaffJwtStrategy],
 })
 export class AuthModule {
 }
