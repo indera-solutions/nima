@@ -35,7 +35,6 @@ export function getStateAndCountry(countryCode: string, stateCode: string): ISta
 export function getStateByCode(stateCode: string): IState {
 	for ( const country in states ) {
 		if ( states[country][stateCode] ) {
-			console.log(states[country][stateCode]);
 			return states[country][stateCode];
 		}
 	}

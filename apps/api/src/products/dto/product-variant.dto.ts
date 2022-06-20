@@ -24,7 +24,6 @@ export class ProductVariantDto extends OmitType(ProductVariantEntity, ['attribut
 			updatedAt: entity.updatedAt,
 			attributes: (entity.attributes || [])
 				.sort((a, b) => {
-					console.log(a.productTypeVariantAttribute);
 					return a.productTypeVariantAttribute.sortOrder - b.productTypeVariantAttribute.sortOrder;
 				})
 				.map(attr => ProductAttributeDto.prepareVariant(attr)),

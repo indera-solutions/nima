@@ -116,7 +116,6 @@ export default function SettingsPage(props: SettingsProps) {
 							options={ languagesOptions }
 							isMulti
 							onChange={ (e) => {
-								console.log(e);
 								onEditValue('availableLanguages', e.map(option => option.value));
 							} }
 						/>

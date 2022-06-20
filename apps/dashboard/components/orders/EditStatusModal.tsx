@@ -51,7 +51,6 @@ export function EditOrderStatusModal(props: NewShippingZoneModalProps) {
 								value={ editStatusState.status }
 								options={ typesDropdown }
 								onChange={ (e) => {
-									console.log(e);
 									setEditStatusState(state => ({
 										...state,
 										status: e,

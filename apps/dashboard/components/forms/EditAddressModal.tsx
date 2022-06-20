@@ -181,7 +181,6 @@ export function EditAddressModal(props: NewShippingZoneModalProps) {
 									value={ countriesDropdown.find(td => createAddressDto.country === td.value) }
 									options={ countriesDropdown }
 									onChange={ (e) => {
-										console.log(e);
 										onValueEdit('country', e.value);
 									} }
 								/>

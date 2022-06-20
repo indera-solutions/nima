@@ -39,7 +39,6 @@ export function useCollectionById(id?: number, options?: { refetchInterval: numb
 			enabled: !!id,
 			refetchInterval: options?.refetchInterval,
 			onSuccess: (data => {
-				console.log(id, data);
 				client.setQueryData(NimaQueryCacheKeys.collections.products(id), data.products);
 			}),
 		},

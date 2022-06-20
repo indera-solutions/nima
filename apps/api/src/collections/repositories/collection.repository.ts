@@ -6,7 +6,7 @@ import { CollectionEntity } from '../entities/collection.entity';
 export class CollectionRepository extends BaseRepository<CollectionEntity> {
 	async getFullObject(id: number) {
 		return this.findOne({
-			relations: ['products', 'products.product', 'products.product.productMedia'],
+			relations: ['products', 'products.product', 'products.product.defaultVariant', 'products.product.productMedia'],
 			where: {
 				id: id,
 			},
