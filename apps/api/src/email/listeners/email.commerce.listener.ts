@@ -3,11 +3,14 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { SettingsService } from '../../core/settings/settings.service';
 import { Events } from '../../events';
 import { OrderEntity } from '../../order/entities/order.entity';
+import { ProductVariantEntity } from '../../products/entities/product-variant.entity';
 import { EmailService } from '../email.service';
 import { Emails } from '../templates';
 import { NimaEmail } from '../templates/BaseEmail';
 import {
 	CommerceEmailOrderDetails,
+	LowStockAdminEmail,
+	LowStockAdminEmailTemplateOptions,
 	OrderCanceledEmail,
 	OrderCompletedEmail,
 	OrderCreatedAdminEmail,
@@ -161,6 +164,23 @@ export class EmailCommerceListener {
 
 		let adminTemplate: NimaEmail = await this.service.getWebhookTemplate(Emails.ORDER_CANCELED_ADMIN, payload);
 		if ( !adminTemplate ) adminTemplate = (new OrderPaymentPendingAdminEmail()).getTemplate(settings.adminLanguage, { orderDetails: orderDetails, orderNumber: order.id });
+		await this.service.sendAdminEmail(adminTemplate);
+	}
+
+	@OnEvent(Events.COMMERCE.LOW_STOCK)
+	async onLowStock(payload: { variants: ProductVariantEntity[] }) {
+		const { variants } = payload;
+		const settings = await this.settingsService.getSettings();
+		const orderDetails: LowStockAdminEmailTemplateOptions = {
+			products: variants.map(v => ({
+				name: v.name,
+				stock: v.stock,
+				sku: v.sku,
+			})),
+		};
+
+		let adminTemplate: NimaEmail = await this.service.getWebhookTemplate(Emails.LOW_STOCK_ADMIN, payload);
+		if ( !adminTemplate ) adminTemplate = (new LowStockAdminEmail()).getTemplate(settings.adminLanguage, orderDetails);
 		await this.service.sendAdminEmail(adminTemplate);
 	}
 }

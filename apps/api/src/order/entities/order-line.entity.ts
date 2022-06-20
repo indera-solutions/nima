@@ -48,6 +48,9 @@ export class OrderLineEntity {
 	@ApiProperty({ type: ProductVariantDto })
 	variant: ProductVariantEntity;
 
+	@RelationId((orderLine: OrderLineEntity) => orderLine.variant)
+	variantId: number;
+
 	@Column({ type: 'float' })
 	@ApiProperty({ type: Number, example: 12.3 })
 	taxRate: number;

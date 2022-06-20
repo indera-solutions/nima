@@ -1,5 +1,5 @@
 import { LanguageCode } from '@nima-cms/utils';
-import { EntityRepository, In } from 'typeorm';
+import { EntityRepository } from 'typeorm';
 import { BaseRepository } from 'typeorm-transactional-cls-hooked';
 import { AttributeValueEntity } from '../../attributes/entities/attribute-value.entity';
 import { AttributeEntity } from '../../attributes/entities/attribute.entity';
@@ -206,19 +206,32 @@ export class ProductVariantRepository extends BaseRepository<ProductVariantEntit
 		return res.map(r => ({ aId: r.a_id, aSlug: r.a_slug, avSlug: r.av_slug, avId: r.av_id, count: r.count }));
 	}
 
-	async checkLowStock(productVariantId: number[]): Promise<Pick<ProductVariantEntity, 'stock' | 'trackInventory' | 'stockThreshold'>[]> {
-		return await this.createQueryBuilder('p').select(['p.stock', 'p.trackInventory', 'p.stockThreshold']).where(`"trackInventory" = true`).andWhere('stock < "stockThreshold"').andWhere('p.id IN (:...ids)', { ids: productVariantId }).getMany();
+	async getTrackedStockVariantsByIds(productVariantIds: number[]): Promise<ProductVariantEntity[]> {
+		return this.findByIds(productVariantIds, {
+			where: {
+				trackInventory: true,
+			},
+			loadEagerRelations: false,
+		});
 	}
 
 	async returnStock(productVariantSku: string, stock: number): Promise<void> {
-		await this.createQueryBuilder().update(ProductVariantEntity).where('sku = :sku', { sku: productVariantSku }).andWhere(`"trackInventory" = true`).set({
-			stock: () => `stock + ${ stock }`,
-		}).execute();
+		await this.createQueryBuilder()
+				  .update(ProductVariantEntity)
+				  .where('sku = :sku', { sku: productVariantSku })
+				  .andWhere(`"trackInventory" = true`)
+				  .set({ stock: () => `stock + ${ stock }` })
+				  .execute();
 	}
 
 	async removeStock(productVariantId: number, stock: number): Promise<void> {
-		await this.createQueryBuilder().update(ProductVariantEntity).where('id = :id', { id: productVariantId }).andWhere(`"trackInventory" = true`).set({
-			stock: () => `stock - ${ stock }`,
-		}).execute();
+		await this.createQueryBuilder()
+				  .update(ProductVariantEntity)
+				  .where('id = :id', { id: productVariantId })
+				  .andWhere(`"trackInventory" = true`)
+				  .set({
+					  stock: () => `stock - ${ stock }`,
+				  })
+				  .execute();
 	}
 }

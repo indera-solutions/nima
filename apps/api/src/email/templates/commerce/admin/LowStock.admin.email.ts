@@ -4,7 +4,7 @@ import { BaseAdminEmailParams, NimaEmail } from '../../BaseEmail';
 import { BaseCommerceEmail } from '../BaseCommerceEmail';
 
 export interface LowStockAdminEmailTemplateOptions extends BaseAdminEmailParams {
-	products: Pick<ProductVariantEntity, 'name' | 'stock'>[];
+	products: Pick<ProductVariantEntity, 'name' | 'stock' | 'sku'>[];
 }
 
 export class LowStockAdminEmail extends BaseCommerceEmail {
@@ -14,7 +14,7 @@ export class LowStockAdminEmail extends BaseCommerceEmail {
 
 	getTemplate(language: LanguageCode, params: LowStockAdminEmailTemplateOptions): NimaEmail {
 		const prodText: string = params.products.map(item => {
-			return item.stock + 'x ' + item.name;
+			return `- ${ item.name[language] } (${ item.sku }) x ${ item.stock }`;
 		}).join('\n');
 
 		return {

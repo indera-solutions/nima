@@ -3,7 +3,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { PaginatedResults } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { CheckoutService } from '../checkout/checkout.service';
-import { CheckoutLineDto } from '../checkout/dto/checkout-line.dto';
+import { SettingsService } from '../core/settings/settings.service';
 import { DiscountVoucherService } from '../discounts/discount-voucher.service';
 import { DiscountVoucherType } from '../discounts/dto/discount.enum';
 import { DiscountVoucherEntity } from '../discounts/entities/discount-voucher.entity';
@@ -19,6 +19,7 @@ import { InternalCreateOrderLineDto, OrderLineDto } from './dto/order-line.dto';
 import { CreateOrderDto, UpdateOrderDto, UpdateOrderStatusDto } from './dto/order.dto';
 import { OrderEventsEnum, OrderStatus } from './dto/order.enum';
 import { OrderEventEntity } from './entities/order-event.entity';
+import { OrderLineEntity } from './entities/order-line.entity';
 import { OrderEntity } from './entities/order.entity';
 import { OrderEventRepository } from './repositories/order-event.repository';
 import { OrderLineRepository } from './repositories/order-line.repository';
@@ -38,6 +39,7 @@ export class OrderService {
 		private variantService: ProductVariantService,
 		private paymentService: PaymentsService,
 		private voucherService: DiscountVoucherService,
+		private settingsService: SettingsService,
 		private eventEmitter: EventEmitter2,
 	) {
 	}
@@ -188,9 +190,17 @@ export class OrderService {
 
 		await this.checkoutService.remove({ token: params.token });
 
-		if ( voucher ) await this.voucherService.addOneUse(voucher.id);
+		if ( voucher ) {
+			// noinspection ES6MissingAwait
+			this.voucherService.addOneUse(voucher.id);
+		}
 
-		return this.findOne({ id: order.id });
+		const finalOrder = await this.findOne({ id: order.id });
+
+		// noinspection ES6MissingAwait
+		this.alertLowStockVariants(finalOrder.lines);
+
+		return finalOrder;
 	}
 
 	@Transactional()
@@ -330,8 +340,19 @@ export class OrderService {
 		await Promise.all(returnStockPromises);
 	}
 
-	private async alertLowStockVariants(orderLines: CheckoutLineDto[]): Promise<void> {
-		const variantIds = orderLines.map(variant => variant.variantId);
-		const variantsInLowStock = await this.variantService.checkLowStock({ productVariantIds: variantIds });
+	private async alertLowStockVariants(orderLines: OrderLineEntity[]): Promise<void> {
+		const variantIds = orderLines.map(line => line.variantId);
+		const trackingVariants = await this.variantService.checkLowStock({ productVariantIds: variantIds });
+		if ( trackingVariants.length === 0 ) return;
+		const { globalStockThreshold } = await this.settingsService.getSettings();
+		const lowStockVariants = trackingVariants
+			.map(v => {
+				if ( v.stockThreshold === undefined || v.stockThreshold === null ) {
+					v.stockThreshold = globalStockThreshold;
+				}
+				return v;
+			})
+			.filter(v => v.stock <= v.stockThreshold);
+		await CommerceOrderEventClient.lowStockAlert(this.eventEmitter, { variants: lowStockVariants });
 	}
 }

@@ -335,8 +335,8 @@ export class ProductVariantService {
 		return roundToDigit(lowestPrice);
 	}
 
-	async checkLowStock(params: { productVariantIds: number[] }): Promise<Pick<ProductVariantEntity, 'stock' | 'trackInventory' | 'stockThreshold'>[]> {
-		return this.productVariantRepository.checkLowStock(params.productVariantIds);
+	async checkLowStock(params: { productVariantIds: number[] }): Promise<ProductVariantEntity[]> {
+		return this.productVariantRepository.getTrackedStockVariantsByIds(params.productVariantIds);
 	}
 
 	async returnStock(params: { productVariantSku: string, stock: number }): Promise<void> {
