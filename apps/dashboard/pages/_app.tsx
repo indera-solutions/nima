@@ -43,7 +43,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
 	return (
 		<>
 			<Head>
-				<title>Welcome to dashboard!</title>
+				<title>Nima CMS | Indera Business Solutions</title>
 			</Head>
 			<main className="app">
 				<QueryClientProvider client={ queryClient }>

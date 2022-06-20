@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { LanguageCode, Metadata } from '@nima-cms/utils';
-import { IsEmail, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEmail, IsObject, IsOptional, IsString } from 'class-validator';
 import {
 	Column,
 	CreateDateColumn,
@@ -30,14 +30,17 @@ export class UserEntity {
 
 	@Column({ default: false })
 	@ApiProperty({ type: Boolean, example: false })
+	@IsBoolean()
 	isAdmin: boolean;
 
 	@Column({ default: false })
 	@ApiProperty({ type: Boolean, example: false })
+	@IsBoolean()
 	isStaff: boolean;
 
 	@Column({ default: false })
 	@ApiProperty({ type: Boolean, example: false })
+	@IsBoolean()
 	isActive: boolean;
 
 	@CreateDateColumn()
@@ -52,11 +55,11 @@ export class UserEntity {
 	@ApiProperty({ type: String, example: '2022-01-01', required: false })
 	lastLogin?: string;
 
-	@OneToOne(() => AddressEntity)
+	@OneToOne(() => AddressEntity, { nullable: true })
 	@ApiProperty({ type: AddressDto, required: false })
 	defaultBillingAddress?: AddressDto;
 
-	@OneToOne(() => AddressEntity)
+	@OneToOne(() => AddressEntity, { nullable: true })
 	@ApiProperty({ type: AddressDto, required: false })
 	defaultShippingAddress?: AddressDto;
 
@@ -82,10 +85,12 @@ export class UserEntity {
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: Object, example: {} })
+	@IsObject()
 	metadata: Metadata;
 
 	@Column({ type: 'jsonb', default: {} })
 	@ApiProperty({ type: Object, example: {} })
+	@IsObject()
 	privateMetadata: Metadata;
 
 	@Column({ type: 'enum', enum: LanguageCode })

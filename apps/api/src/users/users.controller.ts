@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { IsStaff } from '../auth/auth.decorator';
-import { RegisterUserDto, UpdateUserDto } from './dto/user.dto';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { IsStaff, User } from '../auth/auth.decorator';
+import { CreateUserDto, UpdateUserDto, UserDto } from './dto/user.dto';
+import { UserEntity } from './entities/user.entity';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -12,32 +13,42 @@ export class UsersController {
 	}
 
 	@Post()
+	@ApiCreatedResponse({ type: UserDto })
 	@IsStaff()
-	create(@Body() createUserDto: RegisterUserDto) {
-		return this.usersService.create({ registerUserDto: createUserDto });
+	async create(@Body() createUserDto: CreateUserDto, @User() user?: UserEntity): Promise<UserDto> {
+		const res = await this.usersService.create({ createUserDto: createUserDto });
+		return UserDto.prepare(res, { isAdmin: user?.isStaff });
 	}
 
 	@Get()
+	@ApiOkResponse({ type: UserDto, isArray: true })
 	@IsStaff()
-	findAll() {
-		return this.usersService.findAll();
+	async findAll(@User() user?: UserEntity): Promise<UserDto[]> {
+		const res = await this.usersService.findAll();
+		return res.map(u => UserDto.prepare(u, { isAdmin: user?.isStaff }));
 	}
 
 	@Get(':id')
+	@ApiOkResponse({ type: UserDto })
 	@IsStaff()
-	findOne(@Param('id', ParseIntPipe) id: number) {
-		return this.usersService.getById({ id: id });
+	async findOne(@Param('id') id: number, @User() user?: UserEntity): Promise<UserDto> {
+		const res = await this.usersService.getById({ id: id });
+		return UserDto.prepare(res, { isAdmin: user?.isStaff });
 	}
 
 	@Patch(':id')
+	@ApiOkResponse({ type: UserDto })
 	@IsStaff()
-	update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
-		return this.usersService.update({ id, updateUserDto });
+	async update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto, @User() user?: UserEntity) {
+		const res = await this.usersService.update({ id, updateUserDto });
+		return UserDto.prepare(res, { isAdmin: user?.isStaff });
 	}
 
 	@Delete(':id')
+	@ApiOkResponse({ type: UserDto })
 	@IsStaff()
-	remove(@Param('id', ParseIntPipe) id: number) {
-		return this.usersService.remove({ id: id });
+	async remove(@Param('id') id: number, @User() user?: UserEntity) {
+		const res = await this.usersService.remove({ id: id });
+		return UserDto.prepare(res, { isAdmin: user?.isStaff });
 	}
 }

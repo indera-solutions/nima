@@ -12,3 +12,4 @@ export * from './address.queries';
 export * from './collections.queries';
 export * from './sales.queries';
 export * from './voucher.queries';
+export * from './users.queries';

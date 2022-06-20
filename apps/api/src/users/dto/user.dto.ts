@@ -28,7 +28,10 @@ export class UserDto extends OmitType(UserEntity, ['password']) {
 	}
 }
 
-export class CreateUserDto extends OmitType(UserDto, ['createdAt', 'id', 'lastLogin']) {
+export class CreateUserDto extends OmitType(UserDto, ['createdAt', 'id', 'lastLogin', 'updatedAt', 'addresses', 'defaultBillingAddress', 'defaultShippingAddress']) {
+	@ApiProperty()
+	@IsString()
+	password?: string;
 }
 
 export class LoginUserDto extends PickType(UserDto, ['email']) {

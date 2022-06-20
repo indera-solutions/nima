@@ -14,6 +14,7 @@ const ORDERS_QUERY_PREFIX = 'ORDERS';
 const ADDRESS_QUERY_PREFIX = 'ADDRESS';
 const CHECKOUT_QUERY_PREFIX = 'CHECKOUT';
 const SHIPPING_ZONES_QUERY_PREFIX = 'SHIPPING_ZONES';
+const USERS_QUERY_PREFIX = 'USERS';
 
 export const NimaQueryCacheKeys = {
 	settings: [SETTINGS_QUERY_PREFIX],
@@ -85,6 +86,11 @@ export const NimaQueryCacheKeys = {
 		all: [NIMA_QUERY_PREFIX, ADDRESS_QUERY_PREFIX] as const,
 		list: () => [...NimaQueryCacheKeys.address.all, 'LIST'] as const,
 		id: (id?: number) => [...NimaQueryCacheKeys.address.all, 'ID', id] as const,
+	},
+	users: {
+		all: [NIMA_QUERY_PREFIX, USERS_QUERY_PREFIX] as const,
+		list: () => [...NimaQueryCacheKeys.users.all, 'LIST'] as const,
+		id: (id?: number) => [...NimaQueryCacheKeys.users.all, 'ID', id] as const,
 	},
 };
 
