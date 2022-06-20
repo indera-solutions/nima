@@ -3,9 +3,6 @@
 	"affected": {
 		"defaultBase": "main"
 	},
-	"cli": {
-		"defaultCollection": "@nrwl/nest"
-	},
 	"implicitDependencies": {
 		"package.json": {
 			"dependencies": "*",
