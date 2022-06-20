@@ -18,6 +18,7 @@ import { PaymentsModule, PaymentsModuleEntities } from './payments/payments.modu
 import { ProductTypesModule, ProductTypesModuleEntities } from './product-types/product-types.module';
 import { ProductsModule, ProductsModuleEntities } from './products/products.module';
 import { ShippingModule, ShippingModuleEntities } from './shipping/shipping.module';
+import { StatisticsModule } from './statistics/statistics.module';
 import { UserEntity } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 
@@ -67,6 +68,7 @@ const ALL_ENTITIES = [
 		ShippingModule,
 		CollectionsModule,
 		EmailModule,
+		StatisticsModule,
 	],
 	providers: [
 		{
