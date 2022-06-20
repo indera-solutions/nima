@@ -1,4 +1,4 @@
-import { Trans, useCategoryId, useProducts, useProductTypeId } from '@nima-cms/react';
+import { Trans, useCategoryId, useProducts, useProductTypeId, useSettings } from '@nima-cms/react';
 import { ProductDto } from '@nima-cms/sdk';
 import { getEuroValue } from '@nima-cms/utils';
 import Link from 'next/link';
@@ -129,9 +129,10 @@ function ProductRow(props: { product: ProductDto }) {
 		<td><Trans>{ category?.name }</Trans></td>
 		<td><Trans>{ productType?.name }</Trans></td>
 		<td>{ getEuroValue(product.minPrice) }</td>
-		<td>{ product.defaultVariant?.stock === 0 ? <div className="badge badge-error gap-2">
-			0
-		</div> : product.defaultVariant?.stock }</td>
+		{/*<td>{ product.defaultVariant?.stock === 0 ? <div className="badge badge-error gap-2">*/ }
+		{/*	0*/ }
+		{/*</div> : product.defaultVariant?.stock }</td>*/ }
+		<td><StockBadge product={ product }/></td>
 		<td>{ product.isPublished ?
 			<div className="badge badge-success gap-2">
 				Published
@@ -145,4 +146,27 @@ function ProductRow(props: { product: ProductDto }) {
 			</Link>
 		</td>
 	</tr>;
+}
+
+function StockBadge(props: { product: ProductDto }) {
+	const { data: settings } = useSettings();
+	if ( !props.product.defaultVariant?.trackInventory ) {
+		return <span>props.product.defaultVariant?.stock</span>;
+	}
+	const stock = props.product.defaultVariant.stock || 0;
+	if ( stock === 0 ) {
+		return <div className="badge badge-error gap-2">
+			Out of stock
+		</div>;
+	}
+
+	const threshold = props.product.defaultVariant.stockThreshold || settings.globalStockThreshold;
+	if ( stock <= threshold ) {
+		return <div className="badge badge-warning  gap-2">
+			{ stock } (≤{ threshold })
+		</div>;
+	}
+
+	return <div className="badge badge-outline">{ stock }</div>;
+
 }

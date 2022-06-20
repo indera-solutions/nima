@@ -1,3 +1,4 @@
+import { useSettings } from '@nima-cms/react';
 import { CreateProductVariantDto } from '@nima-cms/sdk';
 import React from 'react';
 import { AdminSection } from '../AdminLayout';
@@ -9,6 +10,7 @@ interface EditVariantInformationProps {
 
 export function EditVariantInformation(props: EditVariantInformationProps) {
 	const { onValueEdit, state } = props;
+	const { data: settings } = useSettings();
 
 	return <>
 		<AdminSection title={ 'Prices' }>
@@ -37,6 +39,21 @@ export function EditVariantInformation(props: EditVariantInformationProps) {
 				   onChange={ (e) => onValueEdit('stock', +e.target.value) }
 				   name={ 'stock' }/>
 
+			<div className="form-control w-full max-w-xs">
+				<label className="label">
+					<span className="label-text">Stock Threshold</span>
+				</label>
+				<input type="number" min={ 0 }
+					   placeholder={ `Default: ${ settings?.globalStockThreshold || 0 }` }
+					   className="input input-bordered w-full max-w-xs"
+					   value={ state.stockThreshold || '' }
+					   onChange={ (e) => onValueEdit('stockThreshold', +e.target.value) }
+					   name={ 'stockThreshold' }/>
+				<label className="label">
+					<span className="label-text">Default: { settings?.globalStockThreshold || 0 }</span>
+					<span className="label-text-alt">Notify when stock is below this</span>
+				</label>
+			</div>
 
 			<label className="label cursor-pointer justify-start gap-3">
 				<input type="checkbox" className="checkbox" checked={ state.trackInventory || false }
