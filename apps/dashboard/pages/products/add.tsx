@@ -11,7 +11,7 @@ import {
 	useUpdateProductVariationMutation,
 } from '@nima-cms/react';
 import { CreateAssignedProductAttributeDto, CreateProductDto, CreateProductVariantDto } from '@nima-cms/sdk';
-import { getSlug, Metadata, parseIdStr } from '@nima-cms/utils';
+import { getEuroValue, getSlug, Metadata, parseIdStr } from '@nima-cms/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -27,6 +27,7 @@ import {
 	MetadataEditor,
 	NimaTitle,
 	SelectEditingLanguage,
+	StockBadge,
 	TranslatableInput,
 } from '../../components';
 import { CategoriesSelect } from '../../components/forms/CategoriesSelect';
@@ -324,6 +325,8 @@ export default function Add(props: AddProps) {
 									<th>Name</th>
 									{ variantsHeaders.map(vh => <th key={ vh.id }>
 										<Trans>{ vh.attributeName }</Trans></th>) }
+									<th>Stock</th>
+									<th>Price</th>
 									<th>Actions</th>
 								</tr>
 								</thead>
@@ -337,6 +340,8 @@ export default function Add(props: AddProps) {
 											<Trans>{ (value.values.map(v => v.slug).join(' ') || '') + '' }</Trans>
 										</td>;
 									}) }
+									<td><StockBadge productVariant={ variant }/></td>
+									<td>{ getEuroValue(variant.priceAmount) }</td>
 									<td>
 										<Link href={ NIMA_ROUTES.products.editVariant(id, variant.id) }>
 											<button className={ 'btn btn-primary' }>Edit</button>
