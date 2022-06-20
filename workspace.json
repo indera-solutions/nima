@@ -8,5 +8,6 @@
 		"react": "libs/react",
 		"sdk": "libs/sdk",
 		"utils": "libs/utils"
-	}
+	},
+	"$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }
