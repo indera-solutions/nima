@@ -478,7 +478,7 @@ i.chevron-down {
 	background-image: url("/images/icons/code.svg");
 }
 
-.dropdown {
+.editor-dropdown {
 	z-index: 5;
 	display: block;
 	position: absolute;
@@ -490,7 +490,7 @@ i.chevron-down {
 	background-color: #fff;
 }
 
-.dropdown .item {
+.editor-dropdown .item {
 	margin: 0 8px 0 8px;
 	padding: 8px;
 	color: #050505;
@@ -508,33 +508,33 @@ i.chevron-down {
 	min-width: 268px;
 }
 
-.dropdown .item .active {
+.editor-dropdown .item .active {
 	display: flex;
 	width: 20px;
 	height: 20px;
 	background-size: contain;
 }
 
-.dropdown .item:first-child {
+.editor-dropdown .item:first-child {
 	margin-top: 8px;
 }
 
-.dropdown .item:last-child {
+.editor-dropdown .item:last-child {
 	margin-bottom: 8px;
 }
 
-.dropdown .item:hover {
+.editor-dropdown .item:hover {
 	background-color: #eee;
 }
 
-.dropdown .item .text {
+.editor-dropdown .item .text {
 	display: flex;
 	line-height: 20px;
 	flex-grow: 1;
 	width: 200px;
 }
 
-.dropdown .item .icon {
+.editor-dropdown .item .icon {
 	display: flex;
 	width: 20px;
 	height: 20px;

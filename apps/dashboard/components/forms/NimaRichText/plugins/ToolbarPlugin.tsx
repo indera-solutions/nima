@@ -362,7 +362,7 @@ function BlockOptionsDropdownList({
 	};
 
 	return (
-		<div className="dropdown" ref={ dropDownRef }>
+		<div className="editor-dropdown" ref={ dropDownRef }>
 			<button className="item" onClick={ formatParagraph }>
 				<span className="icon paragraph"/>
 				<span className="text">Normal</span>
