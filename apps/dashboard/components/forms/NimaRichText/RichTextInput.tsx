@@ -21,7 +21,7 @@ import ToolbarPlugin from './plugins/ToolbarPlugin';
 import exampleTheme from './RichTextTheme';
 
 function Placeholder() {
-	return <div className="editor-placeholder">Enter some rich text...</div>;
+	return <div className="nima-richtext-placeholder">Enter some rich text...</div>;
 }
 
 const editorConfig = {
@@ -74,12 +74,12 @@ function MyCustomAutoFocusPlugin(props: {
 export function RichTextInput(props: { init: any, onChange: (html: string, raw: any) => void }) {
 	return (
 		<LexicalComposer initialConfig={ editorConfig }>
-			<div className="editor-container">
+			<div className="nima-richtext-container">
 				<ToolbarPlugin/>
-				<div className="editor-inner">
+				<div className="nima-richtext-inner">
 					<RichTextPlugin
 						initialEditorState={ props.init?.editorState ? JSON.stringify(props.init.editorState) : undefined }
-						contentEditable={ <ContentEditable className="editor-input"/> }
+						contentEditable={ <ContentEditable className="nima-richtext-input"/> }
 						placeholder={ <Placeholder/> }
 					/>
 					<HistoryPlugin/>

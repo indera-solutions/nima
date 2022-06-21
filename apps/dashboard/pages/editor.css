@@ -1,5 +1,5 @@
 
-.editor-container {
+.nima-richtext-container {
 	/*margin: 20px auto 20px auto;*/
 	border: 1px solid black;
 	border-radius: 2px;
@@ -13,12 +13,12 @@
 	border-top-right-radius: 10px;
 }
 
-.editor-inner {
+.nima-richtext-inner {
 	background: #fff;
 	position: relative;
 }
 
-.editor-input {
+.nima-richtext-input {
 	min-height: 150px;
 	resize: none;
 	font-size: 15px;
@@ -30,7 +30,7 @@
 	caret-color: #444;
 }
 
-.editor-placeholder {
+.nima-richtext-placeholder {
 	color: #999;
 	overflow: hidden;
 	position: absolute;
@@ -43,34 +43,34 @@
 	pointer-events: none;
 }
 
-.editor-text-bold {
+.nima-richtext-text-bold {
 	font-weight: bold;
 }
 
-.editor-text-italic {
+.nima-richtext-text-italic {
 	font-style: italic;
 }
 
-.editor-text-underline {
+.nima-richtext-text-underline {
 	text-decoration: underline;
 }
 
-.editor-text-strikethrough {
+.nima-richtext-text-strikethrough {
 	text-decoration: line-through;
 }
 
-.editor-text-underlineStrikethrough {
+.nima-richtext-text-underlineStrikethrough {
 	text-decoration: underline line-through;
 }
 
-.editor-text-code {
+.nima-richtext-text-code {
 	background-color: rgb(240, 242, 245);
 	padding: 1px 0.25rem;
 	font-family: Menlo, Consolas, Monaco, monospace;
 	font-size: 94%;
 }
 
-.editor-link {
+.nima-richtext-link {
 	color: rgb(33, 111, 219);
 	text-decoration: none;
 }
@@ -91,7 +91,7 @@
 	line-height: 14px;
 }
 
-.editor-code {
+.nima-richtext-code {
 	background-color: rgb(240, 242, 245);
 	font-family: Menlo, Consolas, Monaco, monospace;
 	display: block;
@@ -107,7 +107,7 @@
 	position: relative;
 }
 
-.editor-code:before {
+.nima-richtext-code:before {
 	content: attr(data-gutter);
 	position: absolute;
 	background-color: #eee;
@@ -121,7 +121,7 @@
 	min-width: 25px;
 }
 
-.editor-code:after {
+.nima-richtext-code:after {
 	content: attr(data-highlight-language);
 	top: 0;
 	right: 3px;
@@ -132,49 +132,49 @@
 	color: rgba(0, 0, 0, 0.5);
 }
 
-.editor-tokenComment {
+.nima-richtext-tokenComment {
 	color: slategray;
 }
 
-.editor-tokenPunctuation {
+.nima-richtext-tokenPunctuation {
 	color: #999;
 }
 
-.editor-tokenProperty {
+.nima-richtext-tokenProperty {
 	color: #905;
 }
 
-.editor-tokenSelector {
+.nima-richtext-tokenSelector {
 	color: #690;
 }
 
-.editor-tokenOperator {
+.nima-richtext-tokenOperator {
 	color: #9a6e3a;
 }
 
-.editor-tokenAttr {
+.nima-richtext-tokenAttr {
 	color: #07a;
 }
 
-.editor-tokenVariable {
+.nima-richtext-tokenVariable {
 	color: #e90;
 }
 
-.editor-tokenFunction {
+.nima-richtext-tokenFunction {
 	color: #dd4a68;
 }
 
-.editor-paragraph {
+.nima-richtext-paragraph {
 	margin: 0;
 	margin-bottom: 8px;
 	position: relative;
 }
 
-.editor-paragraph:last-child {
+.nima-richtext-paragraph:last-child {
 	margin-bottom: 0;
 }
 
-.editor-heading-h1 {
+.nima-richtext-heading-h1 {
 	font-size: 24px;
 	color: rgb(5, 5, 5);
 	font-weight: 400;
@@ -183,7 +183,7 @@
 	padding: 0;
 }
 
-.editor-heading-h2 {
+.nima-richtext-heading-h2 {
 	font-size: 15px;
 	color: rgb(101, 103, 107);
 	font-weight: 700;
@@ -193,7 +193,7 @@
 	text-transform: uppercase;
 }
 
-.editor-quote {
+.nima-richtext-quote {
 	margin: 0;
 	margin-left: 20px;
 	font-size: 15px;
@@ -204,25 +204,25 @@
 	padding-left: 16px;
 }
 
-.editor-list-ol {
+.nima-richtext-list-ol {
 	padding: 0;
 	margin: 0;
 	margin-left: 16px;
 	list-style: auto !important;
 }
 
-.editor-list-ul {
+.nima-richtext-list-ul {
 	padding: 0;
 	margin: 0;
 	margin-left: 16px;
 	list-style: initial !important;
 }
 
-.editor-listitem {
+.nima-richtext-listitem {
 	margin: 8px 32px 8px 32px;
 }
 
-.editor-nested-listitem {
+.nima-richtext-nested-listitem {
 	list-style-type: none;
 }
 
