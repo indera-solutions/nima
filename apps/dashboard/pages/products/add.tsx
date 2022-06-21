@@ -32,6 +32,7 @@ import {
 } from '../../components';
 import { CategoriesSelect } from '../../components/forms/CategoriesSelect';
 import { CollectionSelect } from '../../components/forms/CollectionSelect';
+import { RichTextInput } from '../../components/forms/NimaRichText/RichTextInput';
 import { NIMA_ROUTES } from '../../lib/routes';
 
 interface AddProps {
@@ -61,6 +62,7 @@ export default function Add(props: AddProps) {
 		chargeTaxes: false,
 		currency: 'EUR',
 		description: {},
+		descriptionRaw: {},
 		descriptionPlaintext: '',
 		isAvailableForPurchase: true,
 		isPublished: true,
@@ -214,6 +216,21 @@ export default function Add(props: AddProps) {
 		}));
 	}
 
+
+	function onDescriptionEdit(html: string, raw: any) {
+		setCreateProductDto(state => ({
+			...state,
+			description: {
+				...state.description,
+				[languages.currentEditingLanguage]: html,
+			},
+			descriptionRaw: {
+				...state.descriptionRaw,
+				[languages.currentEditingLanguage]: raw,
+			},
+		}));
+	}
+
 	function onVariantValueEdit(name: keyof CreateProductVariantDto, value: any) {
 		setDefaultVariant(state => ({
 			...state,
@@ -235,9 +252,9 @@ export default function Add(props: AddProps) {
 	return (
 		<>
 			<NimaTitle
-				title={ isEditing ? `Update` : 'Create Product' }/>
+				title={ existingProduct ? `Update ${ existingProduct.name[languages.adminLanguage] }` : 'Create Product' }/>
 			<AdminPage
-				label={ isEditing ? `Update` : 'Create New Product' }
+				label={ existingProduct ? `Update ${ existingProduct.name[languages.adminLanguage] }` : 'Create New Product' }
 				footerContainer={ <AdminFooter>
 					<Link href={ NIMA_ROUTES.products.list }>
 						<button className={ 'btn btn-secondary' }>Back</button>
@@ -260,13 +277,15 @@ export default function Add(props: AddProps) {
 						/>
 
 						<label className="label">
-							<span className="label-text">Description</span>
+							<span
+								className="label-text">Description ({ languages.currentEditingLanguage.toUpperCase() })</span>
 						</label>
-						<TranslatableInput className={ 'input w-full max-w-xs input-bordered' }
-										   name="name"
-										   value={ createProductDto.description }
-										   onChange={ (value) => onValueEdit('description', value) }
-						/>
+						{ createProductDto.descriptionRaw && <RichTextInput
+							key={ languages.currentEditingLanguage + createProductDto?.name[languages.currentEditingLanguage] }
+							init={ createProductDto.descriptionRaw[languages.currentEditingLanguage] }
+							onChange={ (html, raw) => {
+								onDescriptionEdit(html, raw);
+							} }/> }
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
 								<span className="label-text">Slug</span>

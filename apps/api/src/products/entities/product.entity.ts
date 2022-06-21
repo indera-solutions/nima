@@ -39,6 +39,11 @@ export class ProductEntity {
 	@IsObject()
 	description: Translatable;
 
+	@Column({ type: 'jsonb', default: {} })
+	@ApiProperty({ type: Object, example: {} })
+	@IsObject()
+	descriptionRaw: any;
+
 	@UpdateDateColumn({ type: String })
 	@ApiProperty({ type: String, example: '' })
 	updatedAt: string;

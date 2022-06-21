@@ -1477,6 +1477,12 @@ export interface CreateProductDto {
 	'description': TranslatableDto;
 	/**
 	 *
+	 * @type {object}
+	 * @memberof CreateProductDto
+	 */
+	'descriptionRaw': object;
+	/**
+	 *
 	 * @type {string}
 	 * @memberof CreateProductDto
 	 */
@@ -3258,6 +3264,12 @@ export interface ProductDto {
 	 * @memberof ProductDto
 	 */
 	'description': TranslatableDto;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof ProductDto
+	 */
+	'descriptionRaw': object;
 	/**
 	 *
 	 * @type {string}

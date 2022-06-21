@@ -41,6 +41,7 @@ export class ProductDto extends OmitType(ProductEntity, ['productType', 'product
 			weight: entity.weight,
 			defaultVariantId: entity.defaultVariantId || entity.defaultVariant?.id,
 			description: entity.description,
+			descriptionRaw: entity.descriptionRaw,
 			descriptionPlaintext: entity.descriptionPlaintext,
 			metadata: entity.metadata,
 			privateMetadata: options?.isAdmin ? entity.privateMetadata : {},
