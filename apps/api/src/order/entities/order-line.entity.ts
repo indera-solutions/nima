@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Translatable } from '@nima-cms/utils';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
+import { DiscountType } from '../../discounts/dto/discount.enum';
 import { DiscountSaleEntity } from '../../discounts/entities/discount-sale.entity';
 import { ProductVariantDto } from '../../products/dto/product-variant.dto';
 import { ProductVariantEntity } from '../../products/entities/product-variant.entity';
@@ -70,19 +71,31 @@ export class OrderLineEntity {
 
 	@Column({ type: 'float' })
 	@ApiProperty({ type: Number, example: 12.3 })
-	unitDiscountAmount: number;
+	unitSaleDiscountAmount: number;
 
 	@Column({ type: 'float' })
 	@ApiProperty({ type: Number, example: 12.3 })
-	unitDiscountValue: number;
+	unitVoucherDiscountAmount: number;
+
+	@Column({ type: 'float' })
+	@ApiProperty({ type: Number, example: 12.3 })
+	unitSaleDiscountValue: number;
+
+	@Column({ type: 'float' })
+	@ApiProperty({ type: Number, example: 12.3 })
+	unitVoucherDiscountValue: number;
 
 	@Column({ type: String, nullable: true })
 	@ApiProperty({ type: String, example: 'discount-reason', required: false })
 	unitDiscountReason?: string;
 
-	@Column({ type: String })
-	@ApiProperty({ type: String, example: '' })
-	unitDiscountType: string;
+	@Column({ type: 'enum', enum: DiscountType, nullable: true })
+	@ApiProperty({ enum: DiscountType, required: false })
+	unitSaleDiscountType?: DiscountType;
+
+	@Column({ type: 'enum', enum: DiscountType, nullable: true })
+	@ApiProperty({ enum: DiscountType, required: false })
+	unitVoucherDiscountType?: DiscountType;
 
 	@Column({ type: 'float' })
 	@ApiProperty({ type: Number, example: 12.3 })

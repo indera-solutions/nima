@@ -190,9 +190,9 @@ export class CheckoutService {
 		const lines: CheckoutLineDto[] = entity.lines.map(line => {
 			if ( !line.variant ) throw new Error('MISSING_VARIANT');
 			const totalCost = line.quantity * (line.variant.discountedPrice || line.variant.priceAmount);
-			let discountedTotalCost;
-			let voucherDiscount;
+			let discountedTotalCost, voucherDiscount, totalSaleDiscount;
 			if ( line.variant.discountedPrice ) {
+				totalSaleDiscount = line.quantity * (line.variant.priceAmount - line.variant.discountedPrice);
 				discountedTotalCost = line.quantity * line.variant.discountedPrice;
 			}
 			if ( voucher && voucher.voucherType === DiscountVoucherType.SPECIFIC_PRODUCT && voucherVariants.includes(line.variantId) ) {
@@ -212,6 +212,10 @@ export class CheckoutService {
 				productId: line.productId,
 				totalCost,
 				discountedTotalCost: discountedTotalCost,
+				totalSaleDiscount: totalSaleDiscount,
+				saleDiscountType: line.variant.discountType,
+				totalVoucherDiscount: voucherDiscount,
+				voucherDiscountType: voucher?.discountValueType,
 			};
 		});
 

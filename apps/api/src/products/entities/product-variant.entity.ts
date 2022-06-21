@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Metadata, Translatable } from '@nima-cms/utils';
-import { IsBoolean, IsInt, IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsInt, IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
 import {
 	Column,
 	CreateDateColumn,
@@ -12,6 +12,7 @@ import {
 	UpdateDateColumn,
 } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
+import { DiscountType } from '../../discounts/dto/discount.enum';
 import { AssignedProductVariantAttributeEntity } from './product-attribute-assignment.entity';
 import { ProductVariantMediaEntity } from './product-variant-media.entity';
 import { ProductEntity } from './product.entity';
@@ -87,6 +88,17 @@ export class ProductVariantEntity {
 	@IsNumber()
 	@IsOptional()
 	discountedPrice?: number;
+
+	@Column({ type: 'enum', enum: DiscountType, nullable: true })
+	@ApiProperty({ enum: DiscountType, enumName: 'DiscountType', required: false })
+	@IsEnum(DiscountType)
+	@IsOptional()
+	discountType?: DiscountType;
+
+	@Column({ type: 'float', default: 0, nullable: true })
+	@ApiProperty({ type: Number })
+	@IsNumber()
+	discountValue?: number;
 
 	//Stock
 	@Column()

@@ -131,9 +131,11 @@ export class ProductVariantService {
 
 	async syncVariantDiscountValue(params: { variantId: number }): Promise<void> {
 		const variant = await this.productVariantRepository.getFullObject(params.variantId);
-		const discountPrice = await this.calculateDiscountedPrice(variant);
+		const discount = await this.calculateDiscountedPrice(variant);
 		await this.productVariantRepository.update(params.variantId, {
-			discountedPrice: discountPrice ? discountPrice : null,
+			discountedPrice: discount ? discount.price : null,
+			discountType: discount ? discount.discountType : null,
+			discountValue: discount ? discount.discountValue : null,
 		});
 	}
 
@@ -194,6 +196,8 @@ export class ProductVariantService {
 			productMedia: entity.productMedia.map(pm => SortableMediaDto.prepare(pm)),
 			priceAmount: entity.priceAmount,
 			discountedPrice: entity.discountedPrice,
+			discountType: entity.discountType,
+			discountValue: entity.discountValue,
 		};
 	}
 
@@ -312,7 +316,7 @@ export class ProductVariantService {
 		await this.assignedProductVariantAttributeValueRepository.save({ value: value, assignedProductVariantAttribute: assignment, sortOrder: dto.sortOrder });
 	}
 
-	private async calculateDiscountedPrice(entity: ProductVariantEntity): Promise<undefined | number> {
+	private async calculateDiscountedPrice(entity: ProductVariantEntity): Promise<undefined | { price: number, discountType: DiscountType, discountValue: number }> {
 		const variantId = entity.id;
 		const productId = entity.productId;
 		const categoryId = entity.product.category.id;
@@ -322,6 +326,7 @@ export class ProductVariantService {
 		const discounts = await this.salesService.findDiscountsOfVariant({ variantId: variantId, productId: productId, categoryId: categoryId, collectionIds: collectionIds });
 		if ( !discounts || discounts.length === 0 ) return undefined;
 		let lowestPrice = basePrice;
+		let discountType: DiscountType, discountValue;
 		for ( const discount of discounts ) {
 			let temp = Number.MAX_SAFE_INTEGER;
 			if ( discount.discountType === DiscountType.PERCENTAGE ) {
@@ -329,8 +334,12 @@ export class ProductVariantService {
 			} else if ( discount.discountType === DiscountType.FLAT ) {
 				temp = Math.max(basePrice - discount.discountValue, 0);
 			}
-			if ( temp < lowestPrice ) lowestPrice = temp;
+			if ( temp < lowestPrice ) {
+				discountType = discount.discountType;
+				discountValue = discount.discountValue;
+				lowestPrice = temp;
+			}
 		}
-		return roundToDigit(lowestPrice);
+		return { price: roundToDigit(lowestPrice), discountType: discountType, discountValue: discountValue };
 	}
 }

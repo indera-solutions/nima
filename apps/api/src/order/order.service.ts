@@ -4,7 +4,7 @@ import { PaginatedResults } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { CheckoutService } from '../checkout/checkout.service';
 import { DiscountVoucherService } from '../discounts/discount-voucher.service';
-import { DiscountVoucherType } from '../discounts/dto/discount.enum';
+import { DiscountType, DiscountVoucherType } from '../discounts/dto/discount.enum';
 import { DiscountVoucherEntity } from '../discounts/entities/discount-voucher.entity';
 import { CommerceOrderEventClient } from '../email/commerce.order.event.client';
 import { UpdatePaymentStatusDto } from '../payments/dto/payment.dto';
@@ -149,10 +149,13 @@ export class OrderService {
 				/*TODO: Implement Sales and Vouchers*/
 				// sale: minPrice.sale,
 				voucherCode: voucherCode,
-				unitDiscountAmount: variant.priceAmount - variant.discountedPrice || 0,
+				unitSaleDiscountAmount: variant.priceAmount - variant.discountedPrice || 0,
+				unitSaleDiscountType: variant.discountType,
+				unitSaleDiscountValue: variant.discountValue || 0,
 				unitDiscountReason: unitDiscountReason ? unitDiscountReason : variant.discountedPrice ? 'sale' : '',
-				unitDiscountType: unitDiscountReason ? unitDiscountReason : variant.discountedPrice ? 'sale' : '',
-				unitDiscountValue: 0,
+				unitVoucherDiscountValue: voucher?.discountValue || 0,
+				unitVoucherDiscountType: voucher?.discountValueType !== DiscountType.FREE_SHIPPING ? voucher?.discountValueType : null,
+				unitVoucherDiscountAmount: line.totalVoucherDiscount ? (line.totalVoucherDiscount / line.quantity) : 0,
 
 				/*Tax Rate handling not implemented yet*/
 				taxRate: 0,

@@ -36,6 +36,8 @@ export class ProductVariantDto extends OmitType(ProductVariantEntity, ['attribut
 			trackInventory: entity.trackInventory,
 			productMedia: (entity.productMedia || []).map(pm => SortableMediaDto.prepare(pm)),
 			discountedPrice: entity.discountedPrice,
+			discountType: entity.discountType,
+			discountValue: entity.discountValue,
 		};
 	}
 }

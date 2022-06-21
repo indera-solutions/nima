@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { OrderStatus } from '../order/dto/order.enum';
 import { OrderEntity } from '../order/entities/order.entity';
 import { OrderStatisticsDto } from './dto/order-statistics.dto';
 import { StatisticsGrouping } from './dto/statistics.enum';
@@ -34,9 +35,13 @@ export class StatisticsService {
 
 	async generateOrderStats(startDate?: string, endDate?: string, grouping = StatisticsGrouping.DAY): Promise<OrderStatisticsDto> {
 
-		const query = await this.orderEntityRepository
-								.createQueryBuilder('o')
-								.select(`date_trunc('${ StatisticsService.groupingToSqlField(grouping) }', o.created::TIMESTAMP WITH TIME ZONE) AS _group`);
+		const fQuery = await this.orderEntityRepository
+								 .createQueryBuilder('o')
+								 .select(`date_trunc('${ StatisticsService.groupingToSqlField(grouping) }', o.created::TIMESTAMP WITH TIME ZONE) AS _group`)
+								 .addSelect(`sum("totalGrossAmount")`, `"totalFulfilledAmount"`)
+								 .addSelect(`avg("totalGrossAmount")`, `"avgFulfilledAmount"`)
+								 .where(`o.status = ${ OrderStatus.FULFILLED }`)
+								 .groupBy('_group');
 
 		return {
 			endDate: '',
