@@ -1,5 +1,5 @@
 import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { BasePaginatedRequest, getSlug, PaginatedResults } from '@nima-cms/utils';
+import { BasePaginatedRequest, getSlug, htmlToPlain, PaginatedResults } from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { AttributeValuesService } from '../attributes/attribute-values.service';
 import { CategoriesService } from '../categories/categories.service';
@@ -329,7 +329,7 @@ export class ProductsService {
 			str += product.name[locale] + ' ';
 		}
 		for ( const locale in product.description ) {
-			str += product.description[locale] + ' ';
+			str += htmlToPlain(product.description[locale]) + ' ';
 		}
 
 		str += product.slug + ' ';

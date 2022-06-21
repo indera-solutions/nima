@@ -1,3 +1,5 @@
+const { convert } = require('html-to-text');
+
 export function toTitleCase(str: string) {
 	// str = str.replace("_", " ");
 	str = str.split('_').join(' '); // using split it removes all underscores, not only the first (as replace does)
@@ -56,4 +58,17 @@ export function getRandomString(length: number) {
 	let r = Math.random().toString(36).substring(2);
 	while ( r.length < length ) r += Math.random().toString(36).substring(2);
 	return r.slice(r.length - length);
+}
+
+export function htmlToPlain(html: string): string {
+	let str: string = convert(html, {
+		wordwrap: false,
+	});
+
+	str = str.toLowerCase();
+	str = str.replace(/(?:\r\n|\r|\n)/g, ' ');
+	str = str.replace(/\*/g, '');
+
+	console.log(str);
+	return str;
 }

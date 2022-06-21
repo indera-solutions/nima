@@ -6,6 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { AdminLayout } from '../components';
 import { adminRoutes } from '../lib/sidemenuItem';
+import './editor.css';
 import './styles.css';
 
 function errorLogging(error: any) {
