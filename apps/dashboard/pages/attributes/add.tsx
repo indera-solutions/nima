@@ -191,6 +191,7 @@ export default function AddAttribute(props: AddAttributeProps) {
 			await removeAttributeMutation.mutateAsync({
 				attributeId: id,
 			});
+			toast.success('Attribute Deleted');
 			router.push(NIMA_ROUTES.attributes.list);
 		}
 	}

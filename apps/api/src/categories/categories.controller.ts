@@ -105,8 +105,10 @@ export class CategoriesController {
 
 	@Delete(':id')
 	@ApiQuery({ name: 'forceDelete', description: 'Deletes the children subcategories. Default to false.', required: false })
+	@ApiOkResponse({ type: CategoryDto })
 	@IsStaff()
 	async remove(@Param('id') id: number, @Query('forceDelete') forceDelete?: boolean, @User() user?: UserEntity) {
-		return this.categoriesService.remove({ id, removeChildren: forceDelete });
+		const res = await this.categoriesService.remove({ id, removeChildren: forceDelete });
+		return CategoryDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 }

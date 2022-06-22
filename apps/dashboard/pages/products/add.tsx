@@ -216,6 +216,7 @@ export default function Add(props: AddProps) {
 			await deleteProductMutation.mutateAsync({
 				productId: id,
 			});
+			toast.success('Product Deleted');
 			router.push(NIMA_ROUTES.products.list);
 		}
 	}

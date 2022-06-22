@@ -1,6 +1,7 @@
-import { BadRequestException, Injectable, NotFoundException, NotImplementedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { getSlug } from '@nima-cms/utils';
 import { Like } from 'typeorm';
+import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto/category.dto';
 import { CategoryEntity } from './entities/category.entity';
 import { CategoryRepository } from './entities/category.repository';
@@ -76,17 +77,25 @@ export class CategoriesService {
 		return this.findOne({ id: params.id });
 	}
 
+	@Transactional()
 	async remove(params: { id: number, removeChildren?: boolean }) {
 		const existing = await this.findOne({ id: params.id, depth: 1 });
+		const productCount = await this.categoryRepository.getProductCountOfCategory(params.id);
+		if ( productCount > 0 ) {
+			throw new BadRequestException('CATEGORY_WITH_PRODUCTS', 'There are still products in category');
+		}
 		if ( existing.children.length > 0 ) {
 			if ( params.removeChildren ) {
-				throw new NotImplementedException('OPERATION_NOT_SUPPORTED.');
+				for ( const child of existing.children ) {
+					await this.remove({ id: child.id, removeChildren: params.removeChildren });
+				}
 			} else {
 				throw new BadRequestException('CATEGORY_WITH_CHILDREN', 'Can\'t delete a category with children. Please move them first or force delete');
 			}
 		}
 
 		await this.categoryRepository.delete(params.id);
+		return existing;
 	}
 
 	async listIdsOfChildren(params: { id: number }) {

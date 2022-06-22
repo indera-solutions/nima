@@ -107,3 +107,26 @@ export function useUpdateCategoryMutation() {
 		},
 	);
 }
+
+export function useDeleteCategoryMutation() {
+	const client = useQueryClient();
+	return useMutation<CategoryDto,
+		never,
+		{
+			categoryId: number,
+			forceDelete: boolean,
+		}>(
+		async ({ categoryId, forceDelete }) => {
+			const res = await categoriesSDK.categoriesRemove({
+				id: categoryId,
+				forceDelete: forceDelete,
+			});
+			return res.data;
+		},
+		{
+			onSuccess: () => {
+				client.invalidateQueries(NimaQueryCacheKeys.categories.all);
+			},
+		},
+	);
+}

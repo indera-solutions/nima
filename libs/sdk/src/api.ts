@@ -7449,7 +7449,7 @@ export const CategoriesApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async categoriesRemove(id: number, forceDelete?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async categoriesRemove(id: number, forceDelete?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CategoryDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.categoriesRemove(id, forceDelete, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -7550,7 +7550,7 @@ export const CategoriesApiFactory = function (configuration?: Configuration, bas
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		categoriesRemove(id: number, forceDelete?: boolean, options?: any): AxiosPromise<void> {
+		categoriesRemove(id: number, forceDelete?: boolean, options?: any): AxiosPromise<CategoryDto> {
 			return localVarFp.categoriesRemove(id, forceDelete, options).then((request) => request(axios, basePath));
 		},
 		/**
