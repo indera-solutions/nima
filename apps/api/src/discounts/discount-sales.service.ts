@@ -180,11 +180,17 @@ export class DiscountSalesService {
 
 	}
 
+	@Transactional()
 	async remove(params: { id: number }): Promise<void> {
 		await this.findOne({ id: params.id });
+		const saleMap = await this.getVariantDiscountMap();
+		const discountedVariantIds = [];
+		for ( const variantId in saleMap ) {
+			const discountIds = saleMap[variantId].map(d => d.id);
+			if ( discountIds.includes(params.id) ) discountedVariantIds.push(variantId);
+		}
 		await this.discountSaleRepository.deleteById(params.id);
-		await this.updateDiscountPricesOfSale({ saleId: params.id });
-
+		await Promise.all(discountedVariantIds.map(variantId => this.variantService.syncVariantDiscountValue({ variantId })));
 	}
 
 	async removeProduct(params: { saleId: number, productId: number }): Promise<void> {
@@ -221,7 +227,7 @@ export class DiscountSalesService {
 
 	async getDto(id: number, options?: { isAdmin?: boolean }): Promise<DiscountSaleDto> {
 		const entity = await this.discountSaleRepository.getFullObject(id);
-		const variantPromises = entity.variants.map(v => this.variantService.getDto(v.id, options));
+		const variantPromises = entity.variants?.map(v => this.variantService.getDto(v.id, options)) || [];
 		const variants = await Promise.all(variantPromises);
 		return {
 			name: entity.name,

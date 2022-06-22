@@ -189,8 +189,17 @@ export class CheckoutService {
 		let voucher: DiscountVoucherEntity = undefined;
 		let voucherVariants: number[] = [];
 		if ( entity.voucherCode ) {
-			voucher = await this.voucherService.findByCode({ code: entity.voucherCode });
-			voucherVariants = await this.voucherService.findVariationsOfVoucher(voucher.id);
+			try {
+				voucher = await this.voucherService.findByCode({ code: entity.voucherCode });
+				voucherVariants = await this.voucherService.findVariationsOfVoucher(voucher.id);
+			} catch ( e ) {
+				if ( e.message === 'VOUCHER_NOT_FOUND' ) {
+					await this.checkoutRepository.update(token, {
+						voucherCode: undefined,
+					});
+					entity.voucherCode = undefined;
+				}
+			}
 		}
 
 		const lines: CheckoutLineDto[] = entity.lines.map(line => {

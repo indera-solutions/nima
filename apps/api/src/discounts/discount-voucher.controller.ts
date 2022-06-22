@@ -111,8 +111,9 @@ export class DiscountVoucherController {
 	@ApiParam({ name: 'id', type: Number })
 	@IsStaff()
 	async remove(@Param('id', ParseIntPipe) id: number, @User() user?: UserEntity): Promise<DiscountVoucherDto> {
+		const res = await this.voucherService.getDto(id, { isAdmin: user?.isStaff || false });
 		await this.voucherService.remove({ id: id });
-		return this.voucherService.getDto(id, { isAdmin: user?.isStaff || false });
+		return res;
 	}
 
 	@Delete(':id/products/:productId')

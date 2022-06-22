@@ -101,8 +101,9 @@ export class DiscountSalesController {
 	@ApiParam({ name: 'id', type: Number })
 	@IsStaff()
 	async remove(@Param('id', ParseIntPipe) id: number, @User() user?: UserEntity): Promise<DiscountSaleDto> {
+		const res = await this.discountsService.getDto(id, { isAdmin: user?.isStaff || false });
 		await this.discountsService.remove({ id: id });
-		return this.discountsService.getDto(id, { isAdmin: user?.isStaff || false });
+		return res;
 	}
 
 	@Delete(':id/products/:productId')
