@@ -1,7 +1,9 @@
 import {
+	getTranslation,
 	Trans,
 	useCreateProductMutation,
 	useCreateProductVariationMutation,
+	useDeleteProductMutation,
 	useLanguages,
 	useProductById,
 	useProductTypeId,
@@ -48,6 +50,7 @@ export default function Add(props: AddProps) {
 
 	const createProductMutation = useCreateProductMutation();
 	const updateProductMutation = useUpdateProductMutation();
+	const deleteProductMutation = useDeleteProductMutation();
 	const createProductVariationMutation = useCreateProductVariationMutation();
 	const updateProductVariationMutation = useUpdateProductVariationMutation();
 
@@ -182,6 +185,7 @@ export default function Add(props: AddProps) {
 					createProductVariantDto: defaultVariant,
 				});
 				toast.success('Product Created.');
+				await router.push(NIMA_ROUTES.products.edit(createdProduct.id));
 
 			} else {
 				toast.success('Product Created.');
@@ -205,9 +209,17 @@ export default function Add(props: AddProps) {
 		}
 	}
 
-	function onCollectionEdit(newValue) {
-		console.log(newValue);
+	async function onDeleteProduct() {
+		if ( !id || !existingProduct ) return;
+		const confirm = window.confirm(`Are you sure you want to delete ${ getTranslation(existingProduct.name, languages.adminLanguage) }?`);
+		if ( confirm ) {
+			await deleteProductMutation.mutateAsync({
+				productId: id,
+			});
+			router.push(NIMA_ROUTES.products.list);
+		}
 	}
+
 
 	function onValueEdit(name: keyof CreateProductDto, value: any) {
 		setCreateProductDto(state => ({
@@ -257,12 +269,18 @@ export default function Add(props: AddProps) {
 				label={ existingProduct ? `Update ${ existingProduct.name[languages.adminLanguage] }` : 'Create New Product' }
 				footerContainer={ <AdminFooter>
 					<Link href={ NIMA_ROUTES.products.list }>
-						<button className={ 'btn btn-secondary' }>Back</button>
+						<a className={ 'btn btn-secondary' }>Back</a>
 					</Link>
+
+					{ existingProduct && <button className="btn btn-error"
+												 onClick={ onDeleteProduct }>
+						Delete
+					</button> }
 
 					<button className="btn btn-success"
 							disabled={ !isReadyToSubmit }
-							onClick={ onCreateProduct }>{ isEditing ? 'Save' : 'Create' }</button>
+							onClick={ onCreateProduct }>{ isEditing ? 'Save' : 'Create' }
+					</button>
 				</AdminFooter> }
 			>
 				<AdminColumn>

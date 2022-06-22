@@ -15,7 +15,7 @@ export class CheckoutLineEntity {
 	@ManyToOne(() => CheckoutEntity, checkout => checkout.lines, { primary: true, onDelete: 'CASCADE' })
 	checkout?: CheckoutEntity;
 
-	@ManyToOne(() => ProductVariantEntity, { primary: true })
+	@ManyToOne(() => ProductVariantEntity, { primary: true, onDelete: 'CASCADE' })
 	variant?: ProductVariantEntity;
 
 	@RelationId((post: CheckoutLineEntity) => post.variant)
@@ -23,7 +23,7 @@ export class CheckoutLineEntity {
 	@IsInt()
 	variantId: number;
 
-	@ManyToOne(() => ProductEntity, { eager: false })
+	@ManyToOne(() => ProductEntity, { eager: false, onDelete: 'CASCADE' })
 	product?: ProductEntity;
 
 	@RelationId((post: CheckoutLineEntity) => post.product)
