@@ -6,6 +6,7 @@ import {
 	AttributeValuesApi,
 	CreateAttributeDto,
 	CreateAttributeValueDto,
+	UpdateAttributeValueDto,
 } from '@nima-cms/sdk';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
@@ -116,6 +117,60 @@ export function useAddAttributeValueMutation() {
 		{
 			onSuccess: (data, variables, context) => {
 				client.invalidateQueries(NimaQueryCacheKeys.attributes.id(variables.attributeId));
+			},
+		},
+	);
+}
+
+
+export function useRemoveAttributeValueMutation() {
+	const client = useQueryClient();
+	return useMutation<AttributeValueDto,
+		never,
+		{
+			attributeId: number,
+			attributeValueId: number
+		}>(
+		async ({ attributeValueId, attributeId }) => {
+			const res = await attributeValuesSDK.attributeValuesDeleteValueByID({
+				attributeId: attributeId,
+				valueId: attributeValueId,
+			});
+			return res.data;
+		},
+		{
+			onSuccess: (data, variables, context) => {
+				client.invalidateQueries(NimaQueryCacheKeys.attributes.id(variables.attributeId));
+				client.invalidateQueries(NimaQueryCacheKeys.products.all);
+				client.invalidateQueries(NimaQueryCacheKeys.productTypes.all);
+			},
+		},
+	);
+}
+
+
+export function useUpdateAttributeValueMutation() {
+	const client = useQueryClient();
+	return useMutation<AttributeValueDto,
+		never,
+		{
+			attributeId: number,
+			attributeValueId: number,
+			updateAttributeValueDto: UpdateAttributeValueDto
+		}>(
+		async ({ attributeValueId, attributeId, updateAttributeValueDto }) => {
+			const res = await attributeValuesSDK.attributeValuesPatchValue({
+				attributeId: attributeId,
+				valueId: attributeValueId,
+				updateAttributeValueDto: updateAttributeValueDto,
+			});
+			return res.data;
+		},
+		{
+			onSuccess: (data, variables, context) => {
+				client.invalidateQueries(NimaQueryCacheKeys.attributes.id(variables.attributeId));
+				client.invalidateQueries(NimaQueryCacheKeys.products.all);
+				client.invalidateQueries(NimaQueryCacheKeys.productTypes.all);
 			},
 		},
 	);

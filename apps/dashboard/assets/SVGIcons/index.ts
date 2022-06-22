@@ -6,6 +6,7 @@ export * from './SVGCloseX/SVGCloseX';
 export * from './SVGCloseCircle/SVGCloseCircle';
 export * from './SVGPlus/SVGPlus';
 export * from './SVGMinus/SVGMinus';
+export * from './SVGPencil/SVGPencil';
 export * from './SVGUpload/SVGUpload';
 export * from './SVGMenu/SVGMenu';
 export * from './SVGRefresh/SVGRefresh';

@@ -7,13 +7,19 @@ interface AttributeValuesFormProps {
 	type: InputType;
 	values: (AttributeValueDto | CreateAttributeValueDto)[];
 	onValueCreate?: (value: CreateAttributeValueDto) => void;
+	onValueRemove?: (value: AttributeValueDto | CreateAttributeValueDto) => void;
+	onValueUpdate?: (value: AttributeValueDto | CreateAttributeValueDto, oldSlug: string) => void;
 }
 
 export function AttributeValuesForm(props: AttributeValuesFormProps) {
 	switch ( props.type ) {
 		case InputType.DROPDOWN:
 		case InputType.MULTISELECT:
-			return <DropdownValues values={ props.values } onValueCreate={ props.onValueCreate }/>;
+			return <DropdownValues values={ props.values }
+								   onValueRemove={ props.onValueRemove }
+								   onValueCreate={ props.onValueCreate }
+								   onValueUpdate={ props.onValueUpdate }
+			/>;
 		case InputType.FILE:
 		case InputType.REFERENCE:
 		case InputType.NUMERIC:
