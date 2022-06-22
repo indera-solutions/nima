@@ -4,6 +4,7 @@ import {
 	useAddCollectionsToSaleMutation,
 	useAddProductToSaleMutation,
 	useCreateSaleMutation,
+	useDeleteSaleMutation,
 	useLanguages,
 	useRemoveCategoryFromSaleMutation,
 	useRemoveCollectionsFromSaleMutation,
@@ -45,6 +46,7 @@ export default function AddSale(props: AddSaleProps) {
 
 	const createSaleMutation = useCreateSaleMutation();
 	const updateSaleMutation = useUpdateSaleMutation();
+	const deleteSaleMutation = useDeleteSaleMutation();
 
 	const addCategoryToSaleMutation = useAddCategoryToSaleMutation();
 	const removeCategoryFromSaleMutation = useRemoveCategoryFromSaleMutation();
@@ -152,6 +154,18 @@ export default function AddSale(props: AddSaleProps) {
 		});
 	}
 
+	async function onDeleteSale() {
+		if ( !id || !existingSale ) return;
+		const confirm = window.confirm(`Are you sure you want to delete ${ getTranslation(existingSale.name, languages.adminLanguage) }? It will be removed from all products.`);
+		if ( confirm ) {
+			await deleteSaleMutation.mutateAsync({
+				id: id,
+			});
+			toast.success('Sale Deleted');
+			router.push(NIMA_ROUTES.sales.list);
+		}
+	}
+
 	return (
 		<>
 			<NimaTitle
@@ -163,7 +177,10 @@ export default function AddSale(props: AddSaleProps) {
 					<Link href={ NIMA_ROUTES.sales.list }>
 						<button className={ 'btn btn-secondary' }>Back</button>
 					</Link>
-
+					{ existingSale && <button className="btn btn-error"
+											  onClick={ onDeleteSale }>
+						Delete
+					</button> }
 					<button className="btn btn-success"
 							onClick={ onCreateSale }>{ isEditing ? 'Save' : 'Create' }</button>
 				</AdminFooter> }

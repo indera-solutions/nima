@@ -124,6 +124,7 @@ export class ProductsService {
 		return this.productRepository.findByCategoryIds([categoryId, ...categoryChildren]);
 	}
 
+	@Transactional()
 	async remove(params: { id: number }): Promise<ProductEntity> {
 		const { id } = params;
 		const product = await this.getById({ id: id });

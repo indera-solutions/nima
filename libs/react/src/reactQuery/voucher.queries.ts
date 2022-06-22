@@ -85,6 +85,27 @@ export function useUpdateVoucherMutation() {
 	);
 }
 
+export function useDeleteVoucherMutation() {
+	const client = useQueryClient();
+	return useMutation<DiscountVoucherDto,
+		never,
+		{
+			id: number,
+		}>(
+		async ({ id }) => {
+			const res = await vouchersApi.discountVoucherRemove({
+				id,
+			});
+			return res.data;
+		},
+		{
+			onSuccess: () => {
+				client.invalidateQueries(NimaQueryCacheKeys.vouchers.all);
+			},
+		},
+	);
+}
+
 export function useAddProductToVoucherMutation() {
 	const client = useQueryClient();
 	return useMutation<DiscountVoucherDto,

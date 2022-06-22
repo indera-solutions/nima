@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { IsPublic, IsStaff, User } from '../auth/auth.decorator';
 import { UserEntity } from '../users/entities/user.entity';
@@ -34,7 +34,7 @@ export class AttributesController {
 	@ApiNotFoundResponse({ description: 'ATTRIBUTE_NOT_FOUND' })
 	@ApiOkResponse({ type: AttributeDto })
 	@IsPublic()
-	async getById(@Param('attributeId', ParseIntPipe) attributeId: number, @User() user?: UserEntity): Promise<AttributeDto> {
+	async getById(@Param('attributeId') attributeId: number, @User() user?: UserEntity): Promise<AttributeDto> {
 		const res = await this.service.getById({ id: attributeId });
 		return AttributeDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
@@ -44,7 +44,7 @@ export class AttributesController {
 	@ApiBody({ type: UpdateAttributeDto })
 	@ApiParam({ type: Number, name: 'attributeId' })
 	@IsStaff()
-	async patch(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() updateAttributeDto: UpdateAttributeDto, @User() user?: UserEntity): Promise<AttributeDto> {
+	async patch(@Param('attributeId') attributeId: number, @Body() updateAttributeDto: UpdateAttributeDto, @User() user?: UserEntity): Promise<AttributeDto> {
 		const res = await this.service.update({ id: attributeId, dto: updateAttributeDto });
 		return AttributeDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
@@ -54,17 +54,16 @@ export class AttributesController {
 	@ApiBody({ type: CreateAttributeDto })
 	@ApiParam({ type: Number, name: 'attributeId' })
 	@IsStaff()
-	async update(@Param('attributeId', ParseIntPipe) attributeId: number, @Body() createAttributeDto: CreateAttributeDto, @User() user?: UserEntity): Promise<AttributeDto> {
+	async update(@Param('attributeId') attributeId: number, @Body() createAttributeDto: CreateAttributeDto, @User() user?: UserEntity): Promise<AttributeDto> {
 		const res = await this.service.save({ id: attributeId, dto: createAttributeDto });
 		return AttributeDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}
 
 	@Delete('/:attributeId')
 	@ApiOkResponse({ type: AttributeDto })
-	@ApiBody({ type: UpdateAttributeDto })
 	@ApiParam({ type: Number, name: 'attributeId' })
 	@IsStaff()
-	async remove(@Param('attributeId', ParseIntPipe) attributeId: number, @User() user?: UserEntity): Promise<AttributeDto> {
+	async remove(@Param('attributeId') attributeId: number, @User() user?: UserEntity): Promise<AttributeDto> {
 		const res = await this.service.deleteById({ id: attributeId });
 		return AttributeDto.prepare(res, { isAdmin: user?.isStaff || false });
 	}

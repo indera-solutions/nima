@@ -84,6 +84,27 @@ export function useUpdateShippingMethodMutation() {
 	);
 }
 
+export function useDeleteShippingMethodMutation() {
+	const client = useQueryClient();
+	return useMutation<ShippingMethodDto,
+		never,
+		{
+			id: number,
+		}>(
+		async ({ id }) => {
+			const res = await shippingSDK.shippingMethodDeleteById({
+				id,
+			});
+			return res.data;
+		},
+		{
+			onSuccess: () => {
+				client.invalidateQueries(NimaQueryCacheKeys.shipping.all);
+			},
+		},
+	);
+}
+
 
 export function useCreateShippingZoneMutation() {
 	const client = useQueryClient();

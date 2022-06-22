@@ -118,6 +118,28 @@ export function useUpdateProductMutation() {
 	);
 }
 
+
+export function useDeleteProductMutation() {
+	const client = useQueryClient();
+	return useMutation<ProductDto,
+		never,
+		{
+			productId: number,
+		}>(
+		async ({ productId }) => {
+			const res = await productsSDK.productsRemove({
+				id: productId,
+			});
+			return res.data;
+		},
+		{
+			onSuccess: () => {
+				client.invalidateQueries(NimaQueryCacheKeys.products.all);
+			},
+		},
+	);
+}
+
 export function useCreateProductVariationMutation() {
 	const client = useQueryClient();
 	return useMutation<ProductVariantDto,

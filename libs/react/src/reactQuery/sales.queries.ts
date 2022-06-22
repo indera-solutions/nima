@@ -85,6 +85,27 @@ export function useUpdateSaleMutation() {
 	);
 }
 
+export function useDeleteSaleMutation() {
+	const client = useQueryClient();
+	return useMutation<DiscountSaleDto,
+		never,
+		{
+			id: number,
+		}>(
+		async ({ id }) => {
+			const res = await discountApi.discountSalesRemove({
+				id,
+			});
+			return res.data;
+		},
+		{
+			onSuccess: () => {
+				client.invalidateQueries(NimaQueryCacheKeys.sales.all);
+			},
+		},
+	);
+}
+
 export function useAddProductToSaleMutation() {
 	const client = useQueryClient();
 	return useMutation<DiscountSaleDto,

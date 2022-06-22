@@ -2,6 +2,7 @@ import {
 	getTranslation,
 	useCollectionById,
 	useCreateCollectionMutation,
+	useDeleteCollectionMutation,
 	useLanguages,
 	useUpdateCollectionMutation,
 } from '@nima-cms/react';
@@ -38,6 +39,7 @@ export default function AddCollection(props: AddCollectionProps) {
 
 	const createCollectionMutation = useCreateCollectionMutation();
 	const updateCollectionMutation = useUpdateCollectionMutation();
+	const deleteCollectionMutation = useDeleteCollectionMutation();
 	const { data: existingCollection } = useCollectionById(id, { refetchInterval: false });
 
 	useEffect(() => {
@@ -93,6 +95,18 @@ export default function AddCollection(props: AddCollectionProps) {
 		}
 	}
 
+	async function onDeleteCollection() {
+		if ( !id || !existingCollection ) return;
+		const confirm = window.confirm(`Are you sure you want to delete ${ getTranslation(existingCollection.name, languages.adminLanguage) }? It will be removed from all products.`);
+		if ( confirm ) {
+			await deleteCollectionMutation.mutateAsync({
+				collectionId: id,
+			});
+			toast.success('Collection Deleted');
+			router.push(NIMA_ROUTES.collections.list);
+		}
+	}
+
 	return (
 		<>
 			<NimaTitle
@@ -104,6 +118,11 @@ export default function AddCollection(props: AddCollectionProps) {
 					<Link href={ NIMA_ROUTES.collections.list }>
 						<button className={ 'btn btn-secondary' }>Back</button>
 					</Link>
+
+					{ existingCollection && <button className="btn btn-error"
+													onClick={ onDeleteCollection }>
+						Delete
+					</button> }
 
 					<button className="btn btn-success"
 							onClick={ onCreateCollection }>{ isEditing ? 'Save' : 'Create' }</button>

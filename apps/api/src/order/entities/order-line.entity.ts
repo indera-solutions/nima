@@ -44,7 +44,7 @@ export class OrderLineEntity {
 	@ApiProperty({ type: Number, example: 1 })
 	quantityFulfilled: number;
 
-	@ManyToOne(() => ProductVariantEntity)
+	@ManyToOne(() => ProductVariantEntity, { nullable: true, onDelete: 'SET NULL' })
 	@ApiProperty({ type: ProductVariantDto })
 	variant: ProductVariantEntity;
 

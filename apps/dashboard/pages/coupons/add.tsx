@@ -4,6 +4,7 @@ import {
 	useAddCollectionsToVoucherMutation,
 	useAddProductToVoucherMutation,
 	useCreateVoucherMutation,
+	useDeleteVoucherMutation,
 	useLanguages,
 	useRemoveCategoryFromVoucherMutation,
 	useRemoveCollectionsFromVoucherMutation,
@@ -45,6 +46,7 @@ export default function AddVoucher(props: AddVoucherProps) {
 
 	const createVoucherMutation = useCreateVoucherMutation();
 	const updateVoucherMutation = useUpdateVoucherMutation();
+	const deleteVoucherMutation = useDeleteVoucherMutation();
 
 	const addCategoryToVoucherMutation = useAddCategoryToVoucherMutation();
 	const removeCategoryFromVoucherMutation = useRemoveCategoryFromVoucherMutation();
@@ -161,6 +163,19 @@ export default function AddVoucher(props: AddVoucherProps) {
 		});
 	}
 
+	async function onDeleteVoucher() {
+		if ( !id || !existingVoucher ) return;
+		const confirm = window.confirm(`Are you sure you want to delete ${ getTranslation(existingVoucher.name, languages.adminLanguage) }? It will be removed from all products.`);
+		if ( confirm ) {
+			await deleteVoucherMutation.mutateAsync({
+				id: id,
+			});
+			toast.success('Voucher Deleted');
+			router.push(NIMA_ROUTES.vouchers.list);
+		}
+	}
+
+
 	return (
 		<>
 			<NimaTitle
@@ -172,6 +187,11 @@ export default function AddVoucher(props: AddVoucherProps) {
 					<Link href={ NIMA_ROUTES.vouchers.list }>
 						<button className={ 'btn btn-secondary' }>Back</button>
 					</Link>
+
+					{ existingVoucher && <button className="btn btn-error"
+												 onClick={ onDeleteVoucher }>
+						Delete
+					</button> }
 
 					<button className="btn btn-success"
 							onClick={ onCreateVoucher }>{ isEditing ? 'Save' : 'Create' }</button>

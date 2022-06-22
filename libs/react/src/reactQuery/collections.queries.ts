@@ -93,6 +93,27 @@ export function useUpdateCollectionMutation() {
 	);
 }
 
+export function useDeleteCollectionMutation() {
+	const client = useQueryClient();
+	return useMutation<CollectionDto,
+		never,
+		{
+			collectionId: number,
+		}>(
+		async ({ collectionId }) => {
+			const res = await collectionsApi.collectionsRemove({
+				collectionId,
+			});
+			return res.data;
+		},
+		{
+			onSuccess: () => {
+				client.invalidateQueries(NimaQueryCacheKeys.collections.all);
+			},
+		},
+	);
+}
+
 
 export function useAddProductToCollectionMutation() {
 	const client = useQueryClient();

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Metadata, Translatable } from '@nima-cms/utils';
 import { IsObject, IsOptional, IsString } from 'class-validator';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
 import { ShippingZoneEntity } from './shipping-zone.entity';
 
@@ -35,4 +35,7 @@ export class ShippingMethodEntity {
 
 	@OneToMany(() => ShippingZoneEntity, zone => zone.shippingMethod, { onDelete: 'CASCADE' })
 	shippingZones: ShippingZoneEntity[];
+
+	@DeleteDateColumn()
+	deletedAt?: Date;
 }

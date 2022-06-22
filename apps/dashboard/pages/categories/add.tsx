@@ -2,6 +2,7 @@ import {
 	getTranslation,
 	useCategoryId,
 	useCreateCategoryMutation,
+	useDeleteCategoryMutation,
 	useLanguages,
 	useUpdateCategoryMutation,
 } from '@nima-cms/react';
@@ -48,6 +49,7 @@ export default function AddProductType(props: AddProductTypeProps) {
 
 	const createCategoryMutation = useCreateCategoryMutation();
 	const updateCategoryMutation = useUpdateCategoryMutation();
+	const deleteCategoryMutation = useDeleteCategoryMutation();
 	const { data: existingCategory } = useCategoryId(id, { refetchInterval: false });
 
 	useEffect(() => {
@@ -101,6 +103,37 @@ export default function AddProductType(props: AddProductTypeProps) {
 		}
 	}
 
+	async function onDeleteCategory() {
+		if ( !id || !existingCategory ) return;
+		const confirm = window.confirm(`Are you sure you want to delete ${ getTranslation(existingCategory.name, languages.adminLanguage) }?`);
+		if ( confirm ) {
+			try {
+				await deleteCategoryMutation.mutateAsync({
+					categoryId: id,
+					forceDelete: false,
+				});
+				toast.success('Category Deleted');
+				router.push(NIMA_ROUTES.categories.list);
+			} catch ( e ) {
+				console.log(e.response);
+				if ( e.response.data.message === 'CATEGORY_WITH_CHILDREN' ) {
+					const forceConfirm = window.confirm('There are subcategories in this category. Do you want to delete all subcategories too?');
+					if ( forceConfirm ) {
+						await deleteCategoryMutation.mutateAsync({
+							categoryId: id,
+							forceDelete: true,
+						});
+						toast.success('Category and subcategories deleted.');
+						router.push(NIMA_ROUTES.categories.list);
+					}
+				} else if ( e.response.data.message === 'CATEGORY_WITH_PRODUCTS' ) {
+					toast.error('There are still products in category. Move it to new category.');
+				}
+			}
+
+		}
+	}
+
 	return (
 		<>
 			<NimaTitle
@@ -111,6 +144,10 @@ export default function AddProductType(props: AddProductTypeProps) {
 					{ parentId && <Link href={ NIMA_ROUTES.categories.edit(parentId) + '#admin-page' }>
 						<button className={ 'btn btn-primary' }>Back to parent</button>
 					</Link> }
+					{ existingCategory && <button className="btn btn-error"
+												  onClick={ onDeleteCategory }>
+						Delete
+					</button> }
 					<Link href={ NIMA_ROUTES.categories.list }>
 						<button className={ 'btn btn-secondary' }>Back</button>
 					</Link>

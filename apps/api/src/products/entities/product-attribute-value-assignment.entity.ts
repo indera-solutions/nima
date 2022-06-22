@@ -21,7 +21,7 @@ export class AssignedProductAttributeValueEntity {
 		// @ApiProperty({ type: AssignedProductAttributeDto })
 	assignedProductAttribute: AssignedProductAttributeEntity;
 
-	@ManyToOne(() => AttributeValueEntity, { eager: true })
+	@ManyToOne(() => AttributeValueEntity, { eager: true, onDelete: 'CASCADE' })
 	@ApiProperty({ type: AttributeValueDto })
 	value: AttributeValueEntity;
 }
@@ -40,7 +40,7 @@ export class AssignedProductVariantAttributeValueEntity {
 		// @ApiProperty({ type: AssignedProductVariantAttributeDto })
 	assignedProductVariantAttribute: AssignedProductVariantAttributeEntity;
 
-	@ManyToOne(() => AttributeValueEntity, { eager: true })
+	@ManyToOne(() => AttributeValueEntity, { eager: true, onDelete: 'CASCADE' })
 	@ApiProperty({ type: AttributeValueDto })
 	value: AttributeValueEntity;
 }
