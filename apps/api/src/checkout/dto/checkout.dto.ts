@@ -16,6 +16,12 @@ export class CheckoutDto extends OmitType(CheckoutEntity, ['lines', 'shippingMet
 	shippingCost: number;
 
 	@ApiProperty()
+	originalShippingCost: number;
+
+	@ApiProperty()
+	shippingCostDiscount: number;
+
+	@ApiProperty()
 	quantity: number;
 
 	@ApiProperty()
@@ -51,7 +57,7 @@ export class CreateCheckoutDto extends PickType(CheckoutDto, ['languageCode']) {
 // shippingAddressId?: number; }
 
 
-export class UpdateCheckoutDto extends PartialType(PickType(CheckoutDto, ['email', 'note', 'languageCode', 'useShippingAsBilling', 'paymentMethod'])) {
+export class UpdateCheckoutDto extends PartialType(PickType(CheckoutDto, ['email', 'note', 'languageCode', 'useShippingAsBilling', 'paymentMethod', 'originalShippingCost', 'shippingCostDiscount', 'shippingCost'])) {
 	@ApiProperty({ required: false, type: Number })
 	@IsInt()
 	@IsOptional()

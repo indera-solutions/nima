@@ -89,6 +89,10 @@ export class OrderEntity {
 	@IsNumber()
 	totalGrossAmount: number;
 
+	@Column({ type: 'float', default: 0 })
+	@ApiProperty()
+	totalDiscount: number;
+
 	@Column({ type: 'float' })
 	@ApiProperty({ type: Number, example: 12.3 })
 	@IsNumber()
@@ -113,6 +117,14 @@ export class OrderEntity {
 
 	@ManyToOne(() => ShippingMethodEntity, { nullable: true, eager: true })
 	shippingMethod?: ShippingMethodEntity;
+
+	@Column({ type: 'float', default: 0 })
+	@ApiProperty()
+	originalShippingCost: number;
+
+	@Column({ type: 'float', default: 0 })
+	@ApiProperty()
+	shippingCostDiscount: number;
 
 	@Column({ type: Boolean })
 	@ApiProperty({ type: Boolean, example: true })

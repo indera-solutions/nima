@@ -93,6 +93,8 @@ export class OrderService {
 			shippingMethod: shippingMethod,
 			shippingMethodName: shippingMethod.name || '',
 			shippingPriceGrossAmount: checkoutDto.shippingCost,
+			originalShippingCost: checkoutDto.originalShippingCost,
+			shippingCostDiscount: checkoutDto.shippingCostDiscount,
 			/*Shipping without taxes*/
 			shippingPriceNetAmount: 0,
 			/*Shipping Tax Rate (Not yet implemented in the Shipping Method Entities)*/
@@ -105,6 +107,7 @@ export class OrderService {
 			totalPaidAmount: 0,
 			undiscountedTotalGrossAmount: checkoutDto.subtotalPrice,
 			undiscountedTotalNetAmount: 0,
+			totalDiscount: checkoutDto.discount,
 
 			lines: [],
 
@@ -132,6 +135,7 @@ export class OrderService {
 				voucherCode = voucher.code;
 				unitDiscountReason = variant.discountedPrice ? 'sale&voucher' : 'voucher';
 			}
+			console.log(line.totalVoucherDiscount);
 
 			const dto: InternalCreateOrderLineDto = {
 				variant: variant,

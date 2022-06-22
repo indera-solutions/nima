@@ -190,7 +190,7 @@ export class CheckoutService {
 		const lines: CheckoutLineDto[] = entity.lines.map(line => {
 			if ( !line.variant ) throw new Error('MISSING_VARIANT');
 			const totalCost = line.quantity * (line.variant.discountedPrice || line.variant.priceAmount);
-			let discountedTotalCost, voucherDiscount, totalSaleDiscount;
+			let discountedTotalCost, voucherDiscount, totalSaleDiscount, voucherDiscountType;
 			if ( line.variant.discountedPrice ) {
 				totalSaleDiscount = line.quantity * (line.variant.priceAmount - line.variant.discountedPrice);
 				discountedTotalCost = line.quantity * line.variant.discountedPrice;
@@ -204,6 +204,7 @@ export class CheckoutService {
 				}
 				discounts.push(voucherDiscount);
 				discountedTotalCost = temp - voucherDiscount;
+				voucherDiscountType = voucher.discountValueType;
 			}
 			weight += line.variant.weight || 0;
 			return {
@@ -215,7 +216,7 @@ export class CheckoutService {
 				totalSaleDiscount: totalSaleDiscount,
 				saleDiscountType: line.variant.discountType,
 				totalVoucherDiscount: voucherDiscount,
-				voucherDiscountType: voucher?.discountValueType,
+				voucherDiscountType: voucherDiscountType,
 			};
 		});
 
@@ -223,7 +224,7 @@ export class CheckoutService {
 		const subtotalPrice = roundToDigit(_subtotalPrice);
 		const quantity = lines.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0);
 
-		let shippingCost = 0;
+		let shippingCost = 0, originalShippingCost = 0, shippingCostDiscount = 0;
 		let discount = discounts.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
 		if ( voucher && voucher.voucherType === DiscountVoucherType.ENTIRE_ORDER ) {
 			if ( voucher.discountValueType === DiscountType.PERCENTAGE ) {
@@ -256,7 +257,9 @@ export class CheckoutService {
 				activeShipping = validMethods[0];
 
 			}
-			shippingCost = (voucher && voucher.voucherType === DiscountVoucherType.SHIPPING && voucher.discountValueType === DiscountType.FREE_SHIPPING) ? 0 : ShippingMethodDto.calculateCost(activeShipping);
+			originalShippingCost = ShippingMethodDto.calculateCost(activeShipping);
+			shippingCostDiscount = (voucher && voucher.voucherType === DiscountVoucherType.SHIPPING && voucher.discountValueType === DiscountType.FREE_SHIPPING) ? originalShippingCost : 0;
+			shippingCost = originalShippingCost - shippingCostDiscount;
 		}
 
 		const totalCost = roundToDigit(subtotalPrice + shippingCost - discount);
@@ -285,6 +288,8 @@ export class CheckoutService {
 			translatedDiscountName: entity.translatedDiscountName,
 			totalCost,
 			shippingCost,
+			shippingCostDiscount,
+			originalShippingCost,
 			quantity,
 			discount,
 			subtotalPrice,

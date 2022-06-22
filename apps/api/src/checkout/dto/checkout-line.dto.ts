@@ -22,5 +22,5 @@ export class CheckoutLineDto extends OmitType(CheckoutLineEntity, ['checkout', '
 	voucherDiscountType?: DiscountType;
 }
 
-export class UpdateCheckoutLineDto extends OmitType(CheckoutLineDto, ['productId', 'totalCost', 'discountedTotalCost']) {
+export class UpdateCheckoutLineDto extends OmitType(CheckoutLineDto, ['productId', 'totalCost', 'discountedTotalCost', 'totalSaleDiscount', 'saleDiscountType', 'voucherDiscountType', 'totalVoucherDiscount']) {
 }
