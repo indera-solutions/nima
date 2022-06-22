@@ -38,7 +38,7 @@ export function NewShippingZoneModal(props: NewShippingZoneModalProps) {
 		locationType: ShippingZoneLocationType.COUNTRY,
 		privateMetadata: {},
 		metadata: {},
-		shippingRates: [],
+		shippingRates: undefined,
 	});
 
 	useEffect(() => {
@@ -50,7 +50,7 @@ export function NewShippingZoneModal(props: NewShippingZoneModalProps) {
 			locationType: props.init.locationType,
 			privateMetadata: props.init.privateMetadata,
 			metadata: props.init.metadata,
-			shippingRates: props.init.shippingRates || [],
+			shippingRates: undefined,
 		});
 	}, [props.init]);
 
@@ -101,7 +101,7 @@ export function NewShippingZoneModal(props: NewShippingZoneModalProps) {
 				methodId: props.methodId,
 				createShippingZoneDto: createShippingZoneDto,
 			});
-			toast.success('Zone Updated!');
+			toast.success('Zone Create!');
 		}
 		props.onClose();
 	}

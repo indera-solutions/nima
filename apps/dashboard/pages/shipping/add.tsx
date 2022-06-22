@@ -1,9 +1,12 @@
 import {
+	getTranslation,
 	useCreateShippingMethodMutation,
+	useDeleteShippingMethodMutation,
+	useLanguages,
 	useShippingMethodById,
 	useUpdateShippingMethodMutation,
 } from '@nima-cms/react';
-import { CreateAttributeValueDto, CreateShippingMethodDto } from '@nima-cms/sdk';
+import { CreateShippingMethodDto } from '@nima-cms/sdk';
 import { Metadata, parseIdStr } from '@nima-cms/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -30,6 +33,7 @@ interface AddAttributeProps {
 export default function AddShippingMethod(props: AddAttributeProps) {
 
 	const router = useRouter();
+	const languages = useLanguages();
 	const id: number | undefined = router.query['id'] ? parseIdStr(router.query['id']) : undefined;
 	const isEditing = !!id;
 
@@ -37,6 +41,8 @@ export default function AddShippingMethod(props: AddAttributeProps) {
 
 	const createShippingMethodMutation = useCreateShippingMethodMutation();
 	const updateShippingMethodMutation = useUpdateShippingMethodMutation();
+	const deleteShippingMethodMutation = useDeleteShippingMethodMutation();
+
 
 	const [createShippingMethod, setCreateShippingMethod] = useState<CreateShippingMethodDto>({
 		name: '',
@@ -59,7 +65,7 @@ export default function AddShippingMethod(props: AddAttributeProps) {
 		}));
 	}
 
-	async function onCreateAttribute() {
+	async function onCreateShippingMethod() {
 		if ( !isEditing ) {
 			const createdShippingMethod = await createShippingMethodMutation.mutateAsync({ createShippingMethodDto: createShippingMethod });
 			toast.success('Shipping Method Created!');
@@ -74,21 +80,16 @@ export default function AddShippingMethod(props: AddAttributeProps) {
 
 	}
 
-	async function onValueCreate(value: CreateAttributeValueDto) {
-		// if ( isEditing ) {
-		// 	try {
-		// 		const newValue = await addAttributeValueMutation.mutateAsync({
-		// 			attributeId: id,
-		// 			createAttributeValue: value,
-		// 		});
-		// 		setValues(state => [...state, newValue]);
-		// 		toast.success('Value added.');
-		// 	} catch ( e: any ) {
-		// 		console.log(e);
-		// 	}
-		// } else {
-		// 	setValues(state => [...state, value]);
-		// }
+	async function onDeleteShippingMethod() {
+		if ( !id || !existingMethod ) return;
+		const confirm = window.confirm(`Are you sure you want to delete ${ getTranslation(existingMethod.name, languages.adminLanguage) }?`);
+		if ( confirm ) {
+			await deleteShippingMethodMutation.mutateAsync({
+				id: id,
+			});
+			toast.success('Shipping Method Deleted');
+			router.push(NIMA_ROUTES.shipping.list);
+		}
 	}
 
 	return (
@@ -101,8 +102,13 @@ export default function AddShippingMethod(props: AddAttributeProps) {
 						<button className={ 'btn btn-secondary' }>Back</button>
 					</Link>
 
+					{ existingMethod && <button className="btn btn-error"
+												onClick={ onDeleteShippingMethod }>
+						Delete
+					</button> }
+
 					<button className="btn btn-success"
-							onClick={ onCreateAttribute }>{ isEditing ? 'Save' : 'Create' }</button>
+							onClick={ onCreateShippingMethod }>{ isEditing ? 'Save' : 'Create' }</button>
 				</AdminFooter> }
 			>
 				<AdminColumn>
@@ -117,18 +123,6 @@ export default function AddShippingMethod(props: AddAttributeProps) {
 								className={ 'input input-bordered' }
 							/>
 						</div>
-						{/*<div className="form-control w-full max-w-xs">*/ }
-						{/*	<label className="label">*/ }
-						{/*		<span className="label-text">Input Type</span>*/ }
-						{/*	</label>*/ }
-						{/*	<Select*/ }
-						{/*		value={ typesDropdown.find(td => td.value === createShippingMethod.shippingType) }*/ }
-						{/*		options={ typesDropdown }*/ }
-						{/*		onChange={ (e) => {*/ }
-						{/*			onValueEdit('shippingType', e.value);*/ }
-						{/*		} }*/ }
-						{/*	/>*/ }
-						{/*</div>*/ }
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
 								<span className="label-text">Description</span>
@@ -140,76 +134,6 @@ export default function AddShippingMethod(props: AddAttributeProps) {
 							/>
 						</div>
 
-
-						{/*<div className="form-control w-full max-w-xs">*/ }
-						{/*	<label className="label">*/ }
-						{/*		<span className="label-text">Delivery days</span>*/ }
-						{/*	</label>*/ }
-						{/*	<div className="w-full flex gap-4">*/ }
-						{/*		<div>*/ }
-						{/*			<label className="label">*/ }
-						{/*				<span className="label-text">Min</span>*/ }
-						{/*			</label>*/ }
-						{/*			<input*/ }
-						{/*				value={ createShippingMethod.minimumDeliveryDays }*/ }
-						{/*				onChange={ (e => onValueEdit('minimumDeliveryDays', +e.target.value)) }*/ }
-						{/*				type={ 'number' }*/ }
-						{/*				className={ 'input input-bordered' }*/ }
-						{/*			/>*/ }
-						{/*		</div>*/ }
-						{/*		<div>*/ }
-
-						{/*			<label className="label">*/ }
-						{/*				<span className="label-text">Max</span>*/ }
-						{/*			</label>*/ }
-						{/*			<input*/ }
-						{/*				value={ createShippingMethod.maximumDeliveryDays }*/ }
-						{/*				onChange={ (e => onValueEdit('maximumDeliveryDays', +e.target.value)) }*/ }
-						{/*				type={ 'number' }*/ }
-						{/*				className={ 'input input-bordered' }*/ }
-						{/*			/>*/ }
-						{/*		</div>*/ }
-						{/*	</div>*/ }
-						{/*</div>*/ }
-
-
-					</AdminSection>
-
-					<AdminSection title={ 'Restrictions' }>
-
-						{/*<div className="form-control w-full max-w-xs">*/ }
-						{/*	<label className="label">*/ }
-						{/*		<span className="label-text">Weight Restriction</span>*/ }
-						{/*	</label>*/ }
-						{/*	<div className="w-full flex gap-4">*/ }
-						{/*		<div>*/ }
-						{/*			<label className="label">*/ }
-						{/*				<span className="label-text">Min</span>*/ }
-						{/*			</label>*/ }
-						{/*			<input*/ }
-						{/*				value={ createShippingMethod.minimumOrderWeight }*/ }
-						{/*				onChange={ (e => onValueEdit('minimumOrderWeight', +e.target.value)) }*/ }
-						{/*				type={ 'number' }*/ }
-						{/*				className={ 'input input-bordered' }*/ }
-						{/*			/>*/ }
-						{/*		</div>*/ }
-						{/*		<div>*/ }
-
-						{/*			<label className="label">*/ }
-						{/*				<span className="label-text">Max</span>*/ }
-						{/*			</label>*/ }
-						{/*			<input*/ }
-						{/*				value={ createShippingMethod.maximumOrderWeight }*/ }
-						{/*				onChange={ (e => onValueEdit('maximumOrderWeight', +e.target.value)) }*/ }
-						{/*				type={ 'number' }*/ }
-						{/*				className={ 'input input-bordered' }*/ }
-						{/*			/>*/ }
-						{/*		</div>*/ }
-						{/*	</div>*/ }
-						{/*	<label className="label">*/ }
-						{/*		<span className="label-text-alt">Min/max total weight of cart to be active. Type 0 for no restriction</span>*/ }
-						{/*	</label>*/ }
-						{/*</div>*/ }
 					</AdminSection>
 
 					{ existingMethod && <ZoneTable methodId={ id } shippingZones={ existingMethod.shippingZones }/> }

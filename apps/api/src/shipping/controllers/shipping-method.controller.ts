@@ -1,5 +1,13 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
-import { ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+	ApiBearerAuth,
+	ApiBody,
+	ApiCreatedResponse,
+	ApiOkResponse,
+	ApiParam,
+	ApiQuery,
+	ApiTags,
+} from '@nestjs/swagger';
 import { IsPublic, IsStaff, User } from '../../auth/auth.decorator';
 import { UserEntity } from '../../users/entities/user.entity';
 import { CreateShippingMethodDto, ShippingMethodDto, UpdateShippingMethodDto } from '../dto/shipping-method.dto';
@@ -8,6 +16,7 @@ import { ShippingService } from '../shipping.service';
 
 @Controller('shipping')
 @ApiTags('Shipping')
+@ApiBearerAuth()
 export class ShippingMethodController {
 	constructor(private readonly shippingService: ShippingService) {
 	}

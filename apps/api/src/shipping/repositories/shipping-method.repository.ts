@@ -18,8 +18,6 @@ export class ShippingMethodRepository extends BaseRepository<ShippingMethodEntit
 	}
 
 	deleteById(id: number) {
-		return this.delete({
-			id: id,
-		});
+		return this.softDelete(id);
 	}
 }
