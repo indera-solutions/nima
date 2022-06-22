@@ -22,7 +22,7 @@ export class AssignedProductAttributeEntity {
 	// @ApiProperty({ type: ProductDto })
 	product: ProductEntity;
 
-	@ManyToOne(() => ProductTypeAttributeEntity, { eager: true })
+	@ManyToOne(() => ProductTypeAttributeEntity, { eager: true, onDelete: 'CASCADE' })
 	@ApiProperty({ type: ProductTypeAttributeDto })
 	productTypeAttribute: ProductTypeAttributeEntity;
 

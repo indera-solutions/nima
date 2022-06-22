@@ -81,6 +81,27 @@ export function useUpdateAttributeMutation() {
 	);
 }
 
+export function useRemoveAttributeMutation() {
+	const client = useQueryClient();
+	return useMutation<AttributeDto,
+		never,
+		{
+			attributeId: number,
+		}>(
+		async ({ attributeId }) => {
+			const res = await attributesSDK.attributesRemove({
+				attributeId: attributeId,
+			});
+			return res.data;
+		},
+		{
+			onSuccess: () => {
+				client.invalidateQueries(NimaQueryCacheKeys.attributes.all);
+			},
+		},
+	);
+}
+
 
 export function useAttributeValues(attributeId?: number, options?: { refetchInterval: number | false }) {
 	return useQuery<AttributeValueDto[]>(

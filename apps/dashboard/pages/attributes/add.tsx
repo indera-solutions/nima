@@ -5,6 +5,7 @@ import {
 	useAttributeValues,
 	useCreateAttributeMutation,
 	useLanguages,
+	useRemoveAttributeMutation,
 	useRemoveAttributeValueMutation,
 	useUpdateAttributeMutation,
 	useUpdateAttributeValueMutation,
@@ -65,6 +66,7 @@ export default function AddAttribute(props: AddAttributeProps) {
 
 	const createAttributeMutation = useCreateAttributeMutation();
 	const updateAttributeMutation = useUpdateAttributeMutation();
+	const removeAttributeMutation = useRemoveAttributeMutation();
 	const addAttributeValueMutation = useAddAttributeValueMutation();
 	const removeAttributeValueMutation = useRemoveAttributeValueMutation();
 	const updateAttributeValueMutation = useUpdateAttributeValueMutation();
@@ -182,6 +184,17 @@ export default function AddAttribute(props: AddAttributeProps) {
 		}
 	}
 
+	async function onDeleteAttribute() {
+		if ( !id || !existingAttribute ) return;
+		const confirm = window.confirm(`Are you sure you want to delete ${ getTranslation(existingAttribute.name, languages.adminLanguage) }? It will be removed from all product types and products`);
+		if ( confirm ) {
+			await removeAttributeMutation.mutateAsync({
+				attributeId: id,
+			});
+			router.push(NIMA_ROUTES.attributes.list);
+		}
+	}
+
 	return (
 		<>
 			<NimaTitle title={ isEditing ? 'Update Attribute' : 'Create New Attribute' }/>
@@ -191,6 +204,11 @@ export default function AddAttribute(props: AddAttributeProps) {
 					<Link href={ NIMA_ROUTES.attributes.list }>
 						<button className={ 'btn btn-secondary' }>Back</button>
 					</Link>
+
+					{ existingAttribute && <button className="btn btn-error"
+												   onClick={ onDeleteAttribute }>
+						Delete
+					</button> }
 
 					<button className="btn btn-success"
 							onClick={ onCreateAttribute }>{ isEditing ? 'Save' : 'Create' }</button>

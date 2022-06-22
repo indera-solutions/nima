@@ -61,6 +61,6 @@ export class AttributeValueEntity {
 	@IsOptional()
 	dateTime?: string;
 
-	@ManyToOne(() => AttributeEntity, (attribute) => attribute.values)
+	@ManyToOne(() => AttributeEntity, (attribute) => attribute.values, { onDelete: 'CASCADE' })
 	attribute: AttributeEntity;
 }

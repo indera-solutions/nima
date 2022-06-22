@@ -6211,15 +6211,12 @@ export const AttributesApiAxiosParamCreator = function (configuration?: Configur
 		/**
 		 *
 		 * @param {number} attributeId
-		 * @param {UpdateAttributeDto} updateAttributeDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		attributesRemove: async (attributeId: number, updateAttributeDto: UpdateAttributeDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		attributesRemove: async (attributeId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'attributeId' is not null or undefined
 			assertParamExists('attributesRemove', 'attributeId', attributeId)
-			// verify required parameter 'updateAttributeDto' is not null or undefined
-			assertParamExists('attributesRemove', 'updateAttributeDto', updateAttributeDto)
 			const localVarPath = `/api/v1/attributes/{attributeId}`
 				.replace(`{${ "attributeId" }}`, encodeURIComponent(String(attributeId)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -6238,12 +6235,9 @@ export const AttributesApiAxiosParamCreator = function (configuration?: Configur
 			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-			localVarHeaderParameter['Content-Type'] = 'application/json';
-
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-			localVarRequestOptions.data = serializeDataIfNeeded(updateAttributeDto, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -6345,12 +6339,11 @@ export const AttributesApiFp = function (configuration?: Configuration) {
 		/**
 		 *
 		 * @param {number} attributeId
-		 * @param {UpdateAttributeDto} updateAttributeDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async attributesRemove(attributeId: number, updateAttributeDto: UpdateAttributeDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AttributeDto>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.attributesRemove(attributeId, updateAttributeDto, options);
+		async attributesRemove(attributeId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AttributeDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.attributesRemove(attributeId, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
@@ -6413,12 +6406,11 @@ export const AttributesApiFactory = function (configuration?: Configuration, bas
 		/**
 		 *
 		 * @param {number} attributeId
-		 * @param {UpdateAttributeDto} updateAttributeDto
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		attributesRemove(attributeId: number, updateAttributeDto: UpdateAttributeDto, options?: any): AxiosPromise<AttributeDto> {
-			return localVarFp.attributesRemove(attributeId, updateAttributeDto, options).then((request) => request(axios, basePath));
+		attributesRemove(attributeId: number, options?: any): AxiosPromise<AttributeDto> {
+			return localVarFp.attributesRemove(attributeId, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -6494,13 +6486,6 @@ export interface AttributesApiAttributesRemoveRequest {
 	 * @memberof AttributesApiAttributesRemove
 	 */
 	readonly attributeId: number;
-
-	/**
-	 *
-	 * @type {UpdateAttributeDto}
-	 * @memberof AttributesApiAttributesRemove
-	 */
-	readonly updateAttributeDto: UpdateAttributeDto;
 }
 
 /**
@@ -6582,7 +6567,7 @@ export class AttributesApi extends BaseAPI {
 	 * @memberof AttributesApi
 	 */
 	public attributesRemove(requestParameters: AttributesApiAttributesRemoveRequest, options?: AxiosRequestConfig) {
-		return AttributesApiFp(this.configuration).attributesRemove(requestParameters.attributeId, requestParameters.updateAttributeDto, options).then((request) => request(this.axios, this.basePath));
+		return AttributesApiFp(this.configuration).attributesRemove(requestParameters.attributeId, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
