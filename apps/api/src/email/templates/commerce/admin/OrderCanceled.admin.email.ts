@@ -26,6 +26,7 @@ export class OrderCanceledAdminEmail extends BaseCommerceEmail {
 			},
 			locale: language,
 			orderDetails: params.orderDetails,
+			params: {},
 
 		});
 	}

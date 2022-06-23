@@ -1,12 +1,18 @@
 import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { MediaDto } from '../dto/media.dto';
 import { CreateSettingsDto, SettingsDto, UpdateWebhookSettingsDto } from '../dto/settings.dto';
+import { MediaEntity } from '../entities/media.entity';
 import { SettingsEntity } from '../entities/settings.entity';
+import { MediaService } from '../media/media.service';
 
 @Injectable()
 export class SettingsService {
-	constructor(@InjectRepository(SettingsEntity) private settingsRepository: Repository<SettingsEntity>) {
+	constructor(
+		@InjectRepository(SettingsEntity) private settingsRepository: Repository<SettingsEntity>,
+		private mediaService: MediaService,
+	) {
 	}
 
 	private static checkSettingsIntegrity(settings: SettingsEntity[]): void {
@@ -33,7 +39,7 @@ export class SettingsService {
 			seoTitle: entity.seoTitle,
 			seoDescription: entity.seoDescription,
 			shopAddress: entity.shopAddress,
-			siteLogo: entity.siteLogo,
+			siteLogo: entity.siteLogo ? MediaDto.prepare(entity.siteLogo) : undefined,
 			emailWebhooks: entity.emailWebhooks,
 		};
 	}
@@ -46,14 +52,23 @@ export class SettingsService {
 
 	async updateSettings(createSettingsDto: CreateSettingsDto): Promise<SettingsDto> {
 		const existingSettings = await this.settingsRepository.find();
+		let siteLogo: MediaEntity;
+		if ( createSettingsDto.siteLogoId ) {
+			siteLogo = await this.mediaService.getById({ id: createSettingsDto.siteLogoId });
+			delete createSettingsDto.siteLogoId;
+		}
 		if ( existingSettings.length === 0 ) {
-			const res = await this.settingsRepository.save(createSettingsDto);
+			const res = await this.settingsRepository.save({
+				...createSettingsDto,
+				siteLogo,
+			});
 			return SettingsService.prepareSettings(res);
 		} else {
 			SettingsService.checkSettingsIntegrity(existingSettings);
 			const res = await this.settingsRepository.save({
 				...createSettingsDto,
 				id: existingSettings[0].id,
+				siteLogo,
 			});
 			return SettingsService.prepareSettings(res);
 		}

@@ -60,7 +60,7 @@ export function useMediaUploadMutation(options: { onProgress?: (newProgress: num
 		},
 		{
 			onSuccess: () => {
-				client.invalidateQueries(NimaQueryCacheKeys.categories.all);
+				client.invalidateQueries(NimaQueryCacheKeys.media.all);
 			},
 		},
 	);

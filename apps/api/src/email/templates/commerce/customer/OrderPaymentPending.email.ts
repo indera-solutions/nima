@@ -28,6 +28,8 @@ Your order with number #${ params.orderDetails.order.id } is on hold waiting for
 			},
 			locale: language,
 			orderDetails: params.orderDetails,
+			params: params,
+
 		});
 	}
 }

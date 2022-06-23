@@ -27,6 +27,8 @@ export class OrderFailedAdminEmail extends BaseCommerceEmail {
 			},
 			locale: language,
 			orderDetails: params.orderDetails,
+			params: {},
+
 		});
 	}
 }

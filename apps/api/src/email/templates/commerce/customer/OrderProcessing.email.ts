@@ -28,6 +28,8 @@ Your order with number #${ params.orderDetails.order.id } is processing.`,
 			},
 			locale: language,
 			orderDetails: params.orderDetails,
+			params: params,
+
 		});
 	}
 }
