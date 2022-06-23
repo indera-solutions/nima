@@ -4,7 +4,6 @@ import { IsBoolean, IsEmail, IsEnum, IsInt, IsString, IsUrl } from 'class-valida
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Emails } from '../../email/templates';
 import { AddressDto } from '../dto/address.dto';
-import { MediaDto } from '../dto/media.dto';
 import { AddressEntity } from './address.entity';
 import { MediaEntity } from './media.entity';
 
@@ -89,8 +88,7 @@ export class SettingsEntity {
 	shopAddress: AddressDto;
 
 	@ManyToOne(() => MediaEntity, { eager: true })
-	@ApiProperty({ type: MediaDto, required: false })
-	siteLogo?: MediaDto;
+	siteLogo?: MediaEntity;
 
 	@Column({ type: 'jsonb', default: [] })
 	@ApiProperty({ type: () => EmailWebhooksDto, isArray: true })

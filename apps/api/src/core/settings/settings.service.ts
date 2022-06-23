@@ -1,6 +1,7 @@
 import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { MediaDto } from '../dto/media.dto';
 import { CreateSettingsDto, SettingsDto, UpdateWebhookSettingsDto } from '../dto/settings.dto';
 import { MediaEntity } from '../entities/media.entity';
 import { SettingsEntity } from '../entities/settings.entity';
@@ -38,7 +39,7 @@ export class SettingsService {
 			seoTitle: entity.seoTitle,
 			seoDescription: entity.seoDescription,
 			shopAddress: entity.shopAddress,
-			siteLogo: entity.siteLogo,
+			siteLogo: entity.siteLogo ? MediaDto.prepare(entity.siteLogo) : undefined,
 			emailWebhooks: entity.emailWebhooks,
 		};
 	}
