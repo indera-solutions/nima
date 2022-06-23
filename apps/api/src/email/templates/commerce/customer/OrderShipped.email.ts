@@ -28,6 +28,7 @@ Your order with number #${ params.orderDetails.order.id } has been shipped.`,
 			},
 			locale: language,
 			orderDetails: params.orderDetails,
+			params: params,
 		});
 	}
 }

@@ -88,9 +88,9 @@ export class SettingsEntity {
 	@ApiProperty({ type: AddressDto, required: false })
 	shopAddress: AddressDto;
 
-	@ManyToOne(() => MediaEntity)
+	@ManyToOne(() => MediaEntity, { eager: true })
 	@ApiProperty({ type: MediaDto, required: false })
-	siteLogo: MediaDto;
+	siteLogo?: MediaDto;
 
 	@Column({ type: 'jsonb', default: [] })
 	@ApiProperty({ type: () => EmailWebhooksDto, isArray: true })

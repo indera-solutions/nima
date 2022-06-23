@@ -42,7 +42,7 @@ export class EmailCommerceListener {
 
 		if ( notifyCustomer ) {
 			let template: NimaEmail = await this.service.getWebhookTemplate(Emails.ORDER_PROCESSING, payload, settings);
-			if ( !template ) template = (new OrderProcessingEmail()).getTemplate(order.languageCode, { orderDetails: orderDetails });
+			if ( !template ) template = (new OrderProcessingEmail()).getTemplate(order.languageCode, { orderDetails: orderDetails, siteLogoUrl: settings.siteLogo?.url });
 			await this.service.sendEmail(template, order.userEmail);
 		}
 
@@ -76,7 +76,10 @@ export class EmailCommerceListener {
 
 		if ( notifyCustomer ) {
 			let template: NimaEmail = await this.service.getWebhookTemplate(Emails.ORDER_CANCELED, payload, settings);
-			if ( !template ) template = (new OrderCanceledEmail()).getTemplate(order.languageCode, { orderDetails: orderDetails });
+			if ( !template ) template = (new OrderCanceledEmail()).getTemplate(order.languageCode, {
+				orderDetails: orderDetails,
+				siteLogoUrl: settings.siteLogo?.url,
+			});
 			await this.service.sendEmail(template, order.userEmail);
 		}
 
@@ -96,7 +99,7 @@ export class EmailCommerceListener {
 
 		if ( notifyCustomer ) {
 			let template: NimaEmail = await this.service.getWebhookTemplate(Emails.ORDER_SHIPPED, payload, settings);
-			if ( !template ) template = (new OrderShippedEmail()).getTemplate(order.languageCode, { orderDetails: orderDetails });
+			if ( !template ) template = (new OrderShippedEmail()).getTemplate(order.languageCode, { orderDetails: orderDetails, siteLogoUrl: settings.siteLogo?.url });
 			await this.service.sendEmail(template, order.userEmail);
 		}
 	}
@@ -110,9 +113,12 @@ export class EmailCommerceListener {
 			order: order,
 		};
 
+		const settings = await this.settingsService.getSettings();
+
+
 		if ( notifyCustomer ) {
 			let template: NimaEmail = await this.service.getWebhookTemplate(Emails.ORDER_REFUNDED, payload);
-			if ( !template ) template = (new OrderRefundedEmail()).getTemplate(order.languageCode, { orderDetails: orderDetails });
+			if ( !template ) template = (new OrderRefundedEmail()).getTemplate(order.languageCode, { orderDetails: orderDetails, siteLogoUrl: settings.siteLogo?.url });
 			await this.service.sendEmail(template, order.userEmail);
 		}
 	}
@@ -120,6 +126,7 @@ export class EmailCommerceListener {
 	@OnEvent(Events.COMMERCE.ORDER_COMPLETED)
 	async orderCompleted(payload: { order: OrderEntity, notifyCustomer?: boolean }) {
 		const { order, notifyCustomer } = payload;
+		const settings = await this.settingsService.getSettings();
 
 		const orderDetails: CommerceEmailOrderDetails = {
 			order: order,
@@ -127,7 +134,7 @@ export class EmailCommerceListener {
 
 		if ( notifyCustomer ) {
 			let template: NimaEmail = await this.service.getWebhookTemplate(Emails.ORDER_COMPLETED, payload);
-			if ( !template ) template = (new OrderCompletedEmail()).getTemplate(order.languageCode, { orderDetails: orderDetails });
+			if ( !template ) template = (new OrderCompletedEmail()).getTemplate(order.languageCode, { orderDetails: orderDetails, siteLogoUrl: settings.siteLogo?.url });
 			await this.service.sendEmail(template, order.userEmail);
 		}
 	}
@@ -135,6 +142,7 @@ export class EmailCommerceListener {
 	@OnEvent(Events.COMMERCE.ORDER_ON_HOLD)
 	async orderOnHold(payload: { order: OrderEntity, notifyCustomer?: boolean }) {
 		const { order, notifyCustomer } = payload;
+		const settings = await this.settingsService.getSettings();
 
 		const orderDetails: CommerceEmailOrderDetails = {
 			order: order,
@@ -142,7 +150,7 @@ export class EmailCommerceListener {
 
 		if ( notifyCustomer ) {
 			let template: NimaEmail = await this.service.getWebhookTemplate(Emails.ORDER_ON_HOLD, payload);
-			if ( !template ) template = (new OrderOnHoldEmail()).getTemplate(order.languageCode, { orderDetails: orderDetails });
+			if ( !template ) template = (new OrderOnHoldEmail()).getTemplate(order.languageCode, { orderDetails: orderDetails, siteLogoUrl: settings.siteLogo?.url });
 			await this.service.sendEmail(template, order.userEmail);
 		}
 	}
@@ -158,7 +166,7 @@ export class EmailCommerceListener {
 
 		if ( notifyCustomer ) {
 			let template: NimaEmail = await this.service.getWebhookTemplate(Emails.ORDER_CANCELED, payload, settings);
-			if ( !template ) template = (new OrderPaymentPendingEmail()).getTemplate(order.languageCode, { orderDetails: orderDetails });
+			if ( !template ) template = (new OrderPaymentPendingEmail()).getTemplate(order.languageCode, { orderDetails: orderDetails, siteLogoUrl: settings.siteLogo?.url });
 			await this.service.sendEmail(template, order.userEmail);
 		}
 

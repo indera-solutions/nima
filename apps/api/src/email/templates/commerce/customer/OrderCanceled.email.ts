@@ -28,7 +28,7 @@ Your order with number #${ params.orderDetails.order.id } has been canceled.`,
 			},
 			locale: language,
 			orderDetails: params.orderDetails,
-
+			params: params,
 		});
 	}
 }

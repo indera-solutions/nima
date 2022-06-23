@@ -1,10 +1,10 @@
 import { useSettings, useUpdateSettings } from '@nima-cms/react';
-import { CreateSettingsDto, SettingsDto } from '@nima-cms/sdk';
+import { CreateSettingsDto } from '@nima-cms/sdk';
 import { LanguageCode, languages } from '@nima-cms/utils';
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
-import { AdminColumn, AdminFooter, AdminPage, AdminSection, NimaTitle } from '../components';
+import { AdminColumn, AdminFooter, AdminPage, AdminSection, MediaSelectorSection, NimaTitle } from '../components';
 
 interface SettingsProps {
 
@@ -19,7 +19,7 @@ export default function SettingsPage(props: SettingsProps) {
 
 	const [settings, setSettings] = useState<CreateSettingsDto>({
 		siteName: '',
-		siteLogo: undefined,
+		siteLogoId: undefined,
 		adminLanguage: LanguageCode.en,
 		availableLanguages: [LanguageCode.en],
 		baseUrl: '',
@@ -38,7 +38,7 @@ export default function SettingsPage(props: SettingsProps) {
 		if ( isSuccess && existingSettings ) {
 			setSettings({
 				siteName: existingSettings.siteName,
-				siteLogo: existingSettings.siteLogo,
+				siteLogoId: existingSettings.siteLogo?.id,
 				adminLanguage: existingSettings.adminLanguage,
 				availableLanguages: existingSettings.availableLanguages,
 				baseUrl: existingSettings.baseUrl,
@@ -55,7 +55,7 @@ export default function SettingsPage(props: SettingsProps) {
 		}
 	}, [existingSettings, isSuccess]);
 
-	function onEditValue(name: keyof SettingsDto, value) {
+	function onEditValue(name: keyof CreateSettingsDto, value) {
 		setSettings(state => ({ ...state, [name]: value }));
 	}
 
@@ -96,6 +96,11 @@ export default function SettingsPage(props: SettingsProps) {
 							</label>
 						</div>
 					</AdminSection>
+					<MediaSelectorSection
+						title={ 'Site Logo' }
+						sortableMedia={ settings.siteLogoId ? [{ sortOrder: 0, mediaId: settings.siteLogoId }] : [] }
+						onSelect={ (media) => onEditValue('siteLogoId', media[0]?.mediaId) }
+					/>
 					<AdminSection title={ 'Languages' }>
 						<label className="label">
 							<span className="label-text">Admin Language</span>

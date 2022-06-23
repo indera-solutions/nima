@@ -24,7 +24,7 @@ export class OrderPaymentPendingAdminEmail extends BaseCommerceEmail {
 			},
 			locale: language,
 			orderDetails: params.orderDetails,
-
+			params: {},
 		});
 	}
 }

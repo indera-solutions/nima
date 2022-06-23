@@ -23,6 +23,9 @@ export class OrderCreatedAdminEmail extends BaseCommerceEmail {
 			},
 			locale: language,
 			orderDetails: params.orderDetails,
+			params: {},
+
 		});
+
 	}
 }

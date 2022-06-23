@@ -1828,10 +1828,10 @@ export interface CreateSettingsDto {
 	'shopAddress'?: AddressDto;
 	/**
 	 *
-	 * @type {MediaDto}
+	 * @type {number}
 	 * @memberof CreateSettingsDto
 	 */
-	'siteLogo'?: MediaDto;
+	'siteLogoId'?: number;
 }
 /**
  *

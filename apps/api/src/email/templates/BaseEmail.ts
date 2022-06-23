@@ -4,6 +4,7 @@ const mjml2html = require('mjml');
 
 
 export interface BaseEmailParams {
+	siteLogoUrl?: string;
 }
 
 export interface BaseAdminEmailParams {
@@ -35,7 +36,6 @@ export abstract class BaseEmail {
 				// any custom elements you want to use
 			],
 		};
-
 		const htmlOutput = mjml2html(template, options);
 
 		if ( htmlOutput.errors && htmlOutput.errors.length > 0 ) {
