@@ -1,8 +1,10 @@
 import {
+	Trans,
 	useCreateProductVariationMutation,
 	useProductById,
 	useProductTypeId,
 	useProductVariantById,
+	useTranslations,
 	useUpdateProductVariationMutation,
 } from '@nima-cms/react';
 import { CreateAssignedProductVariantAttributeDto, CreateProductVariantDto } from '@nima-cms/sdk';
@@ -25,6 +27,7 @@ import {
 	TranslatableInput,
 } from '../../components';
 import { NIMA_ROUTES } from '../../lib/routes';
+import { STRINGS } from '../../strings/strings';
 
 interface VariantsProps {
 
@@ -32,6 +35,8 @@ interface VariantsProps {
 
 export default function Variants(props: VariantsProps) {
 	const router = useRouter();
+	const { getEditingTranslation, getAdminTranslation } = useTranslations();
+
 	const productId = router.query['productId'] ? parseIdStr(router.query['productId']) : undefined;
 	const variantId = router.query['variantId'] ? parseIdStr(router.query['variantId']) : undefined;
 	const isEditing = !!variantId;
@@ -141,31 +146,31 @@ export default function Variants(props: VariantsProps) {
 	return (
 		<>
 			<NimaTitle
-				title={ 'Add Variation' }/>
+				title={ getAdminTranslation(STRINGS.CREATE_NEW_VARIANT) }/>
 			<AdminPage
-				// reverted
-				label={ /*existingProductType ? 'Update ' + existingProductType :*/ 'Add Variation' }
+				label={ getAdminTranslation(STRINGS.CREATE_NEW_VARIANT) }
 				topRightContainer={ <div>
 					<Link href={ NIMA_ROUTES.products.edit(productId) }>
-						<button className={ 'btn btn-secondary' }>Back to product</button>
+						<button className={ 'btn btn-secondary' }><Trans>{ STRINGS.BACK_TO_PRODUCT }</Trans></button>
 					</Link>
 				</div> }
 				footerContainer={ <AdminFooter>
 					<Link href={ NIMA_ROUTES.products.edit(productId) }>
-						<button className={ 'btn btn-secondary' }>Back to product</button>
+						<button className={ 'btn btn-secondary' }><Trans>{ STRINGS.BACK_TO_PRODUCT }</Trans></button>
 					</Link>
 					<button
 						className={ 'btn btn-success ' + (createProductVariationMutation.isLoading ? 'loading' : '') }
 						onClick={ onCreateVariant }>
-						Save
+						<Trans>{ STRINGS.SAVE }</Trans>
 					</button>
 				</AdminFooter> }
 			>
 
 				<AdminColumn>
-					<AdminSection title={ 'General Information' } titleRightContainer={ <SelectEditingLanguage/> }>
+					<AdminSection title={ getAdminTranslation(STRINGS.GENERAL_INFO) }
+								  titleRightContainer={ <SelectEditingLanguage/> }>
 						<label className="label">
-							<span className="label-text">Name</span>
+							<span className="label-text"><Trans>{ STRINGS.NAME }</Trans></span>
 						</label>
 						<TranslatableInput className={ 'input w-full max-w-xs input-bordered' }
 										   name="name"
@@ -174,8 +179,8 @@ export default function Variants(props: VariantsProps) {
 						/>
 					</AdminSection>
 					{ variationAttributes.length > 0 &&
-						<AdminSection title={ 'Variation Attributes' }
-									  subtitle={ variationAttributes.length + ' attributes' }>
+						<AdminSection title={ getAdminTranslation(STRINGS.VARIATION_ATTRIBUTES) }
+									  subtitle={ variationAttributes.length + ' ' + getAdminTranslation(STRINGS.ATTRIBUTES) }>
 							{ variationAttributes.map(productAttributeValue => <EditProductAttribute
 								key={ productAttributeValue.attributeId }
 								onSelect={ onAttributeChange }
@@ -186,8 +191,8 @@ export default function Variants(props: VariantsProps) {
 					}
 
 					{ selectionAttributes.length > 0 &&
-						<AdminSection title={ 'Selection Attributes' }
-									  subtitle={ selectionAttributes.length + ' attributes' }>
+						<AdminSection title={ getAdminTranslation(STRINGS.SELECTION_ATTRIBUTES) }
+									  subtitle={ selectionAttributes.length + ' ' + getAdminTranslation(STRINGS.ATTRIBUTES) }>
 							{ selectionAttributes.map(productAttributeValue => <EditProductAttribute
 								key={ productAttributeValue.attributeId }
 								onSelect={ onAttributeChange }

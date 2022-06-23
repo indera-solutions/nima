@@ -1,3 +1,4 @@
+import { Trans } from '@nima-cms/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -24,7 +25,8 @@ export function NavigationMenu(props: NavigationMenuProps): React.ReactElement {
 							   href={ link.link }
 						   >
 							   <a><h3
-								   className={ 'text-lg cursor-pointer ' + (router.asPath.startsWith(link.link) ? 'font-bold' : '') }>{ link.name }</h3>
+								   className={ 'text-lg cursor-pointer ' + (router.asPath.startsWith(link.link) ? 'font-bold' : '') }>
+								   <Trans>{ link.name }</Trans></h3>
 							   </a>
 						   </Link>
 						   { link.children && link.children.map(child => <Link
@@ -32,7 +34,8 @@ export function NavigationMenu(props: NavigationMenuProps): React.ReactElement {
 								   href={ child.link }
 							   >
 								   <a><h4
-									   className={ 'pl-3 text-sm cursor-pointer ' + (router.asPath === child.link ? 'font-bold' : '') }>{ child.name }</h4>
+									   className={ 'pl-3 text-sm cursor-pointer ' + (router.asPath === child.link ? 'font-bold' : '') }>
+									   <Trans>{ child.name }</Trans></h4>
 								   </a>
 							   </Link>,
 						   ) }

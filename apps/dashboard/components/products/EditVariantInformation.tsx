@@ -1,6 +1,7 @@
-import { useSettings } from '@nima-cms/react';
+import { Trans, useSettings, useTranslations } from '@nima-cms/react';
 import { CreateProductVariantDto } from '@nima-cms/sdk';
 import React from 'react';
+import { STRINGS } from '../../strings/strings';
 import { AdminSection } from '../AdminLayout';
 
 interface EditVariantInformationProps {
@@ -9,20 +10,22 @@ interface EditVariantInformationProps {
 }
 
 export function EditVariantInformation(props: EditVariantInformationProps) {
+	const { getEditingTranslation, getAdminTranslation } = useTranslations();
+
 	const { onValueEdit, state } = props;
 	const { data: settings } = useSettings();
 
 	return <>
-		<AdminSection title={ 'Prices' }>
+		<AdminSection title={ getAdminTranslation(STRINGS.PRICE) }>
 			<label className="label">
-				<span className="label-text">Price</span>
+				<span className="label-text"><Trans>{ STRINGS.PRICE }</Trans></span>
 			</label>
-			<input type="number" placeholder="Price" className="input input-bordered w-full max-w-xs"
+			<input type="number" placeholder="0€" className="input input-bordered w-full max-w-xs"
 				   value={ state.priceAmount || '' }
 				   onChange={ (e) => onValueEdit('priceAmount', +e.target.value) }
 				   name={ 'priceAmount' }/>
 		</AdminSection>
-		<AdminSection title={ 'Inventory' }>
+		<AdminSection title={ getAdminTranslation(STRINGS.INVENTORY) }>
 			<label className="label">
 				<span className="label-text">SKU</span>
 			</label>
@@ -32,7 +35,7 @@ export function EditVariantInformation(props: EditVariantInformationProps) {
 				   name={ 'SKU' }/>
 
 			<label className="label">
-				<span className="label-text">Stock Quantity</span>
+				<span className="label-text"><Trans>{ STRINGS.STOCK_QUANTITY }</Trans></span>
 			</label>
 			<input type="number" min={ 0 } placeholder="0" className="input input-bordered w-full max-w-xs"
 				   value={ state.stock || 0 }
@@ -41,24 +44,24 @@ export function EditVariantInformation(props: EditVariantInformationProps) {
 
 			<div className="form-control w-full max-w-xs">
 				<label className="label">
-					<span className="label-text">Stock Threshold</span>
+					<span className="label-text"><Trans>{ STRINGS.STOCK_THRESHOLD }</Trans></span>
 				</label>
 				<input type="number" min={ 0 }
-					   placeholder={ `Default: ${ settings?.globalStockThreshold || 0 }` }
+					   placeholder={ getAdminTranslation(STRINGS.DEFAULT(settings?.globalStockThreshold || 0)) }
 					   className="input input-bordered w-full max-w-xs"
 					   value={ state.stockThreshold || '' }
 					   onChange={ (e) => onValueEdit('stockThreshold', +e.target.value) }
 					   name={ 'stockThreshold' }/>
 				<label className="label">
-					<span className="label-text">Default: { settings?.globalStockThreshold || 0 }</span>
-					<span className="label-text-alt">Notify when stock is below this</span>
+					<span className="label-text"><Trans>{ STRINGS.DEFAULT(settings?.globalStockThreshold || 0) }</Trans></span>
+					<span className="label-text-alt"><Trans>{ STRINGS.NOTIFY_WHEN_STOCK_BELOW }</Trans></span>
 				</label>
 			</div>
 
 			<label className="label cursor-pointer justify-start gap-3">
 				<input type="checkbox" className="checkbox" checked={ state.trackInventory || false }
 					   onChange={ (e) => onValueEdit('trackInventory', e.target.checked) }/>
-				<span className="label-text">Track Inventory</span>
+				<span className="label-text"><Trans>{ STRINGS.TRACK_INVENTORY }</Trans></span>
 			</label>
 		</AdminSection>
 	</>;

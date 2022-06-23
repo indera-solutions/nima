@@ -1,6 +1,7 @@
 import { Trans, useAttributeById, useProductTypeId } from '@nima-cms/react';
 import { CreateAssignedProductAttributeDto, CreateAssignedProductVariantAttributeDto, InputType } from '@nima-cms/sdk';
 import React from 'react';
+import { STRINGS } from '../../strings/strings';
 import { BooleanSelector, DropdownValueSelector } from './valueSelectors';
 import { FileSelector } from './valueSelectors/FileSelector';
 
@@ -26,7 +27,9 @@ export function EditProductAttribute(props: EditProductAttributeProps) {
 	return (
 		<div className={ 'flex justify-between items-center' }>
 			<h1><Trans>{ attribute.name }</Trans>{ attribute.valueRequired ?
-				<span className={ 'text-sm text-gray-400 pl-1' }>(required)</span> : '' }</h1>
+				<span
+					className={ 'text-sm text-gray-400 pl-1' }><Trans>{ STRINGS.REQUIRED_PARENTH }</Trans></span> : '' }
+			</h1>
 			<AttributeTypeSwitch
 				attributeId={ attributeId }
 				type={ attribute.inputType }
