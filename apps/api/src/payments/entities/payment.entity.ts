@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt } from 'class-validator';
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 export enum PaymentMethod {
@@ -20,10 +19,9 @@ export enum PaymentStatus {
 
 @Entity('payment_payments')
 export class PaymentEntity {
-	@PrimaryGeneratedColumn()
-	@ApiProperty({ type: Number })
-	@IsInt()
-	id: number;
+	@PrimaryGeneratedColumn('uuid')
+	@ApiProperty({ type: String })
+	id: string;
 
 	@ApiProperty({ enum: PaymentMethod, enumName: 'PaymentMethod' })
 	@Column({ type: 'enum', enum: PaymentMethod, enumName: 'PaymentMethod' })

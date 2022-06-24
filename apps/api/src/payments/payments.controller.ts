@@ -34,44 +34,24 @@ export class PaymentsController {
 	// }
 
 	@Get('/:id')
-	@ApiParam({ type: Number, name: 'id' })
+	@ApiParam({ type: String, name: 'id' })
 	@ApiNotFoundResponse({ description: 'ATTRIBUTE_NOT_FOUND' })
 	@ApiOkResponse({ type: PaymentDto })
 	@ApiHeader({ name: 'X-API-KEY' })
 	@IsPublic()
 	@UseGuards(StaffOrKeyGuard)
-	getById(@Param('id') id: number): Promise<PaymentDto> {
+	getById(@Param('id') id: string): Promise<PaymentDto> {
 		return this.service.getById({ id: id });
 	}
 
 	@Patch('/:id')
 	@ApiOkResponse({ type: PaymentDto })
 	@ApiBody({ type: UpdatePaymentDto })
-	@ApiParam({ type: Number, name: 'id' })
+	@ApiParam({ type: String, name: 'id' })
 	@ApiHeader({ name: 'X-API-KEY' })
 	@IsPublic()
 	@UseGuards(StaffOrKeyGuard)
-	patch(@Param('id') attributeId: number, @Body() updatePaymentDto: UpdatePaymentDto): Promise<PaymentDto> {
-		return this.service.patch({ id: attributeId, dto: updatePaymentDto });
+	patch(@Param('id') id: string, @Body() updatePaymentDto: UpdatePaymentDto): Promise<PaymentDto> {
+		return this.service.patch({ id: id, dto: updatePaymentDto });
 	}
-
-	//
-	//
-	//
-	//
-	// @Put('/:id')
-	// @ApiOkResponse({ type: PaymentDto })
-	// @ApiBody({ type: CreatePaymentDto })
-	// @ApiParam({ type: Number, name: 'id' })
-	// update(@Param('id') attributeId: number, @Body() createPaymentDto: CreatePaymentDto): Promise<PaymentDto> {
-	// 	return this.service.save({ id: attributeId, dto: createPaymentDto });
-	// }
-
-	// @Delete('/:id')
-	// @ApiOkResponse({ type: PaymentDto })
-	// @ApiBody({ type: UpdatePaymentDto })
-	// @ApiParam({ type: Number, name: 'id' })
-	// remove(@Param('id') attributeId: number): Promise<PaymentDto> {
-	// 	return this.service.deleteById({ id: attributeId });
-	// }
 }

@@ -7,13 +7,13 @@ export class PaymentsService {
 	constructor(private paymentRepository: PaymentRepository) {
 	}
 
-	async save(params: { dto: CreatePaymentDto, id?: number }): Promise<PaymentDto> {
+	async save(params: { dto: CreatePaymentDto, id?: string }): Promise<PaymentDto> {
 		const { dto, id } = params;
 		const payment = await this.paymentRepository.save({ ...dto, id: id });
 		return PaymentDto.prepare(payment);
 	}
 
-	async getById(params: { id: number }): Promise<PaymentDto> {
+	async getById(params: { id: string }): Promise<PaymentDto> {
 		const { id } = params;
 		const payment = await this.paymentRepository.findOne(id);
 		if ( !payment ) throw new NotFoundException('ATTRIBUTE_NOT_FOUND');
@@ -26,14 +26,14 @@ export class PaymentsService {
 		return [];
 	}
 
-	async deleteById(params: { id: number }): Promise<PaymentDto> {
+	async deleteById(params: { id: string }): Promise<PaymentDto> {
 		const { id } = params;
 		const paymentDto = await this.getById({ id });
 		await this.paymentRepository.delete(id);
 		return paymentDto;
 	}
 
-	async patch(params: { id: number; dto: UpdatePaymentDto }) {
+	async patch(params: { id: string; dto: UpdatePaymentDto }) {
 		const { id, dto } = params;
 		const payment = await this.getById({ id: id });
 		for ( const dtoKey in dto ) {

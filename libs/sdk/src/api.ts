@@ -3047,10 +3047,10 @@ export enum OrderStatus {
 export interface PaymentDto {
 	/**
 	 *
-	 * @type {number}
+	 * @type {string}
 	 * @memberof PaymentDto
 	 */
-	'id': number;
+	'id': string;
 	/**
 	 *
 	 * @type {PaymentMethod}
@@ -3863,16 +3863,16 @@ export interface SettingsDto {
 	'shopAddress'?: AddressDto;
 	/**
 	 *
-	 * @type {MediaDto}
-	 * @memberof SettingsDto
-	 */
-	'siteLogo'?: MediaDto;
-	/**
-	 *
 	 * @type {Array<EmailWebhooksDto>}
 	 * @memberof SettingsDto
 	 */
 	'emailWebhooks': Array<EmailWebhooksDto>;
+	/**
+	 *
+	 * @type {MediaDto}
+	 * @memberof SettingsDto
+	 */
+	'siteLogo'?: MediaDto;
 }
 /**
  *
@@ -11853,12 +11853,12 @@ export const PaymentsApiAxiosParamCreator = function (configuration?: Configurat
 	return {
 		/**
 		 *
-		 * @param {number} id
+		 * @param {string} id
 		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		paymentsGetById: async (id: number, xAPIKEY?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		paymentsGetById: async (id: string, xAPIKEY?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('paymentsGetById', 'id', id)
 			const localVarPath = `/api/v1/payments/{id}`
@@ -11894,13 +11894,13 @@ export const PaymentsApiAxiosParamCreator = function (configuration?: Configurat
 		},
 		/**
 		 *
-		 * @param {number} id
+		 * @param {string} id
 		 * @param {UpdatePaymentDto} updatePaymentDto
 		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		paymentsPatch: async (id: number, updatePaymentDto: UpdatePaymentDto, xAPIKEY?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		paymentsPatch: async (id: string, updatePaymentDto: UpdatePaymentDto, xAPIKEY?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('paymentsPatch', 'id', id)
 			// verify required parameter 'updatePaymentDto' is not null or undefined
@@ -11951,24 +11951,24 @@ export const PaymentsApiFp = function (configuration?: Configuration) {
 	return {
 		/**
 		 *
-		 * @param {number} id
+		 * @param {string} id
 		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async paymentsGetById(id: number, xAPIKEY?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentDto>> {
+		async paymentsGetById(id: string, xAPIKEY?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.paymentsGetById(id, xAPIKEY, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
-		 * @param {number} id
+		 * @param {string} id
 		 * @param {UpdatePaymentDto} updatePaymentDto
 		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async paymentsPatch(id: number, updatePaymentDto: UpdatePaymentDto, xAPIKEY?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentDto>> {
+		async paymentsPatch(id: string, updatePaymentDto: UpdatePaymentDto, xAPIKEY?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.paymentsPatch(id, updatePaymentDto, xAPIKEY, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -11984,23 +11984,23 @@ export const PaymentsApiFactory = function (configuration?: Configuration, baseP
 	return {
 		/**
 		 *
-		 * @param {number} id
+		 * @param {string} id
 		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		paymentsGetById(id: number, xAPIKEY?: string, options?: any): AxiosPromise<PaymentDto> {
+		paymentsGetById(id: string, xAPIKEY?: string, options?: any): AxiosPromise<PaymentDto> {
 			return localVarFp.paymentsGetById(id, xAPIKEY, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
-		 * @param {number} id
+		 * @param {string} id
 		 * @param {UpdatePaymentDto} updatePaymentDto
 		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		paymentsPatch(id: number, updatePaymentDto: UpdatePaymentDto, xAPIKEY?: string, options?: any): AxiosPromise<PaymentDto> {
+		paymentsPatch(id: string, updatePaymentDto: UpdatePaymentDto, xAPIKEY?: string, options?: any): AxiosPromise<PaymentDto> {
 			return localVarFp.paymentsPatch(id, updatePaymentDto, xAPIKEY, options).then((request) => request(axios, basePath));
 		},
 	};
@@ -12014,10 +12014,10 @@ export const PaymentsApiFactory = function (configuration?: Configuration, baseP
 export interface PaymentsApiPaymentsGetByIdRequest {
 	/**
 	 *
-	 * @type {number}
+	 * @type {string}
 	 * @memberof PaymentsApiPaymentsGetById
 	 */
-	readonly id: number;
+	readonly id: string;
 
 	/**
 	 *
@@ -12035,10 +12035,10 @@ export interface PaymentsApiPaymentsGetByIdRequest {
 export interface PaymentsApiPaymentsPatchRequest {
 	/**
 	 *
-	 * @type {number}
+	 * @type {string}
 	 * @memberof PaymentsApiPaymentsPatch
 	 */
-	readonly id: number;
+	readonly id: string;
 
 	/**
 	 *
