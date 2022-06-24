@@ -3,6 +3,10 @@ export const STRINGS = {
 		en: 'Save',
 		el: 'Αποθήκευση',
 	},
+	CREATE: {
+		en: 'Create',
+		el: 'Δημιουργία',
+	},
 	UPDATE: {
 		en: 'Update',
 		el: 'Επεξεργασία',
@@ -35,6 +39,18 @@ export const STRINGS = {
 		en: 'Search',
 		el: 'Αναζήτηση',
 	},
+	YES: {
+		en: 'Yes',
+		el: 'Ναι',
+	},
+	NO: {
+		en: 'No',
+		el: 'Όχι',
+	},
+	NEW_VALUE: {
+		en: 'New Value',
+		el: 'Νέα Τιμή',
+	},
 
 
 	PRODUCTS: {
@@ -60,6 +76,14 @@ export const STRINGS = {
 	ATTRIBUTE: {
 		en: 'Attribute',
 		el: 'Γνωρίσμα',
+	},
+	ATTRIBUTE_VALUES: {
+		en: 'Attribute Values',
+		el: 'Τιμές Γνωρισμάτων',
+	},
+	ATTRIBUTE_VALUE: {
+		en: 'Attribute Value',
+		el: 'Τιμή Γνωρίσματος',
 	},
 	PRODUCT_TYPES: {
 		en: 'Product Types',
@@ -220,6 +244,68 @@ export const STRINGS = {
 		en: 'Selection Attributes',
 		el: 'Γνωρίσματα Επιλογών',
 	},
+	TYPE: {
+		en: 'Type',
+		el: 'Τύπος',
+	},
+	PUBLIC: {
+		en: 'Public',
+		el: 'Δημόσιο',
+	},
+	USED_IN_FILTERING: {
+		en: 'Used in Filtering',
+		el: 'Φιλτράρισμα',
+	},
+	INPUT_TYPE: {
+		en: 'Input Type',
+		el: 'Τύπος Εισαγωγής',
+	},
+	VALUE_REQUIRED: {
+		en: 'Value Required',
+		el: 'Απαιτούμενη τιμή',
+	},
+
+
+	DROPDOWN: {
+		en: 'Dropdown',
+		el: 'Λίστα',
+	},
+	MULTISELECT: {
+		en: 'Multiselect',
+		el: 'Πολλαπλή Επιλογή',
+	},
+	FILE: {
+		en: 'File',
+		el: 'Αρχείο',
+	},
+	REFERENCE: {
+		en: 'Reference',
+		el: 'Αναφορά',
+	},
+	NUMERIC: {
+		en: 'Numeric',
+		el: 'Αριθμητικό',
+	},
+	RICH_TEXT: {
+		en: 'Rich Text',
+		el: 'Πλούσιο κείμενο',
+	},
+	SWATCH: {
+		en: 'Swatch',
+		el: 'Swatch',
+	},
+	BOOLEAN: {
+		en: 'Boolean',
+		el: 'Boolean',
+	},
+	DATE: {
+		en: 'Date',
+		el: 'Ημερομηνία',
+	},
+	DATE_TIME: {
+		en: 'Date Time',
+		el: 'Ημερομηνία ώρα',
+	},
 
 
 	PRODUCT_CREATE_TITLE: {
@@ -227,6 +313,15 @@ export const STRINGS = {
 		el: 'Δημιουργία Προϊόντος',
 	},
 	PRODUCT_UPDATE_TITLE: (name) => ({
+		en: `Update ${ name }`,
+		el: `Επεξεργασία ${ name }`,
+	}),
+
+	ATTRIBUTE_CREATE_TITLE: {
+		en: 'Create Attribute',
+		el: 'Δημιουργία Γνωρίσματος',
+	},
+	ATTRIBUTE_UPDATE_TITLE: (name) => ({
 		en: `Update ${ name }`,
 		el: `Επεξεργασία ${ name }`,
 	}),

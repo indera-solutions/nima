@@ -278,12 +278,13 @@ export default function Add(props: AddProps) {
 
 					{ existingProduct && <button className="btn btn-error"
 												 onClick={ onDeleteProduct }>
-						{ getAdminTranslation(STRINGS.DELETE) }
+						<Trans>{ STRINGS.DELETE }</Trans>
 					</button> }
 
 					<button className="btn btn-success"
 							disabled={ !isReadyToSubmit }
-							onClick={ onCreateProduct }>{ getAdminTranslation(isEditing ? STRINGS.UPDATE : STRINGS.SAVE) }
+							onClick={ onCreateProduct }>
+						<Trans>{ isEditing ? STRINGS.UPDATE : STRINGS.SAVE }</Trans>
 					</button>
 				</AdminFooter> }
 			>
