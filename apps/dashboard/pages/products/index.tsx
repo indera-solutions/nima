@@ -14,6 +14,7 @@ import { STRINGS } from '../../strings/strings';
 
 const queryString = require('query-string');
 
+
 interface ProductListProps {
 
 }
@@ -90,13 +91,13 @@ export default function ProductList(props: ProductListProps) {
 							<thead>
 							<tr>
 								<th></th>
-								<th><Trans>{ STRINGS.NAME }</Trans></th>
-								<th><Trans>{ STRINGS.CATEGORY }</Trans></th>
-								<th><Trans>{ STRINGS.PRODUCT_TYPE }</Trans></th>
-								<th><Trans>{ STRINGS.PRICE }</Trans></th>
-								<th><Trans>{ STRINGS.STOCK }</Trans></th>
-								<th><Trans>{ STRINGS.PUBLISHED }</Trans></th>
-								<th><Trans>{ STRINGS.ACTIONS }</Trans></th>
+								<th><Trans caps>{ STRINGS.NAME }</Trans></th>
+								<th><Trans caps>{ STRINGS.CATEGORY }</Trans></th>
+								<th><Trans caps>{ STRINGS.PRODUCT_TYPE }</Trans></th>
+								<th><Trans caps>{ STRINGS.PRICE }</Trans></th>
+								<th><Trans caps>{ STRINGS.STOCK }</Trans></th>
+								<th><Trans caps>{ STRINGS.PUBLISHED }</Trans></th>
+								<th><Trans caps>{ STRINGS.ACTIONS }</Trans></th>
 							</tr>
 							</thead>
 							<tbody>

@@ -1,4 +1,4 @@
-import { Trans } from '@nima-cms/react';
+import { Trans, useTranslations } from '@nima-cms/react';
 import { Metadata } from '@nima-cms/utils';
 import React from 'react';
 import { SVGPlus } from '../../assets/SVGIcons';
@@ -12,6 +12,7 @@ interface MetadataEditorProps {
 }
 
 export function MetadataEditor(props: MetadataEditorProps) {
+	const { getAdminTranslation } = useTranslations();
 	const entries = Object.entries(props.values);
 	const size = entries.length;
 	const readOnly = !props.onChange;
@@ -56,7 +57,7 @@ export function MetadataEditor(props: MetadataEditorProps) {
 	}
 
 	return (
-		<AdminSection title={ props.isPrivate ? 'Private Metadata' : 'Metadata' }
+		<AdminSection title={ props.isPrivate ? getAdminTranslation(STRINGS.PRIVATE_METADATA) : getAdminTranslation(STRINGS.METADATA) }
 					  subtitle={ size > 0 ? size + ' values' : undefined }
 					  titleRightContainer={ !readOnly &&
 						  <button className={ 'btn btn-primary gap-2' } disabled={ canAddNew }

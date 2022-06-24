@@ -1,4 +1,8 @@
 export const STRINGS = {
+	ADD: {
+		en: 'Add',
+		el: 'Προσθήκη',
+	},
 	SAVE: {
 		en: 'Save',
 		el: 'Αποθήκευση',
@@ -7,9 +11,17 @@ export const STRINGS = {
 		en: 'Create',
 		el: 'Δημιουργία',
 	},
+	CREATED: {
+		en: 'Created',
+		el: 'Δημιουργήθηκε'
+	},
 	UPDATE: {
 		en: 'Update',
 		el: 'Επεξεργασία',
+	},
+	UPDATED: {
+		en: 'Updated',
+		el: 'Ενημερώθηκε',
 	},
 	EDIT: {
 		en: 'Edit',
@@ -19,9 +31,21 @@ export const STRINGS = {
 		en: 'Delete',
 		el: 'Διαγραφή',
 	},
+	DELETED: {
+		en: 'Deleted',
+		el: 'Διαγράφηκε',
+	},
+	REMOVE: {
+		en: 'Remove',
+		el: 'Αφαίρεση',
+	},
 	BACK: {
 		en: 'Back',
 		el: 'Πίσω',
+	},
+	ACTION: {
+		en: 'Action',
+		el: 'Ενέργεια',
 	},
 	ACTIONS: {
 		en: 'Actions',
@@ -153,6 +177,14 @@ export const STRINGS = {
 		en: 'Settings',
 		el: 'Ρυθμίσεις',
 	},
+	METADATA: {
+		en: 'Metadata',
+		el: 'Metadata',
+	},
+	PRIVATE_METADATA: {
+		en: 'Private Metadata',
+		el: 'Ιδιωτικά Metadata',
+	},
 
 
 	GENERAL_INFO: {
@@ -256,6 +288,10 @@ export const STRINGS = {
 		en: 'Used in Filtering',
 		el: 'Φιλτράρισμα',
 	},
+	USED_IN_VARIANT_SELECTION: {
+		en: 'Used in Variant Selection',
+		el: 'Χρήση σε Παραλλαγές',
+	},
 	INPUT_TYPE: {
 		en: 'Input Type',
 		el: 'Τύπος Εισαγωγής',
@@ -316,6 +352,14 @@ export const STRINGS = {
 		en: `Update ${ name }`,
 		el: `Επεξεργασία ${ name }`,
 	}),
+	PRODUCT_TYPE_CREATE_TITLE: {
+		en: 'Create Product Type',
+		el: 'Δημιουργία τύπου προϊόντος',
+	},
+	PRODUCT_TYPE_UPDATE_TITLE: {
+		en: 'Update Product Type',
+		el: 'Επεξεργασία τύπου προϊόντος',
+	},
 
 	ATTRIBUTE_CREATE_TITLE: {
 		en: 'Create Attribute',
@@ -343,8 +387,25 @@ export const STRINGS = {
 		en: 'Field',
 		el: 'Πεδίο',
 	},
+	ADD_ATTRIBUTES: {
+		en: 'Add Attributes',
+		el: 'Προσθήκη Γνωρισμάτων',
+	},
 	VALUE: {
 		en: 'Value',
 		el: 'Τιμή',
+	},
+
+	ARE_YOU_SURE_DELETE: (name) => ({
+		en: `Are you sure you want to delete ${ name }?`,
+		el: `Είστε σίγουροι ότι θέλετε να διαγράψετε το ${ name };`,
+	}),
+	FILL_ALL_FIELDS: {
+		en: 'Please fill all the required fields',
+		el: 'Παρακαλώ συμπληρώστε όλα τα απαραίτητα πεδία',
+	},
+	SELECT_ALL_ATTRIBUTES: {
+		en: 'Select all the attributes to add',
+		el: 'Επιλέξτε όλα τα γνωρίσματα που θέλετε να προσθέσετε',
 	},
 };

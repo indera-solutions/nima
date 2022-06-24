@@ -1,15 +1,19 @@
-import { LanguageCode, Translatable } from '@nima-cms/utils';
+import { capitalize, LanguageCode, Translatable } from '@nima-cms/utils';
 import React from 'react';
 import { useLanguages } from './providers';
 
 interface TransProps {
 	useEditingLanguage?: boolean;
+	caps?: boolean;
 	children?: Translatable | string;
 }
 
 export function Trans(props: TransProps): React.ReactElement {
 	const languages = useLanguages();
-	return <>{ getTranslation(props.children, languages.adminLanguage, props.useEditingLanguage, languages.currentEditingLanguage) }</>;
+	const translation = getTranslation(props.children, languages.adminLanguage, props.useEditingLanguage, languages.currentEditingLanguage);
+	const final = props.caps ? capitalize(translation) : translation;
+
+	return <React.Fragment>{ final }</React.Fragment>;
 }
 
 export function getTranslation(text?: Translatable | string, adminLanguage?: LanguageCode, useEditingLanguage?: boolean, currentEditingLanguage?: LanguageCode): string {

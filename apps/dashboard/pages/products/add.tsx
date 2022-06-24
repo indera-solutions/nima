@@ -15,7 +15,6 @@ import {
 } from '@nima-cms/react';
 import { CreateAssignedProductAttributeDto, CreateProductDto, CreateProductVariantDto } from '@nima-cms/sdk';
 import { getEuroValue, getSlug, Metadata, parseIdStr } from '@nima-cms/utils';
-import { STRINGS } from 'apps/dashboard/strings/strings';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -30,14 +29,16 @@ import {
 	MediaSelectorSection,
 	MetadataEditor,
 	NimaTitle,
+	RichTextInput,
 	SelectEditingLanguage,
 	StockBadge,
 	TranslatableInput,
 } from '../../components';
 import { CategoriesSelect } from '../../components/forms/CategoriesSelect';
 import { CollectionSelect } from '../../components/forms/CollectionSelect';
-import { RichTextInput } from '../../components/forms/NimaRichText/RichTextInput';
 import { NIMA_ROUTES } from '../../lib/routes';
+import { STRINGS } from '../../strings/strings';
+
 
 interface AddProps {
 
@@ -47,7 +48,7 @@ export default function Add(props: AddProps) {
 
 	const router = useRouter();
 	const languages = useLanguages();
-	const { getEditingTranslation, getAdminTranslation } = useTranslations();
+	const { getAdminTranslation } = useTranslations();
 	const id: number | undefined = router.query['id'] ? parseIdStr(router.query['id']) : undefined;
 	const isEditing = !!id;
 
@@ -107,7 +108,7 @@ export default function Add(props: AddProps) {
 		if ( !createProductDto.name[languages.defaultLanguage] ) return false;
 		// TODO add check for required attributes
 		return true;
-	}, [createProductDto]);
+	}, [createProductDto, languages.defaultLanguage]);
 
 	const { data: productTypes } = useProductTypes();
 	const { data: productType } = useProductTypeId(createProductDto.productTypeId);
@@ -176,7 +177,7 @@ export default function Add(props: AddProps) {
 
 	async function onCreateProduct() {
 		if ( !isReadyToSubmit || !productType ) {
-			toast.error('Please fill all the required fields');
+			toast.error(getAdminTranslation(STRINGS.FILL_ALL_FIELDS));
 			return;
 		}
 		if ( !isEditing ) {
@@ -188,11 +189,11 @@ export default function Add(props: AddProps) {
 					productId: createdProduct.id,
 					createProductVariantDto: defaultVariant,
 				});
-				toast.success('Product Created.');
+				toast.success([getAdminTranslation(STRINGS.PRODUCT), getAdminTranslation(STRINGS.CREATED)].join(' '));
 				await router.push(NIMA_ROUTES.products.edit(createdProduct.id));
 
 			} else {
-				toast.success('Product Created.');
+				toast.success([getAdminTranslation(STRINGS.PRODUCT), getAdminTranslation(STRINGS.CREATED)].join(' '));
 				await router.push(NIMA_ROUTES.products.createVariant(createdProduct.id));
 			}
 		} else {
@@ -208,20 +209,20 @@ export default function Add(props: AddProps) {
 				});
 			}
 
-			toast.success('Product Updated');
+			toast.success([getAdminTranslation(STRINGS.PRODUCT), getAdminTranslation(STRINGS.UPDATED)].join(' '));
 
 		}
 	}
 
 	async function onDeleteProduct() {
 		if ( !id || !existingProduct ) return;
-		const confirm = window.confirm(`Are you sure you want to delete ${ getTranslation(existingProduct.name, languages.adminLanguage) }?`);
+		const confirm = window.confirm(getAdminTranslation(STRINGS.ARE_YOU_SURE_DELETE(getTranslation(existingProduct.name, languages.adminLanguage))));
 		if ( confirm ) {
 			await deleteProductMutation.mutateAsync({
 				productId: id,
 			});
-			toast.success('Product Deleted');
-			router.push(NIMA_ROUTES.products.list);
+			toast.success([getAdminTranslation(STRINGS.PRODUCT), getAdminTranslation(STRINGS.DELETED)].join(' '));
+			await router.push(NIMA_ROUTES.products.list);
 		}
 	}
 

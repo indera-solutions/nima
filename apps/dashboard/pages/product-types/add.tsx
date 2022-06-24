@@ -2,7 +2,7 @@ import {
 	Trans,
 	useAttributes,
 	useCreateProductTypeMutation,
-	useProductTypeId,
+	useProductTypeId, useTranslations,
 	useUpdateProductTypeMutation,
 } from '@nima-cms/react';
 import { AttributeDto, CreateProductTypeDto } from '@nima-cms/sdk';
@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import { SVGPlus } from '../../assets/SVGIcons';
 import { AdminColumn, AdminFooter, AdminPage, AdminSection, MetadataEditor, NimaTitle } from '../../components';
 import { NIMA_ROUTES } from '../../lib/routes';
+import { STRINGS } from '../../strings/strings';
 
 interface AddProductTypeProps {
 
@@ -23,6 +24,7 @@ export default function AddProductType(props: AddProductTypeProps) {
 	const router = useRouter();
 	const id: number | undefined = router.query['id'] ? parseIdStr(router.query['id']) : undefined;
 	const isEditing = !!id;
+	const { getAdminTranslation } = useTranslations();
 
 	const [createProductTypeDto, setCreateProductTypeDto] = useState<CreateProductTypeDto>({
 		name: '',
@@ -68,7 +70,7 @@ export default function AddProductType(props: AddProductTypeProps) {
 		if ( !isEditing ) {
 			try {
 				const createdProductType = await createProductTypeMutation.mutateAsync({ createProductTypeDto });
-				toast.success('Product Type Created!');
+				toast.success([getAdminTranslation(STRINGS.PRODUCT_TYPE), getAdminTranslation(STRINGS.CREATED)].join(' '));
 				await router.push(NIMA_ROUTES.productTypes.list);
 			} catch ( e: any ) {
 				console.log(e);
@@ -78,7 +80,7 @@ export default function AddProductType(props: AddProductTypeProps) {
 				productTypeId: id,
 				createProductTypeDto: createProductTypeDto,
 			});
-			toast.success('Product Type Updated!');
+			toast.success([getAdminTranslation(STRINGS.PRODUCT_TYPE), getAdminTranslation(STRINGS.UPDATED)].join(' '));
 		}
 	}
 
@@ -153,34 +155,36 @@ export default function AddProductType(props: AddProductTypeProps) {
 
 	return (
 		<>
-			<NimaTitle title={ isEditing ? 'Update Product Type' : 'Create Product Type' }/>
+			<NimaTitle
+				title={ isEditing ? getAdminTranslation(STRINGS.PRODUCT_TYPE_UPDATE_TITLE) : getAdminTranslation(STRINGS.PRODUCT_TYPE_CREATE_TITLE) }
+			/>
 			<AdminPage
-				label={ isEditing ? 'Update Product Type' : 'Create New Product Type' }
+				label={  isEditing ? getAdminTranslation(STRINGS.PRODUCT_TYPE_UPDATE_TITLE) : getAdminTranslation(STRINGS.PRODUCT_TYPE_CREATE_TITLE) }
 				footerContainer={ <AdminFooter>
 					<Link href={ NIMA_ROUTES.productTypes.list }>
-						<button className={ 'btn btn-secondary' }>Back</button>
+						<button className={ 'btn btn-secondary' }><Trans>{STRINGS.BACK}</Trans></button>
 					</Link>
 
 					<button className="btn btn-success"
-							onClick={ onCreateProductType }>{ isEditing ? 'Save' : 'Create' }</button>
+							onClick={ onCreateProductType }><Trans>{ isEditing ? STRINGS.SAVE : STRINGS.CREATE }</Trans></button>
 				</AdminFooter> }
 			>
 				<AdminColumn>
-					<AdminSection title={ 'General Information' }>
+					<AdminSection title={ getAdminTranslation(STRINGS.GENERAL_INFO) }>
 						<label className="label">
-							<span className="label-text">Name</span>
+							<span className="label-text"><Trans>{STRINGS.NAME}</Trans></span>
 						</label>
 						<input className={ 'input w-full max-w-xs input-bordered' }
 							   type="text"
 							   name="name"
 							   value={ createProductTypeDto.name }
-							   placeholder={ 'Pants' }
+							   placeholder={ 'e.g., Pants' }
 							   onChange={ (e) => onValueEdit('name', e.target.value) }
 						/>
 
 					</AdminSection>
 
-					<AdminSection title={ 'Attributes' }
+					<AdminSection title={ getAdminTranslation(STRINGS.ATTRIBUTES) }
 								  titleRightContainer={ <AvailableAttributesModal
 									  availableAttributes={ availableAttributes }
 									  onNewAttributes={ (newAttributesIds) => onAddAttributes(newAttributesIds, false) }
@@ -189,9 +193,9 @@ export default function AddProductType(props: AddProductTypeProps) {
 							<table className="table table-zebra w-full">
 								<thead>
 								<tr>
-									<th>Name</th>
-									<th>Order</th>
-									<th>Action</th>
+									<th><Trans caps>{STRINGS.NAME}</Trans></th>
+									<th><Trans caps>{STRINGS.ORDER}</Trans></th>
+									<th><Trans caps>{STRINGS.ACTION}</Trans></th>
 								</tr>
 								</thead>
 								<tbody>
@@ -211,7 +215,7 @@ export default function AddProductType(props: AddProductTypeProps) {
 										<th>
 											<button className={ 'btn btn-error' }
 													onClick={ () => onRemoveAttribute(attribute.attributeId, false) }>
-												Remove
+												<Trans>{STRINGS.REMOVE}</Trans>
 											</button>
 										</th>
 									</tr>;
@@ -222,7 +226,7 @@ export default function AddProductType(props: AddProductTypeProps) {
 						</div>
 					</AdminSection>
 
-					<AdminSection title={ 'Variation Attributes' }
+					<AdminSection title={ getAdminTranslation(STRINGS.VARIATION_ATTRIBUTES) }
 								  titleRightContainer={ <AvailableAttributesModal
 									  availableAttributes={ availableAttributes }
 									  onNewAttributes={ (newAttributesIds) => onAddAttributes(newAttributesIds, true) }
@@ -231,10 +235,10 @@ export default function AddProductType(props: AddProductTypeProps) {
 							<table className="table table-zebra w-full">
 								<thead>
 								<tr>
-									<th>Name</th>
-									<th>Used in Variant Selection</th>
-									<th>Order</th>
-									<th>Action</th>
+									<th><Trans caps>{STRINGS.NAME}</Trans></th>
+									<th><Trans caps>{STRINGS.USED_IN_VARIANT_SELECTION}</Trans></th>
+									<th><Trans caps>{STRINGS.ORDER}</Trans></th>
+									<th><Trans caps>{STRINGS.ACTION}</Trans></th>
 								</tr>
 								</thead>
 								<tbody>
@@ -261,7 +265,7 @@ export default function AddProductType(props: AddProductTypeProps) {
 										<th>
 											<button className={ 'btn btn-error' }
 													onClick={ () => onRemoveAttribute(attribute.attributeId, true) }>
-												Remove
+												<Trans>{STRINGS.REMOVE}</Trans>
 											</button>
 										</th>
 									</tr>;
@@ -315,14 +319,14 @@ function AvailableAttributesModal(props: { id: string, availableAttributes: Attr
 	return <>
 		<label htmlFor={ props.id }
 			   className={ 'btn btn-primary  gap-2 modal-button ' + (props.availableAttributes.length === 0 ? 'btn-disabled ' : '') }>
-			<SVGPlus width={ '20' } height={ '20' }/> Add Attributes</label>
+			<SVGPlus width={ '20' } height={ '20' }/><Trans>{STRINGS.ADD_ATTRIBUTES}</Trans></label>
 
 		<input type="checkbox" id={ props.id } className="modal-toggle"/>
 		<div className="modal">
 			<div className="modal-box relative">
 				<label htmlFor={ props.id } className="btn btn-sm btn-circle absolute right-2 top-2"
 					   onClick={ init }>✕</label>
-				<h3 className="text-lg font-bold">Select all the attributes to add</h3>
+				<h3 className="text-lg font-bold"><Trans>{STRINGS.SELECT_ALL_ATTRIBUTES}</Trans></h3>
 				{ props.availableAttributes.map(att => <div className="form-control" key={ att.id }>
 					<label className="label cursor-pointer">
 						<span className="label-text"><Trans>{ att.name }</Trans> ({ att.slug })</span>
@@ -331,7 +335,7 @@ function AvailableAttributesModal(props: { id: string, availableAttributes: Attr
 					</label>
 				</div>) }
 				<div className={ 'flex justify-end' }>
-					<label className={ 'btn btn-primary' } htmlFor={ props.id } onClick={ onSave }>Add</label>
+					<label className={ 'btn btn-primary' } htmlFor={ props.id } onClick={ onSave }><Trans>{STRINGS.ADD}</Trans></label>
 				</div>
 			</div>
 		</div>
