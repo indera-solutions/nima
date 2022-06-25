@@ -16,13 +16,6 @@ export function FileSelector(props: EditSingleProductAttributeProps) {
 		const id = ids[0];
 		closeLabelRef.current.click();
 
-
-		console.log(ids);
-		console.log({
-			name: { en: `media_${ props.attributeId }_${ id }` },
-			mediaId: id,
-		});
-
 		let value;
 		const existing = values?.find((v) => v.slug === `media_${ props.attributeId }_${ id }`);
 		if ( existing ) {
