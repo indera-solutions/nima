@@ -1,4 +1,4 @@
-import { useAddAttributeValueMutation, useAttributeValueById, useAttributeValues, useLanguages } from '@nima-cms/react';
+import { useAddAttributeValueMutation, useAttributeValueById, useAttributeValues } from '@nima-cms/react';
 import React, { useRef } from 'react';
 import { MediaGallery } from '../../media';
 import { EditSingleProductAttributeProps } from '../EditProductAttribute';
@@ -10,24 +10,12 @@ export function FileSelector(props: EditSingleProductAttributeProps) {
 	const { data: values } = useAttributeValues(attributeId);
 	const { data: value } = useAttributeValueById(attributeId, props.productAttributeValue.values[0]?.valueId);
 
-
 	const addAttributeValueMutation = useAddAttributeValueMutation();
-
-	console.log(value);
-
-
-	const languages = useLanguages();
 
 	async function onChange(ids: number[]) {
 		const id = ids[0];
 		closeLabelRef.current.click();
-		// if ( !values || !props.onSelect ) return;
-		// const checked = e.target.checked;
-		// const value = values.find(v => v.boolean === checked);
-		// if ( !value ) {
-		// 	toast.error('Option not found');
-		// 	return;
-		// }
+
 
 		console.log(ids);
 		console.log({
@@ -35,7 +23,7 @@ export function FileSelector(props: EditSingleProductAttributeProps) {
 			mediaId: id,
 		});
 
-		let value = undefined;
+		let value;
 		const existing = values?.find((v) => v.slug === `media_${ props.attributeId }_${ id }`);
 		if ( existing ) {
 			value = existing;
