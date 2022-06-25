@@ -23,7 +23,14 @@ export class AttributeValuesService {
 			if ( !temp ) throw new Error('no name for slug');
 			dto.slug = getSlug(temp);
 		}
-		return this.attributeValueRepository.save({ ...dto, id: valueId, attribute: attribute });
+		let media = undefined;
+		if ( params.dto.mediaId ) {
+			media = {
+				id: params.dto.mediaId,
+			};
+			delete params.dto.mediaId;
+		}
+		return this.attributeValueRepository.save({ ...dto, id: valueId, media: media, attribute: attribute });
 	}
 
 	async list(params?: EmptyObject): Promise<AttributeValueEntity[]> {

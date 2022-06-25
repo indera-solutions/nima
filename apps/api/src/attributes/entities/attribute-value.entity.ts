@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Translatable } from '@nima-cms/utils';
-import { IsBoolean, IsInt, IsNotEmptyObject, IsObject, IsOptional, IsRFC3339, IsString, IsUrl } from 'class-validator';
+import { IsBoolean, IsInt, IsNotEmptyObject, IsObject, IsOptional, IsRFC3339, IsString } from 'class-validator';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
+import { MediaEntity } from '../../core/entities/media.entity';
 import { AttributeEntity } from './attribute.entity';
 
 @Entity('attribute_attribute_values')
@@ -36,11 +37,8 @@ export class AttributeValueEntity {
 	@IsOptional()
 	value?: string;
 
-	@Column({ nullable: true })
-	@ApiProperty({ type: String, required: false })
-	@IsUrl()
-	@IsOptional()
-	fileUrl?: string;
+	@ManyToOne(() => MediaEntity, { eager: true })
+	media?: MediaEntity;
 
 	@Column({ type: 'jsonb', nullable: true })
 	@ApiProperty({ type: TranslatableDto, example: { en: 'Green' }, required: false })

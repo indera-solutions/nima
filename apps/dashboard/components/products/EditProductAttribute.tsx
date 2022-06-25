@@ -2,6 +2,7 @@ import { Trans, useAttributeById, useProductTypeId } from '@nima-cms/react';
 import { CreateAssignedProductAttributeDto, CreateAssignedProductVariantAttributeDto, InputType } from '@nima-cms/sdk';
 import React from 'react';
 import { BooleanSelector, DropdownValueSelector } from './valueSelectors';
+import { FileSelector } from './valueSelectors/FileSelector';
 
 export interface EditProductAttributeProps {
 	productTypeId: number;
@@ -44,6 +45,8 @@ function AttributeTypeSwitch(props: EditSingleProductAttributeProps & { type: In
 			return <DropdownValueSelector { ...props } isMulti/>;
 		case InputType.BOOLEAN:
 			return <BooleanSelector { ...props } />;
+		case InputType.FILE:
+			return <FileSelector { ...props } />;
 		default:
 			return <h1>Currently not supported</h1>;
 	}

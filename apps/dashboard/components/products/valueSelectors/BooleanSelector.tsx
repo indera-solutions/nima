@@ -51,5 +51,4 @@ export function BooleanSelector(props: EditSingleProductAttributeProps) {
 		<input type="checkbox" className="checkbox" checked={ selectedValue?.boolean } onChange={ onChange }/>
 	);
 
-	return <h1>boolean</h1>;
 }

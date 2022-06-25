@@ -23,6 +23,7 @@ export const NimaQueryCacheKeys = {
 		list: () => [...NimaQueryCacheKeys.attributes.all, 'LIST'] as const,
 		id: (id?: number) => [...NimaQueryCacheKeys.attributes.all, 'ID', id] as const,
 		values: (id?: number) => [...NimaQueryCacheKeys.attributes.all, 'ID', id, 'VALUES'] as const,
+		valueIds: (id?: number, valueId?: number) => [...NimaQueryCacheKeys.attributes.all, 'ID', id, 'VALUES', valueId] as const,
 	},
 	productTypes: {
 		all: [NIMA_QUERY_PREFIX, PRODUCT_TYPES_QUERY_PREFIX] as const,

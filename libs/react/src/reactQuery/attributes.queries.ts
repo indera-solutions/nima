@@ -120,6 +120,24 @@ export function useAttributeValues(attributeId?: number, options?: { refetchInte
 	);
 }
 
+export function useAttributeValueById(attributeId?: number, valueId?: number, options?: { refetchInterval: number | false }) {
+	return useQuery<AttributeValueDto>(
+		NimaQueryCacheKeys.attributes.valueIds(attributeId, valueId),
+		async () => {
+			if ( !attributeId || !valueId ) throw new Error('invalid attribute id');
+			const res = await attributeValuesSDK.attributeValuesGetValueById({
+				attributeId: attributeId,
+				valueId: valueId,
+			});
+			return res.data;
+		},
+		{
+			...options,
+			enabled: !!attributeId,
+		},
+	);
+}
+
 export function useAddAttributeValueMutation() {
 	const client = useQueryClient();
 	return useMutation<AttributeValueDto,

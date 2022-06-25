@@ -278,12 +278,6 @@ export interface AttributeValueDto {
 	'value'?: string;
 	/**
 	 *
-	 * @type {string}
-	 * @memberof AttributeValueDto
-	 */
-	'fileUrl'?: string;
-	/**
-	 *
 	 * @type {TranslatableDto}
 	 * @memberof AttributeValueDto
 	 */
@@ -300,6 +294,12 @@ export interface AttributeValueDto {
 	 * @memberof AttributeValueDto
 	 */
 	'dateTime'?: string;
+	/**
+	 *
+	 * @type {MediaDto}
+	 * @memberof AttributeValueDto
+	 */
+	'media': MediaDto;
 }
 /**
  *
@@ -939,12 +939,6 @@ export interface CreateAttributeValueDto {
 	'value'?: string;
 	/**
 	 *
-	 * @type {string}
-	 * @memberof CreateAttributeValueDto
-	 */
-	'fileUrl'?: string;
-	/**
-	 *
 	 * @type {TranslatableDto}
 	 * @memberof CreateAttributeValueDto
 	 */
@@ -961,6 +955,12 @@ export interface CreateAttributeValueDto {
 	 * @memberof CreateAttributeValueDto
 	 */
 	'dateTime'?: string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateAttributeValueDto
+	 */
+	'mediaId'?: number;
 }
 /**
  *
@@ -4284,12 +4284,6 @@ export interface UpdateAttributeValueDto {
 	'value'?: string;
 	/**
 	 *
-	 * @type {string}
-	 * @memberof UpdateAttributeValueDto
-	 */
-	'fileUrl'?: string;
-	/**
-	 *
 	 * @type {TranslatableDto}
 	 * @memberof UpdateAttributeValueDto
 	 */
@@ -4306,6 +4300,12 @@ export interface UpdateAttributeValueDto {
 	 * @memberof UpdateAttributeValueDto
 	 */
 	'dateTime'?: string;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateAttributeValueDto
+	 */
+	'mediaId'?: number;
 }
 /**
  *
