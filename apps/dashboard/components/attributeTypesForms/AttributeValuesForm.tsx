@@ -20,7 +20,6 @@ export function AttributeValuesForm(props: AttributeValuesFormProps) {
 								   onValueCreate={ props.onValueCreate }
 								   onValueUpdate={ props.onValueUpdate }
 			/>;
-		case InputType.FILE:
 		case InputType.REFERENCE:
 		case InputType.NUMERIC:
 		case InputType.RICH_TEXT:
@@ -32,6 +31,7 @@ export function AttributeValuesForm(props: AttributeValuesFormProps) {
 					<h1>This is type is currently not supported</h1>
 				</div>
 			</AdminSection>;
+		case InputType.FILE:
 		case InputType.BOOLEAN:
 		default:
 			return null;
