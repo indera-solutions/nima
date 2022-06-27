@@ -188,7 +188,7 @@ export class OrderService {
 
 		if ( order.payment.method === PaymentMethod.CASH_ON_DELIVERY ) await CommerceOrderEventClient.orderCreated(this.eventEmitter, { order: order, notifyCustomer: true });
 
-		await this.checkoutService.remove({ token: params.token });
+		// await this.checkoutService.remove({ token: params.token });
 
 		if ( voucher ) {
 			// noinspection ES6MissingAwait
@@ -249,6 +249,7 @@ export class OrderService {
 		return this.findOne({ id });
 	}
 
+	@Transactional()
 	async updateStatus(params: { id: number, updateOrderStatusDto: UpdateOrderStatusDto }): Promise<OrderEntity> {
 		const { id, updateOrderStatusDto } = params;
 		await this.orderRepository.update(id, {
@@ -286,6 +287,7 @@ export class OrderService {
 		return order;
 	}
 
+	@Transactional()
 	async updatePaymentStatus(params: { id: number, updatePaymentStatusDto: UpdatePaymentStatusDto, notifyCustomer?: boolean }) {
 		const { id, updatePaymentStatusDto, notifyCustomer } = params;
 		const order = await this.findOne({ id: id });
@@ -308,6 +310,9 @@ export class OrderService {
 				await CommerceOrderEventClient.orderPaymentPending(this.eventEmitter, { order: order, notifyCustomer: notifyCustomer });
 				break;
 			case PaymentStatus.CAPTURED:
+				await this.orderRepository.update(id, {
+					status: OrderStatus.UNFULFILLED,
+				});
 				statusEvent = OrderEventsEnum.PAYMENT_CAPTURED;
 				break;
 			case PaymentStatus.PROCESSING:
@@ -335,6 +340,7 @@ export class OrderService {
 		return res;
 	}
 
+	@Transactional()
 	private async returnProductVariantStock(orderLines: OrderLineDto[]): Promise<void> {
 		const returnStockPromises = orderLines.map((item) => this.variantService.returnStock({ productVariantSku: item.productSku, stock: item.quantity }));
 		await Promise.all(returnStockPromises);

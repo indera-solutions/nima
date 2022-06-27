@@ -81,8 +81,9 @@ export class OrderController {
 	@Get(':id')
 	@ApiOkResponse({ type: OrderDto })
 	@ApiParam({ type: Number, name: 'id' })
+	@ApiHeader({ name: 'X-API-KEY' })
 	@IsPublic()
-	// @IsStaff() //TODO OPEN ME!!!
+	@UseGuards(StaffOrKeyGuard)
 	async findOne(@Param('id', ParseIntPipe) id: number) {
 		const res = await this.orderService.findOne({ id });
 		return OrderDto.prepare(res);

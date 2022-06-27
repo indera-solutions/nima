@@ -28,4 +28,5 @@ export class UpdatePaymentDto extends PartialType(PickType(CreatePaymentDto, ['s
 }
 
 export class UpdatePaymentStatusDto extends PickType(PaymentDto, ['status']) {
+
 }

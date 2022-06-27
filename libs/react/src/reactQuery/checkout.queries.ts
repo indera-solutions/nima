@@ -158,3 +158,25 @@ export function useUpdateCheckoutVoucherMutation() {
 	);
 }
 
+
+export function useDeleteCheckoutMutation() {
+	const client = useQueryClient();
+	return useMutation<CheckoutDto,
+		never,
+		{}>(
+		async () => {
+			const token = localStorage.getItem(TOKEN_KEY);
+			if ( !token ) throw new Error('CHECKOUT_NOT_INIT');
+			const res = await checkoutSDK.checkoutDeleteCheckout({
+				token: token,
+			});
+			return res.data;
+		},
+		{
+			onSuccess: () => {
+				client.invalidateQueries(NimaQueryCacheKeys.checkout.current());
+			},
+		},
+	);
+}
+

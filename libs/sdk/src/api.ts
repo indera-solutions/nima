@@ -7852,6 +7852,42 @@ export const CheckoutApiAxiosParamCreator = function (configuration?: Configurat
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
+		checkoutDeleteCheckout: async (token: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'token' is not null or undefined
+			assertParamExists('checkoutDeleteCheckout', 'token', token)
+			const localVarPath = `/api/v1/checkout/{token}`
+				.replace(`{${ "token" }}`, encodeURIComponent(String(token)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {string} token
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
 		checkoutFindOne: async (token: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'token' is not null or undefined
 			assertParamExists('checkoutFindOne', 'token', token)
@@ -8086,6 +8122,16 @@ export const CheckoutApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
+		async checkoutDeleteCheckout(token: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckoutDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.checkoutDeleteCheckout(token, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {string} token
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
 		async checkoutFindOne(token: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckoutDto>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.checkoutFindOne(token, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
@@ -8161,6 +8207,15 @@ export const CheckoutApiFactory = function (configuration?: Configuration, baseP
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
+		checkoutDeleteCheckout(token: string, options?: any): AxiosPromise<CheckoutDto> {
+			return localVarFp.checkoutDeleteCheckout(token, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {string} token
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
 		checkoutFindOne(token: string, options?: any): AxiosPromise<CheckoutDto> {
 			return localVarFp.checkoutFindOne(token, options).then((request) => request(axios, basePath));
 		},
@@ -8220,7 +8275,21 @@ export interface CheckoutApiCheckoutCreateRequest {
 	 * @type {CreateCheckoutDto}
 	 * @memberof CheckoutApiCheckoutCreate
 	 */
-	readonly createCheckoutDto: CreateCheckoutDto;
+	readonly createCheckoutDto: CreateCheckoutDto
+}
+
+/**
+ * Request parameters for checkoutDeleteCheckout operation in CheckoutApi.
+ * @export
+ * @interface CheckoutApiCheckoutDeleteCheckoutRequest
+ */
+export interface CheckoutApiCheckoutDeleteCheckoutRequest {
+	/**
+	 *
+	 * @type {string}
+	 * @memberof CheckoutApiCheckoutDeleteCheckout
+	 */
+	readonly token: string
 }
 
 /**
@@ -8234,7 +8303,7 @@ export interface CheckoutApiCheckoutFindOneRequest {
 	 * @type {string}
 	 * @memberof CheckoutApiCheckoutFindOne
 	 */
-	readonly token: string;
+	readonly token: string
 }
 
 /**
@@ -8351,6 +8420,17 @@ export class CheckoutApi extends BaseAPI {
 	 */
 	public checkoutCreate(requestParameters: CheckoutApiCheckoutCreateRequest, options?: AxiosRequestConfig) {
 		return CheckoutApiFp(this.configuration).checkoutCreate(requestParameters.createCheckoutDto, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {CheckoutApiCheckoutDeleteCheckoutRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof CheckoutApi
+	 */
+	public checkoutDeleteCheckout(requestParameters: CheckoutApiCheckoutDeleteCheckoutRequest, options?: AxiosRequestConfig) {
+		return CheckoutApiFp(this.configuration).checkoutDeleteCheckout(requestParameters.token, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -11117,10 +11197,11 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 		/**
 		 *
 		 * @param {number} id
+		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		orderFindOne: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		orderFindOne: async (id: number, xAPIKEY?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'id' is not null or undefined
 			assertParamExists('orderFindOne', 'id', id)
 			const localVarPath = `/api/v1/order/{id}`
@@ -11139,6 +11220,10 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 			// authentication bearer required
 			// http bearer authentication required
 			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+			if ( xAPIKEY !== undefined && xAPIKEY !== null ) {
+				localVarHeaderParameter['X-API-KEY'] = String(xAPIKEY);
+			}
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -11384,11 +11469,12 @@ export const OrdersApiFp = function (configuration?: Configuration) {
 		/**
 		 *
 		 * @param {number} id
+		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async orderFindOne(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderDto>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.orderFindOne(id, options);
+		async orderFindOne(id: number, xAPIKEY?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.orderFindOne(id, xAPIKEY, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
@@ -11490,11 +11576,12 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
 		/**
 		 *
 		 * @param {number} id
+		 * @param {string} [xAPIKEY]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		orderFindOne(id: number, options?: any): AxiosPromise<OrderDto> {
-			return localVarFp.orderFindOne(id, options).then((request) => request(axios, basePath));
+		orderFindOne(id: number, xAPIKEY?: string, options?: any): AxiosPromise<OrderDto> {
+			return localVarFp.orderFindOne(id, xAPIKEY, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -11637,6 +11724,13 @@ export interface OrdersApiOrderFindOneRequest {
 	 * @memberof OrdersApiOrderFindOne
 	 */
 	readonly id: number;
+
+	/**
+	 *
+	 * @type {string}
+	 * @memberof OrdersApiOrderFindOne
+	 */
+	readonly xAPIKEY?: string;
 }
 
 /**
@@ -11796,7 +11890,7 @@ export class OrdersApi extends BaseAPI {
 	 * @memberof OrdersApi
 	 */
 	public orderFindOne(requestParameters: OrdersApiOrderFindOneRequest, options?: AxiosRequestConfig) {
-		return OrdersApiFp(this.configuration).orderFindOne(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+		return OrdersApiFp(this.configuration).orderFindOne(requestParameters.id, requestParameters.xAPIKEY, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**

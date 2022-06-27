@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum } from 'class-validator';
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 export enum PaymentMethod {
@@ -29,6 +30,7 @@ export class PaymentEntity {
 
 	@ApiProperty({ enum: PaymentStatus, enumName: 'PaymentStatus' })
 	@Column({ type: 'enum', enum: PaymentStatus, enumName: 'paymentStatus' })
+	@IsEnum(PaymentStatus)
 	status: PaymentStatus;
 
 	@CreateDateColumn({ type: String })

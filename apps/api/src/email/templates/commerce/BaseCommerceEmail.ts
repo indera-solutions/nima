@@ -40,7 +40,6 @@ export abstract class BaseCommerceEmail extends BaseEmail {
 
 	protected getLayout(title: string, maintext: string, details: string, params: { locale: LanguageCode, siteLogoUrl?: string }): string {
 		const { locale, siteLogoUrl } = params;
-		if ( !siteLogoUrl ) throw new Error('no logo');
 		return `
 		<mjml>
    <mj-body>

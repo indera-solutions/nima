@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import {
 	ApiBearerAuth,
 	ApiBody,
@@ -78,5 +78,14 @@ export class CheckoutController {
 	async updateVoucher(@Param('token') token: string, @Body() dto: UpdateCheckoutVoucherDto) {
 		await this.checkoutService.updateVoucher({ token: token, dto: dto });
 		return await this.checkoutService.getDto(token);
+	}
+
+	@Delete(':token')
+	@ApiCreatedResponse({ type: () => CheckoutDto })
+	@IsPublic()
+	async deleteCheckout(@Param('token') token: string) {
+		const res = await this.checkoutService.getDto(token);
+		await this.checkoutService.remove({ token: token });
+		return res;
 	}
 }
