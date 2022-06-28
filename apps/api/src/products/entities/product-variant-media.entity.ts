@@ -13,10 +13,10 @@ export class ProductVariantMediaEntity implements ISortableMediaEntity {
 	@IsInt()
 	sortOrder: number;
 
-	@ManyToOne(() => ProductVariantEntity, post => post.productMedia, { primary: true })
+	@ManyToOne(() => ProductVariantEntity, post => post.productMedia, { primary: true, onDelete: 'CASCADE' })
 	public productVariant: ProductVariantEntity;
 
-	@ManyToOne(() => MediaEntity, { primary: true, eager: true })
+	@ManyToOne(() => MediaEntity, { primary: true, eager: true, onDelete: 'CASCADE' })
 	public media!: MediaEntity;
 
 }

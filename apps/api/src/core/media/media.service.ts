@@ -21,7 +21,11 @@ export class MediaService {
 		if ( file.mimetype === null ) throw new BadRequestException('INVALID_FILE_MIME_TYPE_IS_NULL');
 		const originalFilename = file.originalname;
 		if ( !originalFilename ) throw new Error('BAD_ORIGINAL_FILENAME');
-		const res = await this.coreService.uploadFileToS3(file.buffer, originalFilename);
+		const encodedName = encodeURI(file.originalname
+										  .replace(/ /g, '_')
+										  .replace(/%2B/g, '_'),
+		);
+		const res = await this.coreService.uploadFileToS3(file.buffer, encodedName);
 		if ( !res ) {
 			throw new Error('S3_UPLOAD_FAILED');
 		}
@@ -33,7 +37,7 @@ export class MediaService {
 				percentage: 60,
 			});
 			try {
-				const thumbnails3res = await this.coreService.uploadFileToS3(thumbnail.buffer, 'thumbnail_' + originalFilename);
+				const thumbnails3res = await this.coreService.uploadFileToS3(thumbnail.buffer, 'thumbnail_' + encodedName);
 				if ( thumbnails3res ) {
 					thumbnailUrl = 'https://loom-cdn.indera.gr/' + thumbnails3res.Key;
 				}
@@ -75,7 +79,7 @@ export class MediaService {
 						  .orderBy({ created: 'DESC' });
 
 		if ( params.search ) {
-			const searchTerm = `"${ params.search.trim().toLowerCase().replace(' ', '+') }":*`;
+			const searchTerm = `"${ params.search.trim().toLowerCase().replace(/ /g, '+') }":*`;
 			query.andWhere(`to_tsvector(a.name) @@ to_tsquery(:s)`, { s: searchTerm });
 		}
 

@@ -14,7 +14,7 @@ export function MediaList(props: MediaListProps) {
 	const [debouncedSearch] = useDebounce(searchStr, 1000);
 
 	const [selectedIds, setSelectedIds] = useState<number[]>([]);
-	const { data: mediaListResponse, hasNextPage, isFetchingNextPage, fetchNextPage } = useMediaPaginated({ pageSize: 20, search: debouncedSearch });
+	const { data: mediaListResponse, hasNextPage, isFetchingNextPage, fetchNextPage } = useMediaPaginated({ pageSize: 40, search: debouncedSearch });
 	const allMedia = useMemo(() => {
 		if ( !mediaListResponse || !mediaListResponse.pages ) return [];
 		return mediaListResponse.pages.map(p => p.items).flat();
@@ -68,10 +68,10 @@ export function MediaList(props: MediaListProps) {
 				/>
 			</div>
 			<div className={ 'flex flex-col gap-4' }>
-				<div className={ 'flex gap-4' }>
+				<div className={ 'flex gap-4  flex-wrap' }>
 					{ allMedia.map(media => <div key={ media.id }
 												 onClick={ () => onImageSelect(media) }
-												 className={ 'flex justify-center items-center border w-28 h-28 ' + (selectedIds.includes(media.id) ? 'border-double border-4 border-indigo-600' : '') }>
+												 className={ 'flex basis-1/12 justify-center items-center border w-28 h-28 ' + (selectedIds.includes(media.id) ? 'border-double border-4 border-indigo-600' : '') }>
 							{ media.thumbnailUrl ?
 								<img className={ 'object-contain h-full' } src={ media.thumbnailUrl } alt=""/> :
 								<div className={ '' }>{ media.name }</div> }

@@ -65,7 +65,7 @@ export function MediaSelectorSection(props: MediaSelectorSectionProps) {
 						{ (provided, snapshot) => (
 							<div
 								ref={ provided.innerRef }
-								className={ 'flex gap-4' }
+								className={ 'flex gap-4  flex-wrap ' }
 								{ ...provided.droppableProps }
 							>
 								{ sortedMedia.map((media, index) => (
@@ -77,7 +77,8 @@ export function MediaSelectorSection(props: MediaSelectorSectionProps) {
 												{ ...provided.draggableProps }
 												{ ...provided.dragHandleProps }
 											>
-												<div className={ 'flex justify-center items-center border w-28 h-28 ' }>
+												<div
+													className={ 'flex flex-wrap justify-center items-center border w-28 h-28 ' }>
 													<ImageItem id={ media.mediaId }/>
 												</div>
 											</div>
@@ -106,6 +107,6 @@ export function MediaSelectorSection(props: MediaSelectorSectionProps) {
 function ImageItem(props: { id: number }) {
 	const { data: media } = useMediaById(props.id);
 	if ( !media ) return null;
-	return <img className={ 'h-full' } src={ media.thumbnailUrl } alt=""/>;
+	return <img className={ 'h-full basis-1/12' } src={ media.thumbnailUrl } alt=""/>;
 }
 
