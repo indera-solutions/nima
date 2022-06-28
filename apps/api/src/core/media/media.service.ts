@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { getSlug, PaginatedResults } from '@nima-cms/utils';
+import { getSlug, PaginatedResults, searchPrepare } from '@nima-cms/utils';
 import { Express } from 'express';
 import { CoreService } from '../core.service';
 import { CreateMediaDto } from '../dto/media.dto';
@@ -79,8 +79,8 @@ export class MediaService {
 						  .orderBy({ created: 'DESC' });
 
 		if ( params.search ) {
-			const searchTerm = `"${ params.search.trim().toLowerCase().replace(/ /g, '+') }":*`;
-			query.andWhere(`to_tsvector(a.name) @@ to_tsquery(:s)`, { s: searchTerm });
+			const searchStr = searchPrepare(params.search);
+			query.andWhere(`to_tsvector(a.name) @@ to_tsquery(:s)`, { s: searchStr });
 		}
 
 		const res = await query.getManyAndCount();

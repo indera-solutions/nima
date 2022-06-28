@@ -68,7 +68,12 @@ export function htmlToPlain(html: string): string {
 	str = str.toLowerCase();
 	str = str.replace(/(?:\r\n|\r|\n)/g, ' ');
 	str = str.replace(/\*/g, '');
-
-	console.log(str);
 	return str;
+}
+
+export function searchPrepare(str: string): string {
+	const trimmedSearch = str.trim();
+	const searchArray = trimmedSearch.split(/\s+/);
+	const searchWithStar = searchArray.join(' & ') + ':*';
+	return searchWithStar;
 }

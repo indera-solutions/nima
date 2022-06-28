@@ -1,4 +1,4 @@
-import { LanguageCode } from '@nima-cms/utils';
+import { LanguageCode, searchPrepare } from '@nima-cms/utils';
 import { EntityRepository, In } from 'typeorm';
 import { BaseRepository } from 'typeorm-transactional-cls-hooked';
 import { AttributeValueEntity } from '../../attributes/entities/attribute-value.entity';
@@ -62,8 +62,8 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 		}
 
 		if ( search ) {
-			const query = `"${ search.trim().toLowerCase().replace(' ', '+') }":*`;
-			caQb.andWhere(`to_tsvector(p.searchDocument) @@ to_tsquery(:s)`, { s: query });
+			const searchStr = searchPrepare(search);
+			caQb.andWhere(`to_tsvector(p.searchDocument) @@ to_tsquery(:s)`, { s: searchStr });
 		}
 
 		if ( categoryIds ) {
