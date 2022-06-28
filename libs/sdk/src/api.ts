@@ -8275,7 +8275,7 @@ export interface CheckoutApiCheckoutCreateRequest {
 	 * @type {CreateCheckoutDto}
 	 * @memberof CheckoutApiCheckoutCreate
 	 */
-	readonly createCheckoutDto: CreateCheckoutDto
+	readonly createCheckoutDto: CreateCheckoutDto;
 }
 
 /**
@@ -8289,7 +8289,7 @@ export interface CheckoutApiCheckoutDeleteCheckoutRequest {
 	 * @type {string}
 	 * @memberof CheckoutApiCheckoutDeleteCheckout
 	 */
-	readonly token: string
+	readonly token: string;
 }
 
 /**
@@ -8303,7 +8303,7 @@ export interface CheckoutApiCheckoutFindOneRequest {
 	 * @type {string}
 	 * @memberof CheckoutApiCheckoutFindOne
 	 */
-	readonly token: string
+	readonly token: string;
 }
 
 /**
@@ -10763,10 +10763,11 @@ export const MediaApiAxiosParamCreator = function (configuration?: Configuration
 		 *
 		 * @param {number} [page]
 		 * @param {number} [pageSize]
+		 * @param {string} [search]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		mediaListMedia: async (page?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		mediaListMedia: async (page?: number, pageSize?: number, search?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			const localVarPath = `/api/v1/media`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -10789,6 +10790,10 @@ export const MediaApiAxiosParamCreator = function (configuration?: Configuration
 
 			if ( pageSize !== undefined ) {
 				localVarQueryParameter['pageSize'] = pageSize;
+			}
+
+			if ( search !== undefined ) {
+				localVarQueryParameter['search'] = search;
 			}
 
 
@@ -10845,11 +10850,12 @@ export const MediaApiFp = function (configuration?: Configuration) {
 		 *
 		 * @param {number} [page]
 		 * @param {number} [pageSize]
+		 * @param {string} [search]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async mediaListMedia(page?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaListPaginated>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.mediaListMedia(page, pageSize, options);
+		async mediaListMedia(page?: number, pageSize?: number, search?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaListPaginated>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.mediaListMedia(page, pageSize, search, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 	};
@@ -10893,11 +10899,12 @@ export const MediaApiFactory = function (configuration?: Configuration, basePath
 		 *
 		 * @param {number} [page]
 		 * @param {number} [pageSize]
+		 * @param {string} [search]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		mediaListMedia(page?: number, pageSize?: number, options?: any): AxiosPromise<MediaListPaginated> {
-			return localVarFp.mediaListMedia(page, pageSize, options).then((request) => request(axios, basePath));
+		mediaListMedia(page?: number, pageSize?: number, search?: string, options?: any): AxiosPromise<MediaListPaginated> {
+			return localVarFp.mediaListMedia(page, pageSize, search, options).then((request) => request(axios, basePath));
 		},
 	};
 };
@@ -10963,6 +10970,13 @@ export interface MediaApiMediaListMediaRequest {
 	 * @memberof MediaApiMediaListMedia
 	 */
 	readonly pageSize?: number;
+
+	/**
+	 *
+	 * @type {string}
+	 * @memberof MediaApiMediaListMedia
+	 */
+	readonly search?: string;
 }
 
 /**
@@ -11013,7 +11027,7 @@ export class MediaApi extends BaseAPI {
 	 * @memberof MediaApi
 	 */
 	public mediaListMedia(requestParameters: MediaApiMediaListMediaRequest = {}, options?: AxiosRequestConfig) {
-		return MediaApiFp(this.configuration).mediaListMedia(requestParameters.page, requestParameters.pageSize, options).then((request) => request(this.axios, this.basePath));
+		return MediaApiFp(this.configuration).mediaListMedia(requestParameters.page, requestParameters.pageSize, requestParameters.search, options).then((request) => request(this.axios, this.basePath));
 	}
 }
 

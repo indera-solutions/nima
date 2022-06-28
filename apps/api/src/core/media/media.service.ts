@@ -63,24 +63,29 @@ export class MediaService {
 		return this.mediaRepository.save(dto);
 	}
 
-	async list(params: { page?: number, pageSize?: number }): Promise<PaginatedResults<MediaEntity>> {
-		const count = await this.mediaRepository.count();
+	async list(params: { page?: number, pageSize?: number, search: string }): Promise<PaginatedResults<MediaEntity>> {
 		const pageSize = params.pageSize || 20;
 		const take = pageSize;
 		const skip = ((params.page || 1) - 1) * take;
-		const res = await this.mediaRepository.find({
-			skip,
-			take,
-			order: {
-				created: 'DESC',
-			},
-		});
+
+		const query = this.mediaRepository
+						  .createQueryBuilder('a')
+						  .take(take)
+						  .skip(skip)
+						  .orderBy({ created: 'DESC' });
+
+		if ( params.search ) {
+			const searchTerm = `"${ params.search.trim().toLowerCase().replace(' ', '+') }":*`;
+			query.andWhere(`to_tsvector(a.name) @@ to_tsquery(:s)`, { s: searchTerm });
+		}
+
+		const res = await query.getManyAndCount();
 
 		return {
-			items: res,
+			items: res[0],
 			pageNumber: params.page || 1,
 			pageSize: pageSize,
-			totalCount: count,
+			totalCount: res[1],
 		};
 
 	}

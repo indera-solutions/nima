@@ -40,15 +40,18 @@ export class MediaController {
 	@Get()
 	@ApiQuery({ type: Number, required: false, name: 'page' })
 	@ApiQuery({ type: Number, required: false, name: 'pageSize' })
+	@ApiQuery({ type: String, required: false, name: 'search' })
 	@ApiOkResponse({ type: MediaListPaginated })
 	@IsPublic()
 	async listMedia(
 		@Query('page') page?: number,
 		@Query('pageSize') pageSize?: number,
+		@Query('search') search?: string,
 	): Promise<MediaListPaginated> {
 		const res = await this.mediaService.list({
 			page,
 			pageSize,
+			search,
 		});
 		return {
 			totalCount: res.totalCount,

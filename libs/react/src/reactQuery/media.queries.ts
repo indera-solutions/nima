@@ -4,13 +4,14 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-q
 
 const mediaSdk = new MediaApi(defaultConfiguration);
 
-export function useMediaPaginated(options: { pageSize?: number }) {
+export function useMediaPaginated(options: { pageSize?: number, search?: string }) {
 	return useInfiniteQuery<MediaListPaginated>(
 		NimaQueryCacheKeys.media.list(options),
 		async ({ pageParam = 1 }) => {
 			const res = await mediaSdk.mediaListMedia({
 				pageSize: options.pageSize,
 				page: pageParam,
+				search: options.search || undefined,
 			});
 			return res.data;
 		},

@@ -62,8 +62,8 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 		}
 
 		if ( search ) {
-			const query = `'"${ search.trim().toLowerCase().replace(' ', '+') }":*'`;
-			caQb.andWhere(`to_tsvector(p.searchDocument) @@ to_tsquery(${ query })`);
+			const query = `"${ search.trim().toLowerCase().replace(' ', '+') }":*`;
+			caQb.andWhere(`to_tsvector(p.searchDocument) @@ to_tsquery(:s)`, { s: query });
 		}
 
 		if ( categoryIds ) {

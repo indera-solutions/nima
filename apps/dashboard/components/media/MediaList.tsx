@@ -1,6 +1,7 @@
 import { useMediaPaginated } from '@nima-cms/react';
 import { MediaDto } from '@nima-cms/sdk';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useDebounce } from 'use-debounce';
 
 export interface MediaListProps {
 	selectedId?: number[];
@@ -9,8 +10,11 @@ export interface MediaListProps {
 }
 
 export function MediaList(props: MediaListProps) {
+	const [searchStr, setSearchStr] = useState<string | undefined>(undefined);
+	const [debouncedSearch] = useDebounce(searchStr, 1000);
+
 	const [selectedIds, setSelectedIds] = useState<number[]>([]);
-	const { data: mediaListResponse, hasNextPage, isFetchingNextPage, fetchNextPage } = useMediaPaginated({ pageSize: 20 });
+	const { data: mediaListResponse, hasNextPage, isFetchingNextPage, fetchNextPage } = useMediaPaginated({ pageSize: 20, search: debouncedSearch });
 	const allMedia = useMemo(() => {
 		if ( !mediaListResponse || !mediaListResponse.pages ) return [];
 		return mediaListResponse.pages.map(p => p.items).flat();
@@ -53,6 +57,16 @@ export function MediaList(props: MediaListProps) {
 				</button>
 				<button className={ 'btn btn-success' } onClick={ () => props.onSelect(selectedIds) }>Select</button>
 			</div> }
+			<div className="form-control w-full max-w-xs">
+				<label className="label">
+					<span className="label-text">Search</span>
+				</label>
+				<input className={ 'input w-full max-w-xs input-bordered' }
+					   type="text"
+					   value={ searchStr || '' }
+					   onChange={ (e) => setSearchStr(e.target.value) }
+				/>
+			</div>
 			<div className={ 'flex flex-col gap-4' }>
 				<div className={ 'flex gap-4' }>
 					{ allMedia.map(media => <div key={ media.id }
