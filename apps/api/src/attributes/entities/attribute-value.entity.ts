@@ -37,7 +37,7 @@ export class AttributeValueEntity {
 	@IsOptional()
 	value?: string;
 
-	@ManyToOne(() => MediaEntity, { eager: true })
+	@ManyToOne(() => MediaEntity, { eager: true, onDelete: 'CASCADE' })
 	media?: MediaEntity;
 
 	@Column({ type: 'jsonb', nullable: true })
