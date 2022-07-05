@@ -1,8 +1,9 @@
-import { Trans } from '@nima-cms/react';
+import { Trans, useTranslations } from '@nima-cms/react';
 import { CategoryDto } from '@nima-cms/sdk';
 import Link from 'next/link';
 import React from 'react';
 import { NIMA_ROUTES } from '../../lib/routes';
+import { STRINGS } from '../../strings/strings';
 
 interface CategoriesTableProps {
 	categories: CategoryDto[];
@@ -10,14 +11,16 @@ interface CategoriesTableProps {
 }
 
 export function CategoriesTable(props: CategoriesTableProps) {
+	const { getAdminTranslation } = useTranslations();
+
 	return <div className="overflow-x-auto">
 		<table className="table w-full">
 			<thead>
 			<tr>
-				<th>Name</th>
-				<th>Slug</th>
-				<th>Subcategories</th>
-				<th>Actions</th>
+				<th><Trans>{ STRINGS.NAME }</Trans></th>
+				<th><Trans>{ STRINGS.SLUG }</Trans></th>
+				<th><Trans>{ STRINGS.SUBCATEGORIES }</Trans></th>
+				<th><Trans>{ STRINGS.ACTIONS }</Trans></th>
 			</tr>
 			</thead>
 			<tbody>
@@ -27,7 +30,7 @@ export function CategoriesTable(props: CategoriesTableProps) {
 				<td>{ attribute.children.length }</td>
 				<td>
 					<Link href={ NIMA_ROUTES.categories.edit(attribute.id, props.parentId) + '#admin-page' }>
-						<button className={ 'btn btn-primary' }>Edit</button>
+						<button className={ 'btn btn-primary' }><Trans>{ STRINGS.EDIT }</Trans></button>
 					</Link>
 				</td>
 			</tr>) }

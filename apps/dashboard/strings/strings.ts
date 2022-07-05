@@ -13,7 +13,7 @@ export const STRINGS = {
 	},
 	CREATED: {
 		en: 'Created',
-		el: 'Δημιουργήθηκε'
+		el: 'Δημιουργήθηκε',
 	},
 	UPDATE: {
 		en: 'Update',
@@ -75,6 +75,10 @@ export const STRINGS = {
 		en: 'New Value',
 		el: 'Νέα Τιμή',
 	},
+	BACK_TO_PARENT: {
+		en: 'Back to parent',
+		el: 'Επιστρογή στον πατέρα',
+	},
 
 
 	PRODUCTS: {
@@ -124,6 +128,14 @@ export const STRINGS = {
 	CATEGORY: {
 		en: 'Category',
 		el: 'Κατηγορία',
+	},
+	SUBCATEGORIES: {
+		en: 'Sub-Categories',
+		el: 'Υποκατηγορίες',
+	},
+	SUBCATEGORY: {
+		en: 'Sub-Category',
+		el: 'Υποκατηγορία',
 	},
 	COLLECTIONS: {
 		en: 'Collections',
@@ -369,6 +381,18 @@ export const STRINGS = {
 		en: `Update ${ name }`,
 		el: `Επεξεργασία ${ name }`,
 	}),
+	CATEGORY_CREATE_TITLE: {
+		en: 'Create Category',
+		el: 'Δημιουργία Κατηγορίας',
+	},
+	SUBCATEGORY_CREATE_TITLE: {
+		en: 'Create Sub-Category',
+		el: 'Δημιουργία Υποκατηγορίας',
+	},
+	CATEGORY_UPDATE_TITLE: (name) => ({
+		en: `Update ${ name }`,
+		el: `Επεξεργασία ${ name }`,
+	}),
 
 
 	ADD_MEDIA: {
@@ -394,6 +418,10 @@ export const STRINGS = {
 	VALUE: {
 		en: 'Value',
 		el: 'Τιμή',
+	},
+	ADD_SUBCATEGORY: {
+		en: 'Add Subcategory',
+		el: 'Προσθήκη Υποκατηγορίας',
 	},
 
 	ARE_YOU_SURE_DELETE: (name) => ({
