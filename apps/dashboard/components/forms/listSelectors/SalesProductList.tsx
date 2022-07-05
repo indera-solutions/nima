@@ -1,6 +1,7 @@
-import { Trans, useCategoryId, useProductById, useProductTypeId } from '@nima-cms/react';
+import { Trans, useCategoryId, useProductById, useProductTypeId, useTranslations } from '@nima-cms/react';
 import { ProductDto } from '@nima-cms/sdk';
 import React, { useState } from 'react';
+import { STRINGS } from '../../../strings/strings';
 import { AdminSection } from '../../AdminLayout';
 import { ProductImage } from '../../products/ProductImage';
 import { SalesAddProducts } from './SalesAddProducts';
@@ -13,21 +14,23 @@ interface SalesProductListProps {
 
 export function SalesProductList(props: SalesProductListProps) {
 	const [modalOpen, setModalOpen] = useState(false);
+	const { getAdminTranslation } = useTranslations();
 
 	return (
 		<>
-			<AdminSection title={ 'Products' }
+			<AdminSection title={ getAdminTranslation(STRINGS.PRODUCTS) }
 						  titleRightContainer={ <button onClick={ () => setModalOpen(true) }
-														className={ 'btn btn-primary' }>Add</button> }>
+														className={ 'btn btn-primary' }><Trans>{ STRINGS.ADD }</Trans>
+						  </button> }>
 				<div className="overflow-x-auto">
 					<table className="table w-full">
 						<thead>
 						<tr>
-							<th>Img</th>
-							<th>Name</th>
-							<th>Category</th>
-							<th>Type</th>
-							<th>Actions</th>
+							<th><Trans caps>{ STRINGS.IMAGE }</Trans></th>
+							<th><Trans caps>{ STRINGS.NAME }</Trans></th>
+							<th><Trans caps>{ STRINGS.CATEGORY }</Trans></th>
+							<th><Trans caps>{ STRINGS.TYPE }</Trans></th>
+							<th><Trans caps>{ STRINGS.ACTIONS }</Trans></th>
 						</tr>
 						</thead>
 						<tbody>
@@ -61,7 +64,8 @@ function SaleProductTableItem(props: { productId: number, onRemove: (id: number)
 		<td><Trans>{ category.name }</Trans></td>
 		<td><Trans>{ type.name }</Trans></td>
 		<td>
-			<button className={ 'btn btn-error' } onClick={ () => props.onRemove(props.productId) }>Remove</button>
+			<button className={ 'btn btn-error' } onClick={ () => props.onRemove(props.productId) }>
+				<Trans>{ STRINGS.REMOVE }</Trans></button>
 		</td>
 	</tr>;
 }

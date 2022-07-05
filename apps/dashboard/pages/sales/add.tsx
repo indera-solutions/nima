@@ -1,5 +1,6 @@
 import {
 	getTranslation,
+	Trans,
 	useAddCategoryToSaleMutation,
 	useAddCollectionsToSaleMutation,
 	useAddProductToSaleMutation,
@@ -10,6 +11,7 @@ import {
 	useRemoveCollectionsFromSaleMutation,
 	useRemoveProductFromSaleMutation,
 	useSaleById,
+	useTranslations,
 	useUpdateSaleMutation,
 } from '@nima-cms/react';
 import { CreateDiscountSaleDto, DiscountType } from '@nima-cms/sdk';
@@ -32,6 +34,7 @@ import {
 	TranslatableInput,
 } from '../../components';
 import { NIMA_ROUTES } from '../../lib/routes';
+import { STRINGS } from '../../strings/strings';
 
 interface AddSaleProps {
 
@@ -41,6 +44,8 @@ interface AddSaleProps {
 export default function AddSale(props: AddSaleProps) {
 	const router = useRouter();
 	const languages = useLanguages();
+	const { getAdminTranslation } = useTranslations();
+
 	const id: number | undefined = router.query['id'] ? parseIdStr(router.query['id']) : undefined;
 	const isEditing = !!id;
 
@@ -57,6 +62,9 @@ export default function AddSale(props: AddSaleProps) {
 
 
 	const { data: existingSale } = useSaleById(id, { refetchInterval: false });
+
+	const title = getAdminTranslation(existingSale ? STRINGS.SALE_UPDATE_TITLE(getAdminTranslation(existingSale.name)) : STRINGS.SALE_CREATE_TITLE);
+
 
 	useEffect(() => {
 		if ( !existingSale ) return;
@@ -122,6 +130,7 @@ export default function AddSale(props: AddSaleProps) {
 	}
 
 	async function onSaveCollections(selectedIds) {
+		console.log(selectedIds);
 		await addCollectionsToSaleMutation.mutateAsync({
 			id: id,
 			discountAddCollectionsDto: {
@@ -169,26 +178,28 @@ export default function AddSale(props: AddSaleProps) {
 	return (
 		<>
 			<NimaTitle
-				title={ existingSale ? `Update ${ getTranslation(existingSale.name, languages.adminLanguage) } Sale` : 'Create Sale' }/>
+				title={ title }/>
 			<AdminPage
-				label={ existingSale ? `Update ${ getTranslation(existingSale.name, languages.adminLanguage) } Sale` : 'Create New Sale' }
+				label={ title }
 				footerContainer={ <AdminFooter>
 
 					<Link href={ NIMA_ROUTES.sales.list }>
-						<button className={ 'btn btn-secondary' }>Back</button>
+						<button className={ 'btn btn-secondary' }><Trans>{ STRINGS.BACK }</Trans></button>
 					</Link>
 					{ existingSale && <button className="btn btn-error"
 											  onClick={ onDeleteSale }>
-						Delete
+						<Trans>{ STRINGS.DELETE }</Trans>
 					</button> }
 					<button className="btn btn-success"
-							onClick={ onCreateSale }>{ isEditing ? 'Save' : 'Create' }</button>
+							onClick={ onCreateSale }><Trans>{ isEditing ? STRINGS.SAVE : STRINGS.CREATE }</Trans>
+					</button>
 				</AdminFooter> }
 			>
 				<AdminColumn>
-					<AdminSection title={ 'General' } titleRightContainer={ <SelectEditingLanguage/> }>
+					<AdminSection title={ getAdminTranslation(STRINGS.GENERAL_INFO) }
+								  titleRightContainer={ <SelectEditingLanguage/> }>
 						<label className="label">
-							<span className="label-text">Name</span>
+							<span className="label-text"><Trans>{ STRINGS.NAME }</Trans></span>
 						</label>
 						<TranslatableInput className={ 'input w-full max-w-xs input-bordered' }
 										   name="name"
@@ -198,7 +209,7 @@ export default function AddSale(props: AddSaleProps) {
 
 						<div className={ 'flex flex-col items-start gap-1' }>
 							<label className="label cursor-pointer">
-								<span className="label-text">Type</span>
+								<span className="label-text"><Trans>{ STRINGS.TYPE }</Trans></span>
 							</label>
 							<label className="label cursor-pointer">
 								<input type="radio" className="radio mr-2"
@@ -206,7 +217,7 @@ export default function AddSale(props: AddSaleProps) {
 									   onChange={ () => onValueEdit('discountType', DiscountType.FLAT) }
 
 								/>
-								<span className="label-text">Flat</span>
+								<span className="label-text"><Trans>{ STRINGS.FLAT }</Trans></span>
 							</label>
 							<label className="label cursor-pointer">
 								<input type="radio" className="radio mr-2"
@@ -214,13 +225,13 @@ export default function AddSale(props: AddSaleProps) {
 									   onChange={ () => onValueEdit('discountType', DiscountType.PERCENTAGE) }
 
 								/>
-								<span className="label-text">Percentage</span>
+								<span className="label-text"><Trans>{ STRINGS.PERCENTAGE }</Trans></span>
 							</label>
 						</div>
 
 						<div className="form-control">
 							<label className="label">
-								<span className="label-text">Value</span>
+								<span className="label-text"><Trans>{ STRINGS.VALUE }</Trans></span>
 							</label>
 							<label className="input-group">
 								<input

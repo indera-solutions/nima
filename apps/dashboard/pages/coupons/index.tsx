@@ -1,10 +1,11 @@
-import { Trans, useVouchers } from '@nima-cms/react';
+import { Trans, useTranslations, useVouchers } from '@nima-cms/react';
 import { DiscountType, DiscountVoucherDto } from '@nima-cms/sdk';
 import { getEuroValue, toTitleCase } from '@nima-cms/utils';
 import Link from 'next/link';
 import React from 'react';
 import { AdminColumn, AdminPage, AdminSection, NimaTitle } from '../../components';
 import { NIMA_ROUTES } from '../../lib/routes';
+import { STRINGS } from '../../strings/strings';
 
 interface SalesListProps {
 
@@ -12,19 +13,21 @@ interface SalesListProps {
 
 export default function SalesList(props: SalesListProps) {
 	const { data: vouchers } = useVouchers();
+	const { getAdminTranslation } = useTranslations();
+
 
 	return <>
-		<NimaTitle title={ 'Vouchers' }/>
+		<NimaTitle title={ getAdminTranslation(STRINGS.COUPONS) }/>
 		<AdminPage
-			label={ 'Vouchers' }
+			label={ getAdminTranslation(STRINGS.COUPONS) }
 		>
 			<AdminColumn>
 				<AdminSection
-					title={ 'List' }
-					subtitle={ (vouchers?.length || 0) + ' sales' }
+					title={ getAdminTranslation(STRINGS.LIST) }
+					subtitle={ (vouchers?.length || 0) + ' ' + getAdminTranslation(STRINGS.COUPONS) }
 					titleRightContainer={
 						<Link href={ NIMA_ROUTES.vouchers.add() }>
-							<a className={ 'btn btn-primary' }>Add new</a>
+							<a className={ 'btn btn-primary' }><Trans>{ STRINGS.ADD_NEW }</Trans></a>
 						</Link>
 					}
 				>
@@ -32,11 +35,11 @@ export default function SalesList(props: SalesListProps) {
 						<table className="table w-full">
 							<thead>
 							<tr>
-								<th>Name</th>
-								<th>Code</th>
-								<th>Type</th>
-								<th>Value</th>
-								<th>Actions</th>
+								<th><Trans caps>{ STRINGS.NAME }</Trans></th>
+								<th><Trans caps>{ STRINGS.CODE }</Trans></th>
+								<th><Trans caps>{ STRINGS.TYPE }</Trans></th>
+								<th><Trans caps>{ STRINGS.VALUE }</Trans></th>
+								<th><Trans caps>{ STRINGS.ACTIONS }</Trans></th>
 							</tr>
 							</thead>
 							<tbody>

@@ -1,6 +1,7 @@
-import { Trans } from '@nima-cms/react';
+import { Trans, useTranslations } from '@nima-cms/react';
 import { CategoryDto } from '@nima-cms/sdk';
 import React, { useState } from 'react';
+import { STRINGS } from '../../../strings/strings';
 import { AdminSection } from '../../AdminLayout';
 import { SalesAddCategories } from './SalesAddCategories';
 
@@ -12,18 +13,21 @@ interface SalesCategoryListProps {
 
 export function SalesCategoryList(props: SalesCategoryListProps) {
 	const [modalOpen, setModalOpen] = useState(false);
+	const { getAdminTranslation } = useTranslations();
+
 
 	return (
 		<>
-			<AdminSection title={ 'Categories' }
+			<AdminSection title={ getAdminTranslation(STRINGS.CATEGORIES) }
 						  titleRightContainer={ <button onClick={ () => setModalOpen(true) }
-														className={ 'btn btn-primary' }>Add</button> }>
+														className={ 'btn btn-primary' }><Trans>{ STRINGS.ADD }</Trans>
+						  </button> }>
 				<div className="overflow-x-auto">
 					<table className="table w-full">
 						<thead>
 						<tr>
-							<th>Name</th>
-							<th>Actions</th>
+							<th><Trans caps>{ STRINGS.NAME }</Trans></th>
+							<th><Trans caps>{ STRINGS.ACTIONS }</Trans></th>
 						</tr>
 						</thead>
 						<tbody>
@@ -31,7 +35,8 @@ export function SalesCategoryList(props: SalesCategoryListProps) {
 								<td><Trans>{ collection.name }</Trans></td>
 								<td>
 									<button className={ 'btn btn-error' }
-											onClick={ () => props.onRemove(collection.id) }>Remove
+											onClick={ () => props.onRemove(collection.id) }>
+										<Trans>{ STRINGS.REMOVE }</Trans>
 									</button>
 								</td>
 							</tr>,

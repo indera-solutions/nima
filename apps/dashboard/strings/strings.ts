@@ -207,6 +207,10 @@ export const STRINGS = {
 		en: 'General Information',
 		el: 'Γενικές πληροφορίες',
 	},
+	INFO: {
+		en: 'Information',
+		el: 'Πληροφορίες',
+	},
 	NAME: {
 		en: 'Name',
 		el: 'Όνομα',
@@ -296,6 +300,10 @@ export const STRINGS = {
 		en: 'Type',
 		el: 'Τύπος',
 	},
+	CODE: {
+		en: 'Code',
+		el: 'Κωδικός',
+	},
 	PUBLIC: {
 		en: 'Public',
 		el: 'Δημόσιο',
@@ -359,6 +367,19 @@ export const STRINGS = {
 		el: 'Ημερομηνία ώρα',
 	},
 
+	PERCENTAGE: {
+		en: 'Percentage',
+		el: 'Ποσοστό',
+	},
+	FLAT: {
+		en: 'Flat',
+		el: 'Σταθερά',
+	},
+	FREE_SHIPPING: {
+		en: 'Free Shipping',
+		el: 'Δωρεάν Μεταγορικά',
+	},
+
 
 	PRODUCT_CREATE_TITLE: {
 		en: 'Create Product',
@@ -402,8 +423,24 @@ export const STRINGS = {
 		el: 'Δημιουργία Συλλογής',
 	},
 	COLLECTION_UPDATE_TITLE: (name) => ({
-		en: `Update ${ name }`,
-		el: `Επεξεργασία ${ name }`,
+		en: `Update Collection ${ name }`,
+		el: `Επεξεργασία Συλλογής ${ name }`,
+	}),
+	SALE_CREATE_TITLE: {
+		en: 'Create Sale',
+		el: 'Δημιουργία Έκτπωσης',
+	},
+	SALE_UPDATE_TITLE: (name) => ({
+		en: `Update Sale ${ name }`,
+		el: `Επεξεργασία Έκπτωσης ${ name }`,
+	}),
+	COUPONS_CREATE_TITLE: {
+		en: 'Create Coupon',
+		el: 'Δημιουργία Κουπονιού',
+	},
+	COUPONS_UPDATE_TITLE: (name) => ({
+		en: `Update Coupon ${ name }`,
+		el: `Επεξεργασία Κουπονιού ${ name }`,
 	}),
 
 
@@ -450,6 +487,30 @@ export const STRINGS = {
 	ADD_PRODUCTS: {
 		en: 'Add Products',
 		el: 'Προσθήκη Προϊόντων',
+	},
+	ADD_COLLECTIONS: {
+		en: 'Add Collections',
+		el: 'Προσθήκη Συλλογών',
+	},
+	ADD_CATEGORIES: {
+		en: 'Add Categories',
+		el: 'Προσθήκη Κατηγοριών',
+	},
+	USED: {
+		en: 'Used',
+		el: 'Χρήσεις',
+	},
+	USAGE: {
+		en: 'Usage',
+		el: 'Χρήση',
+	},
+	LIMIT_USAGE: {
+		en: 'Limit Usage',
+		el: 'Περιορισμός χρήσης',
+	},
+	LEAVE_ZERO_FOR_UNLIMITED: {
+		en: 'Leave 0 for unlimited.',
+		el: 'Αφήστε 0 για απεριόριστο.',
 	},
 
 	ARE_YOU_SURE_DELETE: (name) => ({
