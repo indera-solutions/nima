@@ -102,7 +102,7 @@ export class FilteringService {
 		}
 
 		return {
-			items: products.map(p => params.variants ? ProductDto.prepare(p.product) : ProductDto.prepare(p)),
+			items: products.map(p => params.variants ? ProductDto.prepare(p.product, { isAdmin: options.isStaff }) : ProductDto.prepare(p, { isAdmin: options.isStaff })),
 			totalCount: ids.length,
 			pageSize: params.itemsPerPage,
 			pageNumber: params.page,
