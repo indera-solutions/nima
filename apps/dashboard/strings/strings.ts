@@ -169,6 +169,10 @@ export const STRINGS = {
 		en: 'Media',
 		el: 'Πολυμέσα',
 	},
+	IMAGE: {
+		en: 'Image',
+		el: 'Εικόνα',
+	},
 	ORDERS: {
 		en: 'Orders',
 		el: 'Παραγγελίες',
@@ -393,6 +397,14 @@ export const STRINGS = {
 		en: `Update ${ name }`,
 		el: `Επεξεργασία ${ name }`,
 	}),
+	COLLECTION_CREATE_TITLE: {
+		en: 'Create Collection',
+		el: 'Δημιουργία Συλλογής',
+	},
+	COLLECTION_UPDATE_TITLE: (name) => ({
+		en: `Update ${ name }`,
+		el: `Επεξεργασία ${ name }`,
+	}),
 
 
 	ADD_MEDIA: {
@@ -422,6 +434,22 @@ export const STRINGS = {
 	ADD_SUBCATEGORY: {
 		en: 'Add Subcategory',
 		el: 'Προσθήκη Υποκατηγορίας',
+	},
+	NUMBER_OF_PRODUCTS: {
+		en: 'No. of Products',
+		el: 'Αρ. Προϊόντων',
+	},
+	BACKGROUND_IMAGE: {
+		en: 'Background Image',
+		el: 'Εικόνα Φόντου',
+	},
+	PRODUCT_LIST: {
+		en: 'Product List',
+		el: 'Λίστα Προϊόντων',
+	},
+	ADD_PRODUCTS: {
+		en: 'Add Products',
+		el: 'Προσθήκη Προϊόντων',
 	},
 
 	ARE_YOU_SURE_DELETE: (name) => ({

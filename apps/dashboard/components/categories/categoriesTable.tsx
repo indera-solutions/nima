@@ -17,10 +17,10 @@ export function CategoriesTable(props: CategoriesTableProps) {
 		<table className="table w-full">
 			<thead>
 			<tr>
-				<th><Trans>{ STRINGS.NAME }</Trans></th>
-				<th><Trans>{ STRINGS.SLUG }</Trans></th>
-				<th><Trans>{ STRINGS.SUBCATEGORIES }</Trans></th>
-				<th><Trans>{ STRINGS.ACTIONS }</Trans></th>
+				<th><Trans caps>{ STRINGS.NAME }</Trans></th>
+				<th><Trans caps>{ STRINGS.SLUG }</Trans></th>
+				<th><Trans caps>{ STRINGS.SUBCATEGORIES }</Trans></th>
+				<th><Trans caps>{ STRINGS.ACTIONS }</Trans></th>
 			</tr>
 			</thead>
 			<tbody>

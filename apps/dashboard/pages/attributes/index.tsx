@@ -34,12 +34,12 @@ export default function AttributeList(props: AttributeListProps) {
 						<table className="table w-full">
 							<thead>
 							<tr>
-								<th><Trans>{ STRINGS.NAME }</Trans></th>
-								<th><Trans>{ STRINGS.TYPE }</Trans></th>
-								<th><Trans>{ STRINGS.PUBLIC }</Trans></th>
-								<th><Trans>{ STRINGS.USED_IN_FILTERING }</Trans></th>
-								<th><Trans>{ STRINGS.SLUG }</Trans></th>
-								<th><Trans>{ STRINGS.ACTIONS }</Trans></th>
+								<th><Trans caps>{ STRINGS.NAME }</Trans></th>
+								<th><Trans caps>{ STRINGS.TYPE }</Trans></th>
+								<th><Trans caps>{ STRINGS.PUBLIC }</Trans></th>
+								<th><Trans caps>{ STRINGS.USED_IN_FILTERING }</Trans></th>
+								<th><Trans caps>{ STRINGS.SLUG }</Trans></th>
+								<th><Trans caps>{ STRINGS.ACTIONS }</Trans></th>
 							</tr>
 							</thead>
 							<tbody>

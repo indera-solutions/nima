@@ -1,9 +1,11 @@
 import {
 	getTranslation,
+	Trans,
 	useCollectionById,
 	useCreateCollectionMutation,
 	useDeleteCollectionMutation,
 	useLanguages,
+	useTranslations,
 	useUpdateCollectionMutation,
 } from '@nima-cms/react';
 import { CreateCollectionDto } from '@nima-cms/sdk';
@@ -25,6 +27,7 @@ import {
 	TranslatableInput,
 } from '../../components';
 import { NIMA_ROUTES } from '../../lib/routes';
+import { STRINGS } from '../../strings/strings';
 
 interface AddCollectionProps {
 
@@ -33,6 +36,7 @@ interface AddCollectionProps {
 
 export default function AddCollection(props: AddCollectionProps) {
 	const router = useRouter();
+	const { getAdminTranslation } = useTranslations();
 	const languages = useLanguages();
 	const id: number | undefined = router.query['id'] ? parseIdStr(router.query['id']) : undefined;
 	const isEditing = !!id;
@@ -41,6 +45,8 @@ export default function AddCollection(props: AddCollectionProps) {
 	const updateCollectionMutation = useUpdateCollectionMutation();
 	const deleteCollectionMutation = useDeleteCollectionMutation();
 	const { data: existingCollection } = useCollectionById(id, { refetchInterval: false });
+
+	const title = getAdminTranslation(existingCollection ? STRINGS.COLLECTION_UPDATE_TITLE(getAdminTranslation(existingCollection.name)) : STRINGS.COLLECTION_CREATE_TITLE);
 
 	useEffect(() => {
 		if ( !existingCollection ) return;
@@ -110,28 +116,29 @@ export default function AddCollection(props: AddCollectionProps) {
 	return (
 		<>
 			<NimaTitle
-				title={ existingCollection ? `Update ${ getTranslation(existingCollection.name, languages.adminLanguage) } Collection` : 'Create Collection' }/>
+				title={ title }/>
 			<AdminPage
-				label={ existingCollection ? `Update ${ getTranslation(existingCollection.name, languages.adminLanguage) } Collection` : 'Create New Collection' }
+				label={ title }
 				footerContainer={ <AdminFooter>
 
 					<Link href={ NIMA_ROUTES.collections.list }>
-						<button className={ 'btn btn-secondary' }>Back</button>
+						<button className={ 'btn btn-secondary' }><Trans>{ STRINGS.BACK }</Trans></button>
 					</Link>
 
 					{ existingCollection && <button className="btn btn-error"
 													onClick={ onDeleteCollection }>
-						Delete
+						<Trans>{ STRINGS.DELETE }</Trans>
 					</button> }
 
 					<button className="btn btn-success"
-							onClick={ onCreateCollection }>{ isEditing ? 'Save' : 'Create' }</button>
+							onClick={ onCreateCollection }><Trans>{ isEditing ? STRINGS.SAVE : STRINGS.CREATE }</Trans>
+					</button>
 				</AdminFooter> }
 			>
 				<AdminColumn>
 					<AdminSection title={ 'General Information' } titleRightContainer={ <SelectEditingLanguage/> }>
 						<label className="label">
-							<span className="label-text">Name</span>
+							<span className="label-text"><Trans>{ STRINGS.NAME }</Trans></span>
 						</label>
 						<TranslatableInput className={ 'input w-full max-w-xs input-bordered' }
 										   name="name"
@@ -140,7 +147,7 @@ export default function AddCollection(props: AddCollectionProps) {
 						/>
 
 						<label className="label">
-							<span className="label-text">Description</span>
+							<span className="label-text"><Trans>{ STRINGS.DESCRIPTION }</Trans></span>
 						</label>
 						<TranslatableInput className={ 'input w-full max-w-xs input-bordered' }
 										   name="name"
@@ -149,9 +156,9 @@ export default function AddCollection(props: AddCollectionProps) {
 						/>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Slug</span>
+								<span className="label-text"><Trans>{ STRINGS.SLUG }</Trans></span>
 								{ !isEditing &&
-									<span className="label-text-alt">Leave empty to generate default</span> }
+									<span className="label-text-alt"><Trans>{ STRINGS.LEAVE_EMPTY_FOR_DEFAULT }</Trans></span> }
 							</label>
 							<input className={ 'input w-full max-w-xs input-bordered' }
 								   type="text"
@@ -164,7 +171,7 @@ export default function AddCollection(props: AddCollectionProps) {
 
 					</AdminSection>
 					<MediaSelectorSection
-						title={ 'Background Image (optional)' }
+						title={ getAdminTranslation(STRINGS.BACKGROUND_IMAGE) }
 						sortableMedia={ createCollectionDto.backgroundImageId ? [{ mediaId: createCollectionDto.backgroundImageId, sortOrder: 0 }] : [] }
 						onSelect={ (media) => {
 							const id = media.length === 0 ? undefined : media[0].mediaId;
