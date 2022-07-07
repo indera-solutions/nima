@@ -1,4 +1,4 @@
-import { Trans } from '@nima-cms/react';
+import { Trans, useTranslations } from '@nima-cms/react';
 import { ShippingMethodType, ShippingZoneDto, ShippingZoneLocationType } from '@nima-cms/sdk';
 import {
 	getContinentByCode,
@@ -9,6 +9,7 @@ import {
 	toTitleCase,
 } from '@nima-cms/utils';
 import React, { useEffect, useState } from 'react';
+import { STRINGS } from '../../strings/strings';
 import { AdminSection } from '../AdminLayout';
 import { NewShippingZoneModal } from './newShippingZoneModal';
 import { ShippingRatesModal } from './ShippingRatesModal';
@@ -20,7 +21,7 @@ interface ZoneTableProps {
 
 
 export function ZoneTable(props: ZoneTableProps) {
-
+	const { getAdminTranslation } = useTranslations();
 	const [editingZone, setEditingZone] = useState<ShippingZoneDto | undefined>();
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [isRateModalOpen, setRateIsModalOpen] = useState<boolean>(false);
@@ -44,12 +45,13 @@ export function ZoneTable(props: ZoneTableProps) {
 
 	return (
 		<>
-			<AdminSection title={ 'Shipping Zones' }
+			<AdminSection title={ getAdminTranslation(STRINGS.ZONES) }
 						  titleRightContainer={ <button
 							  className={ 'btn btn-primary' }
 							  onClick={ (() => {
 								  setIsModalOpen(true);
-							  }) }>New Zone
+							  }) }>
+							  <Trans>{ STRINGS.NEW_ZONE }</Trans>
 						  </button> }
 			>
 
@@ -57,11 +59,11 @@ export function ZoneTable(props: ZoneTableProps) {
 					<table className="table w-full">
 						<thead>
 						<tr>
-							<th>Name</th>
-							<th>Type</th>
-							<th>Location Codes</th>
-							<th>Rates</th>
-							<th>Actions</th>
+							<th><Trans caps>{ STRINGS.NAME }</Trans></th>
+							<th><Trans caps>{ STRINGS.TYPE }</Trans></th>
+							<th><Trans caps>{ STRINGS.LOCATION_CODES }</Trans></th>
+							<th><Trans caps>{ STRINGS.RATES }</Trans></th>
+							<th><Trans caps>{ STRINGS.ACTIONS }</Trans></th>
 						</tr>
 						</thead>
 						<tbody>
@@ -72,20 +74,20 @@ export function ZoneTable(props: ZoneTableProps) {
 							<td>
 								<table className="table w-full">
 									<thead>
-									<th>Type</th>
-									<th>Min</th>
-									<th>Max</th>
-									<th>Rate</th>
+									<th><Trans caps>{ STRINGS.TYPE }</Trans></th>
+									<th><Trans caps>{ STRINGS.MIN }</Trans></th>
+									<th><Trans caps>{ STRINGS.MAX }</Trans></th>
+									<th><Trans caps>{ STRINGS.RATES }</Trans></th>
 									</thead>
 									<tbody>
 									{ zone.shippingRates.map(rate => <tr key={ rate.id }>
 
-											{ rate.shippingType !== ShippingMethodType.BY_WEIGHT &&
-												<>
-													<td>{ toTitleCase(rate.shippingType) }</td>
-													<td>{ getEuroValue(rate.minimumPrice) || '-∞' }</td>
-													<td>{ getEuroValue(rate.maximumPrice) || '∞' }</td>
-													<td>{ getEuroValue(rate.rate) }</td>
+										{ rate.shippingType !== ShippingMethodType.BY_WEIGHT &&
+											<>
+												<td>{ toTitleCase(rate.shippingType) }</td>
+												<td>{ getEuroValue(rate.minimumPrice) || '-∞' }</td>
+												<td>{ getEuroValue(rate.maximumPrice) || '∞' }</td>
+												<td>{ getEuroValue(rate.rate) }</td>
 												</>
 											}
 											{ rate.shippingType === ShippingMethodType.BY_WEIGHT &&
@@ -108,14 +110,16 @@ export function ZoneTable(props: ZoneTableProps) {
 										onClick={ (() => {
 											setEditingZone(zone);
 											setIsModalOpen(true);
-										}) }>Edit
+										}) }>
+										<Trans>{ STRINGS.EDIT }</Trans>
 									</button>
 									<button
 										className={ 'btn btn-primary' }
 										onClick={ (() => {
 											setEditingZone(zone);
 											setRateIsModalOpen(true);
-										}) }>Edit Rates
+										}) }>
+										<Trans>{ STRINGS.EDIT_RATES }</Trans>
 									</button>
 								</div>
 							</td>

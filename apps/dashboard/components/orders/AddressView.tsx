@@ -1,6 +1,7 @@
-import { useAddressById } from '@nima-cms/react';
+import { Trans, useAddressById } from '@nima-cms/react';
 import { getCountryByCode, getCountryName, getStateAndCountry, getStateName } from '@nima-cms/utils';
 import React, { useState } from 'react';
+import { STRINGS } from '../../strings/strings';
 import { AdminSection } from '../AdminLayout';
 import { EditAddressModal } from '../forms';
 
@@ -22,7 +23,8 @@ export function AddressView(props: AddressViewProps) {
 		<>
 			<AdminSection title={ props.title }
 						  titleRightContainer={ <button onClick={ () => setModalOpen(true) }
-														className={ 'btn btn-primary' }>Edit</button> }>
+														className={ 'btn btn-primary' }><Trans>{ STRINGS.EDIT }</Trans>
+						  </button> }>
 				<div className="w-full">
 					<h4>{ address.firstName } { address.lastName }</h4>
 					<h4>{ address.phone }</h4>

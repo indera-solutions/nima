@@ -1,4 +1,4 @@
-import { useOrders } from '@nima-cms/react';
+import { Trans, useOrders, useTranslations } from '@nima-cms/react';
 import { OrderDto, OrderStatus } from '@nima-cms/sdk';
 import { enumToArray, getEuroValue, toTitleCase } from '@nima-cms/utils';
 import dayjs from 'dayjs';
@@ -10,8 +10,9 @@ import Select from 'react-select';
 import { AdminColumn, AdminPage, AdminSection, NimaTitle } from '../../components';
 import { Pagination } from '../../components/utils/Pagination';
 import { NIMA_ROUTES } from '../../lib/routes';
+import { STRINGS } from '../../strings/strings';
 
-interface AttributeListProps {
+interface OrderListProps {
 
 }
 
@@ -19,11 +20,11 @@ const types = enumToArray(OrderStatus);
 const typesDropdown = types.map(type => ({ label: toTitleCase(type), value: type as string }));
 const ITEMS_PER_PAGE = 20;
 
-export default function AttributeList(props: AttributeListProps) {
+export default function OrderList(props: OrderListProps) {
 	const router = useRouter();
 	const page = (+router.query['page'] || 1) as number;
 	const status = router.query['status'] ? OrderStatus[router.query['status'] as string] : undefined;
-
+	const { getAdminTranslation } = useTranslations();
 	const { data: paginatedResult } = useOrders({
 		status,
 		page,
@@ -54,24 +55,24 @@ export default function AttributeList(props: AttributeListProps) {
 	}
 
 	return <>
-		<NimaTitle title={ 'Orders' }/>
+		<NimaTitle title={ getAdminTranslation(STRINGS.ORDERS) }/>
 		<AdminPage
-			label={ 'Orders' }
+			label={ getAdminTranslation(STRINGS.ORDERS) }
 		>
 			<AdminColumn>
 				<AdminSection
-					title={ 'List' }
-					subtitle={ (paginatedResult?.totalCount || 0) + ' orders' }
-					titleRightContainer={
-						<Link href={ NIMA_ROUTES.orders.add() }>
-							<a className={ 'btn btn-primary' }>Add new</a>
-						</Link>
-					}
+					title={ getAdminTranslation(STRINGS.LIST) }
+					subtitle={ (paginatedResult?.totalCount || 0) + ' ' + getAdminTranslation(STRINGS.ORDERS).toLowerCase() }
+					// titleRightContainer={
+					// 	<Link href={ NIMA_ROUTES.orders.add() }>
+					// 		<a className={ 'btn btn-primary' }>Add new</a>
+					// 	</Link>
+					// }
 				>
 					<div className="flex">
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Status</span>
+								<span className="label-text"><Trans>{ STRINGS.STATUS }</Trans></span>
 
 							</label>
 							<Select
@@ -94,11 +95,11 @@ export default function AttributeList(props: AttributeListProps) {
 						<table className="table w-full">
 							<thead>
 							<tr>
-								<th>Date</th>
+								<th><Trans caps>{ STRINGS.DATE }</Trans></th>
 								<th>Email</th>
-								<th>Total</th>
-								<th>Status</th>
-								<th>Actions</th>
+								<th><Trans caps>{ STRINGS.TOTAL }</Trans></th>
+								<th><Trans caps>{ STRINGS.STATUS }</Trans></th>
+								<th><Trans caps>{ STRINGS.ACTIONS }</Trans></th>
 							</tr>
 							</thead>
 							<tbody>
@@ -109,7 +110,7 @@ export default function AttributeList(props: AttributeListProps) {
 								<td><OrderStatusBadge status={ order.status }/></td>
 								<td>
 									<Link href={ NIMA_ROUTES.orders.view(order.id) }>
-										<a className={ 'btn btn-primary' }>Edit</a>
+										<a className={ 'btn btn-primary' }><Trans>{ STRINGS.EDIT }</Trans></a>
 									</Link>
 								</td>
 							</tr>) }

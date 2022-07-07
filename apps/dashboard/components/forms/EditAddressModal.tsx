@@ -1,10 +1,11 @@
-import { useAddressById, useUpdateAddressMutation } from '@nima-cms/react';
+import { Trans, useAddressById, useUpdateAddressMutation } from '@nima-cms/react';
 import { CreateAddressDto } from '@nima-cms/sdk';
 import { countries, getStatesOfCountryByAlpha2, toTitleCase } from '@nima-cms/utils';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Simulate } from 'react-dom/test-utils';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
+import { STRINGS } from '../../strings/strings';
 import input = Simulate.input;
 
 interface NewShippingZoneModalProps {
@@ -79,13 +80,13 @@ export function EditAddressModal(props: NewShippingZoneModalProps) {
 			<div className="modal modal-open">
 				<div className="modal-box">
 					<label onClick={ props.onClose } className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-					<h3 className="font-bold text-lg">Edit Address</h3>
+					<h3 className="font-bold text-lg"><Trans>{ STRINGS.EDIT_ADDRESS }</Trans></h3>
 					<div className="py-4">
 
 						<div className={ 'flex gap-4' }>
 							<div className="form-control w-full max-w-xs">
 								<label className="label">
-									<span className="label-text">First Name</span>
+									<span className="label-text"><Trans>{ STRINGS.FIRST_NAME }</Trans></span>
 								</label>
 								<input
 									value={ createAddressDto.firstName }
@@ -95,7 +96,7 @@ export function EditAddressModal(props: NewShippingZoneModalProps) {
 							</div>
 							<div className="form-control w-full max-w-xs">
 								<label className="label">
-									<span className="label-text">Last Name</span>
+									<span className="label-text"><Trans>{ STRINGS.LAST_NAME }</Trans></span>
 								</label>
 								<input
 									value={ createAddressDto.lastName }
@@ -106,7 +107,7 @@ export function EditAddressModal(props: NewShippingZoneModalProps) {
 						</div>
 						<div className="form-control w-full">
 							<label className="label">
-								<span className="label-text">Phone</span>
+								<span className="label-text"><Trans>{ STRINGS.PHONE }</Trans></span>
 							</label>
 							<input
 								value={ createAddressDto.phone }
@@ -116,7 +117,7 @@ export function EditAddressModal(props: NewShippingZoneModalProps) {
 						</div>
 						<div className="form-control w-full">
 							<label className="label">
-								<span className="label-text">Company Name</span>
+								<span className="label-text"><Trans>{ STRINGS.COMPANY_NAME }</Trans></span>
 							</label>
 							<input
 								value={ createAddressDto.companyName }
@@ -127,7 +128,7 @@ export function EditAddressModal(props: NewShippingZoneModalProps) {
 
 						<div className="form-control w-full">
 							<label className="label">
-								<span className="label-text">Address</span>
+								<span className="label-text"><Trans>{ STRINGS.ADDRESS }</Trans></span>
 							</label>
 							<input
 								value={ createAddressDto.address }
@@ -139,7 +140,7 @@ export function EditAddressModal(props: NewShippingZoneModalProps) {
 						<div className={ 'flex gap-4' }>
 							<div className="form-control w-full max-w-xs">
 								<label className="label">
-									<span className="label-text">City</span>
+									<span className="label-text"><Trans>{ STRINGS.CITY }</Trans></span>
 								</label>
 								<input
 									value={ createAddressDto.city }
@@ -149,7 +150,7 @@ export function EditAddressModal(props: NewShippingZoneModalProps) {
 							</div>
 							<div className="form-control w-full max-w-xs">
 								<label className="label">
-									<span className="label-text">ZIP</span>
+									<span className="label-text"><Trans>{ STRINGS.ZIP_CODE }</Trans></span>
 								</label>
 								<input
 									value={ createAddressDto.zip }
@@ -162,7 +163,7 @@ export function EditAddressModal(props: NewShippingZoneModalProps) {
 						<div className={ 'flex gap-4' }>
 							<div className="form-control w-full max-w-xs">
 								<label className="label">
-									<span className="label-text">State</span>
+									<span className="label-text"><Trans>{ STRINGS.STATE }</Trans></span>
 								</label>
 								<Select
 									value={ statesOptions.find(td => createAddressDto.state === td.value) }
@@ -174,7 +175,7 @@ export function EditAddressModal(props: NewShippingZoneModalProps) {
 							</div>
 							<div className="form-control w-full max-w-xs">
 								<label className="label">
-									<span className="label-text">Country</span>
+									<span className="label-text"><Trans>{ STRINGS.COUNTRY }</Trans></span>
 
 								</label>
 								<Select
@@ -188,7 +189,7 @@ export function EditAddressModal(props: NewShippingZoneModalProps) {
 						</div>
 						<div className="modal-action">
 							<label className="btn btn-success" onClick={ onSave }>
-								Update Address
+								<Trans>{ STRINGS.EDIT_ADDRESS }</Trans>
 							</label>
 						</div>
 					</div>

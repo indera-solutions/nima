@@ -1,6 +1,7 @@
-import { useSettings } from '@nima-cms/react';
+import { Trans, useSettings } from '@nima-cms/react';
 import { ProductVariantDto } from '@nima-cms/sdk';
 import React from 'react';
+import { STRINGS } from '../../strings/strings';
 
 interface StockBadgeProps {
 	productVariant?: ProductVariantDto;
@@ -17,7 +18,7 @@ export function StockBadge(props: StockBadgeProps) {
 	const stock = productVariant.stock || 0;
 	if ( stock === 0 ) {
 		return <div className="badge badge-error gap-2">
-			Out of stock
+			<Trans>{ STRINGS.OUT_OF_STOCK }</Trans>
 		</div>;
 	}
 

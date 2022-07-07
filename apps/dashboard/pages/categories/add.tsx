@@ -1,9 +1,11 @@
 import {
 	getTranslation,
+	Trans,
 	useCategoryId,
 	useCreateCategoryMutation,
 	useDeleteCategoryMutation,
 	useLanguages,
+	useTranslations,
 	useUpdateCategoryMutation,
 } from '@nima-cms/react';
 import { CreateCategoryDto } from '@nima-cms/sdk';
@@ -24,6 +26,7 @@ import {
 } from '../../components';
 import { CategoriesTable } from '../../components/categories/categoriesTable';
 import { NIMA_ROUTES } from '../../lib/routes';
+import { STRINGS } from '../../strings/strings';
 
 interface AddProductTypeProps {
 
@@ -42,15 +45,20 @@ const defaultCategory = {
 
 export default function AddProductType(props: AddProductTypeProps) {
 	const router = useRouter();
+	const { getAdminTranslation } = useTranslations();
+
 	const languages = useLanguages();
 	const id: number | undefined = router.query['id'] ? parseIdStr(router.query['id']) : undefined;
 	const parentId: number | undefined = router.query['parentId'] ? parseIdStr(router.query['parentId']) : undefined;
 	const isEditing = !!id;
 
+
 	const createCategoryMutation = useCreateCategoryMutation();
 	const updateCategoryMutation = useUpdateCategoryMutation();
 	const deleteCategoryMutation = useDeleteCategoryMutation();
 	const { data: existingCategory } = useCategoryId(id, { refetchInterval: false });
+
+	const title = getAdminTranslation(existingCategory ? STRINGS.CATEGORY_UPDATE_TITLE(getAdminTranslation(existingCategory.name)) : STRINGS.CATEGORY_CREATE_TITLE);
 
 	useEffect(() => {
 		if ( !existingCategory ) return;
@@ -137,29 +145,31 @@ export default function AddProductType(props: AddProductTypeProps) {
 	return (
 		<>
 			<NimaTitle
-				title={ existingCategory ? `Update ${ getTranslation(existingCategory.name, languages.adminLanguage) }` : 'Create Category' }/>
+				title={ title }/>
 			<AdminPage
-				label={ existingCategory ? `Update ${ getTranslation(existingCategory.name, languages.adminLanguage) }` : 'Create New Category' }
+				label={ title }
 				footerContainer={ <AdminFooter>
 					{ parentId && <Link href={ NIMA_ROUTES.categories.edit(parentId) + '#admin-page' }>
-						<button className={ 'btn btn-primary' }>Back to parent</button>
+						<button className={ 'btn btn-primary' }><Trans>{ STRINGS.BACK_TO_PARENT }</Trans></button>
 					</Link> }
 					{ existingCategory && <button className="btn btn-error"
 												  onClick={ onDeleteCategory }>
-						Delete
+						<Trans>{ STRINGS.DELETE }</Trans>
 					</button> }
 					<Link href={ NIMA_ROUTES.categories.list }>
-						<button className={ 'btn btn-secondary' }>Back</button>
+						<button className={ 'btn btn-secondary' }><Trans>{ STRINGS.BACK }</Trans></button>
 					</Link>
 
 					<button className="btn btn-success"
-							onClick={ onCreateCategory }>{ isEditing ? 'Save' : 'Create' }</button>
+							onClick={ onCreateCategory }><Trans>{ isEditing ? STRINGS.SAVE : STRINGS.CREATE }</Trans>
+					</button>
 				</AdminFooter> }
 			>
 				<AdminColumn>
-					<AdminSection title={ 'General Information' } titleRightContainer={ <SelectEditingLanguage/> }>
+					<AdminSection title={ getAdminTranslation(STRINGS.GENERAL_INFO) }
+								  titleRightContainer={ <SelectEditingLanguage/> }>
 						<label className="label">
-							<span className="label-text">Name</span>
+							<span className="label-text"><Trans>{ STRINGS.NAME }</Trans></span>
 						</label>
 						<TranslatableInput className={ 'input w-full max-w-xs input-bordered' }
 										   name="name"
@@ -168,7 +178,7 @@ export default function AddProductType(props: AddProductTypeProps) {
 						/>
 
 						<label className="label">
-							<span className="label-text">Description</span>
+							<span className="label-text"><Trans>{ STRINGS.DESCRIPTION }</Trans></span>
 						</label>
 						<TranslatableInput className={ 'input w-full max-w-xs input-bordered' }
 										   name="name"
@@ -177,9 +187,9 @@ export default function AddProductType(props: AddProductTypeProps) {
 						/>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Slug</span>
+								<span className="label-text"><Trans>{ STRINGS.SLUG }</Trans></span>
 								{ !isEditing &&
-									<span className="label-text-alt">Leave empty to generate default</span> }
+									<span className="label-text-alt"><Trans>{ STRINGS.LEAVE_EMPTY_FOR_DEFAULT }</Trans></span> }
 							</label>
 							<input className={ 'input w-full max-w-xs input-bordered' }
 								   type="text"
@@ -197,7 +207,7 @@ export default function AddProductType(props: AddProductTypeProps) {
 									  titleRightContainer={
 										  <Link href={ NIMA_ROUTES.categories.add(existingCategory.id) }>
 											  <button className={ 'btn btn-primary' }>
-												  Add Subcategory
+												  <Trans>{ STRINGS.ADD_SUBCATEGORY }</Trans>
 											  </button>
 										  </Link>
 									  }

@@ -1,10 +1,11 @@
-import { useSettings, useUpdateSettings } from '@nima-cms/react';
+import { Trans, useSettings, useTranslations, useUpdateSettings } from '@nima-cms/react';
 import { CreateSettingsDto } from '@nima-cms/sdk';
 import { LanguageCode, languages } from '@nima-cms/utils';
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
 import { AdminColumn, AdminFooter, AdminPage, AdminSection, MediaSelectorSection, NimaTitle } from '../components';
+import { STRINGS } from '../strings/strings';
 
 interface SettingsProps {
 
@@ -13,7 +14,7 @@ interface SettingsProps {
 const languagesOptions = languages.map(l => ({ value: l.code, label: l.name }));
 
 export default function SettingsPage(props: SettingsProps) {
-
+	const { getAdminTranslation } = useTranslations();
 	const { data: existingSettings, isSuccess } = useSettings();
 	const updateSettingsMutation = useUpdateSettings();
 
@@ -66,15 +67,15 @@ export default function SettingsPage(props: SettingsProps) {
 
 	return (
 		<>
-			<NimaTitle title={ 'Settings' }/>
-			<AdminPage label={ 'Settings' } footerContainer={ <AdminFooter>
-				<button className={ 'btn btn-success' } onClick={ onSave }>Save</button>
+			<NimaTitle title={ getAdminTranslation(STRINGS.SETTINGS) }/>
+			<AdminPage label={ getAdminTranslation(STRINGS.SETTINGS) } footerContainer={ <AdminFooter>
+				<button className={ 'btn btn-success' } onClick={ onSave }><Trans>{ STRINGS.SAVE }</Trans></button>
 			</AdminFooter> }>
 				<AdminColumn>
-					<AdminSection title={ 'General Settings' }>
+					<AdminSection title={ getAdminTranslation(STRINGS.GENERAL_INFO) }>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Site Name</span>
+								<span className="label-text"><Trans>{ STRINGS.SITE_NAME }</Trans></span>
 							</label>
 							<input type="text" value={ settings.siteName }
 								   onChange={ (e) => onEditValue('siteName', e.target.value) }
@@ -82,7 +83,7 @@ export default function SettingsPage(props: SettingsProps) {
 						</div>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Base URL</span>
+								<span className="label-text"><Trans>{ STRINGS.BASE_URL }</Trans></span>
 							</label>
 							<input type="text" value={ settings.baseUrl }
 								   onChange={ (e) => onEditValue('baseUrl', e.target.value) }
@@ -92,7 +93,8 @@ export default function SettingsPage(props: SettingsProps) {
 							<label className="label cursor-pointer justify-start gap-4">
 								<input type="checkbox" className="toggle" checked={ settings.canRegister }
 									   onChange={ event => onEditValue('canRegister', event.target.checked) }/>
-								<span className="label-text">Users can register themselves</span>
+								<span
+									className="label-text"><Trans>{ STRINGS.USER_CAN_REGISTER_THEMSELVES }</Trans></span>
 							</label>
 						</div>
 					</AdminSection>
@@ -101,9 +103,9 @@ export default function SettingsPage(props: SettingsProps) {
 						sortableMedia={ settings.siteLogoId ? [{ sortOrder: 0, mediaId: settings.siteLogoId }] : [] }
 						onSelect={ (media) => onEditValue('siteLogoId', media[0]?.mediaId) }
 					/>
-					<AdminSection title={ 'Languages' }>
+					<AdminSection title={ getAdminTranslation(STRINGS.LANGUAGES) }>
 						<label className="label">
-							<span className="label-text">Admin Language</span>
+							<span className="label-text"><Trans>{ STRINGS.ADMIN_LANGUAGE }</Trans></span>
 						</label>
 						<Select
 							value={ { value: settings.adminLanguage, label: languagesOptions.find(lo => lo.value === settings.adminLanguage)?.label } }
@@ -114,7 +116,7 @@ export default function SettingsPage(props: SettingsProps) {
 						/>
 
 						<label className="label">
-							<span className="label-text">Available Languages</span>
+							<span className="label-text"><Trans>{ STRINGS.AVAILABLE_LANGUAGES }</Trans></span>
 						</label>
 						<Select
 							value={ settings.availableLanguages.map(al => ({ value: al, label: languagesOptions.find(lo => lo.value === al)?.label })) }
@@ -125,7 +127,7 @@ export default function SettingsPage(props: SettingsProps) {
 							} }
 						/>
 						<label className="label">
-							<span className="label-text">Default Language</span>
+							<span className="label-text"><Trans>{ STRINGS.DEFAULT_LANGUAGE }</Trans></span>
 						</label>
 						<Select
 							value={ { value: settings.defaultLanguage, label: languagesOptions.find(lo => lo.value === settings.defaultLanguage)?.label } }
@@ -138,10 +140,10 @@ export default function SettingsPage(props: SettingsProps) {
 
 					</AdminSection>
 
-					<AdminSection title={ 'Commerce Settings' }>
+					<AdminSection title={ getAdminTranslation(STRINGS.COMMERCE_SETTINGS) }>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Global Threshold</span>
+								<span className="label-text"><Trans>{ STRINGS.GLOBAL_THRESHOLD }</Trans></span>
 							</label>
 							<input type="number" value={ settings.globalStockThreshold }
 								   onChange={ (e) => onEditValue('globalStockThreshold', +e.target.value) }
@@ -152,7 +154,7 @@ export default function SettingsPage(props: SettingsProps) {
 					<AdminSection title={ 'Emails' }>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Admin Email</span>
+								<span className="label-text"><Trans>{ STRINGS.ADMIN_EMAIL }</Trans></span>
 							</label>
 							<input type="text" value={ settings.adminEmail }
 								   onChange={ (e) => onEditValue('adminEmail', e.target.value) }
@@ -160,7 +162,7 @@ export default function SettingsPage(props: SettingsProps) {
 						</div>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Sender Email</span>
+								<span className="label-text"><Trans>{ STRINGS.SENDER_EMAIL }</Trans></span>
 							</label>
 							<input type="text" value={ settings.senderEmail }
 								   onChange={ (e) => onEditValue('senderEmail', e.target.value) }
@@ -168,7 +170,7 @@ export default function SettingsPage(props: SettingsProps) {
 						</div>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Sender Name</span>
+								<span className="label-text"><Trans>{ STRINGS.SENDER_NAME }</Trans></span>
 							</label>
 							<input type="text" value={ settings.senderName }
 								   onChange={ (e) => onEditValue('senderName', e.target.value) }

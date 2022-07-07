@@ -1,9 +1,10 @@
-import { Trans, useLanguages } from '@nima-cms/react';
+import { Trans, useLanguages, useTranslations } from '@nima-cms/react';
 import { AttributeValueDto, CreateAttributeValueDto } from '@nima-cms/sdk';
 import { getSlug, Translatable } from '@nima-cms/utils';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { SVGPencil, SVGTrashCan } from '../../assets/SVGIcons';
+import { STRINGS } from '../../strings/strings';
 import { AdminSection } from '../AdminLayout';
 import { TranslatableInput } from '../forms';
 
@@ -16,6 +17,7 @@ interface DropdownValuesProps {
 
 export function DropdownValues(props: DropdownValuesProps) {
 	const router = useRouter();
+	const { getAdminTranslation } = useTranslations();
 	const languages = useLanguages();
 	const [editingValue, setEditingValue] = useState<AttributeValueDto | CreateAttributeValueDto | undefined>(undefined);
 	const [newValue, setNewValue] = useState<Translatable>({});
@@ -53,15 +55,15 @@ export function DropdownValues(props: DropdownValuesProps) {
 	}
 
 	return (
-		<AdminSection title={ 'Attribute Values' }>
+		<AdminSection title={ getAdminTranslation(STRINGS.ATTRIBUTE_VALUES) }>
 			<div className={ 'p-5' }>
 				<div className="overflow-x-auto">
 					<table className="table table-zebra w-full">
 						<thead>
 						<tr>
-							<th>Name</th>
-							<th>Slug</th>
-							<th>Actions</th>
+							<th><Trans>{ STRINGS.NAME }</Trans></th>
+							<th><Trans>{ STRINGS.SLUG }</Trans></th>
+							<th><Trans>{ STRINGS.ACTIONS }</Trans></th>
 						</tr>
 						</thead>
 						<tbody>
@@ -87,7 +89,7 @@ export function DropdownValues(props: DropdownValuesProps) {
 					<div id="editingForm" className={ 'flex align-bottom gap-2  items-end justify-between' }>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">New Value</span>
+								<span className="label-text"><Trans>{ STRINGS.NEW_VALUE }</Trans></span>
 							</label>
 							<TranslatableInput
 								value={ newValue }
@@ -97,7 +99,7 @@ export function DropdownValues(props: DropdownValuesProps) {
 						</div>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Slug</span>
+								<span className="label-text"><Trans>{ STRINGS.SLUG }</Trans></span>
 							</label>
 							<input type="text" className="input input-bordered w-full max-w-xs"
 								   value={ newSlug || '' }
@@ -105,8 +107,10 @@ export function DropdownValues(props: DropdownValuesProps) {
 								   onChange={ (e) => setNewSlug(e.target.value) }/>
 						</div>
 						{ editingValue ?
-							<button className={ 'btn btn-success' } onClick={ onEdit }>Update Value</button> :
-							<button className={ 'btn btn-success' } onClick={ onValueCreate }>Add Value</button> }
+							<button className={ 'btn btn-success' } onClick={ onEdit }><Trans>{ STRINGS.UPDATE }</Trans>
+							</button> :
+							<button className={ 'btn btn-success' } onClick={ onValueCreate }>
+								<Trans>{ STRINGS.CREATE }</Trans></button> }
 					</div> }
 			</div>
 		</AdminSection>

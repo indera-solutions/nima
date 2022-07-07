@@ -4,9 +4,11 @@ import {
 	useProductById,
 	useProductTypeId,
 	useRemoveProductFromCollectionMutation,
+	useTranslations,
 } from '@nima-cms/react';
 import { CreateCollectionProductDto } from '@nima-cms/sdk';
 import React, { useState } from 'react';
+import { STRINGS } from '../../strings/strings';
 import { AdminSection } from '../AdminLayout';
 import { ProductImage } from '../products/ProductImage';
 import { CollectionAddProducts } from './CollectionAddProducts';
@@ -17,22 +19,25 @@ interface ProductListProps {
 }
 
 export function CollectionProductList(props: ProductListProps) {
+	const { getAdminTranslation } = useTranslations();
+
 	const [modalOpen, setModalOpen] = useState(false);
 
 	return (
 		<>
-			<AdminSection title={ 'Product List' }
+			<AdminSection title={ getAdminTranslation(STRINGS.PRODUCT_LIST) }
 						  titleRightContainer={ <button onClick={ () => setModalOpen(true) }
-														className={ 'btn btn-primary' }>Add</button> }>
+														className={ 'btn btn-primary' }><Trans>{ STRINGS.ADD }</Trans>
+						  </button> }>
 				<div className="overflow-x-auto">
 					<table className="table w-full">
 						<thead>
 						<tr>
-							<th>Img</th>
-							<th>Name</th>
-							<th>Category</th>
-							<th>Type</th>
-							<th>Actions</th>
+							<th><Trans caps>{ STRINGS.IMAGE }</Trans></th>
+							<th><Trans caps>{ STRINGS.NAME }</Trans></th>
+							<th><Trans caps>{ STRINGS.CATEGORY }</Trans></th>
+							<th><Trans caps>{ STRINGS.TYPE }</Trans></th>
+							<th><Trans caps>{ STRINGS.ACTIONS }</Trans></th>
 						</tr>
 						</thead>
 						<tbody>
@@ -73,7 +78,7 @@ function CollectionProductTableItem(props: { productId: number, collectionId: nu
 		<td><Trans>{ category.name }</Trans></td>
 		<td><Trans>{ type.name }</Trans></td>
 		<td>
-			<button className={ 'btn btn-error' } onClick={ removeProduct }>Remove</button>
+			<button className={ 'btn btn-error' } onClick={ removeProduct }><Trans>{ STRINGS.REMOVE }</Trans></button>
 		</td>
 	</tr>;
 }

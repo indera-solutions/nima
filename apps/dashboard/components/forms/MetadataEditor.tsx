@@ -1,6 +1,8 @@
+import { Trans, useTranslations } from '@nima-cms/react';
 import { Metadata } from '@nima-cms/utils';
 import React from 'react';
 import { SVGPlus } from '../../assets/SVGIcons';
+import { STRINGS } from '../../strings/strings';
 import { AdminSection } from '../AdminLayout';
 
 interface MetadataEditorProps {
@@ -10,6 +12,7 @@ interface MetadataEditorProps {
 }
 
 export function MetadataEditor(props: MetadataEditorProps) {
+	const { getAdminTranslation } = useTranslations();
 	const entries = Object.entries(props.values);
 	const size = entries.length;
 	const readOnly = !props.onChange;
@@ -54,22 +57,22 @@ export function MetadataEditor(props: MetadataEditorProps) {
 	}
 
 	return (
-		<AdminSection title={ props.isPrivate ? 'Private Metadata' : 'Metadata' }
+		<AdminSection title={ props.isPrivate ? getAdminTranslation(STRINGS.PRIVATE_METADATA) : getAdminTranslation(STRINGS.METADATA) }
 					  subtitle={ size > 0 ? size + ' values' : undefined }
 					  titleRightContainer={ !readOnly &&
 						  <button className={ 'btn btn-primary gap-2' } disabled={ canAddNew }
 								  onClick={ onAddProperty }>
 							  <SVGPlus width={ '20' } height={ '20' }/>
-							  Add Field
+							  <Trans>{ STRINGS.ADD_FIELD }</Trans>
 						  </button> }
 
 		>
 			<table className={ 'w-full mb-2' }>
 				<thead>
 				<tr>
-					<th>Field</th>
-					<th>Value</th>
-					{ !readOnly && <th>Actions</th> }
+					<th><Trans>{ STRINGS.FIELD }</Trans></th>
+					<th><Trans>{ STRINGS.VALUE }</Trans></th>
+					{ !readOnly && <th><Trans>{ STRINGS.ACTIONS }</Trans></th> }
 				</tr>
 				</thead>
 				<tbody>

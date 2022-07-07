@@ -1,9 +1,16 @@
-import { useCreateShippingZoneMutation, useUpdateShippingZoneMutation } from '@nima-cms/react';
+import {
+	Trans,
+	useCreateShippingZoneMutation,
+	useLanguages,
+	useTranslations,
+	useUpdateShippingZoneMutation,
+} from '@nima-cms/react';
 import { CreateShippingZoneDto, ShippingZoneDto, ShippingZoneLocationType } from '@nima-cms/sdk';
 import { continents, countries, enumToArray, getStatesOfCountryByAlpha2, toTitleCase } from '@nima-cms/utils';
 import React, { useEffect, useMemo, useState } from 'react';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
+import { STRINGS } from '../../strings/strings';
 
 interface NewShippingZoneModalProps {
 	init?: ShippingZoneDto;
@@ -12,7 +19,6 @@ interface NewShippingZoneModalProps {
 }
 
 const types = enumToArray(ShippingZoneLocationType);
-const typesDropdown = types.map(type => ({ label: toTitleCase(type), value: type as string }));
 const continentsDropdown = Object.entries(continents).map(country => ({ label: toTitleCase(country[1].name), value: country[0] }));
 const countriesDropdown = Object.entries(countries).map(country => ({ label: toTitleCase(country[1].name), value: country[0] }));
 const stateDropdown = countriesDropdown.map(type => {
@@ -27,6 +33,11 @@ const stateDropdown = countriesDropdown.map(type => {
 
 export function NewShippingZoneModal(props: NewShippingZoneModalProps) {
 	const id = props.init?.id;
+	const { getAdminTranslation } = useTranslations();
+	const languages = useLanguages();
+
+	const typesDropdown = useMemo(() => types.map(type => ({ label: getAdminTranslation(STRINGS[type]), value: type as string })), [languages.adminLanguage]);
+
 
 	const createShippingZoneMutation = useCreateShippingZoneMutation();
 	const updateShippingZoneMutation = useUpdateShippingZoneMutation();
@@ -112,12 +123,14 @@ export function NewShippingZoneModal(props: NewShippingZoneModalProps) {
 			<div className="modal modal-open">
 				<div className="modal-box h-3/5">
 					<label onClick={ props.onClose } className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-					<h3 className="font-bold text-lg">Create New Shipping Zone</h3>
+					<h3 className="font-bold text-lg">
+						<Trans>{ props.init ? STRINGS.SHIPPING_ZONES_UPDATE_TITLE : STRINGS.SHIPPING_ZONES_CREATE_TITLE }</Trans>
+					</h3>
 					<div className="py-4">
 
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Name</span>
+								<span className="label-text"><Trans>{ STRINGS.NAME }</Trans></span>
 							</label>
 							<input
 								value={ createShippingZoneDto.name }
@@ -128,7 +141,7 @@ export function NewShippingZoneModal(props: NewShippingZoneModalProps) {
 
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Type</span>
+								<span className="label-text"><Trans>{ STRINGS.TYPE }</Trans></span>
 							</label>
 							<Select
 								value={ typesDropdown.find(td => td.value === createShippingZoneDto.locationType) }
@@ -193,9 +206,8 @@ export function NewShippingZoneModal(props: NewShippingZoneModalProps) {
 							</div> }
 					</div>
 					<div className="modal-action">
-						<label className="btn" onClick={ onSave }>
-							{ props.init ? 'Update' : 'Create' } Shipping
-							Zone
+						<label className="btn btn-success" onClick={ onSave }>
+							<Trans>{ props.init ? STRINGS.SHIPPING_ZONES_UPDATE_TITLE : STRINGS.SHIPPING_ZONES_CREATE_TITLE }</Trans>
 						</label>
 					</div>
 				</div>

@@ -1,4 +1,4 @@
-import { useCreateUserMutation, useUpdateUserMutation, useUserById } from '@nima-cms/react';
+import { Trans, useCreateUserMutation, useTranslations, useUpdateUserMutation, useUserById } from '@nima-cms/react';
 import { CreateUserDto, LanguageCode } from '@nima-cms/sdk';
 import { Metadata, parseIdStr } from '@nima-cms/utils';
 import Link from 'next/link';
@@ -7,13 +7,14 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { AdminColumn, AdminFooter, AdminPage, AdminSection, MetadataEditor, NimaTitle } from '../../components';
 import { NIMA_ROUTES } from '../../lib/routes';
+import { STRINGS } from '../../strings/strings';
 
 interface AddUserProps {
 
 }
 
 export default function AddUser(props: AddUserProps) {
-
+	const { getAdminTranslation } = useTranslations();
 	const router = useRouter();
 	const id: number | undefined = router.query['id'] ? parseIdStr(router.query['id']) : undefined;
 	const isEditing = !!id;
@@ -77,16 +78,17 @@ export default function AddUser(props: AddUserProps) {
 
 	return (
 		<>
-			<NimaTitle title={ isEditing ? 'Update User' : 'Create New User' }/>
+			<NimaTitle
+				title={ getAdminTranslation(isEditing ? STRINGS.USER_UPDATE_TITLE : STRINGS.USER_CREATE_TITLE) }/>
 			<AdminPage
-				label={ isEditing ? 'Update User' : 'Create New User' }
+				label={ getAdminTranslation(isEditing ? STRINGS.USER_UPDATE_TITLE : STRINGS.USER_CREATE_TITLE) }
 				footerContainer={ <AdminFooter>
 					<Link href={ NIMA_ROUTES.users.list }>
-						<button className={ 'btn btn-secondary' }>Back</button>
+						<button className={ 'btn btn-secondary' }><Trans>{ STRINGS.BACK }</Trans></button>
 					</Link>
 
 					<button className="btn btn-success"
-							onClick={ onCreateAttribute }>{ isEditing ? 'Save' : 'Create' }</button>
+							onClick={ onCreateAttribute }>{ getAdminTranslation(isEditing ? STRINGS.SAVE : STRINGS.CREATE) }</button>
 				</AdminFooter> }
 			>
 				<AdminColumn>
@@ -104,8 +106,8 @@ export default function AddUser(props: AddUserProps) {
 						</div>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								{ isEditing ? <span className="label-text">New Password</span> :
-									<span className="label-text">Password</span> }
+								<span
+									className="label-text"><Trans>{ isEditing ? STRINGS.NEW_PASSWORD : STRINGS.PASSWORD }</Trans></span>
 							</label>
 							<input
 								value={ createUserDto.password }
@@ -116,10 +118,10 @@ export default function AddUser(props: AddUserProps) {
 
 					</AdminSection>
 
-					<AdminSection title={ 'Information' }>
+					<AdminSection title={ getAdminTranslation(STRINGS.INFO) }>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">First Name</span>
+								<span className="label-text"><Trans>{ STRINGS.FIRST_NAME }</Trans></span>
 							</label>
 							<input
 								value={ createUserDto.firstName }
@@ -129,7 +131,7 @@ export default function AddUser(props: AddUserProps) {
 						</div>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Last Name</span>
+								<span className="label-text"><Trans>{ STRINGS.LAST_NAME }</Trans></span>
 							</label>
 							<input
 								value={ createUserDto.lastName }
@@ -147,14 +149,14 @@ export default function AddUser(props: AddUserProps) {
 									onChange={ (v => onValueEdit('privateMetadata', v)) }/>
 				</AdminColumn>
 				<AdminColumn>
-					<AdminSection title={ 'Configurations' }>
+					<AdminSection title={ getAdminTranslation(STRINGS.CONFIGURATIONS) }>
 						<div className="form-control w-full max-w-xs">
 							<label className="label cursor-pointer justify-start gap-4">
 								<input type="checkbox" checked={ createUserDto.isStaff }
 									   className="checkbox"
 									   onChange={ e => onValueEdit('isStaff', e.target.checked) }
 								/>
-								<span className="label-text">Is Staff</span>
+								<span className="label-text"><Trans>{ STRINGS.STAFF }</Trans></span>
 							</label>
 						</div>
 						<div className="form-control w-full max-w-xs">
@@ -166,7 +168,7 @@ export default function AddUser(props: AddUserProps) {
 										   if ( e.target.checked ) onValueEdit('isStaff', e.target.checked);
 									   } }
 								/>
-								<span className="label-text">Is Admin</span>
+								<span className="label-text"><Trans>{ STRINGS.ADMIN }</Trans></span>
 							</label>
 						</div>
 						<div className="form-control w-full max-w-xs">
@@ -175,7 +177,7 @@ export default function AddUser(props: AddUserProps) {
 									   className="checkbox"
 									   onChange={ e => onValueEdit('isActive', e.target.checked) }
 								/>
-								<span className="label-text">Is Active</span>
+								<span className="label-text"><Trans>{ STRINGS.ACTIVE }</Trans></span>
 							</label>
 						</div>
 					</AdminSection>

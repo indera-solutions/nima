@@ -1,9 +1,11 @@
 import {
 	getTranslation,
+	Trans,
 	useCreateShippingMethodMutation,
 	useDeleteShippingMethodMutation,
 	useLanguages,
 	useShippingMethodById,
+	useTranslations,
 	useUpdateShippingMethodMutation,
 } from '@nima-cms/react';
 import { CreateShippingMethodDto } from '@nima-cms/sdk';
@@ -24,6 +26,7 @@ import {
 } from '../../components';
 import { ZoneTable } from '../../components/shipping/zoneTable';
 import { NIMA_ROUTES } from '../../lib/routes';
+import { STRINGS } from '../../strings/strings';
 
 interface AddAttributeProps {
 
@@ -33,6 +36,7 @@ interface AddAttributeProps {
 export default function AddShippingMethod(props: AddAttributeProps) {
 
 	const router = useRouter();
+	const { getAdminTranslation } = useTranslations();
 	const languages = useLanguages();
 	const id: number | undefined = router.query['id'] ? parseIdStr(router.query['id']) : undefined;
 	const isEditing = !!id;
@@ -94,28 +98,32 @@ export default function AddShippingMethod(props: AddAttributeProps) {
 
 	return (
 		<>
-			<NimaTitle title={ isEditing ? 'Update Shipping Method' : 'Create New Shipping Method' }/>
+			<NimaTitle
+				title={ getAdminTranslation(isEditing ? STRINGS.SHIPPING_METHODS_UPDATE_TITLE : STRINGS.SHIPPING_METHODS_CREATE_TITLE) }/>
 			<AdminPage
-				label={ isEditing ? 'Update Shipping Method' : 'Create New Shipping Method' }
+				label={ getAdminTranslation(isEditing ? STRINGS.SHIPPING_METHODS_UPDATE_TITLE : STRINGS.SHIPPING_METHODS_CREATE_TITLE) }
 				footerContainer={ <AdminFooter>
 					<Link href={ NIMA_ROUTES.shipping.list }>
-						<button className={ 'btn btn-secondary' }>Back</button>
+						<button className={ 'btn btn-secondary' }><Trans>{ STRINGS.BACK }</Trans></button>
 					</Link>
 
 					{ existingMethod && <button className="btn btn-error"
 												onClick={ onDeleteShippingMethod }>
-						Delete
+						<Trans>{ STRINGS.DELETE }</Trans>
 					</button> }
 
 					<button className="btn btn-success"
-							onClick={ onCreateShippingMethod }>{ isEditing ? 'Save' : 'Create' }</button>
+							onClick={ onCreateShippingMethod }>
+						<Trans>{ isEditing ? STRINGS.EDIT : STRINGS.CREATE }</Trans>
+					</button>
 				</AdminFooter> }
 			>
 				<AdminColumn>
-					<AdminSection title={ 'General Information' } titleRightContainer={ <SelectEditingLanguage/> }>
+					<AdminSection title={ getAdminTranslation(STRINGS.GENERAL_INFO) }
+								  titleRightContainer={ <SelectEditingLanguage/> }>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Name</span>
+								<span className="label-text"><Trans>{ STRINGS.NAME }</Trans></span>
 							</label>
 							<input
 								value={ createShippingMethod.name }
@@ -125,7 +133,7 @@ export default function AddShippingMethod(props: AddAttributeProps) {
 						</div>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Description</span>
+								<span className="label-text"><Trans>{ STRINGS.DESCRIPTION }</Trans></span>
 							</label>
 							<TranslatableInput
 								value={ createShippingMethod.description }

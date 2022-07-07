@@ -1,4 +1,5 @@
 import {
+	Trans,
 	useCreateShippingRateMutation,
 	useDeleteShippingRateMutation,
 	useUpdateShippingRateMutation,
@@ -8,6 +9,7 @@ import { deepEqual, enumToArray, toTitleCase } from '@nima-cms/utils';
 import React, { useState } from 'react';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
+import { STRINGS } from '../../strings/strings';
 
 interface ShippingRatesModalProps {
 	init: ShippingZoneDto;
@@ -26,18 +28,18 @@ export function ShippingRatesModal(props: ShippingRatesModalProps) {
 			<div className="modal modal-open">
 				<div className="modal-box w-11/12 max-w-6xl">
 					<label onClick={ props.onClose } className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-					<h3 className="font-bold text-lg">Create New Shipping Zone</h3>
+					<h3 className="font-bold text-lg"><Trans>{ STRINGS.EDIT_RATES }</Trans></h3>
 					<div className="py-4">
 						<div className="">
 							<table className="table w-full">
 								<thead>
 								<tr>
-									<th>Type</th>
-									<th>Min</th>
-									<th>Max</th>
-									<th>Rate</th>
-									<th>Actions</th>
-									<th>Delete</th>
+									<th><Trans caps>{ STRINGS.TYPE }</Trans></th>
+									<th><Trans caps>{ STRINGS.MIN }</Trans></th>
+									<th><Trans caps>{ STRINGS.MAX }</Trans></th>
+									<th><Trans caps>{ STRINGS.RATES }</Trans></th>
+									<th><Trans caps>{ STRINGS.ACTIONS }</Trans></th>
+									<th><Trans caps>{ STRINGS.DELETE }</Trans></th>
 								</tr>
 								</thead>
 								<tbody>
@@ -209,12 +211,12 @@ function RateLine(props: { rate?: ShippingRateDto, methodId, zoneId }) {
 				<button
 					className={ 'btn btn-primary w-full' }
 					disabled={ deepEqual(props.rate, rate) }
-					onClick={ onUpdate }>Save
+					onClick={ onUpdate }><Trans>{ STRINGS.SAVE }</Trans>
 				</button> :
 				<button
 					className={ 'btn btn-success w-full' }
 					onClick={ onCreate }>
-					Create
+					<Trans>{ STRINGS.CREATE }</Trans>
 				</button>
 			}
 		</td>

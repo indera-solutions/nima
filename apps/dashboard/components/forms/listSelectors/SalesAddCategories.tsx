@@ -1,6 +1,7 @@
 import { Trans, useFlatCategories } from '@nima-cms/react';
 import { CategoryDto } from '@nima-cms/sdk';
 import React, { useMemo, useState } from 'react';
+import { STRINGS } from '../../../strings/strings';
 
 interface SalesAddCategoriesProps {
 	existingCategories: CategoryDto[];
@@ -37,14 +38,14 @@ export function SalesAddCategories(props: SalesAddCategoriesProps) {
 			<div className="modal modal-open">
 				<div className="modal-box">
 					<label onClick={ props.onClose } className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-					<h3 className="font-bold text-lg">Add Collections</h3>
+					<h3 className="font-bold text-lg"><Trans>{ STRINGS.ADD_CATEGORIES }</Trans></h3>
 					<div className="py-4">
 						<div className={ 'flex gap-4' }>
 							<table className="table w-full scroll-auto h-20">
 								<thead>
 								<tr>
 									<th></th>
-									<th>Name</th>
+									<th><Trans caps>{ STRINGS.NAME }</Trans></th>
 								</tr>
 								</thead>
 								<tbody>
@@ -62,7 +63,7 @@ export function SalesAddCategories(props: SalesAddCategoriesProps) {
 					</div>
 					<div className="modal-action">
 						<label className="btn btn-success" onClick={ onSave }>
-							Add Products
+							<Trans>{ STRINGS.ADD_CATEGORIES }</Trans>
 						</label>
 					</div>
 				</div>

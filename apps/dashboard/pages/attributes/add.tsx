@@ -1,5 +1,6 @@
 import {
 	getTranslation,
+	Trans,
 	useAddAttributeValueMutation,
 	useAttributeById,
 	useAttributeValues,
@@ -7,14 +8,15 @@ import {
 	useLanguages,
 	useRemoveAttributeMutation,
 	useRemoveAttributeValueMutation,
+	useTranslations,
 	useUpdateAttributeMutation,
 	useUpdateAttributeValueMutation,
 } from '@nima-cms/react';
 import { AttributeValueDto, CreateAttributeDto, CreateAttributeValueDto, InputType } from '@nima-cms/sdk';
-import { enumToArray, isCreateAttributeValueDto, Metadata, parseIdStr, toTitleCase } from '@nima-cms/utils';
+import { enumToArray, isCreateAttributeValueDto, Metadata, parseIdStr } from '@nima-cms/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
 import {
@@ -29,20 +31,23 @@ import {
 	TranslatableInput,
 } from '../../components';
 import { NIMA_ROUTES } from '../../lib/routes';
+import { STRINGS } from '../../strings/strings';
 
 interface AddAttributeProps {
 
 }
 
 const types = enumToArray(InputType);
-const typesDropdown = types.map(type => ({ label: toTitleCase(type), value: type as string }));
-
 export default function AddAttribute(props: AddAttributeProps) {
 
+	const { getAdminTranslation } = useTranslations();
 	const router = useRouter();
 	const languages = useLanguages();
 	const id: number | undefined = router.query['id'] ? parseIdStr(router.query['id']) : undefined;
 	const isEditing = !!id;
+
+	const typesDropdown = useMemo(() => types.map(type => ({ label: getAdminTranslation(STRINGS[type]), value: type as string })), [languages.adminLanguage]);
+
 
 	const [createAttributeDto, setCreateAttributeDto] = useState<CreateAttributeDto>({
 		name: {},
@@ -61,6 +66,8 @@ export default function AddAttribute(props: AddAttributeProps) {
 
 	const { data: existingAttribute } = useAttributeById(id, { refetchInterval: false });
 	const { data: existingAttributeValues } = useAttributeValues(id, { refetchInterval: false });
+
+	const title = getAdminTranslation(existingAttribute ? STRINGS.ATTRIBUTE_UPDATE_TITLE(getAdminTranslation(existingAttribute.name)) : STRINGS.ATTRIBUTE_CREATE_TITLE);
 
 	const [values, setValues] = useState<(AttributeValueDto | CreateAttributeValueDto)[]>([]);
 
@@ -198,28 +205,30 @@ export default function AddAttribute(props: AddAttributeProps) {
 
 	return (
 		<>
-			<NimaTitle title={ isEditing ? 'Update Attribute' : 'Create New Attribute' }/>
+			<NimaTitle title={ title }/>
 			<AdminPage
-				label={ isEditing ? 'Update Attribute' : 'Create New Attribute' }
+				label={ title }
 				footerContainer={ <AdminFooter>
 					<Link href={ NIMA_ROUTES.attributes.list }>
-						<button className={ 'btn btn-secondary' }>Back</button>
+						<button className={ 'btn btn-secondary' }><Trans>{ STRINGS.BACK }</Trans></button>
 					</Link>
 
 					{ existingAttribute && <button className="btn btn-error"
 												   onClick={ onDeleteAttribute }>
-						Delete
+						<Trans>{ STRINGS.DELETE }</Trans>
 					</button> }
 
 					<button className="btn btn-success"
-							onClick={ onCreateAttribute }>{ isEditing ? 'Save' : 'Create' }</button>
+							onClick={ onCreateAttribute }><Trans>{ isEditing ? STRINGS.SAVE : STRINGS.CREATE }</Trans>
+					</button>
 				</AdminFooter> }
 			>
 				<AdminColumn>
-					<AdminSection title={ 'General Information' } titleRightContainer={ <SelectEditingLanguage/> }>
+					<AdminSection title={ getAdminTranslation(STRINGS.GENERAL_INFO) }
+								  titleRightContainer={ <SelectEditingLanguage/> }>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Name</span>
+								<span className="label-text"><Trans>{ STRINGS.NAME }</Trans></span>
 							</label>
 							<TranslatableInput
 								value={ createAttributeDto.name }
@@ -228,7 +237,7 @@ export default function AddAttribute(props: AddAttributeProps) {
 						</div>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Slug</span>
+								<span className="label-text"><Trans>{ STRINGS.SLUG }</Trans></span>
 							</label>
 							<input
 								value={ createAttributeDto.slug }
@@ -238,7 +247,7 @@ export default function AddAttribute(props: AddAttributeProps) {
 						</div>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Input Type</span>
+								<span className="label-text"><Trans>{ STRINGS.INPUT_TYPE }</Trans></span>
 							</label>
 							<Select
 								value={ typesDropdown.find(td => td.value === createAttributeDto.inputType) }
@@ -254,7 +263,7 @@ export default function AddAttribute(props: AddAttributeProps) {
 								<input type="checkbox" checked={ createAttributeDto.valueRequired } className="checkbox"
 									   onChange={ e => onValueEdit('valueRequired', e.target.checked) }
 								/>
-								<span className="label-text">Value Required</span>
+								<span className="label-text"><Trans>{ STRINGS.VALUE_REQUIRED }</Trans></span>
 							</label>
 						</div>
 					</AdminSection>

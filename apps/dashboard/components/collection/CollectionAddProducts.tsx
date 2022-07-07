@@ -7,6 +7,7 @@ import {
 } from '@nima-cms/react';
 import { CreateCollectionProductDto, ProductDto } from '@nima-cms/sdk';
 import React, { useMemo, useState } from 'react';
+import { STRINGS } from '../../strings/strings';
 import { ProductImage } from '../products/ProductImage';
 
 interface CollectionAddProductsProps {
@@ -53,17 +54,17 @@ export function CollectionAddProducts(props: CollectionAddProductsProps) {
 			<div className="modal modal-open">
 				<div className="modal-box">
 					<label onClick={ props.onClose } className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-					<h3 className="font-bold text-lg">Add Products</h3>
+					<h3 className="font-bold text-lg"><Trans>{ STRINGS.ADD_PRODUCTS }</Trans></h3>
 					<div className="py-4">
 						<div className={ 'flex gap-4' }>
 							<table className="table w-full">
 								<thead>
 								<tr>
 									<th></th>
-									<th>Img</th>
-									<th>Name</th>
-									<th>Category</th>
-									<th>Type</th>
+									<th><Trans caps>{ STRINGS.IMAGE }</Trans></th>
+									<th><Trans caps>{ STRINGS.NAME }</Trans></th>
+									<th><Trans caps>{ STRINGS.CATEGORY }</Trans></th>
+									<th><Trans caps>{ STRINGS.TYPE }</Trans></th>
 								</tr>
 								</thead>
 								<tbody>
@@ -81,7 +82,7 @@ export function CollectionAddProducts(props: CollectionAddProductsProps) {
 					</div>
 					<div className="modal-action">
 						<label className="btn btn-success" onClick={ onSave }>
-							Add Products
+							<Trans>{ STRINGS.ADD_PRODUCTS }</Trans>
 						</label>
 					</div>
 				</div>

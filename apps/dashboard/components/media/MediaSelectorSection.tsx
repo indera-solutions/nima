@@ -1,8 +1,9 @@
-import { useMediaById } from '@nima-cms/react';
+import { Trans, useMediaById, useTranslations } from '@nima-cms/react';
 import { CreateSortableMediaDto } from '@nima-cms/sdk';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { SVGPlus } from '../../assets/SVGIcons';
+import { STRINGS } from '../../strings/strings';
 import { AdminSection } from '../AdminLayout';
 import { MediaGallery } from './MediaGallery';
 
@@ -14,6 +15,9 @@ interface MediaSelectorSectionProps {
 }
 
 export function MediaSelectorSection(props: MediaSelectorSectionProps) {
+
+	const { getEditingTranslation, getAdminTranslation } = useTranslations();
+
 
 	const closeLabelRef = useRef<HTMLLabelElement>();
 
@@ -54,10 +58,10 @@ export function MediaSelectorSection(props: MediaSelectorSectionProps) {
 
 	return (
 		<>
-			<AdminSection title={ props.title || 'Media' } titleRightContainer={ <>
+			<AdminSection title={ props.title || getAdminTranslation(STRINGS.MEDIA) } titleRightContainer={ <>
 				<label htmlFor="mediaSelectorModal" className={ 'btn btn-primary gap-2' }>
 					<SVGPlus width={ '20' } height={ '20' }/>
-					{ props.isMulti ? 'Add Media' : 'Edit Media' }
+					<Trans>{ props.isMulti ? STRINGS.ADD_MEDIA : STRINGS.EDIT_MEDIA }</Trans>
 				</label>
 			</> }>
 				<DragDropContext onDragEnd={ onDragEnd }>
@@ -107,6 +111,6 @@ export function MediaSelectorSection(props: MediaSelectorSectionProps) {
 function ImageItem(props: { id: number }) {
 	const { data: media } = useMediaById(props.id);
 	if ( !media ) return null;
-	return <img className={ 'h-full basis-1/12' } src={ media.thumbnailUrl } alt=""/>;
+	return <img className={ 'h-full basis-1/12 object-contain' } src={ media.thumbnailUrl } alt=""/>;
 }
 

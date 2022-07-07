@@ -1,6 +1,7 @@
-import { useMediaUploadMutation } from '@nima-cms/react';
+import { Trans, useMediaUploadMutation } from '@nima-cms/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { STRINGS } from '../../strings/strings';
 
 export interface AddNewMediaProps {
 
@@ -49,8 +50,8 @@ export function AddNewMedia(props: AddNewMediaProps) {
 				<input { ...getInputProps() } />
 				{
 					isDragActive ?
-						<p>Drop the files here ...</p> :
-						<p>Drag &apos;n&apos; drop some files here, or click to select files</p>
+						<p><Trans>{ STRINGS.DROP_HERE }</Trans></p> :
+						<p><Trans>{ STRINGS.DRAGNDROP_MEDIA }</Trans></p>
 				}
 				<div className={ 'mt-4' }>
 					{ Object.keys(progress).map(fileName => {

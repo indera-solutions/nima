@@ -1,5 +1,6 @@
 import {
 	getTranslation,
+	Trans,
 	useAddCategoryToVoucherMutation,
 	useAddCollectionsToVoucherMutation,
 	useAddProductToVoucherMutation,
@@ -9,6 +10,7 @@ import {
 	useRemoveCategoryFromVoucherMutation,
 	useRemoveCollectionsFromVoucherMutation,
 	useRemoveProductFromVoucherMutation,
+	useTranslations,
 	useUpdateVoucherMutation,
 	useVoucherById,
 } from '@nima-cms/react';
@@ -32,6 +34,7 @@ import {
 	TranslatableInput,
 } from '../../components';
 import { NIMA_ROUTES } from '../../lib/routes';
+import { STRINGS } from '../../strings/strings';
 
 interface AddVoucherProps {
 
@@ -40,6 +43,8 @@ interface AddVoucherProps {
 
 export default function AddVoucher(props: AddVoucherProps) {
 	const router = useRouter();
+	const { getAdminTranslation } = useTranslations();
+
 	const languages = useLanguages();
 	const id: number | undefined = router.query['id'] ? parseIdStr(router.query['id']) : undefined;
 	const isEditing = !!id;
@@ -57,6 +62,9 @@ export default function AddVoucher(props: AddVoucherProps) {
 
 
 	const { data: existingVoucher } = useVoucherById(id, { refetchInterval: false });
+
+	const title = getAdminTranslation(existingVoucher ? STRINGS.COUPONS_UPDATE_TITLE(getAdminTranslation(existingVoucher.name)) : STRINGS.COUPONS_CREATE_TITLE);
+
 
 	useEffect(() => {
 		if ( !existingVoucher ) return;
@@ -179,28 +187,31 @@ export default function AddVoucher(props: AddVoucherProps) {
 	return (
 		<>
 			<NimaTitle
-				title={ existingVoucher ? `Update ${ getTranslation(existingVoucher.name, languages.adminLanguage) } Coupon` : 'Create Coupon' }/>
+				title={ title }/>
 			<AdminPage
-				label={ existingVoucher ? `Update ${ getTranslation(existingVoucher.name, languages.adminLanguage) } Coupon` : 'Create New Coupon' }
+				label={ title }
 				footerContainer={ <AdminFooter>
 
 					<Link href={ NIMA_ROUTES.vouchers.list }>
-						<button className={ 'btn btn-secondary' }>Back</button>
+						<button className={ 'btn btn-secondary' }><Trans>{ STRINGS.BACK }</Trans></button>
 					</Link>
 
 					{ existingVoucher && <button className="btn btn-error"
 												 onClick={ onDeleteVoucher }>
-						Delete
+						<Trans>{ STRINGS.DELETE }</Trans>
 					</button> }
 
 					<button className="btn btn-success"
-							onClick={ onCreateVoucher }>{ isEditing ? 'Save' : 'Create' }</button>
+							onClick={ onCreateVoucher }>
+						<Trans>{ isEditing ? STRINGS.SAVE : STRINGS.CREATE }</Trans>
+					</button>
 				</AdminFooter> }
 			>
 				<AdminColumn>
-					<AdminSection title={ 'General' } titleRightContainer={ <SelectEditingLanguage/> }>
+					<AdminSection title={ getAdminTranslation(STRINGS.GENERAL_INFO) }
+								  titleRightContainer={ <SelectEditingLanguage/> }>
 						<label className="label">
-							<span className="label-text">Name</span>
+							<span className="label-text">	<Trans>{ STRINGS.NAME }</Trans></span>
 						</label>
 						<TranslatableInput className={ 'input w-full max-w-xs input-bordered' }
 										   name="name"
@@ -210,7 +221,7 @@ export default function AddVoucher(props: AddVoucherProps) {
 
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Code</span>
+								<span className="label-text">	<Trans>{ STRINGS.CODE }</Trans></span>
 							</label>
 							<input className={ 'input w-full max-w-xs input-bordered' }
 								   type="text"
@@ -222,7 +233,7 @@ export default function AddVoucher(props: AddVoucherProps) {
 
 						<div className={ 'flex flex-col items-start gap-1' }>
 							<label className="label cursor-pointer">
-								<span className="label-text">Type</span>
+								<span className="label-text">	<Trans>{ STRINGS.TYPE }</Trans></span>
 							</label>
 							<label className="label cursor-pointer">
 								<input type="radio" className="radio mr-2"
@@ -230,7 +241,7 @@ export default function AddVoucher(props: AddVoucherProps) {
 									   onChange={ () => onValueEdit('discountValueType', DiscountType.FLAT) }
 
 								/>
-								<span className="label-text">Flat</span>
+								<span className="label-text">	<Trans>{ STRINGS.FLAT }</Trans></span>
 							</label>
 							<label className="label cursor-pointer">
 								<input type="radio" className="radio mr-2"
@@ -238,7 +249,7 @@ export default function AddVoucher(props: AddVoucherProps) {
 									   onChange={ () => onValueEdit('discountValueType', DiscountType.PERCENTAGE) }
 
 								/>
-								<span className="label-text">Percentage</span>
+								<span className="label-text">	<Trans>{ STRINGS.PERCENTAGE }</Trans></span>
 							</label>
 							<label className="label cursor-pointer">
 								<input type="radio" className="radio mr-2"
@@ -246,14 +257,14 @@ export default function AddVoucher(props: AddVoucherProps) {
 									   onChange={ () => onValueEdit('discountValueType', DiscountType.FREE_SHIPPING) }
 
 								/>
-								<span className="label-text">Free Shipping</span>
+								<span className="label-text">	<Trans>{ STRINGS.FREE_SHIPPING }</Trans></span>
 							</label>
 						</div>
 
 						{ createVoucherDto.discountValueType !== DiscountType.FREE_SHIPPING &&
 							<div className="form-control">
 								<label className="label">
-									<span className="label-text">Value</span>
+									<span className="label-text">	<Trans>{ STRINGS.VALUE }</Trans></span>
 								</label>
 								<label className="input-group">
 									<input
@@ -289,14 +300,15 @@ export default function AddVoucher(props: AddVoucherProps) {
 									onChange={ (v => onValueEdit('privateMetadata', v)) }/>
 				</AdminColumn>
 				<AdminColumn>
-					{ existingVoucher && <AdminSection title={ 'Information' }>
-						<h2>Used: <strong>{ existingVoucher.used }</strong></h2>
+					{ existingVoucher && <AdminSection title={ getAdminTranslation(STRINGS.INFO) }>
+						<h2><Trans>{ STRINGS.USED }</Trans>: <strong>{ existingVoucher.used }</strong></h2>
 					</AdminSection> }
-					<AdminSection title={ 'Usage' }>
+					<AdminSection title={ getAdminTranslation(STRINGS.USAGE) }>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Limit Usages</span>
-								<span className="label-text-alt">Leave 0 for unlimited.</span>
+								<span className="label-text"><Trans>{ STRINGS.LIMIT_USAGE }</Trans></span>
+								<span
+									className="label-text-alt"><Trans>{ STRINGS.LEAVE_ZERO_FOR_UNLIMITED }</Trans></span>
 
 							</label>
 							<input className={ 'input w-full max-w-xs input-bordered' }

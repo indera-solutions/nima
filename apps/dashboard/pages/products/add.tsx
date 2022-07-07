@@ -9,6 +9,7 @@ import {
 	useProductTypeId,
 	useProductTypes,
 	useProductVariantsByProductId,
+	useTranslations,
 	useUpdateProductMutation,
 	useUpdateProductVariationMutation,
 } from '@nima-cms/react';
@@ -28,14 +29,16 @@ import {
 	MediaSelectorSection,
 	MetadataEditor,
 	NimaTitle,
+	RichTextInput,
 	SelectEditingLanguage,
 	StockBadge,
 	TranslatableInput,
 } from '../../components';
 import { CategoriesSelect } from '../../components/forms/CategoriesSelect';
 import { CollectionSelect } from '../../components/forms/CollectionSelect';
-import { RichTextInput } from '../../components/forms/NimaRichText/RichTextInput';
 import { NIMA_ROUTES } from '../../lib/routes';
+import { STRINGS } from '../../strings/strings';
+
 
 interface AddProps {
 
@@ -45,6 +48,7 @@ export default function Add(props: AddProps) {
 
 	const router = useRouter();
 	const languages = useLanguages();
+	const { getAdminTranslation } = useTranslations();
 	const id: number | undefined = router.query['id'] ? parseIdStr(router.query['id']) : undefined;
 	const isEditing = !!id;
 
@@ -57,6 +61,7 @@ export default function Add(props: AddProps) {
 	const { data: existingProduct } = useProductById(id, { refetchInterval: false });
 	const { data: existingProductVariants } = useProductVariantsByProductId(id, { refetchInterval: false });
 
+	const title = getAdminTranslation(existingProduct ? STRINGS.PRODUCT_UPDATE_TITLE(getAdminTranslation(existingProduct.name)) : STRINGS.PRODUCT_CREATE_TITLE);
 
 	const [createProductDto, setCreateProductDto] = useState<CreateProductDto>({
 		name: {},
@@ -103,7 +108,7 @@ export default function Add(props: AddProps) {
 		if ( !createProductDto.name[languages.defaultLanguage] ) return false;
 		// TODO add check for required attributes
 		return true;
-	}, [createProductDto]);
+	}, [createProductDto, languages.defaultLanguage]);
 
 	const { data: productTypes } = useProductTypes();
 	const { data: productType } = useProductTypeId(createProductDto.productTypeId);
@@ -172,7 +177,7 @@ export default function Add(props: AddProps) {
 
 	async function onCreateProduct() {
 		if ( !isReadyToSubmit || !productType ) {
-			toast.error('Please fill all the required fields');
+			toast.error(getAdminTranslation(STRINGS.FILL_ALL_FIELDS));
 			return;
 		}
 		if ( !isEditing ) {
@@ -184,11 +189,11 @@ export default function Add(props: AddProps) {
 					productId: createdProduct.id,
 					createProductVariantDto: defaultVariant,
 				});
-				toast.success('Product Created.');
+				toast.success([getAdminTranslation(STRINGS.PRODUCT), getAdminTranslation(STRINGS.CREATED)].join(' '));
 				await router.push(NIMA_ROUTES.products.edit(createdProduct.id));
 
 			} else {
-				toast.success('Product Created.');
+				toast.success([getAdminTranslation(STRINGS.PRODUCT), getAdminTranslation(STRINGS.CREATED)].join(' '));
 				await router.push(NIMA_ROUTES.products.createVariant(createdProduct.id));
 			}
 		} else {
@@ -204,20 +209,20 @@ export default function Add(props: AddProps) {
 				});
 			}
 
-			toast.success('Product Updated');
+			toast.success([getAdminTranslation(STRINGS.PRODUCT), getAdminTranslation(STRINGS.UPDATED)].join(' '));
 
 		}
 	}
 
 	async function onDeleteProduct() {
 		if ( !id || !existingProduct ) return;
-		const confirm = window.confirm(`Are you sure you want to delete ${ getTranslation(existingProduct.name, languages.adminLanguage) }?`);
+		const confirm = window.confirm(getAdminTranslation(STRINGS.ARE_YOU_SURE_DELETE(getTranslation(existingProduct.name, languages.adminLanguage))));
 		if ( confirm ) {
 			await deleteProductMutation.mutateAsync({
 				productId: id,
 			});
-			toast.success('Product Deleted');
-			router.push(NIMA_ROUTES.products.list);
+			toast.success([getAdminTranslation(STRINGS.PRODUCT), getAdminTranslation(STRINGS.DELETED)].join(' '));
+			await router.push(NIMA_ROUTES.products.list);
 		}
 	}
 
@@ -264,30 +269,31 @@ export default function Add(props: AddProps) {
 
 	return (
 		<>
-			<NimaTitle
-				title={ existingProduct ? `Update ${ existingProduct.name[languages.adminLanguage] }` : 'Create Product' }/>
+			<NimaTitle title={ title }/>
 			<AdminPage
-				label={ existingProduct ? `Update ${ existingProduct.name[languages.adminLanguage] }` : 'Create New Product' }
+				label={ title }
 				footerContainer={ <AdminFooter>
 					<Link href={ NIMA_ROUTES.products.list }>
-						<a className={ 'btn btn-secondary' }>Back</a>
+						<a className={ 'btn btn-secondary' }>{ getAdminTranslation(STRINGS.BACK) }</a>
 					</Link>
 
 					{ existingProduct && <button className="btn btn-error"
 												 onClick={ onDeleteProduct }>
-						Delete
+						<Trans>{ STRINGS.DELETE }</Trans>
 					</button> }
 
 					<button className="btn btn-success"
 							disabled={ !isReadyToSubmit }
-							onClick={ onCreateProduct }>{ isEditing ? 'Save' : 'Create' }
+							onClick={ onCreateProduct }>
+						<Trans>{ isEditing ? STRINGS.UPDATE : STRINGS.SAVE }</Trans>
 					</button>
 				</AdminFooter> }
 			>
 				<AdminColumn>
-					<AdminSection title={ 'General Information' } titleRightContainer={ <SelectEditingLanguage/> }>
+					<AdminSection title={ getAdminTranslation(STRINGS.GENERAL_INFO) }
+								  titleRightContainer={ <SelectEditingLanguage/> }>
 						<label className="label">
-							<span className="label-text">Name</span>
+							<span className="label-text"><Trans>{ STRINGS.NAME }</Trans> </span>
 						</label>
 						<TranslatableInput className={ 'input w-full max-w-xs input-bordered' }
 										   name="name"
@@ -297,7 +303,7 @@ export default function Add(props: AddProps) {
 
 						<label className="label">
 							<span
-								className="label-text">Description ({ languages.currentEditingLanguage.toUpperCase() })</span>
+								className="label-text"><Trans>{ STRINGS.DESCRIPTION }</Trans> ({ languages.currentEditingLanguage.toUpperCase() })</span>
 						</label>
 						{ createProductDto.descriptionRaw && <RichTextInput
 							key={ languages.currentEditingLanguage + createProductDto?.name[languages.currentEditingLanguage] }
@@ -307,9 +313,10 @@ export default function Add(props: AddProps) {
 							} }/> }
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Slug</span>
+								<span className="label-text"><Trans>{ STRINGS.SLUG }</Trans></span>
 								{ !isEditing &&
-									<span className="label-text-alt">Leave empty to generate default</span> }
+									<span
+										className="label-text-alt"><Trans>{ STRINGS.LEAVE_EMPTY_FOR_DEFAULT }</Trans></span> }
 							</label>
 							<input className={ 'input w-full max-w-xs input-bordered' }
 								   type="text"
@@ -323,13 +330,13 @@ export default function Add(props: AddProps) {
 						<label className="label cursor-pointer justify-start gap-3">
 							<input type="checkbox" className="checkbox" checked={ !createProductDto.isPublished }
 								   onChange={ (e) => onValueEdit('isPublished', !e.target.checked) }/>
-							<span className="label-text">Draft</span>
+							<span className="label-text"><Trans>{ STRINGS.DRAFT }</Trans></span>
 						</label>
 
 					</AdminSection>
 					{ createProductDto.attributes.length > 0 &&
-						<AdminSection title={ 'Attributes' }
-									  subtitle={ createProductDto.attributes.length + ' attributes' }>
+						<AdminSection title={ getAdminTranslation(STRINGS.ATTRIBUTES) }
+									  subtitle={ createProductDto.attributes.length + ' ' + getAdminTranslation(STRINGS.ATTRIBUTES).toLowerCase() }>
 							{ createProductDto.attributes.map(productAttributeValue => <EditProductAttribute
 								key={ productAttributeValue.productTypeAttributeId }
 								productTypeId={ createProductDto.productTypeId }
@@ -345,13 +352,13 @@ export default function Add(props: AddProps) {
 					}
 
 					{ (productType && productType?.hasVariants && isEditing) &&
-						<AdminSection title={ 'Variants' }
-									  subtitle={ (existingProductVariants?.length || 0) + ' Variants' }
+						<AdminSection title={ getAdminTranslation(STRINGS.VARIANTS) }
+									  subtitle={ (existingProductVariants?.length || 0) + ' ' + getAdminTranslation(STRINGS.VARIANTS) }
 									  titleRightContainer={ <>
 										  <Link
 											  href={ NIMA_ROUTES.products.createVariant(existingProduct?.id || -1) }>
 											  <button className="btn btn-success">
-												  Create new Variant
+												  <Trans>{ STRINGS.CREATE_NEW_VARIANT }</Trans>
 											  </button>
 										  </Link>
 									  </> }
@@ -360,12 +367,12 @@ export default function Add(props: AddProps) {
 								<thead>
 								<tr>
 									<th>ID</th>
-									<th>Name</th>
+									<th><Trans>{ STRINGS.NAME }</Trans></th>
 									{ variantsHeaders.map(vh => <th key={ vh.id }>
 										<Trans>{ vh.attributeName }</Trans></th>) }
-									<th>Stock</th>
-									<th>Price</th>
-									<th>Actions</th>
+									<th><Trans>{ STRINGS.STOCK }</Trans></th>
+									<th><Trans>{ STRINGS.PRICE }</Trans></th>
+									<th><Trans>{ STRINGS.ACTIONS }</Trans></th>
 								</tr>
 								</thead>
 								<tbody>
@@ -382,7 +389,8 @@ export default function Add(props: AddProps) {
 									<td>{ getEuroValue(variant.priceAmount) }</td>
 									<td>
 										<Link href={ NIMA_ROUTES.products.editVariant(id, variant.id) }>
-											<button className={ 'btn btn-primary' }>Edit</button>
+											<button className={ 'btn btn-primary' }><Trans>{ STRINGS.EDIT }</Trans>
+											</button>
 										</Link>
 									</td>
 								</tr>) }
@@ -407,10 +415,10 @@ export default function Add(props: AddProps) {
 
 				</AdminColumn>
 				<AdminColumn>
-					<AdminSection title={ 'Organize Product' }>
+					<AdminSection title={ getAdminTranslation(STRINGS.ORGANIZE_PRODUCT) }>
 						<div>
 							<label className="label">
-								<span className="label-text">Product Type</span>
+								<span className="label-text"><Trans>{ STRINGS.PRODUCT_TYPE }</Trans></span>
 							</label>
 							<select className="select select-bordered w-full max-w-xs"
 									disabled={ isEditing }
@@ -431,7 +439,7 @@ export default function Add(props: AddProps) {
 						</div>
 						<div>
 							<label className="label">
-								<span className="label-text">Categories</span>
+								<span className="label-text"><Trans>{ STRINGS.CATEGORIES }</Trans></span>
 							</label>
 							<CategoriesSelect
 								selectedId={ createProductDto.categoryId }
@@ -440,7 +448,7 @@ export default function Add(props: AddProps) {
 						</div>
 						<div>
 							<label className="label">
-								<span className="label-text">Collections</span>
+								<span className="label-text"><Trans>{ STRINGS.COLLECTIONS }</Trans></span>
 							</label>
 							<CollectionSelect
 								selectedIds={ createProductDto.collectionIds }

@@ -1,5 +1,5 @@
-import { useSettings } from '@nima-cms/react';
-import { LanguageCode } from '@nima-cms/utils';
+import { getTranslation, useSettings } from '@nima-cms/react';
+import { LanguageCode, Translatable } from '@nima-cms/utils';
 import React, { useContext, useState } from 'react';
 
 require('dayjs/locale/el');
@@ -48,4 +48,14 @@ export function LanguageContextProvider(props: LanguageContextProviderProps): Re
 
 export function useLanguages() {
 	return useContext(LanguageContext);
+}
+
+export function useTranslations() {
+	const languages = useLanguages();
+
+	return {
+		getEditingTranslation: (trans: Translatable) => getTranslation(trans, languages.currentEditingLanguage),
+		getAdminTranslation: (trans: Translatable) => getTranslation(trans, languages.adminLanguage),
+	};
+
 }

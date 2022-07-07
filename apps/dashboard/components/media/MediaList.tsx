@@ -1,7 +1,8 @@
-import { useMediaPaginated } from '@nima-cms/react';
+import { Trans, useMediaPaginated } from '@nima-cms/react';
 import { MediaDto } from '@nima-cms/sdk';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
+import { STRINGS } from '../../strings/strings';
 
 export interface MediaListProps {
 	selectedId?: number[];
@@ -53,13 +54,14 @@ export function MediaList(props: MediaListProps) {
 				<button className={ 'btn btn-primary' } onClick={ () => {
 					setSelectedIds([]);
 					props.onSelect([]);
-				} }>Clear
+				} }>
+					<Trans>{ STRINGS.CLEAR }</Trans>
 				</button>
 				<button className={ 'btn btn-success' } onClick={ () => props.onSelect(selectedIds) }>Select</button>
 			</div> }
 			<div className="form-control w-full max-w-xs">
 				<label className="label">
-					<span className="label-text">Search</span>
+					<span className="label-text"><Trans>{ STRINGS.SEARCH }</Trans></span>
 				</label>
 				<input className={ 'input w-full max-w-xs input-bordered' }
 					   type="text"

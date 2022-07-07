@@ -1,8 +1,9 @@
-import { Trans, useCollections } from '@nima-cms/react';
+import { Trans, useCollections, useTranslations } from '@nima-cms/react';
 import Link from 'next/link';
 import React from 'react';
 import { AdminColumn, AdminPage, AdminSection, NimaTitle } from '../../components';
 import { NIMA_ROUTES } from '../../lib/routes';
+import { STRINGS } from '../../strings/strings';
 
 interface CategoriesListProps {
 
@@ -10,19 +11,20 @@ interface CategoriesListProps {
 
 export default function CollectionList(props: CategoriesListProps) {
 	const { data: collections } = useCollections();
+	const { getAdminTranslation } = useTranslations();
 
 	return <>
-		<NimaTitle title={ 'Collections' }/>
+		<NimaTitle title={ getAdminTranslation(STRINGS.COLLECTIONS) }/>
 		<AdminPage
-			label={ 'Collections' }
+			label={ getAdminTranslation(STRINGS.COLLECTIONS) }
 		>
 			<AdminColumn>
 				<AdminSection
-					title={ 'List' }
-					subtitle={ (collections?.length || 0) + ' collections' }
+					title={ getAdminTranslation(STRINGS.LIST) }
+					subtitle={ (collections?.length || 0) + ' ' + getAdminTranslation(STRINGS.COLLECTIONS).toLowerCase() }
 					titleRightContainer={
 						<Link href={ NIMA_ROUTES.collections.add() }>
-							<a className={ 'btn btn-primary' }>Add new</a>
+							<a className={ 'btn btn-primary' }><Trans>{ STRINGS.ADD_NEW }</Trans></a>
 						</Link>
 					}
 				>
@@ -30,10 +32,10 @@ export default function CollectionList(props: CategoriesListProps) {
 						<table className="table w-full">
 							<thead>
 							<tr>
-								<th>Name</th>
-								<th>Slug</th>
-								<th>No. of Products</th>
-								<th>Actions</th>
+								<th><Trans caps>{ STRINGS.NAME }</Trans></th>
+								<th><Trans caps>{ STRINGS.SLUG }</Trans></th>
+								<th><Trans caps>{ STRINGS.NUMBER_OF_PRODUCTS }</Trans></th>
+								<th><Trans caps>{ STRINGS.ACTIONS }</Trans></th>
 							</tr>
 							</thead>
 							<tbody>
@@ -43,7 +45,7 @@ export default function CollectionList(props: CategoriesListProps) {
 								<td>{ collection.products?.length || -1 }</td>
 								<td>
 									<Link href={ NIMA_ROUTES.collections.edit(collection.id) }>
-										<button className={ 'btn btn-primary' }>Edit</button>
+										<button className={ 'btn btn-primary' }><Trans>{ STRINGS.EDIT }</Trans></button>
 									</Link>
 								</td>
 							</tr>) }

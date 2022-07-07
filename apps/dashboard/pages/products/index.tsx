@@ -1,4 +1,4 @@
-import { Trans, useCategoryId, useProducts, useProductTypeId } from '@nima-cms/react';
+import { Trans, useCategoryId, useProducts, useProductTypeId, useTranslations } from '@nima-cms/react';
 import { ProductDto } from '@nima-cms/sdk';
 import { getEuroValue } from '@nima-cms/utils';
 import Link from 'next/link';
@@ -10,8 +10,10 @@ import { CategoriesSelect } from '../../components/forms/CategoriesSelect';
 import { ProductImage } from '../../components/products/ProductImage';
 import { Pagination } from '../../components/utils/Pagination';
 import { NIMA_ROUTES } from '../../lib/routes';
+import { STRINGS } from '../../strings/strings';
 
 const queryString = require('query-string');
+
 
 interface ProductListProps {
 
@@ -21,6 +23,7 @@ const ITEMS_PER_PAGE = 20;
 export default function ProductList(props: ProductListProps) {
 	const router = useRouter();
 	const page = (+router.query['page'] || 1) as number;
+	const { getAdminTranslation } = useTranslations();
 
 
 	const [searchStr, setSearchStr] = useState<string | undefined>(undefined);
@@ -45,23 +48,23 @@ export default function ProductList(props: ProductListProps) {
 	return <>
 		<NimaTitle title={ 'Products' }/>
 		<AdminPage
-			label={ 'Products' }
+			label={ getAdminTranslation(STRINGS.PRODUCTS) }
 		>
 			<AdminColumn>
 				<AdminSection
-					title={ 'List' }
-					subtitle={ (productsResponse?.totalCount || 0) + ' products' }
+					title={ getAdminTranslation(STRINGS.LIST) }
+					subtitle={ (productsResponse?.totalCount || 0) + ' ' + getAdminTranslation(STRINGS.PRODUCTS) }
 					titleRightContainer={
 						<Link href={ NIMA_ROUTES.products.add() }>
 							<a
-								className={ 'btn btn-primary' }>Add new</a>
+								className={ 'btn btn-primary' }><Trans>{ STRINGS.ADD_NEW }</Trans></a>
 						</Link>
 					}
 				>
 					<div className={ 'flex gap-4 align-middle' }>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
-								<span className="label-text">Search</span>
+								<span className="label-text"><Trans>{ STRINGS.SEARCH }</Trans></span>
 							</label>
 							<input className={ 'input w-full max-w-xs input-bordered' }
 								   type="text"
@@ -72,7 +75,7 @@ export default function ProductList(props: ProductListProps) {
 						<div className="form-control w-full max-w-xs">
 
 							<label className="label">
-								<span className="label-text">Categories</span>
+								<span className="label-text"><Trans>{ STRINGS.CATEGORIES }</Trans></span>
 							</label>
 							<CategoriesSelect
 								selectedId={ categoryId }
@@ -88,13 +91,13 @@ export default function ProductList(props: ProductListProps) {
 							<thead>
 							<tr>
 								<th></th>
-								<th>Name</th>
-								<th>Category</th>
-								<th>Product Type</th>
-								<th>Price</th>
-								<th>Stock</th>
-								<th>Published</th>
-								<th>Actions</th>
+								<th><Trans caps>{ STRINGS.NAME }</Trans></th>
+								<th><Trans caps>{ STRINGS.CATEGORY }</Trans></th>
+								<th><Trans caps>{ STRINGS.PRODUCT_TYPE }</Trans></th>
+								<th><Trans caps>{ STRINGS.PRICE }</Trans></th>
+								<th><Trans caps>{ STRINGS.STOCK }</Trans></th>
+								<th><Trans caps>{ STRINGS.PUBLISHED }</Trans></th>
+								<th><Trans caps>{ STRINGS.ACTIONS }</Trans></th>
 							</tr>
 							</thead>
 							<tbody>
@@ -135,14 +138,16 @@ function ProductRow(props: { product: ProductDto }) {
 		<td><StockBadge productVariant={ product.defaultVariant }/></td>
 		<td>{ product.isPublished ?
 			<div className="badge badge-success gap-2">
-				Published
+				<Trans>{ STRINGS.PUBLISHED }</Trans>
 			</div>
 			: <div className="badge badge-warning  gap-2">
-				Draft
+				<Trans>{ STRINGS.DRAFT }</Trans>
 			</div> }</td>
 		<td>
 			<Link href={ NIMA_ROUTES.products.edit(product.id) }>
-				<a className={ 'btn btn-primary' }>Edit</a>
+				<a className={ 'btn btn-primary' }>
+					<Trans>{ STRINGS.EDIT }</Trans>
+				</a>
 			</Link>
 		</td>
 	</tr>;

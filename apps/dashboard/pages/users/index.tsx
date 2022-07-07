@@ -1,30 +1,32 @@
-import { useUsers } from '@nima-cms/react';
+import { Trans, useTranslations, useUsers } from '@nima-cms/react';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import React from 'react';
 import { AdminColumn, AdminPage, AdminSection, NimaTitle } from '../../components';
 import { NIMA_ROUTES } from '../../lib/routes';
+import { STRINGS } from '../../strings/strings';
 
 interface UserListProps {
 
 }
 
 export default function UserList(props: UserListProps) {
+	const { getAdminTranslation } = useTranslations();
 	const { data: users } = useUsers();
 
 	return <>
-		<NimaTitle title={ 'Users' }/>
+		<NimaTitle title={ getAdminTranslation(STRINGS.USERS) }/>
 		<AdminPage
-			label={ 'Users' }
+			label={ getAdminTranslation(STRINGS.USERS) }
 		>
 			<AdminColumn>
 				<AdminSection
-					title={ 'List' }
-					subtitle={ (users?.length || 0) + ' users' }
+					title={ getAdminTranslation(STRINGS.LIST) }
+					subtitle={ (users?.length || 0) + ' ' + getAdminTranslation(STRINGS.USERS).toLowerCase() }
 					titleRightContainer={
 						<Link href={ NIMA_ROUTES.users.add() }>
 							<a
-								className={ 'btn btn-primary' }>Add new</a>
+								className={ 'btn btn-primary' }><Trans>{ STRINGS.ADD_NEW }</Trans></a>
 						</Link>
 					}
 				>
@@ -33,12 +35,12 @@ export default function UserList(props: UserListProps) {
 							<thead>
 							<tr>
 								<th>Email</th>
-								<th>Name</th>
-								<th>Admin</th>
-								<th>Staff</th>
-								<th>Active</th>
-								<th>Last Login</th>
-								<th>Actions</th>
+								<th><Trans caps>{ STRINGS.NAME }</Trans></th>
+								<th><Trans caps>{ STRINGS.ADMIN }</Trans></th>
+								<th><Trans caps>{ STRINGS.STAFF }</Trans></th>
+								<th><Trans caps>{ STRINGS.ACTIVE }</Trans></th>
+								<th><Trans caps>{ STRINGS.LAST_LOGIN }</Trans></th>
+								<th><Trans caps>{ STRINGS.ACTIONS }</Trans></th>
 							</tr>
 							</thead>
 							<tbody>
@@ -51,7 +53,7 @@ export default function UserList(props: UserListProps) {
 								<td>{ user.lastLogin ? dayjs(user.lastLogin).format('DD/MM/YYYY HH:mm') : 'Never' }</td>
 								<td>
 									<Link href={ NIMA_ROUTES.users.edit(user.id) }>
-										<button className={ 'btn btn-primary' }>Edit</button>
+										<button className={ 'btn btn-primary' }><Trans>{ STRINGS.EDIT }</Trans></button>
 									</Link>
 								</td>
 							</tr>) }
