@@ -63,6 +63,10 @@ export const STRINGS = {
 		en: 'Search',
 		el: 'Αναζήτηση',
 	},
+	CLEAR: {
+		en: 'Clear',
+		el: 'Καθαρισμός',
+	},
 	YES: {
 		en: 'Yes',
 		el: 'Ναι',
@@ -70,6 +74,14 @@ export const STRINGS = {
 	NO: {
 		en: 'No',
 		el: 'Όχι',
+	},
+	MIN: {
+		en: 'Min',
+		el: 'Ελαχ.',
+	},
+	MAX: {
+		en: 'Max',
+		el: 'Μεγισ.',
 	},
 	NEW_VALUE: {
 		en: 'New Value',
@@ -379,6 +391,22 @@ export const STRINGS = {
 		en: 'Free Shipping',
 		el: 'Δωρεάν Μεταγορικά',
 	},
+	COUNTRY: {
+		en: 'Country',
+		el: 'Χώρα',
+	},
+	STATE: {
+		en: 'State',
+		el: 'Περιφέρεια',
+	},
+	CONTINENT: {
+		en: 'Continent',
+		el: 'Ήπειρος',
+	},
+	POSTAL: {
+		en: 'Postal Code',
+		el: 'Ταχυδρομικός Κώδικας',
+	},
 
 
 	PRODUCT_CREATE_TITLE: {
@@ -442,6 +470,23 @@ export const STRINGS = {
 		en: `Update Coupon ${ name }`,
 		el: `Επεξεργασία Κουπονιού ${ name }`,
 	}),
+
+	SHIPPING_METHODS_CREATE_TITLE: {
+		en: 'Create Shipping Method',
+		el: 'Δημιουργία Μεθόδου',
+	},
+	SHIPPING_METHODS_UPDATE_TITLE: {
+		en: `Update Shipping Method`,
+		el: `Επεξεργασία Μεθόδου`,
+	},
+	SHIPPING_ZONES_CREATE_TITLE: {
+		en: 'Create Shipping Zone',
+		el: 'Δημιουργία Ζώνης',
+	},
+	SHIPPING_ZONES_UPDATE_TITLE: {
+		en: `Update Shipping Zone`,
+		el: `Επεξεργασία Ζώνης`,
+	},
 
 
 	ADD_MEDIA: {
@@ -511,6 +556,46 @@ export const STRINGS = {
 	LEAVE_ZERO_FOR_UNLIMITED: {
 		en: 'Leave 0 for unlimited.',
 		el: 'Αφήστε 0 για απεριόριστο.',
+	},
+	MEDIA_LIST: {
+		en: 'Media List',
+		el: 'Λίστα Πολυμέσων',
+	},
+	UPLOAD_NEW: {
+		en: 'Upload New',
+		el: 'Ανέβασμα καινούργιου',
+	},
+	DRAGNDROP_MEDIA: {
+		en: 'Drag \'n\' drop some files here, or click to select files',
+		el: 'Σύρετε και αποθέστε μερικά αρχεία εδώ ή κάντε κλικ για να επιλέξετε αρχεία',
+	},
+	DROP_HERE: {
+		en: 'Drop the files here ...',
+		el: 'Ρίξτε τα αρχεία εδώ...',
+	},
+	ZONES: {
+		en: 'Zones',
+		el: 'Ζώνες',
+	},
+	NEW_ZONE: {
+		en: 'New Zone',
+		el: 'Νέα Ζώνη',
+	},
+	METHODS: {
+		en: 'Methods',
+		el: 'Μέθοδοι',
+	},
+	LOCATION_CODES: {
+		en: 'Location Codes',
+		el: 'Κωδικοί τοποθεσίας',
+	},
+	RATES: {
+		en: 'Rates',
+		el: 'Τιμές',
+	},
+	EDIT_RATES: {
+		en: 'Edit Rates',
+		el: 'Επεξεργασία Τιμών',
 	},
 
 	ARE_YOU_SURE_DELETE: (name) => ({
