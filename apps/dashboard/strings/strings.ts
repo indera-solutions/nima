@@ -235,6 +235,10 @@ export const STRINGS = {
 		en: 'Slug',
 		el: 'Slug',
 	},
+	SKU: {
+		en: 'SKU',
+		el: 'SKU',
+	},
 	LEAVE_EMPTY_FOR_DEFAULT: {
 		en: 'Leave empty to generate default',
 		el: 'Αφήστε κενό για προεπιλογή',
@@ -407,6 +411,46 @@ export const STRINGS = {
 		en: 'Postal Code',
 		el: 'Ταχυδρομικός Κώδικας',
 	},
+	STATUS: {
+		en: 'Status',
+		el: 'Κατάσταση',
+	},
+	TOTAL: {
+		en: 'Total',
+		el: 'Σύνολο',
+	},
+	SUBTOTAL: {
+		en: 'Subtotal',
+		el: 'Υποσύνολο',
+	},
+	HISTORY: {
+		en: 'History',
+		el: 'Ιστορικό',
+	},
+	EVENT: {
+		en: 'Event',
+		el: 'Συμβάν',
+	},
+	PARAMS: {
+		en: 'Parameters',
+		el: 'Παράμετροι',
+	},
+	OVERVIEW: {
+		en: 'Overview',
+		el: 'Επισκόπηση',
+	},
+	SHIPPING_METHOD: {
+		en: 'Shipping Method',
+		el: 'Μέθοδος αποστολής',
+	},
+	CUSTOMER: {
+		en: 'Customer',
+		el: 'Πελάτης',
+	},
+	NOTES: {
+		en: 'Notes',
+		el: 'Σημειώσεις',
+	},
 
 
 	PRODUCT_CREATE_TITLE: {
@@ -486,6 +530,14 @@ export const STRINGS = {
 	SHIPPING_ZONES_UPDATE_TITLE: {
 		en: `Update Shipping Zone`,
 		el: `Επεξεργασία Ζώνης`,
+	},
+	USER_CREATE_TITLE: {
+		en: 'Create User',
+		el: 'Δημιουργία Χρήστη',
+	},
+	USER_UPDATE_TITLE: {
+		en: `Update User`,
+		el: `Επεξεργασία Χρήστη`,
 	},
 
 
@@ -597,6 +649,140 @@ export const STRINGS = {
 		en: 'Edit Rates',
 		el: 'Επεξεργασία Τιμών',
 	},
+
+	SHIPPING_ADDRESS: {
+		en: 'Shipping Address',
+		el: 'Διεύθυνση Αποστολής',
+	},
+	BILLING_ADDRESS: {
+		en: 'Billing Address',
+		el: 'Διεύθυνση Χρέωσης',
+	},
+	EDIT_ADDRESS: {
+		en: 'Edit Address',
+		el: 'Επεξεργασία διεύθυνσης',
+	},
+	FIRST_NAME: {
+		en: 'First Name',
+		el: 'Όνομα',
+	},
+	LAST_NAME: {
+		en: 'Last Name',
+		el: 'Επώνυμο',
+	},
+	PHONE: {
+		en: 'Phone',
+		el: 'Τηλέφωνο',
+	},
+	COMPANY_NAME: {
+		en: 'Company Name',
+		el: 'Όνομα εταιρείας',
+	},
+	ADDRESS: {
+		en: 'Address',
+		el: 'Διεύθυνση',
+	},
+	CITY: {
+		en: 'City',
+		el: 'Πόλη',
+	},
+	ZIP_CODE: {
+		en: 'Zip Code',
+		el: 'Ταχυδρομικός κώδικας',
+	},
+	ITEMS: {
+		en: 'Items',
+		el: 'Προϊόντα',
+	},
+	QUANTITY: {
+		en: 'Quantity',
+		el: 'Ποσότητα',
+	},
+	PRICE_PER_ITEM: {
+		en: 'Price per item',
+		el: 'Τιμή μονάδος',
+	},
+	ADMIN: {
+		en: 'Admin',
+		el: 'Διαχειριστής',
+	},
+	STAFF: {
+		en: 'Staff',
+		el: 'Προσωπικό',
+	},
+	ACTIVE: {
+		en: 'Active',
+		el: 'Ενεργός',
+	},
+	LAST_LOGIN: {
+		en: 'Last Login',
+		el: 'Τελευταία Είσοδος',
+	},
+	AUTHENTICATION: {
+		en: 'Authentication',
+		el: 'Αυθεντικοποίηση',
+	},
+	NEW_PASSWORD: {
+		en: 'New Password',
+		el: 'Νέος κωδικός πρόσβασης',
+	},
+	PASSWORD: {
+		en: 'Password',
+		el: 'Κωδικός πρόσβασης',
+	},
+	CONFIGURATIONS: {
+		en: 'Configurations',
+		el: 'Επιλογές',
+	},
+	SITE_NAME: {
+		en: 'Site Name',
+		el: 'Ονομα ιστοσελίδας',
+	},
+	BASE_URL: {
+		en: 'Base URL',
+		el: 'Βασική διεύθυνση URL',
+	},
+	USER_CAN_REGISTER_THEMSELVES: {
+		en: 'Users can register themselves',
+		el: 'Οι χρήστες μπορούν να εγγραφούν μόνοι τους',
+	},
+	LANGUAGES: {
+		en: 'Languages',
+		el: 'Γλώσσες',
+	},
+	ADMIN_LANGUAGE: {
+		en: 'Admin Language',
+		el: 'Γλώσσα διαχειριστή',
+	},
+	AVAILABLE_LANGUAGES: {
+		en: 'Available Languages',
+		el: 'Διαθέσιμες γλώσσες',
+	},
+	DEFAULT_LANGUAGE: {
+		en: 'Default Language',
+		el: 'Προεπιλεγμένη γλώσσα',
+	},
+	COMMERCE_SETTINGS: {
+		en: 'Commerce Settings',
+		el: 'Ρυθμίσεις Εμπορίου',
+	},
+	GLOBAL_THRESHOLD: {
+		en: 'Global Stock Threshold',
+		el: 'Γενικό όριο αποθέματος',
+	},
+	ADMIN_EMAIL: {
+		en: 'Admin Email',
+		el: 'Email διαχειριστή',
+	},
+	SENDER_EMAIL: {
+		en: 'Sender Email',
+		el: 'Email αποστολέα',
+	},
+	SENDER_NAME: {
+		en: 'Sender Name',
+		el: 'Όνομα αποστολέα',
+	},
+
 
 	ARE_YOU_SURE_DELETE: (name) => ({
 		en: `Are you sure you want to delete ${ name }?`,

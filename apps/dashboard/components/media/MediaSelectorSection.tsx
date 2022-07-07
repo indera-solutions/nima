@@ -111,6 +111,6 @@ export function MediaSelectorSection(props: MediaSelectorSectionProps) {
 function ImageItem(props: { id: number }) {
 	const { data: media } = useMediaById(props.id);
 	if ( !media ) return null;
-	return <img className={ 'h-full basis-1/12' } src={ media.thumbnailUrl } alt=""/>;
+	return <img className={ 'h-full basis-1/12 object-contain' } src={ media.thumbnailUrl } alt=""/>;
 }
 
