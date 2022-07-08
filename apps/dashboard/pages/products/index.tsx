@@ -1,12 +1,13 @@
 import { Trans, useCategoryId, useProducts, useProductTypeId, useTranslations } from '@nima-cms/react';
-import { ProductDto } from '@nima-cms/sdk';
+import { ProductDto, ProductsApiProductsFindAllRequest } from '@nima-cms/sdk';
 import { getEuroValue } from '@nima-cms/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import { AdminColumn, AdminPage, AdminSection, NimaTitle, StockBadge } from '../../components';
 import { CategoriesSelect } from '../../components/forms/CategoriesSelect';
+import { CollectionSelect } from '../../components/forms/CollectionSelect';
 import { ProductImage } from '../../components/products/ProductImage';
 import { Pagination } from '../../components/utils/Pagination';
 import { NIMA_ROUTES } from '../../lib/routes';
@@ -22,23 +23,37 @@ interface ProductListProps {
 const ITEMS_PER_PAGE = 20;
 export default function ProductList(props: ProductListProps) {
 	const router = useRouter();
-	const page = (+router.query['page'] || 1) as number;
 	const { getAdminTranslation } = useTranslations();
 
-
-	const [searchStr, setSearchStr] = useState<string | undefined>(undefined);
-	const [debouncedSearch] = useDebounce(searchStr, 1000);
-	const [categoryId, setCategoryId] = useState<number | undefined>(undefined);
-	const { data: productsResponse } = useProducts({
-		page: page,
+	const query: ProductsApiProductsFindAllRequest = useMemo(() => ({
+		page: (+router.query['page'] || 1) as number,
 		itemsPerPage: ITEMS_PER_PAGE,
-		search: debouncedSearch,
-		categoryId,
-	});
+		search: router.query['search'] as string,
+		categoryId: router.query['categoryId'] ? +router.query['categoryId'] as number : undefined,
+		collectionId: router.query['collectionId'] ? +router.query['collectionId'] as number : undefined,
+	}), [router.query]);
 
-	async function onPageSelect(page: number) {
+
+	const [searchStr, setSearchStr] = useState<string | undefined>(router.query['search'] as string);
+	const [debouncedSearch] = useDebounce(searchStr, 1000);
+	const { data: productsResponse } = useProducts(query);
+
+	useEffect(() => {
+		onFiltering('search', debouncedSearch || undefined);
+	}, [debouncedSearch]);
+
+	useEffect(() => {
+		if ( !productsResponse ) return;
+		if ( query.page * query.itemsPerPage > productsResponse.totalCount ) {
+			onFiltering('page', 1);
+		}
+	}, [productsResponse, query.page, query.itemsPerPage]);
+
+	async function onFiltering(key: keyof ProductsApiProductsFindAllRequest, value) {
 		const q: string = queryString.stringify({
-			page: page,
+			...router.query,
+			...query,
+			[key]: value,
 		}, {
 			skipNull: true,
 		});
@@ -78,9 +93,26 @@ export default function ProductList(props: ProductListProps) {
 								<span className="label-text"><Trans>{ STRINGS.CATEGORIES }</Trans></span>
 							</label>
 							<CategoriesSelect
-								selectedId={ categoryId }
-								onChange={ setCategoryId }
+								selectedId={ query.categoryId }
+								onChange={ (id) => {
+									onFiltering('categoryId', id);
+								} }
 								isClearable
+							/>
+
+						</div>
+						<div className="form-control w-full max-w-xs">
+
+							<label className="label">
+								<span className="label-text"><Trans>{ STRINGS.COLLECTIONS }</Trans></span>
+							</label>
+
+							<CollectionSelect
+								selectedIds={ query.collectionId ? [query.collectionId] : [] }
+								onChange={ (id) => {
+									onFiltering('collectionId', id[id.length - 1]);
+								} }
+								isClearable={ false }
 							/>
 						</div>
 					</div>
@@ -106,8 +138,10 @@ export default function ProductList(props: ProductListProps) {
 							</tbody>
 						</table>
 						{ productsResponse && ITEMS_PER_PAGE < productsResponse.totalCount && <Pagination
-							onPageSelect={ onPageSelect }
-							page={ page }
+							onPageSelect={ (page) => {
+								onFiltering('page', page);
+							} }
+							page={ query.page }
 							itemsPerPage={ ITEMS_PER_PAGE }
 							totalItems={ productsResponse?.totalCount || 0 }
 						/> }
