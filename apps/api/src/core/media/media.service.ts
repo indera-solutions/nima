@@ -32,11 +32,11 @@ export class MediaService {
 
 		let thumbnailUrl;
 		if ( file.mimetype && file.mimetype.startsWith('image') ) {
-			const thumbnail = await imageThumbnail(file.buffer, {
-				width: 450,
-				percentage: 60,
-			});
 			try {
+				const thumbnail = await imageThumbnail(file.buffer, {
+					width: 450,
+					percentage: 60,
+				});
 				const thumbnails3res = await this.coreService.uploadFileToS3(thumbnail.buffer, 'thumbnail_' + encodedName);
 				if ( thumbnails3res ) {
 					thumbnailUrl = 'https://loom-cdn.indera.gr/' + thumbnails3res.Key;
