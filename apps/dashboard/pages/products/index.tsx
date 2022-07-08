@@ -44,7 +44,7 @@ export default function ProductList(props: ProductListProps) {
 
 	useEffect(() => {
 		if ( !productsResponse ) return;
-		if ( query.page * query.itemsPerPage > productsResponse.totalCount ) {
+		if ( (query.page - 1) * query.itemsPerPage > productsResponse.totalCount ) {
 			onFiltering('page', 1);
 		}
 	}, [productsResponse, query.page, query.itemsPerPage]);
