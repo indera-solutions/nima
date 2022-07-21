@@ -1,9 +1,13 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger';
-import { IsNumber, IsOptional } from 'class-validator';
+import { IsInt, IsNumber, IsOptional } from 'class-validator';
+import { MediaDto } from '../../core/dto/media.dto';
 import { CategoryEntity } from '../entities/category.entity';
 
 // export class CategoryDto extends OmitType(CategoryEntity, []) {
-export class CategoryDto extends OmitType(CategoryEntity, ['parent', 'children']) {
+export class CategoryDto extends OmitType(CategoryEntity, ['parent', 'children', 'backgroundImage']) {
+
+	@ApiProperty({ type: () => MediaDto })
+	backgroundImage?: MediaDto;
 
 	@ApiProperty({ type: [CategoryDto] })
 	children: CategoryDto[];
@@ -18,6 +22,7 @@ export class CategoryDto extends OmitType(CategoryEntity, ['parent', 'children']
 			slug: entity.slug,
 			children: entity.children?.map(c => CategoryDto.prepare(c)) || [],
 			parent: entity.parent ? CategoryDto.prepare(entity.parent) : undefined,
+			backgroundImage: entity.backgroundImage ? MediaDto.prepare(entity.backgroundImage) : undefined,
 			privateMetadata: options?.isAdmin ? entity.privateMetadata : {},
 			metadata: entity.metadata,
 			description: entity.description,
@@ -27,11 +32,16 @@ export class CategoryDto extends OmitType(CategoryEntity, ['parent', 'children']
 	}
 }
 
-export class CreateCategoryDto extends OmitType(CategoryDto, ['id', 'children', 'parent']) {
+export class CreateCategoryDto extends OmitType(CategoryDto, ['id', 'children', 'parent', 'backgroundImage']) {
 	@ApiProperty({ type: Number, example: 1, required: false })
 	@IsNumber()
 	@IsOptional()
 	parentId?: number;
+
+	@ApiProperty({ required: false })
+	@IsInt()
+	@IsOptional()
+	backgroundImageId?: number;
 }
 
 export class UpdateCategoryDto extends CreateCategoryDto {

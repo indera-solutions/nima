@@ -357,6 +357,12 @@ export interface CategoryDto {
 	'slug': string;
 	/**
 	 *
+	 * @type {MediaDto}
+	 * @memberof CategoryDto
+	 */
+	'backgroundImage': MediaDto;
+	/**
+	 *
 	 * @type {Array<CategoryDto>}
 	 * @memberof CategoryDto
 	 */
@@ -1016,6 +1022,12 @@ export interface CreateCategoryDto {
 	 * @memberof CreateCategoryDto
 	 */
 	'parentId'?: number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof CreateCategoryDto
+	 */
+	'backgroundImageId'?: number;
 }
 /**
  *
@@ -4385,6 +4397,12 @@ export interface UpdateCategoryDto {
 	 * @memberof UpdateCategoryDto
 	 */
 	'parentId'?: number;
+	/**
+	 *
+	 * @type {number}
+	 * @memberof UpdateCategoryDto
+	 */
+	'backgroundImageId'?: number;
 }
 /**
  *

@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Metadata, Translatable } from '@nima-cms/utils';
 import { IsNotEmptyObject, IsObject, IsString } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent } from 'typeorm';
 import { TranslatableDto } from '../../core/dto/translatable.dto';
+import { MediaEntity } from '../../core/entities/media.entity';
 
 @Entity('categories_categories')
 @Tree('closure-table')
@@ -45,6 +46,9 @@ export class CategoryEntity {
 	@ApiProperty({ type: String, example: 'category-name' })
 	@IsString()
 	slug: string;
+
+	@ManyToOne(() => MediaEntity, { eager: true })
+	backgroundImage?: MediaEntity;
 
 	@TreeParent()
 	parent: CategoryEntity;

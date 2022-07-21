@@ -2,13 +2,15 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { getSlug } from '@nima-cms/utils';
 import { Like } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
+import { MediaEntity } from '../core/entities/media.entity';
+import { MediaService } from '../core/media/media.service';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto/category.dto';
 import { CategoryEntity } from './entities/category.entity';
 import { CategoryRepository } from './entities/category.repository';
 
 @Injectable()
 export class CategoriesService {
-	constructor(private categoryRepository: CategoryRepository) {
+	constructor(private categoryRepository: CategoryRepository, private mediaService: MediaService) {
 	}
 
 	async create(params: { createCategoryDto: CreateCategoryDto }): Promise<CategoryEntity> {
@@ -16,6 +18,10 @@ export class CategoriesService {
 
 		if ( !dto.slug || dto.slug.length === 0 ) {
 			dto.slug = getSlug(dto.name.en); //TODO get default language from settings
+		}
+		let backgroundImage: MediaEntity;
+		if ( dto.backgroundImageId ) {
+			backgroundImage = await this.mediaService.getById({ id: dto.backgroundImageId });
 		}
 
 		const existingSlug = await this.categoryRepository.getBySlug(dto.slug);
@@ -33,7 +39,8 @@ export class CategoriesService {
 		if ( parentId ) {
 			parent = await this.findOne({ id: parentId, depth: 0 });
 		}
-		const res = await this.categoryRepository.save({ ...dto, parent: parent });
+		delete dto.backgroundImageId;
+		const res = await this.categoryRepository.save({ ...dto, backgroundImage: backgroundImage, parent: parent });
 		return await this.findOne({ id: res.id });
 	}
 
@@ -73,7 +80,17 @@ export class CategoriesService {
 			...params.updateCategoryDto,
 		};
 		delete partial.parentId;
-		await this.categoryRepository.update(params.id, partial);
+
+		let backgroundImage: MediaEntity;
+		if ( partial.backgroundImageId ) {
+			backgroundImage = await this.mediaService.getById({ id: partial.backgroundImageId });
+		}
+		delete partial.backgroundImageId;
+
+		await this.categoryRepository.update(params.id, {
+			...partial,
+			backgroundImage,
+		});
 		return this.findOne({ id: params.id });
 	}
 

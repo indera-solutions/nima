@@ -19,6 +19,7 @@ import {
 	AdminFooter,
 	AdminPage,
 	AdminSection,
+	MediaSelectorSection,
 	MetadataEditor,
 	NimaTitle,
 	SelectEditingLanguage,
@@ -32,11 +33,12 @@ interface AddProductTypeProps {
 
 }
 
-const defaultCategory = {
+const defaultCategory: CreateCategoryDto = {
 	name: {},
 	slug: '',
 	metadata: {},
 	privateMetadata: {},
+	backgroundImageId: undefined,
 	description: {},
 	parentId: undefined,
 	seoDescription: {},
@@ -62,8 +64,8 @@ export default function AddProductType(props: AddProductTypeProps) {
 
 	useEffect(() => {
 		if ( !existingCategory ) return;
-		const { id, children, ...rest } = existingCategory;
-		setCreateCategoryDto({ ...rest, parentId });
+		const { id, children, backgroundImage, ...rest } = existingCategory;
+		setCreateCategoryDto({ ...rest, backgroundImageId: backgroundImage?.id, parentId });
 	}, [existingCategory]);
 
 	useEffect(() => {
@@ -201,6 +203,15 @@ export default function AddProductType(props: AddProductTypeProps) {
 						</div>
 
 					</AdminSection>
+
+					<MediaSelectorSection
+						title={ getAdminTranslation(STRINGS.BACKGROUND_IMAGE) }
+						sortableMedia={ createCategoryDto.backgroundImageId ? [{ mediaId: createCategoryDto.backgroundImageId, sortOrder: 0 }] : [] }
+						onSelect={ (media) => {
+							const id = media.length === 0 ? undefined : media[0].mediaId;
+							onValueEdit('backgroundImageId', id);
+						} }
+					/>
 
 					{ isEditing && existingCategory?.children &&
 						<AdminSection title={ 'Subcategories' }
