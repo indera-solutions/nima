@@ -323,6 +323,7 @@ export default function Add(props: AddProps) {
 								className="label-text"><Trans>{ STRINGS.DESCRIPTION }</Trans> ({ languages.currentEditingLanguage.toUpperCase() })</span>
 							</label>
 							{ createProductDto.descriptionRaw && <RichTextInput
+								name={ 'description' }
 								key={ languages.currentEditingLanguage + createProductDto?.name[languages.currentEditingLanguage] }
 								init={ createProductDto.descriptionRaw[languages.currentEditingLanguage] }
 								onChange={ (html, raw) => {
@@ -335,6 +336,7 @@ export default function Add(props: AddProps) {
 								className="label-text"><Trans>{ STRINGS.SHORT_DESCRIPTION }</Trans> ({ languages.currentEditingLanguage.toUpperCase() })</span>
 							</label>
 							{ createProductDto.additionalDescriptionRaw && <RichTextInput
+								name={ 'additionalDescription' }
 								key={ languages.currentEditingLanguage + createProductDto?.name[languages.currentEditingLanguage] }
 								init={ createProductDto.additionalDescriptionRaw[languages.currentEditingLanguage] }
 								onChange={ (html, raw) => {

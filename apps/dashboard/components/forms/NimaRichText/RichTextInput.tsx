@@ -65,7 +65,7 @@ function MyCustomAutoFocusPlugin(props: {
 		editor.registerUpdateListener(({ editorState }) => {
 
 			editor.update(() => {
-				const tmp = $generateHtmlFromNodes(editor);
+				const tmp = $generateHtmlFromNodes(editor, null);
 				props.onHtmlChange(tmp, editor.toJSON());
 
 			});
@@ -77,9 +77,12 @@ function MyCustomAutoFocusPlugin(props: {
 }
 
 
-export function RichTextInput(props: { init: any, onChange: (html: string, raw: any) => void }) {
+export function RichTextInput(props: { name: string, init: any, onChange: (html: string, raw: any) => void }) {
 	return (
-		<LexicalComposer initialConfig={ editorConfig }>
+		<LexicalComposer initialConfig={ {
+			...editorConfig,
+			namespace: props.name,
+		} }>
 			<div className="nima-richtext-container">
 				<ToolbarPlugin/>
 				<div className="nima-richtext-inner">
