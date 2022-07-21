@@ -254,11 +254,11 @@ export default function Add(props: AddProps) {
 	function onShortDescriptionEdit(html: string, raw: any) {
 		setCreateProductDto(state => ({
 			...state,
-			shortDescription: {
+			additionalDescription: {
 				...state.additionalDescription,
 				[languages.currentEditingLanguage]: html,
 			},
-			shortDescriptionRaw: {
+			additionalDescriptionRaw: {
 				...state.additionalDescriptionRaw,
 				[languages.currentEditingLanguage]: raw,
 			},
