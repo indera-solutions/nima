@@ -10,6 +10,7 @@ import {
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $createHeadingNode, $createQuoteNode, $isHeadingNode } from '@lexical/rich-text';
 import { $isAtNodeEnd, $isParentElementRTL, $wrapLeafNodesInElements } from '@lexical/selection';
+import { INSERT_TABLE_COMMAND } from '@lexical/table';
 import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils';
 import {
 	$createParagraphNode,
@@ -20,12 +21,15 @@ import {
 	CAN_UNDO_COMMAND,
 	FORMAT_ELEMENT_COMMAND,
 	FORMAT_TEXT_COMMAND,
+	LexicalEditor,
 	REDO_COMMAND,
 	SELECTION_CHANGE_COMMAND,
 	UNDO_COMMAND,
 } from 'lexical';
+import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import useModal from '../hooks/useModal';
 
 const LowPriority = 1;
 
@@ -77,6 +81,7 @@ function FloatingLinkEditor({ editor }) {
 	const [linkUrl, setLinkUrl] = useState('');
 	const [isEditMode, setEditMode] = useState(false);
 	const [lastSelection, setLastSelection] = useState(null);
+
 
 	const updateLinkEditor = useCallback(() => {
 		const selection = $getSelection();
@@ -402,9 +407,59 @@ function BlockOptionsDropdownList({
 	);
 }
 
+
+export function InsertTableDialog({
+									  activeEditor,
+									  onClose,
+								  }: {
+	activeEditor: LexicalEditor;
+	onClose: () => void;
+}): JSX.Element {
+	const [rows, setRows] = useState('5');
+	const [columns, setColumns] = useState('5');
+
+	const onClick = () => {
+		activeEditor.dispatchCommand(INSERT_TABLE_COMMAND, { columns, rows });
+		onClose();
+	};
+
+	return (
+		<>
+			<div className="Input__wrapper">
+				<label className="Input__label">No of rows</label>
+				<input
+					type="text"
+					className="Input__input"
+					value={ rows }
+					onChange={ (e) => {
+						setRows(e.target.value);
+					} }
+				/>
+			</div>
+			<div className="Input__wrapper">
+				<label className="Input__label">No of columns</label>
+				<input
+					type="text"
+					className="Input__input"
+					value={ columns }
+					onChange={ (e) => {
+						setColumns(e.target.value);
+					} }
+				/>
+			</div>
+			<div className="ToolbarPlugin__dialogActions">
+				<button className={ 'btn btn-success' } onClick={ onClick }>Confirm</button>
+			</div>
+		</>
+	);
+}
+
+
 export default function ToolbarPlugin() {
 	const [editor] = useLexicalComposerContext();
 	const toolbarRef = useRef(null);
+	const [modal, showModal] = useModal();
+
 	const [canUndo, setCanUndo] = useState(false);
 	const [canRedo, setCanRedo] = useState(false);
 	const [blockType, setBlockType] = useState('paragraph');
@@ -643,6 +698,20 @@ export default function ToolbarPlugin() {
 					<Divider/>
 					<button
 						onClick={ () => {
+							showModal('Insert Table', (onClose) => (
+								<InsertTableDialog
+									activeEditor={ editor }
+									onClose={ onClose }
+								/>
+							));
+						} }
+						aria-label="Insert Link"
+					>
+						Table
+					</button>
+					<Divider/>
+					<button
+						onClick={ () => {
 							editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left');
 						} }
 						className="toolbar-item spaced"
@@ -680,6 +749,8 @@ export default function ToolbarPlugin() {
 					{ ' ' }
 				</>
 			) }
+			{ modal }
+
 		</div>
 	);
 }

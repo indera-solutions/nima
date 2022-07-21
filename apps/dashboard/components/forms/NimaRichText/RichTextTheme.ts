@@ -64,6 +64,9 @@ const exampleTheme = {
 		url: 'nima-richtext-tokenOperator',
 		variable: 'nima-richtext-tokenVariable',
 	},
+	table: 'nima-richtext-table',
+	tableCell: 'nima-richtext-tableCell',
+	tableCellHeader: 'nima-richtext-tableCellHeader',
 };
 
 export default exampleTheme;

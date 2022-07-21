@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import { AdminLayout } from '../components';
 import { adminRoutes } from '../lib/sidemenuItem';
 import './editor.css';
+import './richTextStyles.css';
 import './styles.css';
 
 function errorLogging(error: any) {
@@ -58,7 +59,6 @@ function CustomApp({ Component, pageProps }: AppProps) {
 				</QueryClientProvider>
 			</main>
 			<ToastContainer/>
-
 		</>
 	);
 }

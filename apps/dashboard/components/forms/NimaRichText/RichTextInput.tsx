@@ -11,12 +11,15 @@ import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { TablePlugin } from '@lexical/react/LexicalTablePlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
 import React, { useEffect } from 'react';
 import AutoLinkPlugin from './plugins/AutoLinkPlugin';
 import CodeHighlightPlugin from './plugins/CodeHighlightPlugin';
 import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin';
+import TableCellActionMenuPlugin from './plugins/TableActionMenuPlugin';
+import TableCellResizer from './plugins/TableCellResizer';
 import ToolbarPlugin from './plugins/ToolbarPlugin';
 import exampleTheme from './RichTextTheme';
 
@@ -47,6 +50,9 @@ const editorConfig = {
 		TableRowNode,
 		AutoLinkNode,
 		LinkNode,
+		TableNode,
+		TableCellNode,
+		TableRowNode,
 	],
 };
 
@@ -87,6 +93,9 @@ export function RichTextInput(props: { init: any, onChange: (html: string, raw: 
 					<ListPlugin/>
 					<LinkPlugin/>
 					<AutoLinkPlugin/>
+					<TablePlugin/>
+					<TableCellActionMenuPlugin/>
+					<TableCellResizer/>
 					<MyCustomAutoFocusPlugin onHtmlChange={ (html, raw) => props.onChange(html, raw) }/>
 					<ListMaxIndentLevelPlugin maxDepth={ 7 }/>
 					<MarkdownShortcutPlugin transformers={ TRANSFORMERS }/>

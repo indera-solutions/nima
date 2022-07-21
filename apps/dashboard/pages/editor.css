@@ -1,3 +1,188 @@
+.TableCellResizer__resizer {
+	position: absolute;
+}
+
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ *
+ */
+
+.ImageNode__contentEditable {
+	min-height: 20px;
+	border: 0px;
+	resize: none;
+	cursor: text;
+	caret-color: rgb(5, 5, 5);
+	display: block;
+	position: relative;
+	tab-size: 1;
+	outline: 0px;
+	padding: 10px;
+	user-select: text;
+	font-size: 12px;
+	width: calc(100% - 20px);
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.ImageNode__placeholder {
+	font-size: 12px;
+	color: #888;
+	overflow: hidden;
+	position: absolute;
+	text-overflow: ellipsis;
+	top: 10px;
+	left: 10px;
+	user-select: none;
+	white-space: nowrap;
+	display: inline-block;
+	pointer-events: none;
+}
+
+.image-control-wrapper--resizing {
+	touch-action: none;
+}
+
+
+.Button__root {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 15px;
+	padding-right: 15px;
+	border: 0px;
+	background-color: #eee;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.Button__root:hover {
+	background-color: #ddd;
+}
+
+.Button__small {
+	padding: 5px 10px;
+	font-size: 13px;
+}
+
+.Button__disabled {
+	cursor: not-allowed;
+}
+
+.Button__disabled:hover {
+	background-color: #eee;
+}
+
+
+.Input__wrapper {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.Input__label {
+	display: flex;
+	flex: 1;
+	color: #666;
+}
+
+.Input__input {
+	display: flex;
+	flex: 2;
+	border: 1px solid #999;
+	padding: 7px 10px;
+	font-size: 16px;
+	border-radius: 5px;
+	min-width: 0;
+}
+
+
+.Modal__overlay {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	flex-direction: column;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	background-color: rgba(40, 40, 40, 0.6);
+	flex-grow: 0px;
+	flex-shrink: 1px;
+	z-index: 100;
+}
+
+.Modal__modal {
+	padding: 20px;
+	min-height: 100px;
+	min-width: 300px;
+	display: flex;
+	flex-grow: 0px;
+	background-color: #fff;
+	flex-direction: column;
+	position: relative;
+	box-shadow: 0 0 20px 0 #444;
+	border-radius: 10px;
+}
+
+.Modal__title {
+	color: #444;
+	margin: 0px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.Modal__closeButton {
+	border: 0px;
+	position: absolute;
+	right: 20px;
+	border-radius: 20px;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	cursor: pointer;
+	background-color: #eee;
+}
+
+.Modal__closeButton:hover {
+	background-color: #ddd;
+}
+
+.Modal__content {
+	padding-top: 20px;
+}
+
+
+.nima-richtext-table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	max-width: 100%;
+	overflow-y: scroll;
+	table-layout: fixed;
+	width: 100%;
+}
+
+.nima-richtext-tableCell {
+	border: 1px solid black;
+	padding: 6px 8px;
+	min-width: 75px;
+	vertical-align: top;
+	text-align: start;
+}
+
+.nima-richtext-tableCellHeader {
+	background-color: #f2f3f5;
+	text-align: start;
+}
 
 .nima-richtext-container {
 	/*margin: 20px auto 20px auto;*/
