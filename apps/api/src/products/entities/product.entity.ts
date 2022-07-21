@@ -44,6 +44,17 @@ export class ProductEntity {
 	@IsObject()
 	descriptionRaw: any;
 
+
+	@Column({ type: 'jsonb', default: {} })
+	@ApiProperty({ type: TranslatableDto, example: { en: 'Product Description' } })
+	@IsObject()
+	additionalDescription: Translatable;
+
+	@Column({ type: 'jsonb', default: {} })
+	@ApiProperty({ type: Object, example: {} })
+	@IsObject()
+	additionalDescriptionRaw: any;
+
 	@UpdateDateColumn({ type: String })
 	@ApiProperty({ type: String, example: '' })
 	updatedAt: string;

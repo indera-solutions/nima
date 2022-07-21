@@ -231,6 +231,10 @@ export const STRINGS = {
 		en: 'Description',
 		el: 'Περιγραφή',
 	},
+	SHORT_DESCRIPTION: {
+		en: 'Additional Description',
+		el: 'Πρόσθετη Περιγραφή',
+	},
 	SLUG: {
 		en: 'Slug',
 		el: 'Slug',

@@ -71,6 +71,8 @@ export default function Add(props: AddProps) {
 		currency: 'EUR',
 		description: {},
 		descriptionRaw: {},
+		additionalDescription: {},
+		additionalDescriptionRaw: {},
 		descriptionPlaintext: '',
 		isAvailableForPurchase: true,
 		isPublished: true,
@@ -249,6 +251,20 @@ export default function Add(props: AddProps) {
 		}));
 	}
 
+	function onShortDescriptionEdit(html: string, raw: any) {
+		setCreateProductDto(state => ({
+			...state,
+			shortDescription: {
+				...state.additionalDescription,
+				[languages.currentEditingLanguage]: html,
+			},
+			shortDescriptionRaw: {
+				...state.additionalDescriptionRaw,
+				[languages.currentEditingLanguage]: raw,
+			},
+		}));
+	}
+
 	function onVariantValueEdit(name: keyof CreateProductVariantDto, value: any) {
 		setDefaultVariant(state => ({
 			...state,
@@ -301,16 +317,30 @@ export default function Add(props: AddProps) {
 										   onChange={ (value) => onValueEdit('name', value) }
 						/>
 
-						<label className="label">
+						<div>
+							<label className="label">
 							<span
 								className="label-text"><Trans>{ STRINGS.DESCRIPTION }</Trans> ({ languages.currentEditingLanguage.toUpperCase() })</span>
-						</label>
-						{ createProductDto.descriptionRaw && <RichTextInput
-							key={ languages.currentEditingLanguage + createProductDto?.name[languages.currentEditingLanguage] }
-							init={ createProductDto.descriptionRaw[languages.currentEditingLanguage] }
-							onChange={ (html, raw) => {
-								onDescriptionEdit(html, raw);
-							} }/> }
+							</label>
+							{ createProductDto.descriptionRaw && <RichTextInput
+								key={ languages.currentEditingLanguage + createProductDto?.name[languages.currentEditingLanguage] }
+								init={ createProductDto.descriptionRaw[languages.currentEditingLanguage] }
+								onChange={ (html, raw) => {
+									onDescriptionEdit(html, raw);
+								} }/> }
+						</div>
+						<div>
+							<label className="label">
+							<span
+								className="label-text"><Trans>{ STRINGS.SHORT_DESCRIPTION }</Trans> ({ languages.currentEditingLanguage.toUpperCase() })</span>
+							</label>
+							{ createProductDto.additionalDescriptionRaw && <RichTextInput
+								key={ languages.currentEditingLanguage + createProductDto?.name[languages.currentEditingLanguage] }
+								init={ createProductDto.additionalDescriptionRaw[languages.currentEditingLanguage] }
+								onChange={ (html, raw) => {
+									onShortDescriptionEdit(html, raw);
+								} }/> }
+						</div>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
 								<span className="label-text"><Trans>{ STRINGS.SLUG }</Trans></span>

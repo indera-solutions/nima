@@ -332,6 +332,9 @@ export class ProductsService {
 		for ( const locale in product.description ) {
 			str += htmlToPlain(product.description[locale]) + ' ';
 		}
+		for ( const locale in product.additionalDescription ) {
+			str += htmlToPlain(product.additionalDescription[locale]) + ' ';
+		}
 
 		str += product.slug + ' ';
 

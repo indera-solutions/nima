@@ -1483,6 +1483,18 @@ export interface CreateProductDto {
 	'descriptionRaw': object;
 	/**
 	 *
+	 * @type {TranslatableDto}
+	 * @memberof CreateProductDto
+	 */
+	'additionalDescription': TranslatableDto;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof CreateProductDto
+	 */
+	'additionalDescriptionRaw': object;
+	/**
+	 *
 	 * @type {string}
 	 * @memberof CreateProductDto
 	 */
@@ -3270,6 +3282,18 @@ export interface ProductDto {
 	 * @memberof ProductDto
 	 */
 	'descriptionRaw': object;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof ProductDto
+	 */
+	'additionalDescription': TranslatableDto;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof ProductDto
+	 */
+	'additionalDescriptionRaw': object;
 	/**
 	 *
 	 * @type {string}
