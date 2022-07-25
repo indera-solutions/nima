@@ -17,7 +17,7 @@ export class CategoriesService {
 		const { parentId, ...dto } = params.createCategoryDto;
 
 		if ( !dto.slug || dto.slug.length === 0 ) {
-			dto.slug = getSlug(dto.name.en); //TODO get default language from settings
+			dto.slug = getSlug(dto.name.en || dto.name.el); //TODO get default language from settings
 		}
 		let backgroundImage: MediaEntity;
 		if ( dto.backgroundImageId ) {
