@@ -12,6 +12,7 @@ export const deepEqual = function (x: any, y: any) {
 			return false;
 
 		for ( const prop in x ) {
+			// eslint-disable-next-line no-prototype-builtins
 			if ( y.hasOwnProperty(prop) ) {
 				if ( !deepEqual(x[prop], y[prop]) )
 					return false;
@@ -23,3 +24,19 @@ export const deepEqual = function (x: any, y: any) {
 	} else
 		return false;
 };
+
+export async function runAsyncObject(input: { [k: string]: Promise<any> }): Promise<{ [k: string]: any }> {
+	const promisedProperties = [];
+	const objectKeys = Object.keys(input);
+
+	objectKeys.forEach((key) => promisedProperties.push(input[key]));
+
+	return Promise.all(promisedProperties)
+				  .then((resolvedValues) => {
+					  return resolvedValues.reduce((resolvedObject, property, index) => {
+						  resolvedObject[objectKeys[index]] = property;
+						  return resolvedObject;
+					  }, input);
+				  });
+
+}

@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { runAsyncObject } from '@nima-cms/utils';
 import { AttributeValuesService } from '../attributes/attribute-values.service';
 import { CategoriesService } from '../categories/categories.service';
+import { CollectionsService } from '../collections/collections.service';
+import { CollectionDto } from '../collections/dto/collection.dto';
 import {
 	AttributeDrillDownDto,
 	ProductFilterParamsDto,
@@ -24,6 +27,7 @@ const emptyRes: ProductFilterResultDto = {
 	minPrice: 0,
 	selectedMaxPrice: 0,
 	selectedMinPrice: 0,
+	collections: [],
 };
 
 @Injectable()
@@ -35,6 +39,7 @@ export class FilteringService {
 		private productVariantService: ProductVariantService,
 		private categoriesService: CategoriesService,
 		private attributeValuesService: AttributeValuesService,
+		private collectionService: CollectionsService,
 	) {
 	}
 
@@ -56,7 +61,7 @@ export class FilteringService {
 			collectionId = params.collectionId;
 		}
 		const filters = await this.getFiltersFromValues(params.attributeValueIds);
-
+		let collections = [];
 
 		if ( !params.variants ) {
 			const result = await this.productRepository.findFilteredProductIds(collectionId, categoryIdArray, filters, params.search, options.isStaff);
@@ -76,9 +81,15 @@ export class FilteringService {
 				if ( lowestPrice > maxPrice ) maxPrice = lowestPrice;
 			}
 			if ( ids.length === 0 ) return emptyRes;
-			products = await this.productRepository.findByIdsWithSorting(ids, skip, take, params.sorting, params.language);
-			const rawDrillDown = await this.attributeValuesService.attributeDrillDown({ ids: ids });
+			const { tempProducts, rawDrillDown, collectionTemp } = await runAsyncObject({
+				tempProducts: this.productRepository.findByIdsWithSorting(ids, skip, take, params.sorting, params.language),
+				rawDrillDown: this.attributeValuesService.attributeDrillDown({ ids: ids }),
+				collectionTemp: this.collectionService.getCollectionsOfProductIds({ productIds: ids }),
+			});
+			products = tempProducts;
 			attributeDrillDown = this.attributeFilterRawArrayToDrillDownArray(rawDrillDown);
+			collections = collectionTemp;
+
 		} else {
 			const result = await this.productVariantRepository.findFilteredVariantIds(collectionId, categoryIdArray, filters, params.search);
 
@@ -111,6 +122,7 @@ export class FilteringService {
 			maxPrice,
 			selectedMinPrice: params.minPrice || 0,
 			selectedMaxPrice: params.maxPrice || 0,
+			collections: collections.map(c => CollectionDto.prepare(c, { isAdmin: options.isStaff })),
 		};
 	}
 

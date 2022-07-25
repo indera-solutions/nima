@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { LanguageCode, PaginatedResults } from '@nima-cms/utils';
 import { IsBoolean, IsEnum, IsInt, IsNumber, IsOptional, IsString } from 'class-validator';
+import { CollectionDto } from '../../collections/dto/collection.dto';
 import { ProductDto } from './product.dto';
 
 export class AttributeDrillDownValuesDto {
@@ -55,6 +56,9 @@ export class ProductFilterResultDto implements PaginatedResults<ProductDto> {
 
 	@ApiProperty()
 	totalCount: number;
+
+	@ApiProperty({ type: CollectionDto, isArray: true })
+	collections: CollectionDto[];
 }
 
 export enum ProductSorting {

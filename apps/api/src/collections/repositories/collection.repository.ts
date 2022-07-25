@@ -1,5 +1,6 @@
 import { EntityRepository } from 'typeorm';
 import { BaseRepository } from 'typeorm-transactional-cls-hooked';
+import { CollectionProductsEntity } from '../entities/collection-products.entity';
 import { CollectionEntity } from '../entities/collection.entity';
 
 @EntityRepository(CollectionEntity)
@@ -34,5 +35,12 @@ export class CollectionRepository extends BaseRepository<CollectionEntity> {
 		return this.delete({
 			id: id,
 		});
+	}
+
+	async getCollectionsOfProductIds(productIds: number[]): Promise<CollectionEntity[]> {
+		return await this.createQueryBuilder('c')
+						 .leftJoin(CollectionProductsEntity, 'cp', 'c.id=cp.collectionId')
+						 .where('cp.productId IN (:...ids)', { ids: productIds })
+						 .getMany();
 	}
 }

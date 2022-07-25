@@ -86,6 +86,10 @@ export class CollectionsService {
 		return collection;
 	}
 
+	async getCollectionsOfProductIds(params: { productIds: number[] }): Promise<CollectionEntity[]> {
+		return this.collectionRepository.getCollectionsOfProductIds(params.productIds);
+	}
+
 	private async addProductsToCollection(collection: CollectionEntity, products: CreateCollectionProductDto[]) {
 		for ( const product of products ) {
 			const productEntity = await this.productsService.getById({ id: product.productId });

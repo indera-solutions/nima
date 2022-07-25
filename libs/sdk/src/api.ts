@@ -3505,6 +3505,12 @@ export interface ProductFilterResultDto {
 	 * @memberof ProductFilterResultDto
 	 */
 	'totalCount': number;
+	/**
+	 *
+	 * @type {Array<CollectionDto>}
+	 * @memberof ProductFilterResultDto
+	 */
+	'collections': Array<CollectionDto>;
 }
 
 /**
