@@ -161,11 +161,11 @@ function ProductRow(props: { product: ProductDto }) {
 
 	return <tr
 		className={ 'hover' }>
-		<td><ProductImage product={ props.product }/></td>
-		<td><Trans>{ product.name }</Trans></td>
-		<td><Trans>{ category?.name }</Trans></td>
-		<td><Trans>{ productType?.name }</Trans></td>
-		<td>{ getEuroValue(product.minPrice) }</td>
+		<td className={ 'whitespace-normal' }><ProductImage product={ props.product }/></td>
+		<td className={ 'whitespace-normal' }><Trans>{ product.name }</Trans></td>
+		<td className={ 'whitespace-normal' }><Trans>{ category?.name }</Trans></td>
+		<td className={ 'whitespace-normal' }><Trans>{ productType?.name }</Trans></td>
+		<td className={ 'whitespace-normal' }>{ getEuroValue(product.minPrice) }</td>
 		{/*<td>{ product.defaultVariant?.stock === 0 ? <div className="badge badge-error gap-2">*/ }
 		{/*	0*/ }
 		{/*</div> : product.defaultVariant?.stock }</td>*/ }
