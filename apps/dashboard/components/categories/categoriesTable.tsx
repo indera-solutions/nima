@@ -24,16 +24,18 @@ export function CategoriesTable(props: CategoriesTableProps) {
 			</tr>
 			</thead>
 			<tbody>
-			{ props.categories.map(attribute => <tr key={ attribute.id } className={ 'hover' }>
-				<td><Trans>{ attribute.name }</Trans></td>
-				<td>{ attribute.slug }</td>
-				<td>{ attribute.children.length }</td>
-				<td>
-					<Link href={ NIMA_ROUTES.categories.edit(attribute.id, props.parentId) + '#admin-page' }>
-						<button className={ 'btn btn-primary' }><Trans>{ STRINGS.EDIT }</Trans></button>
-					</Link>
-				</td>
-			</tr>) }
+			{ props.categories
+				   .sort((a, b) => (getAdminTranslation(a.name).localeCompare(getAdminTranslation(b.name))))
+				   .map(attribute => <tr key={ attribute.id } className={ 'hover' }>
+					   <td><Trans>{ attribute.name }</Trans></td>
+					   <td>{ attribute.slug }</td>
+					   <td>{ attribute.children.length }</td>
+					   <td>
+						   <Link href={ NIMA_ROUTES.categories.edit(attribute.id, props.parentId) + '#admin-page' }>
+							   <button className={ 'btn btn-primary' }><Trans>{ STRINGS.EDIT }</Trans></button>
+						   </Link>
+					   </td>
+				   </tr>) }
 			</tbody>
 		</table>
 	</div>;
