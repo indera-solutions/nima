@@ -1,5 +1,11 @@
 import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { BasePaginatedRequest, getSlug, htmlToPlain, PaginatedResults } from '@nima-cms/utils';
+import {
+	BasePaginatedRequest,
+	getSlug,
+	htmlToPlain,
+	PaginatedResults,
+	removeUndefinedProperties,
+} from '@nima-cms/utils';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { AttributeValuesService } from '../attributes/attribute-values.service';
 import { CategoriesService } from '../categories/categories.service';
@@ -12,7 +18,7 @@ import { ProductTypesService } from '../product-types/product-types.service';
 import { CreateAssignedProductAttributeDto } from './dto/product-attribute-assignment.dto';
 import { CreateAssignedProductAttributeValueDto } from './dto/product-attribute-value-assignment.dto';
 import { ProductQueryFilterDto } from './dto/product-filtering.dto';
-import { CreateProductDto } from './dto/product.dto';
+import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { AssignedProductAttributeEntity } from './entities/product-attribute-assignment.entity';
 import { AssignedProductAttributeValueEntity } from './entities/product-attribute-value-assignment.entity';
 import { ProductEntity } from './entities/product.entity';
@@ -76,6 +82,17 @@ export class ProductsService {
 		await this.syncCollections({ oldCollections: oldProduct?.collections || [], newCollections: dto.collectionIds, product: product });
 		await this.updateSearchDocument(product.id);
 		return await this.getById({ id: product.id });
+	}
+
+	async patchProduct(params: { dto: UpdateProductDto, id: number }): Promise<ProductEntity> {
+		const { dto, id } = params;
+		removeUndefinedProperties(dto);
+		const existing = await this.getById({ id });
+		await this.productRepository.save({
+			id,
+			...dto as any,
+		});
+		return await this.getById({ id });
 	}
 
 	async findAll(): Promise<ProductEntity[]> {

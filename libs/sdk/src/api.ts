@@ -4918,6 +4918,63 @@ export interface UpdatePaymentStatusDto {
 	 */
 	'status': PaymentStatus;
 }
+
+/**
+ *
+ * @export
+ * @interface UpdateProductDto
+ */
+export interface UpdateProductDto {
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof UpdateProductDto
+	 */
+	'name'?: TranslatableDto;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof UpdateProductDto
+	 */
+	'description'?: TranslatableDto;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof UpdateProductDto
+	 */
+	'descriptionRaw'?: object;
+	/**
+	 *
+	 * @type {TranslatableDto}
+	 * @memberof UpdateProductDto
+	 */
+	'additionalDescription'?: TranslatableDto;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof UpdateProductDto
+	 */
+	'additionalDescriptionRaw'?: object;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof UpdateProductDto
+	 */
+	'metadata'?: object;
+	/**
+	 *
+	 * @type {object}
+	 * @memberof UpdateProductDto
+	 */
+	'privateMetadata'?: object;
+	/**
+	 *
+	 * @type {boolean}
+	 * @memberof UpdateProductDto
+	 */
+	'isPublished'?: boolean;
+}
+
 /**
  *
  * @export
@@ -13385,6 +13442,48 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 		/**
 		 *
 		 * @param {number} id
+		 * @param {UpdateProductDto} updateProductDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		productsPatch: async (id: number, updateProductDto: UpdateProductDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+			// verify required parameter 'id' is not null or undefined
+			assertParamExists('productsPatch', 'id', id)
+			// verify required parameter 'updateProductDto' is not null or undefined
+			assertParamExists('productsPatch', 'updateProductDto', updateProductDto)
+			const localVarPath = `/api/v1/products/{id}`
+				.replace(`{${ "id" }}`, encodeURIComponent(String(id)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if ( configuration ) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+			localVarRequestOptions.data = serializeDataIfNeeded(updateProductDto, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {number} id
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -13522,6 +13621,17 @@ export const ProductsApiFp = function (configuration?: Configuration) {
 		/**
 		 *
 		 * @param {number} id
+		 * @param {UpdateProductDto} updateProductDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async productsPatch(id: number, updateProductDto: UpdateProductDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.productsPatch(id, updateProductDto, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {number} id
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -13594,6 +13704,16 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
 		 */
 		productsGetById(id: number, options?: any): AxiosPromise<ProductDto> {
 			return localVarFp.productsGetById(id, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {number} id
+		 * @param {UpdateProductDto} updateProductDto
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		productsPatch(id: number, updateProductDto: UpdateProductDto, options?: any): AxiosPromise<ProductDto> {
+			return localVarFp.productsPatch(id, updateProductDto, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -13730,6 +13850,27 @@ export interface ProductsApiProductsGetByIdRequest {
 }
 
 /**
+ * Request parameters for productsPatch operation in ProductsApi.
+ * @export
+ * @interface ProductsApiProductsPatchRequest
+ */
+export interface ProductsApiProductsPatchRequest {
+	/**
+	 *
+	 * @type {number}
+	 * @memberof ProductsApiProductsPatch
+	 */
+	readonly id: number;
+
+	/**
+	 *
+	 * @type {UpdateProductDto}
+	 * @memberof ProductsApiProductsPatch
+	 */
+	readonly updateProductDto: UpdateProductDto;
+}
+
+/**
  * Request parameters for productsRemove operation in ProductsApi.
  * @export
  * @interface ProductsApiProductsRemoveRequest
@@ -13812,6 +13953,17 @@ export class ProductsApi extends BaseAPI {
 	 */
 	public productsGetById(requestParameters: ProductsApiProductsGetByIdRequest, options?: AxiosRequestConfig) {
 		return ProductsApiFp(this.configuration).productsGetById(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {ProductsApiProductsPatchRequest} requestParameters Request parameters.
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof ProductsApi
+	 */
+	public productsPatch(requestParameters: ProductsApiProductsPatchRequest, options?: AxiosRequestConfig) {
+		return ProductsApiFp(this.configuration).productsPatch(requestParameters.id, requestParameters.updateProductDto, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**

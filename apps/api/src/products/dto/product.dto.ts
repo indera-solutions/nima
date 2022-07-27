@@ -1,4 +1,4 @@
-import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
+import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger';
 import { IsArray, IsInt } from 'class-validator';
 import { CollectionDto } from '../../collections/dto/collection.dto';
 import { CreateSortableMediaDto, SortableMediaDto } from '../../core/dto/media.dto';
@@ -85,5 +85,14 @@ export class CreateProductDto extends OmitType(ProductDto, ['id', 'attributes', 
 	collectionIds: number[];
 }
 
-export class UpdateProductDto extends PartialType(ProductDto) {
+export class UpdateProductDto extends PartialType(PickType(ProductDto, [
+	'name',
+	'description',
+	'descriptionRaw',
+	'additionalDescription',
+	'additionalDescriptionRaw',
+	'metadata',
+	'privateMetadata',
+	'isPublished',
+])) {
 }

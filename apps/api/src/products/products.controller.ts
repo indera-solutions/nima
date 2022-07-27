@@ -6,6 +6,7 @@ import {
 	NotFoundException,
 	Param,
 	ParseIntPipe,
+	Patch,
 	Post,
 	Put,
 	Query,
@@ -17,7 +18,7 @@ import { plainToInstance } from 'class-transformer';
 import { IsPublic, IsStaff, User } from '../auth/auth.decorator';
 import { UserEntity } from '../users/entities/user.entity';
 import { ProductFilterParamsDto, ProductFilterResultDto } from './dto/product-filtering.dto';
-import { CreateProductDto, ProductDto } from './dto/product.dto';
+import { CreateProductDto, ProductDto, UpdateProductDto } from './dto/product.dto';
 import { FilteringService } from './filtering.service';
 import { ProductsService } from './products.service';
 
@@ -79,6 +80,16 @@ export class ProductsController {
 		const product = await this.productsService.save({ dto: createProductDto, id: id });
 		return ProductDto.prepare(product, { isAdmin: user?.isStaff || false });
 	}
+
+	@Patch(':id')
+	@ApiOkResponse({ type: ProductDto })
+	@ApiBody({ type: UpdateProductDto })
+	@IsStaff()
+	async patch(@Param('id', ParseIntPipe) id: number, @Body() updateProductDto: UpdateProductDto, @User() user?: UserEntity) {
+		const product = await this.productsService.patchProduct({ dto: updateProductDto, id: id });
+		return ProductDto.prepare(product, { isAdmin: user?.isStaff || false });
+	}
+
 
 	@Delete(':id')
 	@ApiOkResponse({ type: ProductDto })
