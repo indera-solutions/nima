@@ -26,7 +26,7 @@ export class AssignedProductAttributeEntity {
 	@ApiProperty({ type: ProductTypeAttributeDto })
 	productTypeAttribute: ProductTypeAttributeEntity;
 
-	@OneToMany(() => AssignedProductAttributeValueEntity, assignedValue => assignedValue.assignedProductAttribute, { eager: true })
+	@OneToMany(() => AssignedProductAttributeValueEntity, assignedValue => assignedValue.assignedProductAttribute, { eager: true, onDelete: 'CASCADE' })
 	values: AssignedProductAttributeValueEntity[];
 }
 
