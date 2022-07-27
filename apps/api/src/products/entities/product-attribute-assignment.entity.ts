@@ -19,7 +19,7 @@ export class AssignedProductAttributeEntity {
 	id: number;
 
 	@ManyToOne(() => ProductEntity, product => product.attributes, { onDelete: 'CASCADE' })
-	// @ApiProperty({ type: ProductDto })
+		// @ApiProperty({ type: ProductDto })
 	product: ProductEntity;
 
 	@ManyToOne(() => ProductTypeAttributeEntity, { eager: true, onDelete: 'CASCADE' })
@@ -36,8 +36,7 @@ export class AssignedProductVariantAttributeEntity {
 	@ApiProperty({ type: Number, example: 1 })
 	id: number;
 
-	@ManyToOne(() => ProductVariantEntity)
-		// @ApiProperty({ type: ProductVariantDto })
+	@ManyToOne(() => ProductVariantEntity, { onDelete: 'CASCADE' })
 	variant: ProductVariantEntity;
 
 	@ManyToOne(() => ProductTypeVariantAttributeEntity, { eager: true, onDelete: 'CASCADE' })
