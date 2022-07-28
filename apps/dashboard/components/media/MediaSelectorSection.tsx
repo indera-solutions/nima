@@ -82,7 +82,7 @@ export function MediaSelectorSection(props: MediaSelectorSectionProps) {
 												{ ...provided.dragHandleProps }
 											>
 												<div
-													className={ 'flex flex-wrap justify-center items-center border w-28 h-28 ' }>
+													className={ 'flex flex-wrap justify-center items-center border w-28 h-28 backgroundImageGrid ' }>
 													<ImageItem id={ media.mediaId }/>
 												</div>
 											</div>
