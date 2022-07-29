@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Patch, Post, Query, Request, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import {
 	LoginUserDto,
 	RegisterUserDto,
@@ -49,6 +49,7 @@ export class AuthController {
 
 	// @UseGuards(JwtAuthGuard)
 	@Get('/profile')
+	@ApiBearerAuth()
 	getHello(@Request() req) {
 		return req.user;
 	}
