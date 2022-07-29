@@ -92,6 +92,10 @@ export class ProductsService {
 			id,
 			...dto as any,
 		});
+
+		// noinspection ES6MissingAwait
+		this.updateSearchDocument(id);
+
 		return await this.getById({ id });
 	}
 
@@ -341,25 +345,39 @@ export class ProductsService {
 
 
 	private async updateSearchDocument(productId: number): Promise<string> {
-		const product = await this.getById({ id: productId });
-		let str = '';
-		for ( const locale in product.name ) {
-			str += product.name[locale] + ' ';
-		}
-		for ( const locale in product.description ) {
-			str += htmlToPlain(product.description[locale]) + ' ';
-		}
-		for ( const locale in product.additionalDescription ) {
-			str += htmlToPlain(product.additionalDescription[locale]) + ' ';
-		}
+		try {
+			const product = await this.getById({ id: productId });
+			let str = '';
+			for ( const locale in product.name ) {
+				str += product.name[locale] + ' ';
+			}
+			for ( const locale in product.description ) {
+				str += htmlToPlain(product.description[locale]) + ' ';
+			}
+			for ( const locale in product.additionalDescription ) {
+				str += htmlToPlain(product.additionalDescription[locale]) + ' ';
+			}
 
-		str += product.slug + ' ';
+			str += product.slug + ' ';
 
-		await this.productRepository.update(productId, {
-			searchDocument: str,
-		});
+			const variations = await this.productVariantRepository.findByProductId(productId);
 
-		return str;
+			for ( const variation of variations ) {
+				for ( const locale in variation.name ) {
+					str += variation.name[locale] + ' ';
+				}
+				str += variation.sku + ' ';
+			}
+
+			await this.productRepository.update(productId, {
+				searchDocument: str,
+			});
+
+			return str;
+		} catch ( e ) {
+			console.error('Failed to update search document for product id', productId);
+			return '';
+		}
 	}
 
 }
