@@ -6,6 +6,7 @@ import {
 	RequestUserPasswordChangeDto,
 	SuccessLoginResponse,
 	UpdateUserPasswordDto,
+	UserDto,
 } from '../users/dto/user.dto';
 import { IsPublic } from './auth.decorator';
 import { AuthService } from './auth.service';
@@ -50,7 +51,8 @@ export class AuthController {
 	// @UseGuards(JwtAuthGuard)
 	@Get('/profile')
 	@ApiBearerAuth()
-	getHello(@Request() req) {
+	@ApiOkResponse({ type: UserDto })
+	getProfile(@Request() req) {
 		return req.user;
 	}
 }

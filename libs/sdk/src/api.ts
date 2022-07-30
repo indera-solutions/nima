@@ -4918,7 +4918,6 @@ export interface UpdatePaymentStatusDto {
 	 */
 	'status': PaymentStatus;
 }
-
 /**
  *
  * @export
@@ -4974,7 +4973,6 @@ export interface UpdateProductDto {
 	 */
 	'isPublished'?: boolean;
 }
-
 /**
  *
  * @export
@@ -6699,7 +6697,7 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		authGetHello: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		authGetProfile: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			const localVarPath = `/api/v1/auth/profile`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6711,6 +6709,10 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 			const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
+
+			// authentication bearer required
+			// http bearer authentication required
+			await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -6880,8 +6882,8 @@ export const AuthenticationApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async authGetHello(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.authGetHello(options);
+		async authGetProfile(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDto>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.authGetProfile(options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
@@ -6940,8 +6942,8 @@ export const AuthenticationApiFactory = function (configuration?: Configuration,
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		authGetHello(options?: any): AxiosPromise<void> {
-			return localVarFp.authGetHello(options).then((request) => request(axios, basePath));
+		authGetProfile(options?: any): AxiosPromise<UserDto> {
+			return localVarFp.authGetProfile(options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -7059,8 +7061,8 @@ export class AuthenticationApi extends BaseAPI {
 	 * @throws {RequiredError}
 	 * @memberof AuthenticationApi
 	 */
-	public authGetHello(options?: AxiosRequestConfig) {
-		return AuthenticationApiFp(this.configuration).authGetHello(options).then((request) => request(this.axios, this.basePath));
+	public authGetProfile(options?: AxiosRequestConfig) {
+		return AuthenticationApiFp(this.configuration).authGetProfile(options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
