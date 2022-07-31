@@ -8,6 +8,9 @@ import { MediaRepository } from '../entities/media.repository';
 
 const imageThumbnail = require('image-thumbnail');
 
+const cdnPrefix = process.env['CDN_PREFIX'] ? process.env['CDN_PREFIX'] : 'https://loom-cdn.indera.gr/';
+
+
 @Injectable()
 export class MediaService {
 
@@ -39,7 +42,7 @@ export class MediaService {
 				});
 				const thumbnails3res = await this.coreService.uploadFileToS3(thumbnail.buffer, 'thumbnail_' + encodedName);
 				if ( thumbnails3res ) {
-					thumbnailUrl = 'https://loom-cdn.indera.gr/' + thumbnails3res.Key;
+					thumbnailUrl = cdnPrefix + thumbnails3res.Key;
 				}
 			} catch ( e ) {
 				console.log('Thumbnail failed', e);
@@ -51,7 +54,7 @@ export class MediaService {
 			dto: {
 				name: originalFilename,
 				slug: getSlug(originalFilename),
-				url: 'https://loom-cdn.indera.gr/' + res.Key,
+				url: cdnPrefix + res.Key,
 				mimeType: file.mimetype ? file.mimetype : '',
 				thumbnailUrl: thumbnailUrl,
 				alt: {},
