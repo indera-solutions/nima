@@ -28,8 +28,6 @@ export function MediaList(props: MediaListProps) {
 
 
 	function onImageSelect(media: MediaDto) {
-
-		console.log(media);
 		setPreviewMedia(media);
 
 		if ( props.onSelect ) {
@@ -91,7 +89,7 @@ export function MediaList(props: MediaListProps) {
 							<MediaDetails media={ previewMedia }/>
 							<div className="text-right my-3">
 								<button className={ 'btn btn-primary' } onClick={ () => setPreviewMedia(undefined) }>
-									Clear
+									Close Details
 								</button>
 							</div>
 

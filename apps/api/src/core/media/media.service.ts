@@ -116,7 +116,14 @@ export class MediaService {
 		if ( !id || typeof id !== 'number' ) throw new BadRequestException('INVALID_LOOM_MEDIA_ID');
 		const res = await this.mediaRepository.findById(id);
 		if ( !res ) throw new NotFoundException('LOOM_MEDIA_NOT_FOUND');
+
 		await this.mediaRepository.deleteById(id);
+		const key = res.url.replace(cdnPrefix, '');
+		await this.coreService.delete(key);
+		if ( res.thumbnailUrl ) {
+			const keyThumbnail = res.thumbnailUrl.replace(cdnPrefix, '');
+			await this.coreService.delete(keyThumbnail);
+		}
 		return res;
 	}
 }

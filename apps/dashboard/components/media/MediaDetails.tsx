@@ -1,4 +1,4 @@
-import { Trans } from '@nima-cms/react';
+import { Trans, useRemoveMediaMutation } from '@nima-cms/react';
 import { MediaDto } from '@nima-cms/sdk';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -8,9 +8,21 @@ interface MediaDetailsProps {
 }
 
 export function MediaDetails({ media }: MediaDetailsProps) {
+
+	const removeMediaMutation = useRemoveMediaMutation();
+
 	function formatBytes(a, b = 2, k = 1024) {
 		const d = Math.floor(Math.log(a) / Math.log(k));
 		return 0 == a ? '0 Bytes' : parseFloat((a / Math.pow(k, d)).toFixed(Math.max(0, b))) + ' ' + ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'][d];
+	}
+
+	async function onDelete() {
+		const confirm = window.confirm('Are you sure you want to delete this media?');
+		if ( confirm ) {
+			await removeMediaMutation.mutateAsync({
+				id: media.id,
+			});
+		}
 	}
 
 	return (
@@ -31,6 +43,9 @@ export function MediaDetails({ media }: MediaDetailsProps) {
 					Copy
 				</button>
 			</label>
+			<button className="btn btn-error" onClick={ onDelete }>
+				Delete
+			</button>
 		</div>
 	);
 }

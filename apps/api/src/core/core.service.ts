@@ -1,4 +1,10 @@
-import { PutObjectCommand, PutObjectCommandInput, S3Client } from '@aws-sdk/client-s3';
+import {
+	CopyObjectCommand,
+	DeleteObjectCommand,
+	PutObjectCommand,
+	PutObjectCommandInput,
+	S3Client,
+} from '@aws-sdk/client-s3';
 import { Injectable } from '@nestjs/common';
 
 export const PUBLIC_UPLOADS = process.env['S3_BUCKET'] ? process.env['S3_BUCKET'] : 'loomstack-looms3publicuploadsloomuploads3b777ca6-19e4oyqa6rxpm';
@@ -29,5 +35,26 @@ export class CoreService {
 			console.error(e);
 			return undefined;
 		}
+	}
+
+	async copy(key: string, newName: string) {
+		const s3Client = new S3Client({
+			region: 'eu-central-1',
+		});
+		const res = await s3Client.send(new CopyObjectCommand({
+			Bucket: PUBLIC_UPLOADS,
+			CopySource: PUBLIC_UPLOADS + '/' + key,
+			Key: newName,
+		}));
+	}
+
+	async delete(key: string) {
+		const s3Client = new S3Client({
+			region: 'eu-central-1',
+		});
+		await s3Client.send(new DeleteObjectCommand({
+			Bucket: PUBLIC_UPLOADS,
+			Key: key,
+		}));
 	}
 }

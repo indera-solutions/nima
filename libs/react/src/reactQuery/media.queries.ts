@@ -67,3 +67,25 @@ export function useMediaUploadMutation(options: { onProgress?: (newProgress: num
 	);
 
 }
+
+
+export function useRemoveMediaMutation() {
+	const client = useQueryClient();
+	return useMutation<MediaDto,
+		never,
+		{
+			id: number,
+		}>(
+		async ({ id }) => {
+			const res = await mediaSdk.mediaDeleteById({
+				id,
+			});
+			return res.data;
+		},
+		{
+			onSuccess: () => {
+				client.invalidateQueries(NimaQueryCacheKeys.media.all);
+			},
+		},
+	);
+}
