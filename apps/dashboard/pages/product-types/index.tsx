@@ -34,23 +34,25 @@ export default function ProductTypesList(props: ProductTypesListProps) {
 						<table className="table w-full">
 							<thead>
 							<tr>
-								<th><Trans caps>{STRINGS.NAME}</Trans></th>
-								<th><Trans caps>{STRINGS.SLUG}</Trans></th>
-								<th><Trans caps>{STRINGS.VARIANTS}</Trans></th>
-								<th><Trans caps>{STRINGS.ACTIONS}</Trans></th>
+								<th><Trans caps>{ STRINGS.NAME }</Trans></th>
+								<th><Trans caps>{ STRINGS.SLUG }</Trans></th>
+								<th><Trans caps>{ STRINGS.VARIANTS }</Trans></th>
+								<th><Trans caps>{ STRINGS.ACTIONS }</Trans></th>
 							</tr>
 							</thead>
 							<tbody>
-							{ (productTypes || []).map(attribute => <tr key={ attribute.id } className={ 'hover' }>
-								<td>{ attribute.name }</td>
-								<td>{ attribute.slug }</td>
-								<td>{ attribute.hasVariants ? getAdminTranslation(STRINGS.YES) : getAdminTranslation(STRINGS.NO) }</td>
-								<td>
-									<Link href={ NIMA_ROUTES.productTypes.edit(attribute.id) }>
-										<button className={ 'btn btn-primary' }><Trans>{STRINGS.EDIT}</Trans></button>
-									</Link>
-								</td>
-							</tr>) }
+							{ (productTypes || [])
+								.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+								.map(attribute => <tr key={ attribute.id } className={ 'hover' }>
+									<td>{ attribute.name }</td>
+									<td>{ attribute.slug }</td>
+									<td>{ attribute.hasVariants ? getAdminTranslation(STRINGS.YES) : getAdminTranslation(STRINGS.NO) }</td>
+									<td>
+										<Link href={ NIMA_ROUTES.productTypes.edit(attribute.id) }>
+											<a className={ 'btn btn-primary' }><Trans>{ STRINGS.EDIT }</Trans></a>
+										</Link>
+									</td>
+								</tr>) }
 							</tbody>
 						</table>
 					</div>

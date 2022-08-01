@@ -26,8 +26,11 @@ export function EditProductAttribute(props: EditProductAttributeProps) {
 
 	return (
 		<div className={ 'flex justify-between items-center' }>
-			<h1><Trans>{ attribute.name }</Trans>{ attribute.valueRequired ?
+			<h1><Trans>{ attribute.name }</Trans>
 				<span
+					className={ 'text-sm text-gray-400 pl-1' }>{ attribute.slug }
+				</span>
+				{ attribute.valueRequired ? <span
 					className={ 'text-sm text-gray-400 pl-1' }><Trans>{ STRINGS.REQUIRED_PARENTH }</Trans></span> : '' }
 			</h1>
 			<AttributeTypeSwitch

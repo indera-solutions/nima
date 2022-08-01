@@ -79,6 +79,7 @@ export default function AddAttribute(props: AddAttributeProps) {
 	const updateAttributeValueMutation = useUpdateAttributeValueMutation();
 
 	useEffect(() => {
+		if ( id ) return;
 		if ( createAttributeDto.inputType === InputType.DROPDOWN || createAttributeDto.inputType === InputType.MULTISELECT ) {
 			setValues([]);
 		} else if ( createAttributeDto.inputType === InputType.BOOLEAN ) {
@@ -87,7 +88,7 @@ export default function AddAttribute(props: AddAttributeProps) {
 				{ boolean: false, name: { 'en': 'No', 'el': 'Όχι' } },
 			]);
 		}
-	}, [createAttributeDto.inputType]);
+	}, [createAttributeDto.inputType, id]);
 
 	useEffect(() => {
 		if ( !existingAttribute ) return;

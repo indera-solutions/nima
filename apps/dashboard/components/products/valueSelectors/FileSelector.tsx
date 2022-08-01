@@ -43,20 +43,22 @@ export function FileSelector(props: EditSingleProductAttributeProps) {
 
 	return (
 		<>
-			{ value?.media &&
-				<a href={ value.media.url } rel="noreferrer"
-				   target={ '_blank' }>{ value?.media.slug } { value.media.thumbnailUrl &&
-					<img src={ value.media.thumbnailUrl } alt="" height={ 50 } width={ 50 }/> }</a> }
-			<label htmlFor={ 'fileSelectorModal_' + props.attributeId } className={ 'btn btn-primary gap-2' }>
-				Select
-			</label>
-			<input type="checkbox" id={ 'fileSelectorModal_' + props.attributeId } className="modal-toggle"/>
-			<div className="modal">
-				<div className="modal-box min-w-[90%] h-screen">
-					<label htmlFor={ 'fileSelectorModal_' + props.attributeId }
-						   ref={ closeLabelRef }
-						   className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-					<MediaGallery selectedId={ [] } onSelect={ onChange }/>
+			<div>
+				{ value?.media &&
+					<a href={ value.media.url } rel="noreferrer"
+					   target={ '_blank' }>{ value?.media.slug } { value.media.thumbnailUrl &&
+						<img src={ value.media.thumbnailUrl } alt="" height={ 50 } width={ 50 }/> }</a> }
+				<label htmlFor={ 'fileSelectorModal_' + props.attributeId } className={ 'btn btn-primary gap-2 ml-2' }>
+					Select
+				</label>
+				<input type="checkbox" id={ 'fileSelectorModal_' + props.attributeId } className="modal-toggle"/>
+				<div className="modal">
+					<div className="modal-box min-w-[90%] h-screen">
+						<label htmlFor={ 'fileSelectorModal_' + props.attributeId }
+							   ref={ closeLabelRef }
+							   className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+						<MediaGallery selectedId={ [] } onSelect={ onChange }/>
+					</div>
 				</div>
 			</div>
 		</>

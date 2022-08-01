@@ -133,7 +133,7 @@ export function useAttributeValueById(attributeId?: number, valueId?: number, op
 		},
 		{
 			...options,
-			enabled: !!attributeId,
+			enabled: !!attributeId && !!valueId,
 		},
 	);
 }

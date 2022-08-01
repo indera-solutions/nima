@@ -460,13 +460,15 @@ export default function Add(props: AddProps) {
 									value={ createProductDto.productTypeId }
 							>
 								<option disabled value={ 0 }>Select Type</option>
-								{ productTypes && productTypes.map((type) => {
-									return <option
-										key={ type.id }
-										value={ type.id }>
-										{ type.name }
-									</option>;
-								}) }
+								{ productTypes && productTypes
+									.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+									.map((type) => {
+										return <option
+											key={ type.id }
+											value={ type.id }>
+											{ type.name }
+										</option>;
+									}) }
 							</select>
 						</div>
 						<div>

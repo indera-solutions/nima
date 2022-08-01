@@ -68,18 +68,21 @@ export function DropdownValues(props: DropdownValuesProps) {
 						</thead>
 						<tbody>
 
-						{ props.values.map(value => <tr key={ value.slug }>
-							<th><Trans useEditingLanguage>{ value.name }</Trans></th>
-							<th>{ value.slug }</th>
-							<th className={ 'flex gap-2' }>
-								<button className={ 'btn btn-primary' } onClick={ () => onEditInit(value) }>
-									<SVGPencil width={ '20' } height={ '20' } stroke={ 'white' }/>
-								</button>
-								<button className={ 'btn btn-error' } onClick={ () => props.onValueRemove(value) }>
-									<SVGTrashCan width={ '20' } height={ '20' } stroke={ 'white' }/>
+						{ props.values.sort((a, b) => getAdminTranslation(a.name).toLowerCase().localeCompare(getAdminTranslation(b.name).toLowerCase())).map(value =>
+							<tr key={ value.slug }>
+								<th><Trans useEditingLanguage>{ value.name }</Trans>
+									{/*{value['id']}*/ }
+								</th>
+								<th>{ value.slug }</th>
+								<th className={ 'flex gap-2' }>
+									<button className={ 'btn btn-primary' } onClick={ () => onEditInit(value) }>
+										<SVGPencil width={ '20' } height={ '20' } stroke={ 'white' }/>
+									</button>
+									<button className={ 'btn btn-error' } onClick={ () => props.onValueRemove(value) }>
+										<SVGTrashCan width={ '20' } height={ '20' } stroke={ 'white' }/>
 
-								</button>
-							</th>
+									</button>
+								</th>
 						</tr>) }
 
 						</tbody>
