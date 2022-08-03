@@ -23,13 +23,15 @@ export class AttributeValuesRepository extends Repository<AttributeValueEntity> 
 		return this.delete(id);
 	}
 
-	async getSlugAndAttributeSlugOfValues(ids: number[]) {
-		const res = await this.findByIds(ids, {
-			relations: ['attribute'],
-		});
+	async getIdAndAttributeIdOfValues(ids: number[]) {
+		const res = await this.createQueryBuilder('av')
+							  .select(['av.id', 'a.id'])
+							  .leftJoin(AttributeEntity, 'a', 'av.attributeId = a.id')
+							  .where('av.id IN (:...ids)', { ids })
+							  .getRawMany();
 		return res.map(r => ({
-			attributeId: r.attribute.id,
-			valueId: r.id,
+			attributeId: r.a_id,
+			valueId: r.av_id,
 		}));
 	}
 

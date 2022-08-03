@@ -41,6 +41,7 @@ export class AssignedProductVariantAttributeValueEntity {
 		// @ApiProperty({ type: AssignedProductVariantAttributeDto })
 	assignedProductVariantAttribute: AssignedProductVariantAttributeEntity;
 
+	@Index()
 	@ManyToOne(() => AttributeValueEntity, { eager: true, onDelete: 'CASCADE' })
 	@ApiProperty({ type: AttributeValueDto })
 	value: AttributeValueEntity;

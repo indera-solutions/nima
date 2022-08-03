@@ -14,8 +14,8 @@ export class CategoryRepository extends TreeRepository<CategoryEntity> {
 	}
 
 	async listIdsOfChildren(id: number) {
-		const root = await this.findOne({ where: { id: id } });
-		const res = await this.findDescendantsTree(root, { depth: Number.MAX_SAFE_INTEGER });
+		const root = await this.findOne({ where: { id: id }, select: ['id'] });
+		const res = await this.findDescendantsTree(root, { depth: Number.MAX_SAFE_INTEGER, relations: [] });
 		return res.children.map(c => c.id);
 	}
 

@@ -65,65 +65,33 @@ export class FilteringService {
 		const filters = await this.getFiltersFromValues(params.attributeValueIds);
 		let collections = [];
 
-		if ( !params.variants ) {
-			const productsIds = await Promise.all(filters.map(filter => this.assignedProductAttributeValueRepository.getProductIdsOfValueId(filter.values)));
-			let temp = productsIds.length > 0 ? productsIds[0] : [];
-			productsIds.slice(1, productsIds.length).forEach(pid => {
-				temp = temp.filter(function (n) {
-					return pid.indexOf(n) !== -1;
-				});
-			});
 
-			const result = await this.productRepository.findFilteredProductIds(collectionId, categoryIdArray, temp, params.search, options.isStaff);
+		const result = await this.productRepository.findFilteredProductIds(collectionId, categoryIdArray, filters, params.search, options.isStaff);
 
-			if ( result.length === 0 )
-				return emptyRes;
+		if ( result.length === 0 )
+			return emptyRes;
 
-			// const lowestPrices = await this.productService.getLowestPrices(result);
-
-			for ( const product of result ) {
-				let underMax = true, overMin = true;
-				const lowestPrice = product.discountedPrice || product.priceAmount;
-				if ( params.maxPrice ) underMax = lowestPrice <= params.maxPrice;
-				if ( params.minPrice ) overMin = lowestPrice >= params.minPrice;
-				if ( underMax && overMin ) ids.push(product.id);
-				if ( lowestPrice < minPrice ) minPrice = lowestPrice;
-				if ( lowestPrice > maxPrice ) maxPrice = lowestPrice;
-			}
-			if ( ids.length === 0 ) return emptyRes;
-			const { tempProducts, rawDrillDown, collectionTemp } = await runAsyncObject({
-				tempProducts: this.productRepository.findByIdsWithSorting(ids, skip, take, params.sorting, params.language),
-				rawDrillDown: this.attributeValuesService.attributeDrillDown({ ids: ids }),
-				collectionTemp: this.collectionService.getCollectionsOfProductIds({ productIds: ids }),
-			});
-			products = tempProducts;
-			attributeDrillDown = this.attributeFilterRawArrayToDrillDownArray(rawDrillDown);
-			collections = collectionTemp;
-
-		} else {
-			const result = await this.productVariantRepository.findFilteredVariantIds(collectionId, categoryIdArray, filters, params.search);
-
-			if ( result.length === 0 )
-				return emptyRes;
-
-			const lowestPrices = await this.productVariantService.getLowestPrices(result);
-
-			for ( const resultElement of lowestPrices ) {
-				let underMax = true, overMin = true;
-				if ( params.maxPrice ) underMax = resultElement.lowestPrice <= params.maxPrice;
-				if ( params.minPrice ) overMin = resultElement.lowestPrice >= params.minPrice;
-				if ( underMax && overMin ) ids.push(resultElement.id);
-				if ( resultElement.lowestPrice < minPrice ) minPrice = resultElement.lowestPrice;
-				if ( resultElement.lowestPrice > maxPrice ) maxPrice = resultElement.lowestPrice;
-			}
-			if ( ids.length === 0 ) return emptyRes;
-			products = await this.productVariantRepository.findByIdsWithSorting(ids, skip, take, params.sorting, params.language);
-			const rawDrillDown = await this.productVariantRepository.attributeDrillDown(ids);
-			attributeDrillDown = this.attributeFilterRawArrayToDrillDownArray(rawDrillDown);
+		for ( const product of result ) {
+			let underMax = true, overMin = true;
+			const lowestPrice = product.discountedPrice || product.priceAmount;
+			if ( params.maxPrice ) underMax = lowestPrice <= params.maxPrice;
+			if ( params.minPrice ) overMin = lowestPrice >= params.minPrice;
+			if ( underMax && overMin ) ids.push(product.id);
+			if ( lowestPrice < minPrice ) minPrice = lowestPrice;
+			if ( lowestPrice > maxPrice ) maxPrice = lowestPrice;
 		}
+		if ( ids.length === 0 ) return emptyRes;
+		const { tempProducts, rawDrillDown, collectionTemp } = await runAsyncObject({
+			tempProducts: this.productRepository.findByIdsWithSortingAndPagination(ids, skip, take, params.sorting, params.language),
+			rawDrillDown: this.attributeValuesService.attributeDrillDown({ ids: ids }),
+			collectionTemp: this.collectionService.getCollectionsOfProductIds({ productIds: ids }),
+		});
+		products = tempProducts;
+		attributeDrillDown = this.attributeFilterRawArrayToDrillDownArray(rawDrillDown);
+		collections = collectionTemp;
 
 		return {
-			items: products.map(p => params.variants ? ProductDto.prepare(p.product, { isAdmin: options.isStaff }) : ProductDto.prepare(p, { isAdmin: options.isStaff })),
+			items: products.map(p => ProductDto.prepare(p, { isAdmin: options.isStaff })),
 			totalCount: ids.length,
 			pageSize: params.itemsPerPage,
 			pageNumber: params.page,
@@ -164,10 +132,9 @@ export class FilteringService {
 	}
 
 	private async getFiltersFromValues(attributeValueIds?: number[]): Promise<ProductQueryIdFilterDto[]> {
-		console.log(attributeValueIds);
 		if ( !attributeValueIds || attributeValueIds.length === 0 ) return [];
 		const attributeMap: { [T: number]: number[] } = {};
-		const res = await this.attributeValuesService.getSlugAndAttributeSlugOfValues(attributeValueIds);
+		const res = await this.attributeValuesService.getIdAndAttributeIdOfValues(attributeValueIds);
 		for ( const value of res ) {
 			if ( attributeMap[value.attributeId] ) {
 				attributeMap[value.valueId].push(value.valueId);

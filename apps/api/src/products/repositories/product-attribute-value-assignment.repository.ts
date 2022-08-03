@@ -44,4 +44,14 @@ export class AssignedProductVariantAttributeValueRepository extends BaseReposito
 			},
 		});
 	}
+
+	async getProductIdsOfValueId(valueIds: number[]): Promise<number[]> {
+		const res = await this.createQueryBuilder('papav')
+							  .select('av."productId"')
+							  .distinctOn(['av.productId'])
+							  .leftJoin(AssignedProductAttributeEntity, 'av', ' av."id" = papav."assignedProductAttributeId"')
+							  .where('papav."valueId" IN (:...valueIds)', { valueIds: valueIds })
+							  .getRawMany();
+		return res.map(r => r.productId);
+	}
 }

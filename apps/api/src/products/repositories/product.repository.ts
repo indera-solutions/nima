@@ -2,7 +2,7 @@ import { LanguageCode, searchPrepare } from '@nima-cms/utils';
 import { EntityRepository, In } from 'typeorm';
 import { BaseRepository } from 'typeorm-transactional-cls-hooked';
 import { CollectionProductsEntity } from '../../collections/entities/collection-products.entity';
-import { ProductSorting } from '../dto/product-filtering.dto';
+import { ProductQueryIdFilterDto, ProductSorting } from '../dto/product-filtering.dto';
 import { ProductEntity } from '../entities/product.entity';
 
 @EntityRepository(ProductEntity)
@@ -35,7 +35,7 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 		});
 	}
 
-	async findFilteredProductIds(collectionId?: number, categoryIds?: number[], productIds?: number[], search?: string, isStaff?: boolean, extraSql?: string[]): Promise<{
+	async findFilteredProductIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryIdFilterDto[], search?: string, isStaff?: boolean): Promise<{
 		id: number,
 		priceAmount: number,
 		discountedPrice: number,
@@ -70,25 +70,21 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 			});
 		}
 
-		if ( productIds && productIds.length > 0 ) {
-			// productIdsSet.forEach(productIds => caQb.andWhere(`p.id IN (:...productIds)`, { productIds: productIds
-			// }));
-			caQb.andWhere(`p.id IN (:...productIds)`, { productIds: productIds });
-
-			// caQb.leftJoin(ProductVariantEntity, 'pv', `pv."productId" = p.id`)
-			// 	.leftJoin(AssignedProductAttributeEntity, `apa`, `p.id = apa."productId"`);
-			//
-
-			// 	if ( !value.values || value.values.length === 0 ) return;
-			// 	caQb
-			// 		.leftJoin(AssignedProductAttributeValueEntity, `apav${ index }`, `apa.id = apav${ index
-			// }."assignedProductAttributeId"`) .leftJoin(AssignedProductVariantAttributeEntity, `ava${ index }`,
-			// `ava${ index }."variantId" = pv.id`) .leftJoin(AssignedProductVariantAttributeValueEntity, `avav${ index
-			// }`, `avav${ index }."assignedProductVariantAttributeId" = ava${ index }.id`) //
-			// .leftJoin(AttributeValueEntity, `av1${ index }`, `avav${ index }."valueId" = av1${ index }.id`) //
-			// .leftJoin(AttributeValueEntity, `av2${ index }`, `apav${ index }."valueId" = av2${ index }.id`)
-			// .andWhere(`(avav${ index }."valueId"  IN (:...values${ index }) OR apav${ index }."valueId" IN
-			// (:...values${ index }))`, { [`values${ index }`]: value.values }); });
+		if ( filters && filters.length > 0 ) {
+			filters.forEach(filter => {
+				caQb.andWhere(`p.id IN (SELECT DISTINCT ON ("av"."productId") av."productId" AS "productId"
+               FROM "products_assigned_product_attribute_values" "papav"
+                        LEFT JOIN "products_assigned_product_attributes" "av"
+                                  ON av."id" = papav."assignedProductAttributeId"
+               WHERE papav."valueId" IN (:...valueIds${ filter.attributeId })
+               UNION
+               SELECT DISTINCT on (ppv."productId") ppv."productId" AS "productId"
+               FROM "products_assigned_product_variant_attribute_values" papvav
+                        LEFT JOIN "products_assigned_product_variant_attributes" "av"
+                                  ON av."id" = papvav."assignedProductVariantAttributeId"
+                        LEFT join products_product_variants ppv on av."variantId" = ppv.id
+               WHERE papvav."valueId" IN (:...valueIds${ filter.attributeId }))`, { ['valueIds' + filter.attributeId]: filter.values });
+			});
 		}
 
 		const res = await caQb.getRawMany();
@@ -99,22 +95,9 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 		}));
 	}
 
-	async findByIdsWithSorting(ids: number[], skip?: number, take?: number, sorting?: ProductSorting, language: LanguageCode = LanguageCode.en): Promise<ProductEntity[]> {
+	async findByIdsWithSortingAndPagination(ids: number[], skip?: number, take?: number, sorting?: ProductSorting, language: LanguageCode = LanguageCode.en): Promise<ProductEntity[]> {
 		const q = this.createQueryBuilder('p')
-					  .leftJoinAndSelect('p.productType', 'pt')
-					  .leftJoinAndSelect('p.category', 'c')
-					  .leftJoinAndSelect('p.defaultVariant', 'dv')
-					  .leftJoinAndSelect('p.attributes', 'att')
-					  .leftJoinAndSelect('att.values', 'aval')
-					  .leftJoinAndSelect('aval.value', 'avalval')
-					  .leftJoinAndSelect('att.productTypeAttribute', 'pta')
-					  .leftJoinAndSelect('pta.attribute', 'attr')
-					  .leftJoinAndSelect('p.productMedia', 'pmedia')
-					  .leftJoinAndSelect('pmedia.media', 'pmediaMedia')
-					  .leftJoinAndSelect('p.collections', 'pcollections')
-					  .leftJoinAndSelect('pcollections.collection', 'pcollection');
-
-
+					  .select('p.id', 'id');
 		if ( sorting ) {
 			if ( sorting === ProductSorting.NAME_ASC || sorting === ProductSorting.NAME_DESC ) {
 				q.addSelect(`CASE WHEN "p".name ? '${ language }' THEN "p".name ->> '${ language }' ELSE "p".name ->> 'en' END`, 'sortcolumn');
@@ -129,12 +112,26 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
 			q.orderBy(`sortcolumn`, isAsc ? 'ASC' : 'DESC', 'NULLS LAST');
 
 		}
-		q.skip(skip)
-		 .take(take)
-		 .whereInIds(ids);
-
-
-		return await q.getMany();
+		const res = await q.skip(skip)
+						   .take(take)
+						   .whereInIds(ids)
+						   .getRawMany();
+		const pageIds = res.map(r => r.id);
+		return await this.createQueryBuilder('p')
+						 .leftJoinAndSelect('p.productType', 'pt')
+						 .leftJoinAndSelect('p.category', 'c')
+						 .leftJoinAndSelect('p.defaultVariant', 'dv')
+						 .leftJoinAndSelect('p.attributes', 'att')
+						 .leftJoinAndSelect('att.values', 'aval')
+						 .leftJoinAndSelect('aval.value', 'avalval')
+						 .leftJoinAndSelect('att.productTypeAttribute', 'pta')
+						 .leftJoinAndSelect('pta.attribute', 'attr')
+						 .leftJoinAndSelect('p.productMedia', 'pmedia')
+						 .leftJoinAndSelect('pmedia.media', 'pmediaMedia')
+						 .leftJoinAndSelect('p.collections', 'pcollections')
+						 .leftJoinAndSelect('pcollections.collection', 'pcollection')
+						 .whereInIds(pageIds)
+						 .getMany();
 	}
 
 	findByCategoryIds(categoryIds: number[]) {
