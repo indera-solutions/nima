@@ -62,7 +62,7 @@ export class FilteringService {
 		if ( params.collectionId ) {
 			collectionId = params.collectionId;
 		}
-		const filters = await this.getFiltersFromValues(params.attributeValueIds);
+		const filters = await this.getFiltersFromValues(params.attributeValueIds as any);
 		let collections = [];
 
 
@@ -131,10 +131,14 @@ export class FilteringService {
 		return Object.values(fieldMap);
 	}
 
-	private async getFiltersFromValues(attributeValueIds?: number[]): Promise<ProductQueryIdFilterDto[]> {
+	private async getFiltersFromValues(attributeValueIds?: string[] | string): Promise<ProductQueryIdFilterDto[]> {
 		if ( !attributeValueIds || attributeValueIds.length === 0 ) return [];
 		const attributeMap: { [T: number]: number[] } = {};
-		const res = await this.attributeValuesService.getIdAndAttributeIdOfValues(attributeValueIds);
+		const ids = (attributeValueIds ? (Array.isArray(attributeValueIds) ? attributeValueIds : [attributeValueIds]) : [])
+			.map(id => Number.parseInt(id))
+			.filter(id => Number.isInteger(id));
+		if ( ids.length === 0 ) return [];
+		const res = await this.attributeValuesService.getIdAndAttributeIdOfValues(ids);
 		for ( const value of res ) {
 			if ( attributeMap[value.attributeId] ) {
 				attributeMap[value.valueId].push(value.valueId);
