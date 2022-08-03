@@ -17,7 +17,6 @@ import { ProductTypeAttributesService } from '../product-types/product-type-attr
 import { ProductTypesService } from '../product-types/product-types.service';
 import { CreateAssignedProductAttributeDto } from './dto/product-attribute-assignment.dto';
 import { CreateAssignedProductAttributeValueDto } from './dto/product-attribute-value-assignment.dto';
-import { ProductQueryFilterDto } from './dto/product-filtering.dto';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { AssignedProductAttributeEntity } from './entities/product-attribute-assignment.entity';
 import { AssignedProductAttributeValueEntity } from './entities/product-attribute-value-assignment.entity';
@@ -151,11 +150,6 @@ export class ProductsService {
 		const product = await this.getById({ id: id });
 		await this.productRepository.deleteById(id);
 		return product;
-	}
-
-	async findFilteredProductIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string): Promise<number[]> {
-		const res = await this.productRepository.findFilteredProductIds(collectionId, categoryIds, filters, search);
-		return res.map(r => r.id);
 	}
 
 	async setDefaultVariant(params: { productId: number, variantId: number }) {

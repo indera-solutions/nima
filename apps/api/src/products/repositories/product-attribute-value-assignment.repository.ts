@@ -1,5 +1,6 @@
 import { EntityRepository } from 'typeorm';
 import { BaseRepository } from 'typeorm-transactional-cls-hooked';
+import { AssignedProductAttributeEntity } from '../entities/product-attribute-assignment.entity';
 import {
 	AssignedProductAttributeValueEntity,
 	AssignedProductVariantAttributeValueEntity,
@@ -17,6 +18,16 @@ export class AssignedProductAttributeValueRepository extends BaseRepository<Assi
 				id: valueId,
 			},
 		});
+	}
+
+	async getProductIdsOfValueId(valueIds: number[]): Promise<number[]> {
+		const res = await this.createQueryBuilder('papav')
+							  .select('av."productId"')
+							  .distinctOn(['av.productId'])
+							  .leftJoin(AssignedProductAttributeEntity, 'av', ' av."id" = papav."assignedProductAttributeId"')
+							  .where('papav."valueId" IN (:...valueIds)', { valueIds: valueIds })
+							  .getRawMany();
+		return res.map(r => r.productId);
 	}
 }
 

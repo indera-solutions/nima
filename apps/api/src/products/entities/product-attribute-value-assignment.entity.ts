@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { AttributeValueDto } from '../../attributes/dto/attribute-value.dto';
 import { AttributeValueEntity } from '../../attributes/entities/attribute-value.entity';
 import {
@@ -21,6 +21,7 @@ export class AssignedProductAttributeValueEntity {
 		// @ApiProperty({ type: AssignedProductAttributeDto })
 	assignedProductAttribute: AssignedProductAttributeEntity;
 
+	@Index()
 	@ManyToOne(() => AttributeValueEntity, { eager: true, onDelete: 'CASCADE' })
 	@ApiProperty({ type: AttributeValueDto })
 	value: AttributeValueEntity;

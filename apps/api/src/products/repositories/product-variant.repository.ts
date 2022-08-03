@@ -4,7 +4,7 @@ import { BaseRepository } from 'typeorm-transactional-cls-hooked';
 import { AttributeValueEntity } from '../../attributes/entities/attribute-value.entity';
 import { AttributeEntity } from '../../attributes/entities/attribute.entity';
 import { CollectionProductsEntity } from '../../collections/entities/collection-products.entity';
-import { ProductQueryFilterDto, ProductSorting } from '../dto/product-filtering.dto';
+import { ProductQueryIdFilterDto, ProductSorting } from '../dto/product-filtering.dto';
 import {
 	AssignedProductAttributeEntity,
 	AssignedProductVariantAttributeEntity,
@@ -97,7 +97,7 @@ export class ProductVariantRepository extends BaseRepository<ProductVariantEntit
 		return res?.productId || undefined;
 	}
 
-	async findFilteredVariantIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryFilterDto[], search?: string): Promise<number[]> {
+	async findFilteredVariantIds(collectionId?: number, categoryIds?: number[], filters?: ProductQueryIdFilterDto[], search?: string): Promise<number[]> {
 		const caQb = this.createQueryBuilder('pv')
 						 .select('pv.id', 'id')
 						 .distinctOn(['pv.id'])

@@ -29,6 +29,13 @@ export class ProductQueryFilterDto {
 	values: string[];
 }
 
+export class ProductQueryIdFilterDto {
+	@ApiProperty()
+	attributeId: number;
+	@ApiProperty()
+	values: number[];
+}
+
 export class ProductFilterResultDto implements PaginatedResults<ProductDto> {
 	@ApiProperty({ type: [AttributeDrillDownDto] })
 	attributeDrillDown: AttributeDrillDownDto[];

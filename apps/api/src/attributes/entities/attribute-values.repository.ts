@@ -28,8 +28,8 @@ export class AttributeValuesRepository extends Repository<AttributeValueEntity> 
 			relations: ['attribute'],
 		});
 		return res.map(r => ({
-			attributeSlug: r.attribute.slug,
-			value: r.slug,
+			attributeId: r.attribute.id,
+			valueId: r.id,
 		}));
 	}
 

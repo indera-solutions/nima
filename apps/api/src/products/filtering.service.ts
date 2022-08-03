@@ -8,12 +8,13 @@ import {
 	AttributeDrillDownDto,
 	ProductFilterParamsDto,
 	ProductFilterResultDto,
-	ProductQueryFilterDto,
+	ProductQueryIdFilterDto,
 	ProductSorting,
 } from './dto/product-filtering.dto';
 import { ProductDto } from './dto/product.dto';
 import { ProductVariantService } from './product-variant.service';
 import { ProductsService } from './products.service';
+import { AssignedProductAttributeValueRepository } from './repositories/product-attribute-value-assignment.repository';
 import { ProductVariantRepository } from './repositories/product-variant.repository';
 import { ProductRepository } from './repositories/product.repository';
 
@@ -36,6 +37,7 @@ export class FilteringService {
 		private productRepository: ProductRepository,
 		private productService: ProductsService,
 		private productVariantRepository: ProductVariantRepository,
+		private assignedProductAttributeValueRepository: AssignedProductAttributeValueRepository,
 		private productVariantService: ProductVariantService,
 		private categoriesService: CategoriesService,
 		private attributeValuesService: AttributeValuesService,
@@ -64,7 +66,15 @@ export class FilteringService {
 		let collections = [];
 
 		if ( !params.variants ) {
-			const result = await this.productRepository.findFilteredProductIds(collectionId, categoryIdArray, filters, params.search, options.isStaff);
+			const productsIds = await Promise.all(filters.map(filter => this.assignedProductAttributeValueRepository.getProductIdsOfValueId(filter.values)));
+			let temp = productsIds.length > 0 ? productsIds[0] : [];
+			productsIds.slice(1, productsIds.length).forEach(pid => {
+				temp = temp.filter(function (n) {
+					return pid.indexOf(n) !== -1;
+				});
+			});
+
+			const result = await this.productRepository.findFilteredProductIds(collectionId, categoryIdArray, temp, params.search, options.isStaff);
 
 			if ( result.length === 0 )
 				return emptyRes;
@@ -153,22 +163,23 @@ export class FilteringService {
 		return Object.values(fieldMap);
 	}
 
-	private async getFiltersFromValues(attributeValueIds?: number[]): Promise<ProductQueryFilterDto[]> {
+	private async getFiltersFromValues(attributeValueIds?: number[]): Promise<ProductQueryIdFilterDto[]> {
+		console.log(attributeValueIds);
 		if ( !attributeValueIds || attributeValueIds.length === 0 ) return [];
-		const attributeMap: { [T: number]: string[] } = {};
+		const attributeMap: { [T: number]: number[] } = {};
 		const res = await this.attributeValuesService.getSlugAndAttributeSlugOfValues(attributeValueIds);
 		for ( const value of res ) {
-			if ( attributeMap[value.attributeSlug] ) {
-				attributeMap[value.attributeSlug].push(value.value);
+			if ( attributeMap[value.attributeId] ) {
+				attributeMap[value.valueId].push(value.valueId);
 			} else {
-				attributeMap[value.attributeSlug] = [value.value];
+				attributeMap[value.valueId] = [value.valueId];
 			}
 		}
 
-		const filter: ProductQueryFilterDto[] = [];
+		const filter: ProductQueryIdFilterDto[] = [];
 		Object.keys(attributeMap).forEach(attributeSlug => {
 			filter.push({
-				attributeSlug: attributeSlug,
+				attributeId: +attributeSlug,
 				values: attributeMap[attributeSlug],
 			});
 		});
